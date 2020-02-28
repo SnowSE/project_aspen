@@ -7,17 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["aspen.api/aspen.api.csproj", "aspen.api/"]
-COPY ["Aspen.Core/aspen.core.csproj", "Aspen.Core/"]
-RUN dotnet restore "aspen.api/aspen.api.csproj"
+COPY ["aspen.web/aspen.web.csproj", "aspen.web/"]
+RUN dotnet restore "aspen.web/aspen.web.csproj"
 COPY . .
-WORKDIR "/src/aspen.api"
-RUN dotnet build "aspen.api.csproj" -c Release -o /app/build
+WORKDIR "/src/aspen.web"
+RUN dotnet build "aspen.web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "aspen.api.csproj" -c Release -o /app/publish
+RUN dotnet publish "aspen.web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "aspen.api.dll"]
+ENTRYPOINT ["dotnet", "aspen.web.dll"]
