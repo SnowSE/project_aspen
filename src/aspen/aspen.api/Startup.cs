@@ -44,6 +44,15 @@ namespace aspen.api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "admin/{controller}/{action=Index}/{id?}")
+                .RequireHost("admin.*");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+
                 endpoints.MapControllers();
             });
         }
