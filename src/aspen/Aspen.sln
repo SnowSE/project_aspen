@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.core", "Aspen.Core\aspen.core.csproj", "{988CD416-EAEC-4EE3-92A3-EA0027A2EF45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.core", "aspen.core\aspen.core.csproj", "{988CD416-EAEC-4EE3-92A3-EA0027A2EF45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspen.api", "aspen.api\aspen.api.csproj", "{CCD53E97-DBA4-468B-ABFC-2169B4F89880}"
 EndProject
