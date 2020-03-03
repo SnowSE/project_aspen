@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspen.Core.Models;
+using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,23 +19,23 @@ namespace aspen.api.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly CharityRepository charityRepository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, CharityRepository charityRepository)
         {
             _logger = logger;
+            this.charityRepository = charityRepository;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<Charity>> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var newcharity = new Charity(){
+                CharityName="Kylers Penguins",
+                CharityDescription = "we like cold"
+            };
+            await charityRepository.CreateCharity(newcharity);
+            return await charityRepository.GetAll();
         }
     }
 }

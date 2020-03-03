@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,11 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace aspen.api
 {
     public class Startup
     {
+        private System.Func<NpgsqlConnection> getDbConnection;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +30,9 @@ namespace aspen.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            getDbConnection = () => new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
+            services.AddScoped<ICharityRepository, CharityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

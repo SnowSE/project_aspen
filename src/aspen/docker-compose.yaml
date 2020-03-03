@@ -1,0 +1,20 @@
+version: "3"
+services: 
+    aspen_database:
+        image: postgres
+        container_name: aspen_database
+        environment:
+            - POSTGRES_USER=Aspen
+            - POSTGRES_PASSWORD=Aspen
+            - POSTGRES_DB=Aspen
+        volumes:
+            - ./pgsql/:/docker-entrypoint-initdb.d/
+            - database:/var/lib/postgresql/data/
+        networks:
+            - internal
+   
+networks:
+    internal:
+
+volumes: 
+    database:
