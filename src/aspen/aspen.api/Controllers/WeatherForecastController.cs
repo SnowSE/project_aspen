@@ -19,9 +19,9 @@ namespace aspen.api.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly CharityRepository charityRepository;
+        private readonly ICharityRepository charityRepository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, CharityRepository charityRepository)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ICharityRepository charityRepository)
         {
             _logger = logger;
             this.charityRepository = charityRepository;
