@@ -12,6 +12,16 @@ services:
             - database:/var/lib/postgresql/data/
         networks:
             - internal
+
+    aspen_api:
+        build: .
+        image: aspen_api/
+        container_name: aspen_api
+        ports: 
+            - 80:80
+            - 443:443
+        networks: 
+            - internal
    
 networks:
     internal:
