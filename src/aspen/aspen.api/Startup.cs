@@ -61,7 +61,7 @@ namespace aspen.api
                 endpoints.MapControllerRoute(
                     "Global Admin",
                     "/admin/{controller}/{action}",
-                    new { controller = "Tenats", action = "Get"},
+                    new { controller = "Chartiy", action = "Get"},
                     new { TenantAccess = new AdminRouteConstraint() } );
             });
         }

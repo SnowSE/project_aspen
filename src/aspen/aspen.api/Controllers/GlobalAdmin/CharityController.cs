@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aspen.api.Controllers
 {
-    public class TenatsController : ControllerBase
+    public class CharityController : ControllerBase
     {
         [HttpGet]
         public string Get()
