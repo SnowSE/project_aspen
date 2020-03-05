@@ -9,8 +9,8 @@ using Microsoft.Extensions.Logging;
 
 namespace aspen.api.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
+    // [ApiController]
+    // [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

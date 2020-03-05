@@ -49,19 +49,6 @@ namespace aspen.api
             app.UseRouting();
 
             app.UseAuthorization();
-            
-            // MvcOptions.EnableEndpointRouting = false
-            
-            // app.UseMvc(routes =>
-            // {
-            //     //hostname stuff
-            //     routes.MapRoute(
-            //         "Default",
-            //         "{controller}/{action}/{id}",
-            //         new { controller = "Home", action = "Index", id = ""},
-            //         new { TenantAccess = new TenantRouteConstraint() } 
-            //     );
-            // });
 
             app.UseEndpoints(endpoints =>
             {
@@ -69,7 +56,7 @@ namespace aspen.api
                 endpoints.MapControllerRoute(
                     "Default",
                     "{controller}/{action}/{id}",
-                    new { controller = "Home", action = "Index", id = ""},
+                    new { controller = "Home", action = "Get", id = ""},
                     new { TenantAccess = new TenantRouteConstraint() } );
                 endpoints.MapControllerRoute(
                     "Global Admin",
