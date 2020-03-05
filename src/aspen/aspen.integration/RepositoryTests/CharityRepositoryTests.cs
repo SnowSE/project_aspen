@@ -28,10 +28,17 @@ namespace aspen.integration.RepositoryTests
         [Test]
         public async Task CanAddCharityToDatabase()
         {
-            var alexsTurtles = new Charity(6, "Alex's Turtles", "alex likes turtles", "alexsturtles");
+            var random = new Random();
+            
+            var alexsTurtles = new Charity(
+                -1,
+                "Alex's Turtles" + random.Next(),
+                "alexsturtles" + random.Next(),
+                "alex likes turtles");
             await charityRepository.CreateCharity(alexsTurtles);
             var all_charities = await charityRepository.GetAll();
-            Assert.IsTrue(all_charities.Contains(alexsTurtles));
+
+            Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
         }
     }
 }
