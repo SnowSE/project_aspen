@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using aspen.api.Routing;
 using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,10 +49,33 @@ namespace aspen.api
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            // MvcOptions.EnableEndpointRouting = false
+            
+            // app.UseMvc(routes =>
+            // {
+            //     //hostname stuff
+            //     routes.MapRoute(
+            //         "Default",
+            //         "{controller}/{action}/{id}",
+            //         new { controller = "Home", action = "Index", id = ""},
+            //         new { TenantAccess = new TenantRouteConstraint() } 
+            //     );
+            // });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    "Default",
+                    "{controller}/{action}/{id}",
+                    new { controller = "Home", action = "Index", id = ""},
+                    new { TenantAccess = new TenantRouteConstraint() } );
+                endpoints.MapControllerRoute(
+                    "Global Admin",
+                    "/admin/{controller}/{action}",
+                    new { controller = "Tenats", action = "Get"},
+                    new { TenantAccess = new AdminRouteConstraint() } );
             });
         }
     }

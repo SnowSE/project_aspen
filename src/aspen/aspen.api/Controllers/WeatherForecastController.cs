@@ -30,11 +30,11 @@ namespace aspen.api.Controllers
         [HttpGet]
         public async Task<IEnumerable<Charity>> Get()
         {
-            var newcharity = new Charity(){
-                CharityName="Kylers Penguins",
-                CharityDescription = "we like cold"
-            };
-            await charityRepository.CreateCharity(newcharity);
+            // var newcharity = new Charity(){
+            //     CharityName="Kylers Penguins",
+            //     CharityDescription = "we like cold"
+            // };
+            // await charityRepository.CreateCharity(newcharity);
             return await charityRepository.GetAll();
         }
     }
