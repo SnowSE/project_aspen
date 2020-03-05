@@ -21,18 +21,30 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = getDbConnection())
             {
                 await dbConnection.ExecuteAsync(
-                    @"insert into Charity (CharityId, CharityName, CharityDescription)
-                    values (@CharityId, @CharityName,@CharityDescription);",
+                    @"insert into Charity (CharityId, CharityName, CharitySubDomain, CharityDescription)
+                    values (@CharityId, @CharityName, @CharitySubDomain, @CharityDescription);",
                     charity
                 );
             }
         }
+
         public async Task<IEnumerable<Charity>> GetAll()
         {
             using (var dbConnection = getDbConnection())
             {
                 return await dbConnection.QueryAsync<Charity>(
                     @"select * from Charity;"
+                );
+            }
+        }
+
+        //canidate for optimization
+        public IEnumerable<string> GetSubDomains()
+        {
+            using(var dbConnection = getDbConnection())
+            {
+                return dbConnection.Query<string>(
+                    "select CharitySubDomain from Charity;"
                 );
             }
         }

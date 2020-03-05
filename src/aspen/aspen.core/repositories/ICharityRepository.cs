@@ -8,5 +8,6 @@ namespace Aspen.Core.Repositories
     {
         Task CreateCharity(Charity charity);
         Task<IEnumerable<Charity>> GetAll();
+        IEnumerable<string> GetSubDomains();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
@@ -5,28 +6,31 @@ namespace aspen.api.Routing
 {
     public class AdminRouteConstraint : IRouteConstraint
     {
-        // public bool Match(HttpContext httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection)
-        // {
-        //     var splitAddress = httpContext.Request.Headers["Host"].Split('.');
-        //     if (splitAddress.Length < 2)
-        //     {
-        //         return true;
-        //     }
-        //     //validate that path starts with /admin/{controller}...
 
-        //     return false;
-        // }
 
         public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
-            var splitAddress = httpContext.Request.Host.Host.Split('.');// Request.Headers["Host"].Split('.');
-            if (splitAddress.Length < 2)
+            var splitAddress = httpContext.Request.Host.Host.Split('.');
+            var path = httpContext.Request.Path.ToString();
+
+            if (hasNoSubDomain(splitAddress) && pathStartsWithAdmin(path))
             {
                 return true;
             }
-            //validate that path starts with /admin/{controller}...
+            else
+            {
+                return false;
+            }
+        }
 
-            return false;
+        private bool pathStartsWithAdmin(string path)
+        {
+            return path.StartsWith("/admin");
+        }
+
+        private static bool hasNoSubDomain(string[] splitAddress)
+        {
+            return splitAddress.Length == 1;
         }
     }
 }

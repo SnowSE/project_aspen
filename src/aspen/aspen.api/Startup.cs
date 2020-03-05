@@ -57,7 +57,7 @@ namespace aspen.api
                     "Default",
                     "{controller}/{action}/{id}",
                     new { controller = "Home", action = "Get", id = ""},
-                    new { TenantAccess = new TenantRouteConstraint() } );
+                    new { TenantAccess = new CharityRouteConstraint(new CharityRepository(getDbConnection)) } );
                 endpoints.MapControllerRoute(
                     "Global Admin",
                     "/admin/{controller}/{action}",

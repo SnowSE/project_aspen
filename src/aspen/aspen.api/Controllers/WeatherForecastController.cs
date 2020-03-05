@@ -28,7 +28,7 @@ namespace aspen.api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Charity>> Get()
+        public async Task<IEnumerable<Charity>> GetAll()
         {
             // var newcharity = new Charity(){
             //     CharityName="Kylers Penguins",
