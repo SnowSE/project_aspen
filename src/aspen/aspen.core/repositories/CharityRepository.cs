@@ -44,7 +44,7 @@ namespace Aspen.Core.Repositories
             }
             return testId;
         }
-
+// kyler was here
         public async Task<IEnumerable<Charity>> GetAll()
         {
             using (var dbConnection = getDbConnection())
