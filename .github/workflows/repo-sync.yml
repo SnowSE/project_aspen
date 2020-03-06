@@ -11,7 +11,7 @@ jobs:
         SOURCE_REPO: "https://github.com/snowse/project_aspen"
         SOURCE_BRANCH: "master"
         DESTINATION_REPO: ${{ secrets.GITLAB_REPO }} 
-        DESTINATION_BRANCH: "master"
+        DESTINATION_BRANCH: "dev"
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       with:
         args: $SOURCE_REPO $SOURCE_BRANCH $DESTINATION_REPO $DESTINATION_BRANCH
