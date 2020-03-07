@@ -6,8 +6,12 @@ namespace Aspen.Core.Repositories
 {
     public interface ICharityRepository
     {
-        Task CreateCharity(Charity charity);
+        Task Create(Charity charity);
         Task<IEnumerable<Charity>> GetAll();
         IEnumerable<string> GetSubDomains();
+        Task Update(Charity charity);
+        Task<Charity> GetById(int charityId);
+        Task<Charity> GetByName(string charityName);
+        Task Delete(Charity charity);
     }
 }
