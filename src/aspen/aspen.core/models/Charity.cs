@@ -34,7 +34,7 @@ namespace Aspen.Core.Models
             return new Charity(CharityId, newName, CharitySubDomain, CharityDescription);
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return JsonSerializer.Serialize(this);
         }  
