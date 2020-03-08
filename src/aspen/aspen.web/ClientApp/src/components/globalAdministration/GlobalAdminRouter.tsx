@@ -7,7 +7,7 @@ const GlobalAdminRouter: React.FC = () => {
     return (
         <Switch>
             <Route exact path="/globalAdministration" component={GlobalAdminHome}/>
-            <Route path="/globalAdministration/:org" component={GlobalAdminDetails}/>
+            <Route path="/globalAdministration/:id" component={GlobalAdminDetails}/>
         </Switch>
     )
 };

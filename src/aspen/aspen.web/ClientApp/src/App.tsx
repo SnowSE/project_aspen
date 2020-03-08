@@ -14,7 +14,7 @@ export default () => (
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
             <Route path='/Register' component={Register} />
-            <Route exact path="/globalAdministration" component={GlobalAdminRouter} />
+            <Route path="/globalAdministration" component={GlobalAdminRouter} />
         </Switch>
     </>
 );
