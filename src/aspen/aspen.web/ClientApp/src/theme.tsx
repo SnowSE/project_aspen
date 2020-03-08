@@ -17,7 +17,7 @@ let theme: any = createMuiTheme({
       color: "rgba(0,0,0,0.65)",
       fontWeight: 600
     }
-  }
+  },
 });
 
 theme = responsiveFontSizes(theme);
