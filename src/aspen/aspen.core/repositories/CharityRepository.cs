@@ -44,7 +44,6 @@ namespace Aspen.Core.Repositories
             }
             return testId;
         }
-
         public async Task<IEnumerable<Charity>> GetAll()
         {
             using (var dbConnection = getDbConnection())
@@ -54,8 +53,6 @@ namespace Aspen.Core.Repositories
                 );
             }
         }
-
-        //canidate for optimization
         public IEnumerable<string> GetSubDomains()
         {
             using(var dbConnection = getDbConnection())
