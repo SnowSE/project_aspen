@@ -7,6 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
 import theme from "../../theme";
+import NavBar from "../NavBar";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -78,6 +79,7 @@ const Login: React.FC<LoginProps> = props => {
 
   return (
     <React.Fragment>
+    <NavBar/>
     <div className={classes.background}>
       <form className={classes.container} noValidate autoComplete="off">
         <Card className={classes.card}>
