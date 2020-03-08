@@ -78,7 +78,6 @@ const Header:React.FC<HeaderProps> = props => {
   return (
     <React.Fragment>
       <div className={classes.header}>
-        <NavBar/>
         <div className={classes.overlay}>
         </div>
         <div className={classes.overlayText}>

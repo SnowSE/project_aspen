@@ -96,7 +96,6 @@ const Register: React.FC<RegisterProps> = props => {
 
   return (
     <React.Fragment>
-    <NavBar/>
     <div className={classes.background}>
       <form className={classes.container} noValidate autoComplete="off">
         <Card className={classes.card}>
