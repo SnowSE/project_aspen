@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: trigram-api
+  namespace: aspen
+  labels: 
+    app: trigram-api
+spec:
+  spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trigram-api
+  template:
+    metadata:
+      labels:
+        app: trigram-api
+    spec:
+      containers:
+      - name: trigram-api
+        image: # insert image from container registry
+        ports:
+        - containerPort: 80 
+        env:
+          # hack: replace with reall connection string
+        - name: DB_CONNECTION
+          value: "Server=postgres; Port=5432; Database=aspen; User ID=aspen; Password=aspen;"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trigram-api-service
+  namespace: aspen
+  labels:
+    app: trigram-api-service
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+  ports:
+  - port: 80
+    protocol: TCP  
+    nodePort: 30081
+  selector:
+    app: trigram-api

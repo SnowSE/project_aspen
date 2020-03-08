@@ -16,7 +16,7 @@ namespace Aspen.Core.Repositories
             this.getDbConnection = getDbConnection;
         }
 
-        public async Task CreateCharity(Charity charity)
+        public async Task Create(Charity charity)
         {
             using (var dbConnection = getDbConnection())
             {
@@ -44,6 +44,22 @@ namespace Aspen.Core.Repositories
             }
             return testId;
         }
+
+        public async Task Update(Charity charity)
+        {
+            using(var dbConnection = getDbConnection())
+            {
+                await dbConnection.ExecuteAsync(
+                    @"update Charity set
+                    CharityName = @charityName,
+                    CharityDescription = @charityDescription,
+                    CharitySubDomain = @charitySubDomain
+                    where CharityId = @charityId;",
+                    charity
+                );
+            }
+        }
+
         public async Task<IEnumerable<Charity>> GetAll()
         {
             using (var dbConnection = getDbConnection())
@@ -53,6 +69,32 @@ namespace Aspen.Core.Repositories
                 );
             }
         }
+
+        public async Task<Charity> GetById(int charityId)
+        {
+            using (var dbConnection = getDbConnection())
+            {
+                return await dbConnection.QueryFirstAsync<Charity>(
+                    @"select * from Charity
+                    where CharityId = @charityId;",
+                    new { charityId }
+                );
+            }
+        }
+
+        public async Task<Charity> GetByName(string charityName)
+        {
+            using (var dbConnection = getDbConnection())
+            {
+                return await dbConnection.QueryFirstAsync<Charity>(
+                    @"select * from Charity
+                    where CharityName = @charityName;",
+                    new { charityName }
+                );
+            }
+        }
+
+        //canidate for optimization
         public IEnumerable<string> GetSubDomains()
         {
             using(var dbConnection = getDbConnection())
@@ -63,5 +105,17 @@ namespace Aspen.Core.Repositories
             }
         }
 
+        public async Task Delete(Charity charity)
+        {
+            using(var dbConnection = getDbConnection())
+            {
+                await dbConnection.ExecuteAsync(
+                    @"delete from Charity
+                    where CharityId = @charityId
+                        and CharityName = @charityName;",
+                    charity
+                );
+            }
+        }
     }
 }
