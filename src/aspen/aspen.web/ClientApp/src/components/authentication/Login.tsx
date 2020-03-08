@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
-import theme from "../theme";
+import theme from "../../theme";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -32,6 +32,10 @@ const useStyles = makeStyles(() =>
     },
     card: {
       marginTop: theme.spacing(15) 
+    },
+    background: {
+        background: "#e5e5e5",
+        height: "100vh"
     }
   }),
 );
@@ -59,7 +63,7 @@ const Login: React.FC<LoginProps> = props => {
   const handleLogin = () => {
     if (username === 'abc@email.com' && password === 'password') {
       setError(false);
-      setHelperText('Login Successfully');
+      alert('Login Successfully');
     } else {
       setError(true);
       setHelperText('Incorrect username or password')
@@ -74,9 +78,10 @@ const Login: React.FC<LoginProps> = props => {
 
   return (
     <React.Fragment>
+    <div className={classes.background}>
       <form className={classes.container} noValidate autoComplete="off">
         <Card className={classes.card}>
-          <CardHeader className={classes.header} title="Login App" />
+          <CardHeader className={classes.header} title="Login" />
           <CardContent>
             <div>
               <TextField
@@ -116,6 +121,7 @@ const Login: React.FC<LoginProps> = props => {
           </CardActions>
         </Card>
       </form>
+      </div>
     </React.Fragment>
   );
 }

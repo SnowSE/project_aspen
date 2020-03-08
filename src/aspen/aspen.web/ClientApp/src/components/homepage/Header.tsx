@@ -83,8 +83,8 @@ const Header:React.FC<HeaderProps> = props => {
               <NavLink tag={Link} className={classes.link} to="/login">
                 Login
               </NavLink>
-              <NavLink tag={Link} className={classes.link} to="/counter">
-                Counter
+              <NavLink tag={Link} className={classes.link} to="/register">
+                Register
               </NavLink>
               <NavLink tag={Link} className={classes.link} to="/">
                 Home
