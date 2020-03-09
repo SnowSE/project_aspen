@@ -79,7 +79,6 @@ const Login: React.FC<LoginProps> = props => {
 
   return (
     <React.Fragment>
-    <NavBar/>
     <div className={classes.background}>
       <form className={classes.container} noValidate autoComplete="off">
         <Card className={classes.card}>
