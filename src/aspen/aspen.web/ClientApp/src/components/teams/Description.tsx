@@ -1,18 +1,13 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Progress } from "reactstrap";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import theme from "../../theme";
-import Card from "@material-ui/core/Card";
 import Divider from "@material-ui/core/Divider";
 import ShareIcon from "@material-ui/icons/Share";
-import CardContent from "@material-ui/core/CardContent";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import { Line, Circle } from "rc-progress";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+
 
 const useStyles = makeStyles({
   mainCard: {
@@ -49,24 +44,6 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.secondary.main,
     color: "white"
   },
-  goalCard: {
-    display: "block",
-    width: "calc(50% - 20px)"
-  },
-  goal: {
-    width: "100%",
-    margin: 10
-  },
-  progressBar: {
-    margin: 20,
-    height: 50,
-    borderRadius: 50,
-    color: "red"
-  },
-  progressCircle: {
-    height: 150,
-    marginRight: 20
-  }
 });
 
 interface DescriptionProps {}
@@ -127,29 +104,6 @@ const Description: React.FC<DescriptionProps> = props => {
             child with Down Syndrome.
           </Typography>
         </Paper>
-      </div>
-      <div className={classes.goalCard}>
-        <Card className={classes.goal} variant="outlined">
-          <CardContent>
-            <Grid container alignItems="center">
-              <Circle
-                percent={10}
-                className={classes.progressCircle}
-                strokeWidth={8}
-                strokeColor={theme.palette.primary.main}
-              />
-              <Divider orientation="vertical" flexItem />
-              <Typography variant="h5" gutterBottom>
-                <Box fontStyle="italic" mt={-5} m={1}>
-                  Our Goal
-                </Box>
-                <Box fontStyle="vold" m={1}>
-                  $500
-                </Box>
-              </Typography>
-            </Grid>
-          </CardContent>
-        </Card>
       </div>
     </React.Fragment>
   );
