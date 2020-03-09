@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "./homepage/Header";
-import ContentCard from "./homepage/ContentCard";
-import Rankings from "./homepage/Rankings";
+import Header from "./Header";
+import ContentCard from "./ContentCard";
+import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
