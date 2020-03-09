@@ -10,3 +10,4 @@ declare module "@material-ui/core/Button";
 declare module "@material-ui/core/Typography";
 declare module "@material-ui/core/Typography";
 declare module "react-router-dom";
+declare module "react-confirm-alert";
