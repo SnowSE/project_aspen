@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["aspen.api/aspen.api.csproj", "aspen.api/"]
-COPY ["Aspen.Core/aspen.core.csproj", "Aspen.Core/"]
+COPY ["aspen.aore/aspen.core.csproj", "Aspen.Core/"]
 RUN dotnet restore "aspen.api/aspen.api.csproj"
 COPY . .
 WORKDIR "/src/aspen.api"

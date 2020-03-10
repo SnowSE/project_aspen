@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aspen.Core\aspen.core.csproj" />
+    <ProjectReference Include="..\aspen.core\aspen.core.csproj" />
   </ItemGroup>
 
 </Project>
