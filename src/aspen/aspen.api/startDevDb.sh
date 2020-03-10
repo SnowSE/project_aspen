@@ -9,6 +9,7 @@ while getopts "d" OPTION; do
   esac
 done
 
+
 docker rm -f aspen_dev_db;
 docker run --name aspen_dev_db $background \
   -p 5432:5432 \
