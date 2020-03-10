@@ -5,41 +5,43 @@ services:
   - docker:19.03.1-dind
 
 stages:
+  - test
   - build
-  #- test
-  - release
-  - deploy
+  # - release
+  # - deploy
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_HOST: tcp://docker:2376
+  # DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
+  REGISTRY: us.gcr.io
+  PROJECT: united-angels-web
+  IMAGE: united-angels-app
+  REPO_NAME: $REGISTRY/$PROJECT
+  CONTAINER_IMAGE: $REGISTRY/$PROJECT/$IMAGE:$CI_COMMIT_SHA
 
   API_REGISTRY_IMAGE: "aspen_api"
-  API_TEST_IMAGE: $API_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  API_RELEASE_IMAGE: $API_REGISTRY_IMAGE:latest
+  API_IMAGE: $REGISTRY/$PROJECT/$API_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
   WEB_REGISTRY_IMAGE: "aspen_web"
-  WEB_TEST_IMAGE: $WEB_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  WEB_RELEASE_IMAGE: $WEB_REGISTRY_IMAGE:latest
+  WEB_IMAGE: $REGISTRY/$PROJECT/$WEB_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
+.api_unit_tests:
+  stage: test
+  script:
+    - docker pull cr.microsoft.com/dotnet/core/sdk:3.1-buster
+    - docker run --rm -v $(pwd)/src/aspen/:/app/ mcr.microsoft.com/dotnet/core/sdk:3.1-buster dotnet test /app/aspen.tests
+
 build:
   stage: build
   script:
-    - docker build --pull -t $API_TEST_IMAGE -f /src/aspen/aspen.api/Dockerfile /src/aspen
-    - docker push $API_TEST_IMAGE
-    - docker build --pull -t $WEB_TEST_IMAGE -f /src/aspen/aspen.web/Dockerfile /src/aspen
-    - docker push $WEB_TEST_IMAGE
-
-# test1:
-#   #unit tests
-#   stage: test
-#   script:
-#     - docker pull $API_TEST_IMAGE
-#     - docker run $API_TEST_IMAGE /script/to/run/tests
+    - docker build --pull -t $API_IMAGE -f src/aspen/aspen.api/Dockerfile src/aspen/
+    - docker push $API_IMAGE
+    - docker build --pull -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/
+    - docker push $WEB_IMAGE
 
 # test2:
 #   #integration tests
@@ -48,21 +50,21 @@ build:
 #     - docker pull $CONTAINER_TEST_IMAGE
 #     - docker run $CONTAINER_TEST_IMAGE /script/to/run/another/test
 
-release-image:
-  stage: release
-  script:
-    - docker pull $API_TEST_IMAGE
-    - docker tag $API_TEST_IMAGE $API_RELEASE_IMAGE
-    - docker push $API_RELEASE_IMAGE
-    - docker pull $WEB_TEST_IMAGE
-    - docker tag $WEB_TEST_IMAGE $API_RELEASE_IMAGE
-    - docker push $WEB_RELEASE_IMAGE
-  only:
-    - dev
+# release-image:
+#   stage: release
+#   script:
+#     - docker pull $API_TEST_IMAGE
+#     - docker tag $API_TEST_IMAGE $API_RELEASE_IMAGE
+#     - docker push $API_RELEASE_IMAGE
+#     - docker pull $WEB_TEST_IMAGE
+#     - docker tag $WEB_TEST_IMAGE $API_RELEASE_IMAGE
+#     - docker push $WEB_RELEASE_IMAGE
+#   only:
+#     - dev
 
-deploy:
-  stage: deploy
-  script:
-    - ./deploy.sh
-  only:
-    - dev
+# deploy:
+#   stage: deploy
+#   script:
+#     - echo "deploy here"
+#   only:
+#     - dev
