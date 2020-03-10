@@ -1,6 +1,9 @@
 # File: .github/workflows/repo-sync.yml (?)
 
-on: push
+on: 
+  push:
+    branches:
+      - master  
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
