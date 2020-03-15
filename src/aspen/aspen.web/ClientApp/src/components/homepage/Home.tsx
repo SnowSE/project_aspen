@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Header from "./Header";
 import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-
+import {DummyAPIService} from "../../services/DummyAPIService"
 const useStyles = makeStyles({});
 
 interface HomeProps {
@@ -13,10 +13,23 @@ interface HomeProps {
 
 const Home:React.FC<HomeProps> = props => {
   const classes = useStyles();
+  const [description, setDescription] = useState("");
+
+  const handleHomeData = () => {
+    let dummyapiservice = new DummyAPIService();
+    let homepagedata = dummyapiservice.GetCharityHomePage();
+    let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
+    setDescription(description);
+  }
+
+  useEffect(()=>{
+    handleHomeData()
+  }, []);
+
   return (
     <React.Fragment>
       <Header
-        greeting={"Walk with Diego"}
+        greeting={description === "" ? "Loading..." : description}
         backgroundImage={
           "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg"
         }
