@@ -15,9 +15,9 @@ const Home:React.FC<HomeProps> = props => {
   const classes = useStyles();
   const [description, setDescription] = useState("");
 
-  const handleHomeData = () => {
+  const handleHomeData = async () => {
     let dummyapiservice = new DummyAPIService();
-    let homepagedata = dummyapiservice.GetCharityHomePage();
+    let homepagedata = await dummyapiservice.GetCharityHomePage();
     let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
     setDescription(description);
   }

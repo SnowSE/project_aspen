@@ -12,7 +12,7 @@ export class APIService implements IAPIService {
         this.IDomainService = IDomainService
     }
 
-    async GetCharityHomePage(): CharityHomePage {
+    async GetCharityHomePage(): Promise<CharityHomePage> {
         let domain = this.IDomainService.GetDomain();
         let url = ""
         let headers = { "Content-Type": "application/json" };
@@ -39,6 +39,10 @@ export class APIService implements IAPIService {
             // TODO get the theme and place it here. 
             return new CharityHomePage(theme, charityObject)
         }
+        let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
+        let charityObject = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
+        let charityHomePage = new CharityHomePage(theme,charityObject);
+        return new CharityHomePage(theme, charityObject);
         
         
         
