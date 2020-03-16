@@ -15,10 +15,8 @@ variables:
   # DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   REGISTRY: us.gcr.io
-  PROJECT: united-angels-web
-  IMAGE: united-angels-app
+  PROJECT: united-angels
   REPO_NAME: $REGISTRY/$PROJECT
-  CONTAINER_IMAGE: $REGISTRY/$PROJECT/$IMAGE:$CI_COMMIT_SHA
 
   API_REGISTRY_IMAGE: "aspen_api"
   API_IMAGE: $REGISTRY/$PROJECT/$API_REGISTRY_IMAGE:$CI_COMMIT_SHA
@@ -69,7 +67,7 @@ build_web:
 
 # . before a job name prevents it from running (like commenting out the entire job)
 # & gives a job a name that can then be referenced by other jobs using << essentially an include
-.deploy: &deploy
+deploy: &deploy
   image: nhumrich/k8s-deploy
   allow_failure: false
 
@@ -86,7 +84,6 @@ deploy-dev-api:
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
     - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE
 #    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this
-
 
 deploy-dev-web:
   <<: *deploy
