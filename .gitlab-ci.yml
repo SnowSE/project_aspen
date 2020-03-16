@@ -41,7 +41,7 @@ build:
   script:
     - docker build --pull -t $API_IMAGE -f src/aspen/aspen.api/Dockerfile src/aspen/
     - docker push $API_IMAGE
-    - docker build --pull -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/
+    - docker build --pull -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/aspen.web
     - docker push $WEB_IMAGE
 
 # test2:
