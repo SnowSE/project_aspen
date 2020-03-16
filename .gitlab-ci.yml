@@ -67,7 +67,7 @@ build_web:
 
 # . before a job name prevents it from running (like commenting out the entire job)
 # & gives a job a name that can then be referenced by other jobs using << essentially an include
-deploy: &deploy
+.deploy: &deploy
   image: nhumrich/k8s-deploy
   allow_failure: false
 
