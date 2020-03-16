@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: trigram-api
-  namespace: aspen
+  namespace: {{ name }}
   labels: 
     app: trigram-api
 spec:
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: trigram-api-service
-  namespace: aspen
+  namespace: {{ name }}
   labels:
     app: trigram-api-service
 spec:
