@@ -42,7 +42,7 @@ api_integration_test:
     POSTGRES_PASSWORD: super_secret_aspen_password
     INTEGRATION_TEST_CONNECTION: "Server=postgres; Port=5432; Database=$POSTGRES_DB; User ID=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
   script:
-    - docker run -d -v $(pwd)/src/aspen/pgsql/00-tables.sql:/docker-entrypoint-initdb.d/0.sql --name postgres -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB postgres 
+    - docker run -d -v $(pwd)/src/aspen/pgsql/00-tables.sql:/docker-entrypoint-initdb.d/0.sql --name postgres -p 5432:5432 -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB postgres 
     - docker run -e INTEGRATION_TEST_CONNECTION="$INTEGRATION_TEST_CONNECTION" -v $(pwd)/src/aspen/:/app/ mcr.microsoft.com/dotnet/core/sdk:3.1-buster dotnet test /app/aspen.integration
 
 build_api:
