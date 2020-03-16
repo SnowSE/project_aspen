@@ -8,7 +8,7 @@ stages:
   - test
   - build
   # - release
-  # - deploy
+  - deploy
 
 variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
@@ -67,9 +67,23 @@ build_web:
 #   only:
 #     - dev
 
-# deploy:
-#   stage: deploy
-#   script:
-#     - echo "deploy here"
-#   only:
-#     - dev
+# . before a job name prevents it from running (like commenting out the entire job)
+# & gives a job a name that can then be referenced by other jobs using << essentially an include
+.deploy: &deploy
+  image: nhumrich/k8s-deploy
+  allow_failure: false
+
+deploy-dev:
+  <<: *deploy
+  stage: deploy-dev
+  environment:
+    # the env name gets used by the script to select a k8s context to operate in. So this needs to match a k8s context
+    # (a labeled cluster & namespace - this is set in gitlab CI/CD settings, in the KUBECTL_CONF var)
+    name: dev
+#  when: manual
+  script:
+    # these script params are referenced inside the k8s-deployment as variables. Eventually we want to break the config
+    # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
+    - /scripts/k8s-deploy.py -f k8s/api.yml --tag "$CI_COMMIT_SHA" --api_image "$API_IMAGE"
+#    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this
+

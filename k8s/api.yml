@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: trigram-api
-        image: # insert image from container registry
+        image: {{ api_image }}:{{ tag }}
         ports:
         - containerPort: 80 
         env:
