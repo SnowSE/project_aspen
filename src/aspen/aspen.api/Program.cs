@@ -20,7 +20,7 @@ namespace aspen.api
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("secrets.json", optional: false, reloadOnChange: false);
+                    config.AddJsonFile("secrets.json", optional: true, reloadOnChange: false);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
