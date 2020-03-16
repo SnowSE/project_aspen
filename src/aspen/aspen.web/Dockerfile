@@ -5,9 +5,7 @@ WORKDIR /app
 # The base node image sets a very verbose log level.
 ENV NPM_CONFIG_LOGLEVEL warn
 # Copy all local files into the image.
-COPY /ClientApp .
+COPY ./ClientApp .
 # Build for production.
 RUN npm install
-RUN npm start
-# Tell Docker about the port we'll run on.
-EXPOSE 3000
+ENTRYPOINT [ "npm", "start" ]
