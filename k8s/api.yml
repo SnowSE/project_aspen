@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: trigram-api
+  name: aspen-api
   namespace: {{ name }}
   labels: 
-    app: trigram-api
+    app: aspen-api
 spec:
   spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trigram-api
+      app: aspen-api
   template:
     metadata:
       labels:
-        app: trigram-api
+        app: aspen-api
     spec:
       containers:
-      - name: trigram-api
+      - name: aspen-api
         image: {{ api_image }}
         ports:
         - containerPort: 80 
@@ -29,10 +29,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: trigram-api-service
+  name: aspen-api-service
   namespace: {{ name }}
   labels:
-    app: trigram-api-service
+    app: aspen-api-service
 spec:
   type: NodePort
   sessionAffinity: ClientIP
@@ -41,4 +41,4 @@ spec:
     protocol: TCP  
     nodePort: 30081
   selector:
-    app: trigram-api
+    app: aspen-api

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: aspen-web
+  namespace: {{ name }}
+  labels: 
+    app: aspen-web
+spec:
+  spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aspen-web
+  template:
+    metadata:
+      labels:
+        app: aspen-web
+    spec:
+      containers:
+      - name: aspen-web
+        image: {{ web_image }}
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aspen-web-service
+  namespace: {{ name }}
+  labels:
+    app: aspen-web-service
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+  ports:
+  - port: 3000
+    protocol: TCP  
+    nodePort: 30081
+  selector:
+    app: aspen-web
