@@ -75,7 +75,7 @@ build_web:
 
 deploy-dev:
   <<: *deploy
-  stage: deploy-dev
+  stage: deploy
   environment:
     # the env name gets used by the script to select a k8s context to operate in. So this needs to match a k8s context
     # (a labeled cluster & namespace - this is set in gitlab CI/CD settings, in the KUBECTL_CONF var)
