@@ -36,11 +36,15 @@ test:
     - docker pull mcr.microsoft.com/dotnet/core/sdk:3.1-buster
     - docker run --rm -v $(pwd)/src/aspen/:/app/ mcr.microsoft.com/dotnet/core/sdk:3.1-buster dotnet test /app/aspen.tests
 
-build:
+build_api:
   stage: build
   script:
     - docker build --pull -t $API_IMAGE -f src/aspen/aspen.api/Dockerfile src/aspen/
     - docker push $API_IMAGE
+
+build_web:
+  stage: build
+  script:
     - docker build --pull -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/aspen.web
     - docker push $WEB_IMAGE
 
