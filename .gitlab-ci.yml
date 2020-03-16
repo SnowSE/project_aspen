@@ -15,7 +15,7 @@ variables:
   # DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   REGISTRY: us.gcr.io
-  PROJECT: united-angels
+  PROJECT: united-angels-web
   REPO_NAME: $REGISTRY/$PROJECT
 
   API_REGISTRY_IMAGE: "aspen_api"
