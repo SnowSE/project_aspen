@@ -1,9 +1,11 @@
 using System;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;
+using Dapper;
 using FluentAssertions;
 using Npgsql;
 using NUnit.Framework;
@@ -15,12 +17,23 @@ namespace aspen.integration.RepositoryTests
         private Func<IDbConnection> getDbConnection { get; set; }
 
         private CharityRepository charityRepository;
+        private void createTables()
+        {
+            var createTableSqlPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../pgsql/00-talbes.sql");
+            var createTablesSql = File.ReadAllText(createTableSqlPath);
+            using(var dbConnection = getDbConnection())
+            {
+                dbConnection.Execute(createTablesSql);
+            }        
+        }
 
         public CharityRepositoryTests()
         {
             var defaultConnectionString = "Server=localhost; Port=5433; Database=Aspen; User ID=Aspen; Password=Aspen;";
             var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_TEST_CONNECTION")??defaultConnectionString;
             getDbConnection = () => new NpgsqlConnection(connectionString);
+
+            createTables(); //should be moved to a startup module for all repository tests
             charityRepository = new CharityRepository(getDbConnection);
         }
         [SetUp]
