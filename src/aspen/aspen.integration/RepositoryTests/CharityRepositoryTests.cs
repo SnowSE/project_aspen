@@ -18,7 +18,9 @@ namespace aspen.integration.RepositoryTests
 
         public CharityRepositoryTests()
         {
-            getDbConnection = () => new NpgsqlConnection("Server=localhost; Port=5433; Database=Aspen; User ID=Aspen; Password=Aspen;");
+            var defaultConnectionString = "Server=localhost; Port=5433; Database=Aspen; User ID=Aspen; Password=Aspen;";
+            var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_TEST_CONNECTION")??defaultConnectionString;
+            getDbConnection = () => new NpgsqlConnection(connectionString);
             charityRepository = new CharityRepository(getDbConnection);
         }
         [SetUp]
@@ -36,14 +38,14 @@ namespace aspen.integration.RepositoryTests
                 "Alex's Turtles" + random.Next(),
                 "alexsturtles" + random.Next(),
                 "alex likes turtles");
-            await charityRepository.CreateCharity(alexsTurtles);
+            await charityRepository.Create(alexsTurtles);
             var all_charities = await charityRepository.GetAll();
 
             Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
         }
 
         [Test]
-        public async Task CanUpdateCharityInDatabase()
+        public async Task CanUpdateInDatabase()
         {
             var random = new Random();
             
@@ -51,11 +53,11 @@ namespace aspen.integration.RepositoryTests
                 "Alex's Turtles" + random.Next(),
                 "alexsturtles" + random.Next(),
                 "alex likes turtles");
-            await charityRepository.CreateCharity(alexsTurtles);
+            await charityRepository.Create(alexsTurtles);
             alexsTurtles = await charityRepository.GetByName(alexsTurtles.CharityName);
 
             var newAlexsTurtles = alexsTurtles.UpdateCharityName("Alex's other turtles" + random.Next());
-            await charityRepository.UpdateCharity(newAlexsTurtles);
+            await charityRepository.Update(newAlexsTurtles);
 
             var all_charities = await charityRepository.GetAll();
 
@@ -71,7 +73,7 @@ namespace aspen.integration.RepositoryTests
                 "Alex's Turtles" + random.Next(),
                 "alexsturtles" + random.Next(),
                 "alex likes turtles");
-            await charityRepository.CreateCharity(alexsTurtles);
+            await charityRepository.Create(alexsTurtles);
             alexsTurtles = await charityRepository.GetByName(alexsTurtles.CharityName);
 
             var alexsTurtlesById = await charityRepository.GetById(alexsTurtles.CharityId);
@@ -87,7 +89,7 @@ namespace aspen.integration.RepositoryTests
                 "Alex's Turtles" + random.Next(),
                 "alexsturtles" + random.Next(),
                 "alex likes turtles");
-            await charityRepository.CreateCharity(alexsTurtles);
+            await charityRepository.Create(alexsTurtles);
             alexsTurtles = await charityRepository.GetByName(alexsTurtles.CharityName);
 
             await charityRepository.Delete(alexsTurtles);

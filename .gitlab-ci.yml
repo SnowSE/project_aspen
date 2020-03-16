@@ -28,11 +28,24 @@ before_script:
   - mkdir -p $HOME/.docker
   - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
 
-test:
+api_unit_test:
   stage: test
   image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
   script:
     - dotnet test src/aspen/aspen.tests/
+
+api_integration_test:
+  stage: test
+  services:
+    - postgres:12.0
+  variables:
+    POSTGRES_DB: aspen
+    POSTGRES_USER: aspen
+    POSTGRES_PASSWORD: super_secret_aspen_password
+    INTEGRATION_TEST_CONNECTION: "Port=5432; Database=$POSTGRES_DB; User ID=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  script:
+    - dotnet test src/aspen/aspen.integration/
 
 build_api:
   stage: build
