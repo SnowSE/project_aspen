@@ -19,7 +19,7 @@ namespace aspen.integration.RepositoryTests
         private CharityRepository charityRepository;
         private void createTables()
         {
-            var createTableSqlPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../pgsql/00-talbes.sql");
+            var createTableSqlPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../pgsql/00-tables.sql");
             var createTablesSql = File.ReadAllText(createTableSqlPath);
             using(var dbConnection = getDbConnection())
             {
