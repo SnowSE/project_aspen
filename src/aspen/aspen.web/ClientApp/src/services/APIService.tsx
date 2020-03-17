@@ -5,6 +5,7 @@ import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
 const url = process.env.API_URL
+const globaladmindomain = process.env.GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
     IDomainService: IDomainService;
@@ -78,7 +79,7 @@ export class APIService implements IAPIService {
     public async PostCreateCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify(charity);
-        let newurl = url + "/Charity/Create"
+        let newurl = url + "Admin/Charity/Create"
         let response = await fetch(newurl, {
             method: "POST",
             headers: headers,

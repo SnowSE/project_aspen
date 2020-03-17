@@ -15,6 +15,8 @@ const Home:React.FC<HomeProps> = props => {
   const classes = useStyles();
   const [description, setDescription] = useState("");
   const [charityName, setCharityName] = useState("");
+  const [GlobalAdminDomain, setGlobalAdminDomain] = useState("");
+  const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
     let dummyapiservice = new DummyAPIService();
@@ -23,6 +25,10 @@ const Home:React.FC<HomeProps> = props => {
     let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
+    let url = process.env.API_URL
+    let globaladmindomain = process.env.GLOBAL_ADMIN_DOMAIN
+    setAPIURL(url?url:"undefined");
+    setGlobalAdminDomain(globaladmindomain?globaladmindomain:"undefined");
   }
 
   useEffect(()=>{
@@ -54,12 +60,12 @@ const Home:React.FC<HomeProps> = props => {
         </Grid>
       </Grid>
       <ContentCard
-        title={"Other Component"}
+        title={GlobalAdminDomain === "" ? "Loading..." : GlobalAdminDomain}
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
         description={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pharetra eros augue, at suscipit urna consequat id. Sed dignissim a ante nec vestibulum. Duis viverra, urna sed elementum fermentum, nunc sem molestie lorem, a pretium leo turpis in ligula. Ut quis ex sit amet orci finibus accumsan non in arcu. Morbi lobortis nibh ut libero rhoncus dapibus. Pellentesque venenatis aliquet risus, eget condimentum lorem gravida non. Sed tristique arcu ut dapibus tristique. Morbi pharetra quam eu nisl tincidunt, id mattis purus porta. Maecenas et lobortis ipsum. Vivamus lectus sem, semper ac diam varius, accumsan ultrices tortor. Sed eu est dolor.Vestibulum non ex neque. Ut hendrerit sodales maximus. Donec eget scelerisque diam. Nunc cursus est id elit molestie molestie. Duis mattis, arcu quis consequat suscipit, felis erat tempus felis, non finibus nisi risus nec ante. Nullam id sapien nec lectus dignissim pharetra eu sed massa. Sed vitae porttitor nisi. Sed justo nibh, maximus eu mi eget, lobortis feugiat lorem. Integer felis ipsum, lobortis sit amet commodo in, iaculis non ligula."
+          APIURL === "" ? "Loading..." : APIURL
         }
       />
       <ContentCard
