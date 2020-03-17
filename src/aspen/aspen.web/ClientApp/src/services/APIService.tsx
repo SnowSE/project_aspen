@@ -18,11 +18,13 @@ export class APIService implements IAPIService {
     public async GetCharityHomePage(): Promise<CharityHomePage> {
         let domain = this.IDomainService.GetDomain();
         let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/getcharitybydomain/"+ domain;
+        let newurl = url + "/charity/getbydomain/"+ domain;
         let response = await fetch(newurl, {
             method: "GET",
             headers: headers
         })
+
+        console.log("called charity")
 
         let responseJson = await response.json()
         if(responseJson.Status == "Success"){
@@ -44,9 +46,9 @@ export class APIService implements IAPIService {
         //TODO: make a second api call to get the theme and remove the theme from the first api call 
 
         let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
-        let charityObject = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
+        let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
         let charityHomePage = new CharityHomePage(theme,charityObject);
-        return new CharityHomePage(theme, charityObject); 
+        return charityHomePage;
     }
 
 

@@ -4,7 +4,8 @@ import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import {DummyAPIService} from "../../services/DummyAPIService"
+import {DomainService} from "../../services/DomainService"
+import {APIService} from "../../services/APIService";
 const useStyles = makeStyles({});
 
 interface HomeProps {
@@ -15,14 +16,20 @@ const Home:React.FC<HomeProps> = props => {
   const classes = useStyles();
   const [description, setDescription] = useState("");
   const [charityName, setCharityName] = useState("");
+  const [GlobalAdminDomain, setGlobalAdminDomain] = useState("");
+  const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let dummyapiservice = new DummyAPIService();
+    let dummyapiservice = new APIService(new DomainService());
     let homepagedata = await dummyapiservice.GetCharityHomePage();
     let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
     let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
+    let url = process.env.REACT_APP_API_URL
+    let globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
+    setAPIURL(url?url:"undefined");
+    setGlobalAdminDomain(globaladmindomain?globaladmindomain:"undefined");
   }
 
   useEffect(()=>{
@@ -54,12 +61,12 @@ const Home:React.FC<HomeProps> = props => {
         </Grid>
       </Grid>
       <ContentCard
-        title={"card 2"}
+        title={GlobalAdminDomain === "" ? "Loading..." : GlobalAdminDomain}
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
         description={
-         "the second one"
+          APIURL === "" ? "Loading..." : APIURL
         }
       />
       <ContentCard
