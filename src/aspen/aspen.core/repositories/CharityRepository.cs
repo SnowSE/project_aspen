@@ -20,29 +20,13 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
-                charity.CharityId = await GenerateCharityId(dbConnection);
+                charity.CharityId = Guid.NewGuid();
                 await dbConnection.ExecuteAsync(
                     @"insert into Charity (CharityId, CharityName, CharitySubDomain, CharityDescription)
                     values (@CharityId, @CharityName, @CharitySubDomain, @CharityDescription);",
                     charity
                 );
             }
-        }
-
-        private async Task<int> GenerateCharityId(IDbConnection dbConnection)
-        {
-            var random = new Random();
-            int duplicateId = -1;
-            int testId = -1;
-            while(duplicateId != 0)
-            {
-                testId = random.Next() % 1_000_000;
-                duplicateId = await dbConnection.QueryFirstOrDefaultAsync<int>(
-                    @"select CharityId from Charity where CharityId = @testId;",
-                    new { testId }
-                );
-            }
-            return testId;
         }
 
         public async Task Update(Charity charity)
@@ -70,7 +54,7 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<Charity> GetById(int charityId)
+        public async Task<Charity> GetById(Guid charityId)
         {
             using (var dbConnection = getDbConnection())
             {

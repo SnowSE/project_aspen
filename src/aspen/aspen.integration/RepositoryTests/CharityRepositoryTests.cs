@@ -33,7 +33,7 @@ namespace aspen.integration.RepositoryTests
             var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_TEST_CONNECTION")??defaultConnectionString;
             getDbConnection = () => new NpgsqlConnection(connectionString);
 
-            createTables(); //should be moved to a startup module for all repository tests
+            // createTables(); //should be moved to a startup module for all repository tests
             charityRepository = new CharityRepository(getDbConnection);
         }
         [SetUp]
@@ -47,7 +47,6 @@ namespace aspen.integration.RepositoryTests
             var random = new Random();
             
             var alexsTurtles = new Charity(
-                -1,
                 "Alex's Turtles" + random.Next(),
                 "alexsturtles" + random.Next(),
                 "alex likes turtles");

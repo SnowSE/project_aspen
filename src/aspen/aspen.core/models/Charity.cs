@@ -9,7 +9,7 @@ namespace Aspen.Core.Models
         {
             
         }
-        public Charity(int charityid, string charityname, string charitysubdomain, string charitydescription)
+        public Charity(Guid charityid, string charityname, string charitysubdomain, string charitydescription)
         {
             this.CharityId = charityid;
             this.CharityName = charityname;
@@ -23,7 +23,7 @@ namespace Aspen.Core.Models
             this.CharitySubDomain = charitysubdomain;
         }
 
-        public int CharityId { get; set; }
+        public Guid CharityId { get; set; }
         public string CharityName { get; set; }
         public string CharityDescription { get; set; }
         //TODO: validate with regex (only a-z)
