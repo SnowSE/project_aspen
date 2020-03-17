@@ -4,8 +4,8 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
-const url = process.env.API_URL
-const globaladmindomain = process.env.GLOBAL_ADMIN_DOMAIN
+const url = process.env.REACT_APP_API_URL
+const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
     IDomainService: IDomainService;

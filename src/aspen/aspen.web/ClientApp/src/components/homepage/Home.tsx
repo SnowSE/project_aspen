@@ -15,8 +15,6 @@ const Home:React.FC<HomeProps> = props => {
   const classes = useStyles();
   const [description, setDescription] = useState("");
   const [charityName, setCharityName] = useState("");
-  const [GlobalAdminDomain, setGlobalAdminDomain] = useState("");
-  const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
     let dummyapiservice = new DummyAPIService();
@@ -25,10 +23,6 @@ const Home:React.FC<HomeProps> = props => {
     let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
-    let url = process.env.REACT_APP_API_URL
-    let globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
-    setAPIURL(url?url:"undefined");
-    setGlobalAdminDomain(globaladmindomain?globaladmindomain:"undefined");
   }
 
   useEffect(()=>{
@@ -60,12 +54,12 @@ const Home:React.FC<HomeProps> = props => {
         </Grid>
       </Grid>
       <ContentCard
-        title={GlobalAdminDomain === "" ? "Loading..." : GlobalAdminDomain}
+        title={"card 2"}
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
         description={
-          APIURL === "" ? "Loading..." : APIURL
+         "the second one"
         }
       />
       <ContentCard
