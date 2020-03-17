@@ -25,8 +25,8 @@ const Home:React.FC<HomeProps> = props => {
     let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
-    let url = process.env.API_URL
-    let globaladmindomain = process.env.GLOBAL_ADMIN_DOMAIN
+    let url = process.env.REACT_APP_API_URL
+    let globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
     setAPIURL(url?url:"undefined");
     setGlobalAdminDomain(globaladmindomain?globaladmindomain:"undefined");
   }
