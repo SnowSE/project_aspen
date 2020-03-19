@@ -13,12 +13,12 @@ namespace Aspen.Core.Data
                 .WithColumn("charitydescription").AsString().NotNullable();
             Create.Table("domain")
                 .WithColumn("charityid").AsGuid().ForeignKey("charity", "charityid").NotNullable()
-                .WithColumn("domain").AsString().NotNullable().Unique();
+                .WithColumn("charitydomain").AsString().NotNullable().Unique();
         }
 
         public override void Down()
         {
-            Delete.Table("charity");
+            Delete.Table("charityid");
             Delete.Table("charitydomain");
         }
     }

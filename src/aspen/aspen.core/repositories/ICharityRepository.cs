@@ -9,10 +9,10 @@ namespace Aspen.Core.Repositories
     {
         Task Create(Charity charity);
         Task<IEnumerable<Charity>> GetAll();
-        IEnumerable<string> GetSubDomains();
+        IEnumerable<string> GetDomains();
         Task Update(Charity charity);
         Task<Charity> GetById(Guid charityId);
-        Task<Charity> GetByName(string charityName);
+        Task<Charity> GetByDomain(Domain Domain);
         Task Delete(Charity charity);
     }
 }

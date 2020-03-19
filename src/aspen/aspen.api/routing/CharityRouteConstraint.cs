@@ -40,7 +40,7 @@ namespace aspen.api.Routing
 
         private bool isValidCharity(string requestedCharitySubDomain)
         {
-            var allCharitySubDomains = charityRepository.GetSubDomains();
+            var allCharitySubDomains = charityRepository.GetDomains();
             return allCharitySubDomains.Contains(requestedCharitySubDomain);
         }
 

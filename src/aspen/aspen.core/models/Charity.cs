@@ -1,43 +1,53 @@
 using System;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Aspen.Core.Models
 {
     public class Charity
     {
-        public Charity()
+        private void valiateDomains(IEnumerable<Domain> domains)
         {
-            
+            if(domains == null) throw new ArgumentException("domains cannot be null");
+            if(domains.Count() == 0) throw new ArgumentException("domains cannot be empty");
         }
-        public Charity(Guid charityid, string charityname, string charitysubdomain, string charitydescription)
+        
+        [JsonConstructor]
+        public Charity(Guid charityid, string charityname, string charitydescription, IEnumerable<Domain> domains)
         {
+            valiateDomains(domains);
             this.CharityId = charityid;
             this.CharityName = charityname;
             this.CharityDescription = charitydescription;
-            this.CharitySubDomain = charitysubdomain;
+            this.Domains = domains;
         }
-        public Charity(string charityname, string charitysubdomain, string charitydescription)
+        public Charity(Guid charityId, string charityname, string charitydescription)
         {
+            this.CharityId = charityId;
             this.CharityName = charityname;
             this.CharityDescription = charitydescription;
-            this.CharitySubDomain = charitysubdomain;
+            this.Domains = new Domain[] {};
         }
 
-        public Guid CharityId { get; set; }
-        public string CharityName { get; set; }
-        public string CharityDescription { get; set; }
-        //TODO: validate with regex (only a-z)
-        public string CharitySubDomain { get; set; }
+        public Guid CharityId { get; }
+        public string CharityName { get; }
+        public string CharityDescription { get; }
+        public IEnumerable<Domain> Domains { get; }
 
         public Charity UpdateCharityName(string newName)
         {
-            return new Charity(CharityId, newName, CharitySubDomain, CharityDescription);
+            return new Charity(CharityId, newName, CharityDescription, Domains);
         }
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
-        }  
+            return JsonConvert.SerializeObject(this);
+        }
 
+        internal Charity AppendDomain(Domain domain)
+        {
+            return new Charity(CharityId, CharityName, CharityDescription, Domains.Append(domain));
+        }
     }
 }
