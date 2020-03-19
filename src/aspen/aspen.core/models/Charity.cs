@@ -22,7 +22,7 @@ namespace Aspen.Core.Models
             this.CharityDescription = charitydescription;
             this.Domains = domains;
         }
-        public Charity(Guid charityId, string charityname, string charitydescription)
+        private Charity(Guid charityId, string charityname, string charitydescription)
         {
             this.CharityId = charityId;
             this.CharityName = charityname;
