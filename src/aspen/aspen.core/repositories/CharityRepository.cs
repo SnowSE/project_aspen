@@ -49,7 +49,7 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = getDbConnection())
             {
                 return await dbConnection.QueryAsync<Charity>(
-                    @"select * from Charity;"
+                    "select * from Charity;"
                 );
             }
         }

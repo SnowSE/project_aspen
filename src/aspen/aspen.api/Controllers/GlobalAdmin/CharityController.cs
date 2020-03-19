@@ -4,6 +4,7 @@ using Aspen.Core.Models;
 using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System;
 
 namespace aspen.api.Controllers
 {
@@ -23,7 +24,7 @@ namespace aspen.api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> Get(int charityId)
+        public async Task<StatusReturn> Get(Guid charityId)
         {
             var charity = await charityRepository.GetById(charityId);
             return StatusReturn.Success(charity);

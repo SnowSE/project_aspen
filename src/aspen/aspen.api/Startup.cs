@@ -4,7 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using aspen.api.Routing;
+using Aspen.Core.Data;
 using Aspen.Core.Repositories;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,19 +32,35 @@ namespace aspen.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    // Add Postgres support to FluentMigrator
+                    .AddPostgres()
+                    // Set the connection string
+                    .WithGlobalConnectionString(connectionString)
+                    // Define the assembly containing the migrations
+                    .ScanIn(typeof(FirstMigration).Assembly).For.Migrations())
+                // Enable logging to console in the FluentMigrator way
+                .AddLogging(lb => lb.AddFluentMigratorConsole());
+
+            getDbConnection = () => new NpgsqlConnection(connectionString);
+            services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
+            
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddControllers();
-            getDbConnection = () => new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            migrationRunner.MigrateUp();
 
             app.UseHttpsRedirection();
 
