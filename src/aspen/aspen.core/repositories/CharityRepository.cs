@@ -81,35 +81,26 @@ namespace Aspen.Core.Repositories
 
         private static async Task<Charity> getCharityWithDomain(IDbConnection dbConnection, Guid charityId)
         {
-            var charityDictionary = new Dictionary<Guid, Charity>();
+            Charity charity = null;
 
             var list = await dbConnection.QueryAsync<Charity, Domain, Charity>(
                 @"select * from Charity as c
                 inner join Domain as d on d.charityId = c.charityId
                 where c.charityid = @charityId",
+                // This lambda exists so that we never have to create a charity without a domain list
+                // we need this for immutability
+                // it is applied to each row in our query result
                 (dbCharity, dbDomain) =>
                 {
-                    // This lambda exists so that we never have to create a charity without a domain list
-                    // we need this for immutability
-                    // it is applied to each row in our query result
-                    Charity charityEntry;
-                    // if we have seen this charity before
-                    if (!charityDictionary.TryGetValue(dbCharity.CharityId, out charityEntry))
-                    {
-                        charityEntry = dbCharity;
-                        charityEntry = charityEntry.AppendDomain(dbDomain);
-                        charityDictionary[charityEntry.CharityId] = charityEntry;
-                    }
-                    else
-                    {
-                        charityDictionary[dbCharity.CharityId] = charityDictionary[dbCharity.CharityId].AppendDomain(dbDomain);
-                    }
+                    charity = charity == null
+                        ? dbCharity.AppendDomain(dbDomain)
+                        : charity.AppendDomain(dbDomain);
 
-                    return charityDictionary[dbCharity.CharityId];
+                    return charity;
                 },
                 new { charityId },
                 splitOn: "charityId");
-            return charityDictionary.Values.First();
+            return charity;
         }
 
         private static async Task<Guid> getCharityIdByDomain(Domain domain, IDbConnection dbConnection)
