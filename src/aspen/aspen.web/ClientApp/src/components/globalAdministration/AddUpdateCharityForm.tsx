@@ -1,18 +1,23 @@
 import React from 'react';
+import { Charity } from '../../models/CharityModel';
 
 interface AddUpdateCharityFormProps {
-    visible: boolean;
-    temp?: string;
+    Charity?: Charity
 }
 
 
 const AddUpdateCharityForm:React.FC<AddUpdateCharityFormProps> = props => {
     return (
-        <>
-        </>
+        <form>
+            <input type="text"></input>
+            <input type="text"></input>
+            <input type="text"></input>
+        </form>
     )
 }
 
 AddUpdateCharityForm.defaultProps = {
-    temp: 'true',
+    Charity: new Charity(0,"","",""),
 }
+
+export default AddUpdateCharityForm;

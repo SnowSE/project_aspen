@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import mockApiResult from "./tempMockResult";
+import AddUpdateCharityForm from "./AddUpdateCharityForm";
 import { Link } from "react-router-dom";
 import { Container, Button, createStyles, makeStyles } from "@material-ui/core";
 
@@ -12,6 +13,9 @@ const useStyles = makeStyles(()=>
         CharityOdd: {
             background: "gainsboro",
         },
+        AddButton: {
+            background: "lightblue"
+        }
     })
 )
 
@@ -29,12 +33,13 @@ const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
         <Container>
             <h2>Charity List</h2>
             {mockApiResult.map((Charity, key)=> (
-                <Link to={`/globalAdministration/${Charity.ID}`} key={key}>
+                <Link to={`/globalAdministration/details/${Charity.ID}`} key={key}>
                     <p className={keyIsEven(key)? classes.CharityDefault: classes.CharityDefault +" "+ classes.CharityOdd}>
                         {Charity.Domain}
                     </p>
                 </Link>
             ))}
+            <Button className={classes.AddButton} href={`/globalAdministration/new`}>Add New</Button>
         </Container>
     )
 };
