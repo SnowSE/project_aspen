@@ -23,7 +23,7 @@ interface GlobalAdminDetailsProps extends RouteComponentProps<MyRouteProps>{
 
 const GlobalAdminDetails:React.FC<GlobalAdminDetailsProps> = props => {
     const classes = useStyles();
-    const organization = result.find(a=>a.id.toString() === props.match.params.id);
+    const organization = result.find(a=>a.ID.toString() === props.match.params.id);
 
     const deleteOrg = () => {
         confirmAlert({
@@ -51,7 +51,7 @@ const GlobalAdminDetails:React.FC<GlobalAdminDetailsProps> = props => {
     return (
         <>
             <h1>
-                {organization.org} Settings
+                {organization.Domain} Settings
             </h1>
             <Button className={classes.deleteBtn} onClick={()=>deleteOrg()}>Delete</Button>
         </>
