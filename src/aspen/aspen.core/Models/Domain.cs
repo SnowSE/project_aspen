@@ -43,5 +43,23 @@ namespace Aspen.Core.Models
         {
             return charitydomain;
         }
+
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Domain d = (Domain)obj;
+                return charitydomain == d.charitydomain;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return charitydomain.GetHashCode();
+        }
     }
 }

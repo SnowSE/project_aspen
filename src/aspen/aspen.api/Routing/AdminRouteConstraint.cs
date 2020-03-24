@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace aspen.api.Routing
+namespace Aspen.Api.Routing
 {
     public class AdminRouteConstraint : IRouteConstraint
     {

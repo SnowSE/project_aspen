@@ -1,21 +1,24 @@
 using System.Threading.Tasks;
-using aspen.api.Models;
+using Aspen.Api.Models;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace aspen.api.Controllers
+namespace Aspen.Api.Controllers
 {
-    public class CharityController : ControllerBase
+    [Route("admin/charity/{action}")]
+    public class CharityAdminController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;
 
-        public CharityController(ICharityRepository charityRepository)
+        public CharityAdminController(ICharityRepository charityRepository)
         {
             this.charityRepository = charityRepository;
         }
+
         [HttpGet]
         public async Task<StatusReturn> GetAll()
         {

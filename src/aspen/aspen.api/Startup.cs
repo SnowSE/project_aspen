@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using aspen.api.Routing;
+using Aspen.Api.Routing;
 using Aspen.Core.Data;
 using Aspen.Core.Repositories;
+using Aspen.Core.Services;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
-namespace aspen.api
+namespace Aspen.Api
 {
     public class Startup
     {
@@ -47,9 +48,9 @@ namespace aspen.api
 
             getDbConnection = () => new NpgsqlConnection(connectionString);
             services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
-            
+
             services.AddScoped<ICharityRepository, CharityRepository>();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,8 +60,9 @@ namespace aspen.api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             migrationRunner.MigrateUp();
+            // SeedService.SeedAll(new CharityRepository(getDbConnection));
 
             app.UseHttpsRedirection();
 
@@ -71,16 +73,16 @@ namespace aspen.api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    "Default",
-                    "{controller}/{action}/{id}",
-                    new { controller = "Home", action = "Get", id = ""},
-                    new { TenantAccess = new CharityRouteConstraint(new CharityRepository(getDbConnection)) } );
-                endpoints.MapControllerRoute(
-                    "Global Admin",
-                    "/admin/{controller}/{action}",
-                    new { controller = "Chartiy", action = "Get"},
-                    new { TenantAccess = new AdminRouteConstraint() } );
+                // endpoints.MapControllerRoute(
+                //     "Default",
+                //     "{controller}/{action}/{id}",
+                //     new { controller = "Home", action = "Get", id = ""},
+                //     new { TenantAccess = new CharityRouteConstraint(new CharityRepository(getDbConnection)) } );
+                // endpoints.MapControllerRoute(
+                //     "Global Admin",
+                //     "/admin/{controller}/{action}",
+                //     new { controller = "Chartiy", action = "Get"},
+                //     new { TenantAccess = new AdminRouteConstraint() } );
             });
         }
     }

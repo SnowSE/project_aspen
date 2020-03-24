@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace aspen.api.Models
+namespace Aspen.Api.Models
 {
     public class StatusReturn
     {
