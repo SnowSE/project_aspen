@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
 using Dapper;
+using Newtonsoft.Json;
 
 namespace Aspen.Core.Repositories
 {
@@ -27,12 +28,12 @@ namespace Aspen.Core.Repositories
                     charity
                 );
 
-                foreach(var domain in charity.Domains)
+                foreach (var domain in charity.Domains)
                 {
                     await dbConnection.ExecuteAsync(
                         @"insert into Domain (CharityId, CharityDomain)
                         values (@charityId, @charityDomain);",
-                        new { charityId = charity.CharityId, charityDomain = domain.ToString()}
+                        new { charityId = charity.CharityId, charityDomain = domain.ToString() }
                     );
                 }
             }
@@ -56,9 +57,22 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
-                return await dbConnection.QueryAsync<Charity>(
-                    "select * from Charity;"
+                var charityDict = new Dictionary<Guid, Charity>();
+
+                await dbConnection.QueryAsync<Charity, Domain, Charity>(
+                    @"select * from Charity as c
+                        inner join Domain as d on c.charityid = d.charityid;",
+                    (dbCharity, dbDomain) =>
+                    {
+                        charityDict[dbCharity.CharityId] = charityDict.ContainsKey(dbCharity.CharityId)
+                            ? charityDict[dbCharity.CharityId].AppendDomain(dbDomain)
+                            : dbCharity.AppendDomain(dbDomain);
+
+                        return dbCharity;
+                    },
+                    splitOn: "charityId"
                 );
+                return charityDict.Values;
             }
         }
 
@@ -86,12 +100,14 @@ namespace Aspen.Core.Repositories
             var list = await dbConnection.QueryAsync<Charity, Domain, Charity>(
                 @"select * from Charity as c
                 inner join Domain as d on d.charityId = c.charityId
-                where c.charityid = @charityId",
+                where c.charityid = @charityId;",
                 // This lambda exists so that we never have to create a charity without a domain list
                 // we need this for immutability
                 // it is applied to each row in our query result
                 (dbCharity, dbDomain) =>
                 {
+                    Console.WriteLine(JsonConvert.SerializeObject(dbCharity));
+                    Console.WriteLine(JsonConvert.SerializeObject(dbDomain));
                     charity = charity == null
                         ? dbCharity.AppendDomain(dbDomain)
                         : charity.AppendDomain(dbDomain);

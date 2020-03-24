@@ -6,20 +6,18 @@ namespace Aspen.Core.Models
 {
     public class Domain
     {
-        private string charitydomain;
+        public string CharityDomain { get; }
 
         [JsonConstructor]
         public Domain(string charityDomain)
         {
-            charityDomain = validateDomain(charityDomain);
-            this.charitydomain = charityDomain;
+            this.CharityDomain = validateDomain(charityDomain);
         }
 
         //needed for dapper
         private Domain(Guid charityid, string charitydomain)
         {
-            charitydomain = validateDomain(charitydomain);
-            this.charitydomain = charitydomain;
+            this.CharityDomain = validateDomain(charitydomain);
         }
 
         private static string validateDomain(string charityDomain)
@@ -41,7 +39,7 @@ namespace Aspen.Core.Models
 
         public override string ToString()
         {
-            return charitydomain;
+            return CharityDomain;
         }
 
         public override bool Equals(object obj)
@@ -53,13 +51,13 @@ namespace Aspen.Core.Models
             else
             {
                 Domain d = (Domain)obj;
-                return charitydomain == d.charitydomain;
+                return CharityDomain == d.CharityDomain;
             }
         }
 
         public override int GetHashCode()
         {
-            return charitydomain.GetHashCode();
+            return CharityDomain.GetHashCode();
         }
     }
 }

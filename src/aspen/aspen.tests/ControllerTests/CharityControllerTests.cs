@@ -34,9 +34,11 @@ namespace Aspen.Tests.ControllerTests
                 .Setup(sr => sr.GetByDomain(penguinDomain))
                 .ReturnsAsync(kylersPenguins);
 
-            var actualCharity = await charityController.Get(penguinDomain.ToString());
-            actualCharity.Status.Should().Be(StatusReturn.StatusConstants.Success);
-            actualCharity.Data.Should().BeEquivalentTo(kylersPenguins);
+            var response = await charityController.Get(penguinDomain.ToString());
+            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+
+            var actualCharity = (Charity)response.Data;
+            actualCharity.Should().BeEquivalentTo(kylersPenguins);
         }
     }
 }

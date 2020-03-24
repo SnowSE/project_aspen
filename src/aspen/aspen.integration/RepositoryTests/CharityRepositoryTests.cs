@@ -54,6 +54,8 @@ namespace Aspen.Integration.RepositoryTests
             var all_charities = await charityRepository.GetAll();
 
             Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
+            var dbAlexsTurtles = all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).First();
+            dbAlexsTurtles.Domains.First().Should().BeEquivalentTo(alexsTurtles.Domains.First());
         }
 
         [Test]
@@ -113,6 +115,23 @@ namespace Aspen.Integration.RepositoryTests
 
             var all_charities = await charityRepository.GetAll();
             all_charities.Where(c => c.ToString() == alexsTurtles.ToString()).Count().Should().Be(0);
+        }
+
+        [Test]
+        public async Task GettingCharityByIdAlsoGetsDomains()
+        {
+            var random = new Random();
+            var salt = + random.Next();
+            var alexsTurtles = new Charity(
+                Guid.NewGuid(),
+                "Alex's Turtles" + salt,
+                "alex likes turtles",
+                new Domain[]{ new Domain(salt+"alexsturtles.com")});
+
+            await charityRepository.Create(alexsTurtles);
+            var dbCharity = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+
+            dbCharity.Domains.First().Should().BeEquivalentTo(alexsTurtles.Domains.First());
         }
     }
 }
