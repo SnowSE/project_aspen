@@ -1,32 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, FunctionComponent } from "react";
 import Header from "./Header";
+import { connect } from "react-redux";
 import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import {DummyAPIService} from "../../services/DummyAPIService"
-const useStyles = makeStyles({});
+import { DummyAPIService } from "../../services/DummyAPIService";
+import { ApplicationState } from "../../store";
+import * as ThemeStore from "../../store/Theme";
 
-interface HomeProps {
-  
-}
+const useStyles = makeStyles(props=>({
+  testDiv:{
+    backgroundColor: props.palette.primary.main,
+  }
+}));
 
-const Home:React.FC<HomeProps> = props => {
-  const classes = useStyles();
+
+type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
+
+const Home: FunctionComponent<HomeProps> = props => {
+  const classes = useStyles(props);
   const [description, setDescription] = useState("");
   const [charityName, setCharityName] = useState("");
 
   const handleHomeData = async () => {
     let dummyapiservice = new DummyAPIService();
     let homepagedata = await dummyapiservice.GetCharityHomePage();
-    let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
-    let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
+    let description = homepagedata.Charity.Description
+      ? homepagedata.Charity.Description
+      : "This charity does not exist";
+    let charityName = homepagedata.Charity.Name
+      ? homepagedata.Charity.Name
+      : "This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
-  }
+  };
 
-  useEffect(()=>{
-    handleHomeData()
+  useEffect(() => {
+    handleHomeData();
   }, []);
 
   return (
@@ -37,6 +48,9 @@ const Home:React.FC<HomeProps> = props => {
           "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg"
         }
       />
+      <div className={classes.testDiv}>
+        Holiwis
+      </div>
       <Grid container>
         <Grid item xs={9}>
           <ContentCard
@@ -44,9 +58,7 @@ const Home:React.FC<HomeProps> = props => {
             image={
               "https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg"
             }
-            description={
-              description === "" ? "Loading..." : description
-            }
+            description={description === "" ? "Loading..." : description}
           />
         </Grid>
         <Grid item xs={3}>
@@ -58,9 +70,7 @@ const Home:React.FC<HomeProps> = props => {
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
-        description={
-         "the second one"
-        }
+        description={"the second one"}
       />
       <ContentCard
         title={"Another One"}
@@ -75,4 +85,7 @@ const Home:React.FC<HomeProps> = props => {
   );
 };
 
-export default Home;
+export default connect(
+  (state: ApplicationState) => state.theme,
+  ThemeStore.actionCreators
+)(Home);

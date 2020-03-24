@@ -1,11 +1,11 @@
-import { APIService } from "./APIService"
+import { IAPIService } from "./IAPIService"
 import { IDomainService } from "./IDomainService";
 import { CharityHomePage } from "../models/CharityHomePageModel";
 import { Charity } from "../models/CharityModel";
 import { Theme } from "../models/Theme";
 import {DomainService} from "./DomainService"
 
-export class DummyAPIService implements APIService{
+export class DummyAPIService implements IAPIService{
     IDomainService: IDomainService = new DomainService();
     public async GetCharityHomePage(): Promise <CharityHomePage> {
         let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
@@ -18,8 +18,8 @@ export class DummyAPIService implements APIService{
         let charity = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
         return [charity]
     }
-    public async GetCharityByID(charity: Charity): Promise<Charity> {
-        if(charity.ID == 1){
+    public async GetCharityByID(ID: number): Promise<Charity> {
+        if(ID == 1){
             let charity = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
             return charity
         }else{
