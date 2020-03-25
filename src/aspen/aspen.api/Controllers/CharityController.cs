@@ -34,7 +34,8 @@ namespace Aspen.Api.Controllers
         [HttpGet]
         public async Task<StatusReturn> GetTheme([FromQuery(Name = "charityId")] Guid charityId)
         {
-            return StatusReturn.Success("null");
+            var theme = await themeRepository.GetByCharityId(charityId);
+            return StatusReturn.Success(theme);
         }
     }
 }

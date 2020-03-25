@@ -13,10 +13,14 @@ namespace Aspen.Api.Controllers
     public class CharityAdminController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;
+        private readonly IThemeRepository themeRepository;
 
-        public CharityAdminController(ICharityRepository charityRepository)
+        public CharityAdminController(
+            ICharityRepository charityRepository,
+            IThemeRepository themeRepository)
         {
             this.charityRepository = charityRepository;
+            this.themeRepository = themeRepository;
         }
 
         [HttpGet]
@@ -37,6 +41,8 @@ namespace Aspen.Api.Controllers
         public async Task<StatusReturn> Create([FromBody]Charity charity)
         {
             await charityRepository.Create(charity);
+            var dbCharity = await charityRepository.GetByDomain(charity.Domains.First());
+            await themeRepository.Create(Theme.Default(dbCharity.CharityId));
             return StatusReturn.Success(null);
         }
 
