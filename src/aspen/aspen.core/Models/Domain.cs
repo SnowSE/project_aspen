@@ -44,15 +44,10 @@ namespace Aspen.Core.Models
 
         public override bool Equals(object obj)
         {
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
-            {
-                return false;
-            }
-            else
-            {
-                Domain d = (Domain)obj;
-                return CharityDomain == d.CharityDomain;
-            }
+            var objIsNotValid = (obj == null) || !this.GetType().Equals(obj.GetType());
+            return objIsNotValid
+                ? false
+                : ((Domain)obj).CharityDomain == CharityDomain;
         }
 
         public override int GetHashCode()

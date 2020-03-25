@@ -17,15 +17,6 @@ namespace Aspen.Integration.RepositoryTests
         private Func<IDbConnection> getDbConnection { get; set; }
 
         private CharityRepository charityRepository;
-        private void createTables()
-        {
-            var createTableSqlPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../../pgsql/00-tables.sql");
-            var createTablesSql = File.ReadAllText(createTableSqlPath);
-            using(var dbConnection = getDbConnection())
-            {
-                dbConnection.Execute(createTablesSql);
-            }        
-        }
 
         public CharityRepositoryTests()
         {
@@ -43,7 +34,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanAddCharityToDatabase()
         {
             var random = new Random();
-            var salt = + random.Next();
+            var salt = random.Next();
             var alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
@@ -62,7 +53,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanUpdateInDatabase()
         {
             var random = new Random();
-            var salt = + random.Next();
+            var salt = random.Next();
             var alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
@@ -83,7 +74,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanGetCharityById()
         {
             var random = new Random();
-            var salt = + random.Next();
+            var salt = random.Next();
             var alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
@@ -101,7 +92,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanDeleteCharity()
         {
             var random = new Random();
-            var salt = + random.Next();
+            var salt = random.Next();
             var alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
@@ -121,7 +112,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task GettingCharityByIdAlsoGetsDomains()
         {
             var random = new Random();
-            var salt = + random.Next();
+            var salt = random.Next();
             var alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,

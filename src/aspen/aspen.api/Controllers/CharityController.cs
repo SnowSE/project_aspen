@@ -26,5 +26,11 @@ namespace Aspen.Api.Controllers
             // Console.WriteLine(JsonConvert.SerializeObject(charity));
             return StatusReturn.Success(charity);
         }
+
+        [HttpGet]
+        public async Task<StatusReturn> GetTheme([FromQuery(Name = "domain")] string domain)
+        {
+            return StatusReturn.Success("null");
+        }
     }
 }

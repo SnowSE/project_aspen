@@ -106,8 +106,6 @@ namespace Aspen.Core.Repositories
                 // it is applied to each row in our query result
                 (dbCharity, dbDomain) =>
                 {
-                    Console.WriteLine(JsonConvert.SerializeObject(dbCharity));
-                    Console.WriteLine(JsonConvert.SerializeObject(dbDomain));
                     charity = charity == null
                         ? dbCharity.AppendDomain(dbDomain)
                         : charity.AppendDomain(dbDomain);
