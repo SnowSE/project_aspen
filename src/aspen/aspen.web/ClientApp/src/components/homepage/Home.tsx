@@ -5,11 +5,6 @@ import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-<<<<<<< HEAD
-import {DomainService} from "../../services/DomainService"
-import {APIService} from "../../services/APIService";
-const useStyles = makeStyles({});
-=======
 import { DummyAPIService } from "../../services/DummyAPIService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
@@ -19,7 +14,6 @@ const useStyles = makeStyles(props=>({
     backgroundColor: props.palette.primary.main,
   }
 }));
->>>>>>> master
 
 
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
@@ -32,20 +26,6 @@ const Home: FunctionComponent<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-<<<<<<< HEAD
-    let apiservice = new APIService(new DomainService());
-    console.error("in the function now")
-    let homepagedata = await apiservice.GetCharityHomePage();
-    let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
-    let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
-    setDescription(description);
-    setCharityName(charityName);
-    let url = process.env.REACT_APP_API_URL
-    let globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
-    setAPIURL(url?url:"undefined");
-    setGlobalAdminDomain(globaladmindomain?globaladmindomain:"undefined");
-  }
-=======
     let dummyapiservice = new DummyAPIService();
     let homepagedata = await dummyapiservice.GetCharityHomePage();
     let description = homepagedata.Charity.Description
@@ -57,7 +37,6 @@ const Home: FunctionComponent<HomeProps> = props => {
     setDescription(description);
     setCharityName(charityName);
   };
->>>>>>> master
 
   useEffect(() => {
     handleHomeData();
@@ -93,13 +72,9 @@ const Home: FunctionComponent<HomeProps> = props => {
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
-<<<<<<< HEAD
         description={
           APIURL === "" ? "Loading..." : APIURL
         }
-=======
-        description={"the second one"}
->>>>>>> master
       />
       <ContentCard
         title={"Another One"}
