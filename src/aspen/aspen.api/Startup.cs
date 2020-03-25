@@ -50,6 +50,7 @@ namespace Aspen.Api
             services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
 
             services.AddScoped<ICharityRepository, CharityRepository>();
+            services.AddScoped<IThemeRepository, ThemeRepository>();
             services.AddControllers().AddNewtonsoftJson();
         }
 

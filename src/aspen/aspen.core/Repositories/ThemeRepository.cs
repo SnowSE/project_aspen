@@ -8,7 +8,8 @@ using Newtonsoft.Json;
 
 namespace Aspen.Core.Repositories
 {
-    public class ThemeRepository
+
+    public class ThemeRepository : IThemeRepository
     {
         private readonly Func<IDbConnection> getDbConnection;
 
@@ -19,7 +20,7 @@ namespace Aspen.Core.Repositories
 
         public async Task Create(Theme theme)
         {
-            using(var dbConnection = getDbConnection())
+            using (var dbConnection = getDbConnection())
             {
                 await dbConnection.ExecuteAsync(
                     @"insert into Theme (charityid, primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily)
@@ -31,7 +32,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Theme> GetByCharityId(Guid charityId)
         {
-            using(var dbConnection = getDbConnection())
+            using (var dbConnection = getDbConnection())
             {
                 return await dbConnection.QueryFirstAsync<Theme>(
                     @"select * from Theme
@@ -43,7 +44,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<IEnumerable<Theme>> GetAll()
         {
-            using(var dbConnection = getDbConnection())
+            using (var dbConnection = getDbConnection())
             {
                 return await dbConnection.QueryAsync<Theme>(
                     @"select * from Theme;"
@@ -53,7 +54,7 @@ namespace Aspen.Core.Repositories
 
         public async Task Update(Theme theme)
         {
-            using(var dbConnection = getDbConnection())
+            using (var dbConnection = getDbConnection())
             {
                 await dbConnection.ExecuteAsync(
                     @"update Theme set
@@ -70,7 +71,7 @@ namespace Aspen.Core.Repositories
 
         public async Task Delete(Guid charityId)
         {
-            using(var dbConnection = getDbConnection())
+            using (var dbConnection = getDbConnection())
             {
                 await dbConnection.ExecuteAsync(
                     @"delete from Theme

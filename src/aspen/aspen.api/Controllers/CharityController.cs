@@ -13,10 +13,14 @@ namespace Aspen.Api.Controllers
     public class CharityController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;
+        private readonly IThemeRepository themeRepository;
 
-        public CharityController(ICharityRepository charityRepository)
+        public CharityController(
+            ICharityRepository charityRepository,
+            IThemeRepository themeRepository)
         {
             this.charityRepository = charityRepository;
+            this.themeRepository = themeRepository;
         }
 
         [HttpGet]
@@ -28,7 +32,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> GetTheme([FromQuery(Name = "domain")] string domain)
+        public async Task<StatusReturn> GetTheme([FromQuery(Name = "charityId")] Guid charityId)
         {
             return StatusReturn.Success("null");
         }
