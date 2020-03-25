@@ -12,6 +12,8 @@ export class APIService implements IAPIService {
 
     constructor(IDomainService: IDomainService) {
         this.IDomainService = IDomainService
+        console.error("url: "+url)
+        console.error("global admin domain:"+globaladmindomain)
     }
 
 
@@ -24,9 +26,12 @@ export class APIService implements IAPIService {
             headers: headers
         })
 
-        console.log("called charity")
+        console.error("called charity")
 
         let responseJson = await response.json()
+
+        console.warn(responseJson);
+
         if(responseJson.Status == "Success"){
             let id = responseJson["data"]["id"];
             let name = responseJson["data"]["name"];
@@ -34,17 +39,20 @@ export class APIService implements IAPIService {
             let description = responseJson["data"]["description"];
             let charityObject = new Charity(id, name, domain, description)
             
+            // TODO get the theme and place it here. 
             let fontFamily = responseJson["data"]["fontFamily"];
             let PrimaryMainColor = responseJson["data"]["PrimaryMainColor"];
             let PrimaryLightColor = responseJson["data"]["PrimaryLightColor"];
             let PrimaryContrastTextColor = responseJson["data"]["PrimaryContrastTextColor"];
             let SecondaryMainColor = responseJson["data"]["SecondaryMainColor"];
             let theme =  new Theme(PrimaryMainColor, PrimaryLightColor, PrimaryContrastTextColor, SecondaryMainColor, fontFamily)
-            // TODO get the theme and place it here. 
             return new CharityHomePage(theme, charityObject)
         }
         //TODO: make a second api call to get the theme and remove the theme from the first api call 
 
+
+        
+        
         let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
         let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
         let charityHomePage = new CharityHomePage(theme,charityObject);

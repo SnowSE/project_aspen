@@ -20,8 +20,9 @@ const Home:React.FC<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let dummyapiservice = new APIService(new DomainService());
-    let homepagedata = await dummyapiservice.GetCharityHomePage();
+    let apiservice = new APIService(new DomainService());
+    console.error("in the function now")
+    let homepagedata = await apiservice.GetCharityHomePage();
     let description = homepagedata.Charity.Description ? homepagedata.Charity.Description :"This charity does not exist";
     let charityName  = homepagedata.Charity.Name ? homepagedata.Charity.Name :"This charity does not exist";
     setDescription(description);
