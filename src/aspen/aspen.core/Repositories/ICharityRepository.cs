@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
@@ -8,10 +9,10 @@ namespace Aspen.Core.Repositories
     {
         Task Create(Charity charity);
         Task<IEnumerable<Charity>> GetAll();
-        IEnumerable<string> GetSubDomains();
+        IEnumerable<string> GetDomains();
         Task Update(Charity charity);
-        Task<Charity> GetById(int charityId);
-        Task<Charity> GetByName(string charityName);
+        Task<Charity> GetById(Guid charityId);
+        Task<Charity> GetByDomain(Domain Domain);
         Task Delete(Charity charity);
     }
 }

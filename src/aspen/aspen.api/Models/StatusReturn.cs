@@ -1,6 +1,6 @@
-using System.Text.Json;
+using Newtonsoft.Json;
 
-namespace aspen.api.Models
+namespace Aspen.Api.Models
 {
     public class StatusReturn
     {
@@ -28,7 +28,7 @@ namespace aspen.api.Models
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

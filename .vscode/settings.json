@@ -1,0 +1,22 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "Aspen",
+            "dialect": "PostgreSQL",
+            "name": "aspen local dev",
+            "password": "Aspen",
+            "port": 5432,
+            "server": "localhost",
+            "username": "Aspen"
+        },
+        {
+            "database": "Aspen",
+            "dialect": "PostgreSQL",
+            "name": "aspen_integration",
+            "password": "Aspen",
+            "port": 5433,
+            "server": "localhost",
+            "username": "Aspen"
+        }
+    ]
+}

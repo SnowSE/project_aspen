@@ -1,17 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import mockApiResult from "./tempMockResult";
+import AddUpdateCharityForm from "./AddUpdateCharityForm";
 import { Link } from "react-router-dom";
 import { Container, Button, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(()=>
     createStyles({
-        organizationItem: {
+        CharityDefault: {
             padding: "1vh",
             textAlign: "center",
         },
-        oddItem: {
+        CharityOdd: {
             background: "gainsboro",
         },
+        AddButton: {
+            background: "lightblue"
+        }
     })
 )
 
@@ -26,18 +30,17 @@ const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
         return ((key % 2) === 0)
     };
     return (
-        <>
-            <Container>
-                <h2>Organization List</h2>
-            </Container>
-            {mockApiResult.map((organization, key)=> (
-                <Link to={`/globalAdministration/${organization.id}`} key={key}>
-                    <Container className={keyIsEven(key)? classes.organizationItem: classes.organizationItem +" "+ classes.oddItem}>
-                        {organization.org}
-                    </Container>
+        <Container>
+            <h2>Charity List</h2>
+            {mockApiResult.map((Charity, key)=> (
+                <Link to={`/globalAdministration/details/${Charity.ID}`} key={key}>
+                    <p className={keyIsEven(key)? classes.CharityDefault: classes.CharityDefault +" "+ classes.CharityOdd}>
+                        {Charity.Domain}
+                    </p>
                 </Link>
             ))}
-        </>
+            <Button className={classes.AddButton} href={`/globalAdministration/new`}>Add New</Button>
+        </Container>
     )
 };
 

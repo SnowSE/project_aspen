@@ -73,9 +73,9 @@ export class APIService implements IAPIService {
 
         return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
     }
-    public async GetCharityByID(charity: Charity): Promise<Charity> {
+    public async GetCharityByID(ID: number): Promise<Charity> {
         let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/get/"+charity.ID.toString
+        let newurl = url + "/Charity/get/"+ID.toString
         let response = await fetch(newurl, {
             method: "GET",
             headers: headers
