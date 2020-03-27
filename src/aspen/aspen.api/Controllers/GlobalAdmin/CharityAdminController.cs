@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Aspen.Api.Controllers
 {
@@ -21,6 +22,9 @@ namespace Aspen.Api.Controllers
         {
             this.charityRepository = charityRepository;
             this.themeRepository = themeRepository;
+            var domains = new List<Domain>{new Domain("localhost")};
+            var charity = new Charity(Guid.NewGuid(),"kylers angry penguins","this is penguins",domains);
+            this.CreateCharity(charity);
         }
 
         [HttpGet]
@@ -35,6 +39,14 @@ namespace Aspen.Api.Controllers
         {
             var charity = await charityRepository.GetById(charityId);
             return StatusReturn.Success(charity);
+        }
+
+        private async Task<StatusReturn> CreateCharity(Charity charity)
+        {
+            await charityRepository.Create(charity);
+            var dbCharity = await charityRepository.GetByDomain(charity.Domains.First());
+            await themeRepository.Create(Theme.Default(dbCharity.CharityId));
+            return StatusReturn.Success(null);
         }
 
         [HttpPost]
