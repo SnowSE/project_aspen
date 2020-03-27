@@ -18,7 +18,7 @@ namespace Aspen.Core.Services
 
         public static async Task SeedCharity(ICharityRepository charityRepository)
         {
-            var penguinDomain = new Domain("kylerspenguins.com");
+            var penguinDomain = new Domain("localhost");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(), "Kyler's Penguins", "kyler has a lot of penguins", new Domain[] { penguinDomain });
 

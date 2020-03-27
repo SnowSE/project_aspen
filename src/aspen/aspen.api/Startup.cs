@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Aspen.Core.Services;
 using Npgsql;
 
 namespace Aspen.Api
@@ -55,7 +56,8 @@ namespace Aspen.Api
             }
 
             migrationRunner.MigrateUp();
-            // SeedService.SeedAll(new CharityRepository(getDbConnection));
+
+            //SeedService.SeedAll(new CharityRepository(getDbConnection));
 
             app.UseHttpsRedirection();
 

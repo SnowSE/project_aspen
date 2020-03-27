@@ -20,8 +20,8 @@ services:
     container_name: aspen_api
     environment: 
       - DefaultConnection="Server=localhost; Port=5432; Database=Aspen; User ID=Aspen; Password=Aspen;"
-    # ports:
-    #   - 80:80
+    ports:
+       - 80:80
     #   - 443:443
     networks:
       - internal
@@ -31,12 +31,12 @@ services:
       context: aspen.web
     container_name: aspen_web
     ports:
-      - 80:80
-      - 443:443
+      # - 80:80
+      # - 443:443
       - 3000:3000
     environment:
       - REACT_APP_GLOBAL_ADMIN_DOMAIN=aspen
-      - REACT_APP_API_URL=aspen_api
+      - REACT_APP_API_URL=localhost
     networks:
       - internal
 

@@ -5,7 +5,8 @@ import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import { DummyAPIService } from "../../services/DummyAPIService";
+import { APIService } from "../../services/APIService";
+import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 
@@ -26,13 +27,13 @@ const Home: FunctionComponent<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let dummyapiservice = new DummyAPIService();
-    let homepagedata = await dummyapiservice.GetCharityHomePage();
-    let description = homepagedata.Charity.Description
-      ? homepagedata.Charity.Description
+    let dummyapiservice = new APIService(new DomainService());
+    let homepagedata = await dummyapiservice.GetCharityByDomain();
+    let description = homepagedata.Description
+      ? homepagedata.Description
       : "This charity does not exist";
-    let charityName = homepagedata.Charity.Name
-      ? homepagedata.Charity.Name
+    let charityName = homepagedata.Name
+      ? homepagedata.Name
       : "This charity does not exist";
     setDescription(description);
     setCharityName(charityName);

@@ -62,14 +62,14 @@ export class APIService implements IAPIService {
 
     public async GetAllCharities(): Promise<Charity[]> {
         let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/GetAll"
+        let newurl = url + "admin/charity/GetAll"
         let response = await fetch(newurl, {
             method: "GET",
             headers: headers
         })
 
         let responseJson = await response.json()
-
+        console.error(responseJson)
 
         return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
     }
@@ -86,6 +86,34 @@ export class APIService implements IAPIService {
         let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
         return c 
     }
+
+    public async GetCharityByDomain(): Promise<Charity> {
+        let domain = this.IDomainService.GetDomain();
+
+
+        let headers = { "Content-Type": "application/json" };
+        let newurl = url + "/Charity/get/"+domain
+        let response = await fetch(newurl, {
+            method: "GET",
+            headers: headers
+        })
+
+        let responseJson = await response.json();
+
+        let id = responseJson["data"]["id"];
+        let name = responseJson["data"]["name"];
+        let res_domain = responseJson["data"]["domain"];
+        let description = responseJson["data"]["description"];
+        let charityObject = new Charity(id, name, res_domain, description)
+
+        let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+        return charityObject 
+    }
+
+
+
+
+
     public async PostCreateCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify(charity);
