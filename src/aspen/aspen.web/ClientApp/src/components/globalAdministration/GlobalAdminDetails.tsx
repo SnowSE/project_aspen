@@ -1,63 +1,84 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router";
-import result from "./tempMockResult";
 import { Button, makeStyles, createStyles } from "@material-ui/core";
 import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import "react-confirm-alert/src/react-confirm-alert.css";
 import AddUpdateCharityForm from "./AddUpdateCharityForm";
+import { ApplicationState } from "../../store";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/GlobalAdmin/actions";
+import { Charity } from "../../models/CharityModel";
 
-const useStyles = makeStyles(()=>
-    createStyles({
-        deleteBtn: {
-            background: "red",
-        },
-    })
-)
+const useStyles = makeStyles(() =>
+  createStyles({
+    deleteBtn: {
+      background: "red"
+    }
+  })
+);
 
 interface MyRouteProps {
-    id: string;
+  id: string;
 }
 
-interface GlobalAdminDetailsProps extends RouteComponentProps<MyRouteProps>{
+interface GlobalAdminDetailsProps extends RouteComponentProps<MyRouteProps> {
+  adminFetchSpecificCharity: typeof actionCreators.adminFetchSpecificCharity;
+  adminDeleteCharity: typeof actionCreators.adminDeleteCharity;
+  selectedCharity: Charity | null;
+}
 
-};
+const GlobalAdminDetails: React.FC<GlobalAdminDetailsProps> = props => {
+  useEffect(() => {
+    props.adminFetchSpecificCharity(+props.match.params.id);
+  }, []);
 
-const GlobalAdminDetails:React.FC<GlobalAdminDetailsProps> = props => {
-    const classes = useStyles();
-    const charity = result.find(a=>a.ID.toString() === props.match.params.id);
+  const classes = useStyles();
 
-    const deleteOrg = () => {
-        confirmAlert({
-            title: 'Confirm to Delete',
-            message: 'Are you sure you want to delete this Charity? (This cannot be undone)',
-            buttons: [
-              {
-                label: 'Yes',
-                onClick: () => {   
-                    //delete Charity with id          
-                    props.history.goBack();
-                  }
-              },
-              {
-                label: 'No',
-                onClick: () => {}
-              },
-            ]
-          })
-    }
+  const deleteOrg = () => {
+    confirmAlert({
+      title: "Confirm to Delete",
+      message:
+        "Are you sure you want to delete this Charity? (This cannot be undone)",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            if (props.selectedCharity !== null) {
+              props.adminDeleteCharity(props.selectedCharity);
+            }
+            props.history.goBack();
+          }
+        },
+        {
+          label: "No",
+          onClick: () => {}
+        }
+      ]
+    });
+  };
 
-    if (typeof charity === 'undefined'){
-        return (<div>Not Found</div>)
-    }
-    return (
+  if (props.selectedCharity !== null) {
+      return (
         <>
-            <h1>
-                {charity.Domain} Settings
-            </h1>
-            <AddUpdateCharityForm Charity={undefined}/>
-            <Button className={classes.deleteBtn} onClick={()=>deleteOrg()}>Delete</Button>
+            <h1>{props.selectedCharity.Domain} Settings</h1>
+            <AddUpdateCharityForm Charity={undefined} />
+            <Button className={classes.deleteBtn} onClick={() => deleteOrg()}>
+            Delete
+            </Button>
         </>
-    )
+    );
+} else{
+    return <div>Not Found</div>;
+}
 };
 
-export default GlobalAdminDetails;
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    selectedCharity: state.admin.selectedCharity
+  };
+};
+
+export default connect(mapStateToProps, dispatch =>
+  bindActionCreators(actionCreators, dispatch)
+)(GlobalAdminDetails);
