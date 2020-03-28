@@ -1,21 +1,13 @@
 version: '3'
 services:
 
-  postgres:
+  database:
     image: postgres
-    container_name: postgres
+    container_name: database
     environment:
       - POSTGRES_USER=Aspen
       - POSTGRES_PASSWORD=Aspen
       - POSTGRES_DB=Aspen
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U Aspen"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    # volumes:
-      # - ./pgsql/:/docker-entrypoint-initdb.d/
-      # - database:/var/lib/postgresql/data/
     ports: 
       - 5432:5432
     expose:
@@ -29,12 +21,12 @@ services:
       dockerfile: aspen.api/Dockerfile
     container_name: api
     depends_on: 
-      - postgres
+      - database
     environment: 
-      - DefaultConnection="Server=postgres; Port=5432; Database=Aspen; User ID=Aspen; Password=Aspen;"
-    # ports:
-    #    - 80:80
-    #    - 443:443
+      - DefaultConnection=Server=database; Port=5432; Database=Aspen; User Id=Aspen; Password=Aspen;
+    ports:
+       - 5000:80
+       - 443:443
     networks:
       internal:
 
@@ -43,17 +35,12 @@ services:
       context: aspen.web
     container_name: web
     ports:
-      # - 80:80
-      # - 443:443
       - 3000:3000
     environment:
       - REACT_APP_GLOBAL_ADMIN_DOMAIN=aspen
-      - REACT_APP_API_URL=api
+      - REACT_APP_API_URL=http://localhost:5000
     networks:
       internal:
 
 networks:
   internal:
-
-# volumes:
-#   database:

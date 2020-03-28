@@ -20,14 +20,14 @@ export class APIService implements IAPIService {
     public async GetCharityHomePage(): Promise<CharityHomePage> {
         let domain = this.IDomainService.GetDomain();
         let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/charity/getbydomain/"+ domain;
+        let newurl = url + "/charity/getbydomain?domain="+ domain;
         let response = await fetch(newurl, {
             method: "GET",
             headers: headers
         })
 
         console.error("called charity")
-
+        console.error(response);
         let responseJson = await response.json()
 
         console.warn(responseJson);
@@ -108,27 +108,36 @@ export class APIService implements IAPIService {
         return charityObject 
     }
 
-
-
-
-
-    public async PostCreateCharity(charity: Charity): Promise<boolean> {
+    public async PostCreateCharity(): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
-        let body = JSON.stringify(charity);
-        let newurl = url + "Admin/Charity/Create"
+        let Charity = {
+            CharityName:"Kylers Penguins",
+            CharityDescription:"Kyler has a lot of penguins",
+            Domains: [
+                { charitydomain: "kylerspenguins.com"}
+            ]
+        };
+        let body = JSON.stringify(Charity);
+        let newurl = url + "/Admin/Charity/Create"
         let response = await fetch(newurl, {
             method: "POST",
             headers: headers,
             body: body
-        })
-
+        });
         let responseJson = await response.json();
+        console.error(responseJson);
         return true;
     }
+
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
-        let body = JSON.stringify(charity);
-        let newurl = url + "/Charity/Update"
+        let Charity = {CharityName:"Kylers Penguins",
+                    CharityDescription:"Kyler has a lot of penguins",
+                    Domains: [
+                        { "charitydomain": "kylerspenguins.com"}
+                    ]};
+        let body = JSON.stringify(Charity);
+        let newurl = url + "/Admin/Charity/Create"
         let response = await fetch(newurl, {
             method: "POST",
             headers: headers,
@@ -136,6 +145,7 @@ export class APIService implements IAPIService {
         })
 
         let responseJson = await response.json();
+        console.error(responseJson);
         return true;
     }
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {

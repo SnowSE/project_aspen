@@ -26,7 +26,7 @@ export class DummyAPIService implements IAPIService{
             return new Charity(0,"","","")
         }
     }
-    public async PostCreateCharity(charity: Charity): Promise<boolean> {
+    public async PostCreateCharity(): Promise<boolean> {
         return true
     }
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {

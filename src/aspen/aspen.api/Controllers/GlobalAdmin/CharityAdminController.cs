@@ -7,6 +7,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Cors;
 
 namespace Aspen.Api.Controllers
 {
@@ -40,7 +41,7 @@ namespace Aspen.Api.Controllers
             var charity = await charityRepository.GetById(charityId);
             return StatusReturn.Success(charity);
         }
-
+        
         private async Task<StatusReturn> CreateCharity(Charity charity)
         {
             await charityRepository.Create(charity);

@@ -9,6 +9,7 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
+import { Charity } from "../../models/CharityModel";
 
 const useStyles = makeStyles(props=>({
   testDiv:{
@@ -28,14 +29,10 @@ const Home: FunctionComponent<HomeProps> = props => {
 
   const handleHomeData = async () => {
     let dummyapiservice = new APIService(new DomainService());
-    let data = dummyapiservice.GetAllCharities();
-    let homepagedata = await dummyapiservice.GetCharityByDomain();
-    let description = homepagedata.Description
-      ? homepagedata.Description
-      : "This charity does not exist";
-    let charityName = homepagedata.Name
-      ? homepagedata.Name
-      : "This charity does not exist";
+    let data = dummyapiservice.PostCreateCharity();
+    //let homepagedata = await dummyapiservice.GetCharityByDomain();
+    let description = "This charity does not exist";
+    let charityName = "This charity does not exist";
     setDescription(description);
     setCharityName(charityName);
   };

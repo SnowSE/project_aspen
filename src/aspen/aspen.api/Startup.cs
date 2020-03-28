@@ -16,6 +16,7 @@ namespace Aspen.Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         private System.Func<NpgsqlConnection> getDbConnection;
         public Startup(IConfiguration configuration)
         {
@@ -27,7 +28,8 @@ namespace Aspen.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+            
             services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -45,6 +47,19 @@ namespace Aspen.Api
 
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<IThemeRepository, ThemeRepository>();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy( builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            // .WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             services.AddControllers().AddNewtonsoftJson();
         }
 
@@ -56,16 +71,19 @@ namespace Aspen.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            Thread.Sleep(500);
             migrationRunner.MigrateUp();
 
             //SeedService.SeedAll(new CharityRepository(getDbConnection));
+            
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
