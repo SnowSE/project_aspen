@@ -3,9 +3,12 @@ import { Charity } from "../../models/CharityModel";
 import { AppThunkAction } from "../index";
 import { IAPIService } from "../../services/IAPIService";
 import { APIService } from "../../services/APIService";
+import { DummyAPIService } from "../../services/DummyAPIService";
 import { DomainService } from "../../services/DomainService";
 
 const apiService: IAPIService = new APIService(new DomainService());
+//for testing without the api
+//const apiService: IAPIService = new DummyAPIService();
 
 function getAllCharities(charityList: Charity[]): ActionTypes.CharityAdminActionTypes {
   return {
