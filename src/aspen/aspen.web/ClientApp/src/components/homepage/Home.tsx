@@ -28,6 +28,7 @@ const Home: FunctionComponent<HomeProps> = props => {
 
   const handleHomeData = async () => {
     let dummyapiservice = new APIService(new DomainService());
+    let data = dummyapiservice.GetAllCharities();
     let homepagedata = await dummyapiservice.GetCharityByDomain();
     let description = homepagedata.Description
       ? homepagedata.Description
