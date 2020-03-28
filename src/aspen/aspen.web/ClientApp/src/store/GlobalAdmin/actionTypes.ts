@@ -23,7 +23,6 @@ interface GetCharityAdminFailureAction {
 
 interface AddSuccessAction {
     type: typeof ADD_API_SUCCESS,
-    addedCharity: Charity,
 }
 
 interface UpdateSuccessAction {

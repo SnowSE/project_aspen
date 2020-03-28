@@ -85,7 +85,7 @@ export class APIService implements IAPIService {
 
     public async GetCharityByDomain(): Promise<Charity> {
         console.log("In GetCharityByDomain");
-        let domain = this.IDomainService.GetDomain();
+        let domain = "kylerspenguins.com";
         let headers = { "Content-Type": "application/json" };
         let newurl = url + "/Charity/?domain="+domain
         let response = await fetch(newurl, {

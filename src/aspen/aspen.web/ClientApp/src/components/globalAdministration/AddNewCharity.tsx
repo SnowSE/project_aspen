@@ -1,9 +1,13 @@
 import React from "react";
 import AddUpdateCharityForm from "./AddUpdateCharityForm";
 import { Button } from "@material-ui/core";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/GlobalAdmin/actions";
+import { ApplicationState } from "../../store";
 
 interface AddNewCharityProps {
-
+    adminAddCharity: typeof actionCreators.adminAddCharity
 }
 
 const AddNewCharity:React.FC<AddNewCharityProps> = props => {
@@ -11,9 +15,17 @@ const AddNewCharity:React.FC<AddNewCharityProps> = props => {
         <>
             <h1>Add New Charity</h1>
             <AddUpdateCharityForm/>
-            <Button>Submit</Button>
+            <Button onClick={()=>props.adminAddCharity()}>Submit</Button>
         </>
     )
 }
 
-export default AddNewCharity
+const mapStateToProps = (state: ApplicationState) => {
+    return {
+    }
+}
+
+export default connect(
+  mapStateToProps,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(AddNewCharity);
