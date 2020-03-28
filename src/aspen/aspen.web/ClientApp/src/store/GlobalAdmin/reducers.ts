@@ -14,16 +14,12 @@ const initialState: AdminState = {
 };
 
 //Reducer
-export const reducer: Reducer<AdminState> = (
-  state = initialState,
-  action: CharityAdminActionTypes
-) => {
-
+export const reducer: Reducer<AdminState> = (state = initialState, action: CharityAdminActionTypes ) => {
   switch (action.type) {
     case GET_ALL_API_SUCCESS:
-      return state;
+      return {...state, charityList: action.charityList};
     case GET_API_SUCCESS:
-      return state;
+      return {...state, selectedCharity: action.selectedCharity};
     default:
         return state;
   }
