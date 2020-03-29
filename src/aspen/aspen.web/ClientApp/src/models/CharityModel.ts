@@ -1,17 +1,17 @@
 export class Charity {
-    readonly ID: number ;
-    readonly Name: string;
-    readonly Domain: string;
-    readonly Description: string;
+    readonly ID: number|null ;
+    readonly CharityName: string;
+    readonly CharityDescription: string;
+    readonly Domains: [any];
 
     public constructor(ID: number ,
-        Name: string ,
-        Domain: string,
-        Description: string) {
-        this.Description = Description;
-        this.Domain = Domain;
+        CharityName: string ,
+        Domains: string,
+        CharityDescription: string) {
+        this.CharityDescription = CharityDescription;
+        this.Domains = [{CharityDomain: Domains}];
         this.ID = ID;
-        this.Name = Name
+        this.CharityName = CharityName
     };
 
 }

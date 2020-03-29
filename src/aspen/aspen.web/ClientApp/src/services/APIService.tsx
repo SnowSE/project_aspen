@@ -108,7 +108,7 @@ export class APIService implements IAPIService {
         return charityObject 
     }
 
-    public async PostCreateCharity(): Promise<boolean> {
+    public async PostCreateCharity(charity : Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
         let Charity = {
             CharityName:"Kylers Penguins",
@@ -117,7 +117,8 @@ export class APIService implements IAPIService {
                 { charitydomain: "kylerspenguins.com"}
             ]
         };
-        let body = JSON.stringify(Charity);
+        let body = JSON.stringify(charity);
+        console.error("body:"+body);
         let newurl = url + "/Admin/Charity/Create"
         let response = await fetch(newurl, {
             method: "POST",
