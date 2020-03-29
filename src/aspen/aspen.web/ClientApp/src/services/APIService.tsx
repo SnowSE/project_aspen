@@ -14,8 +14,10 @@ export class APIService implements IAPIService {
 
     constructor(IDomainService: IDomainService) {
         this.IDomainService = IDomainService
-        console.error("url: "+url)
-        console.error("global admin domain:"+globaladmindomain)
+    }
+
+    public async GetCharityThemeByDomain():Promise<Theme>{
+        
     }
 
 
@@ -71,9 +73,10 @@ export class APIService implements IAPIService {
 
         return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
     }
-    public async GetCharityByID(ID: number): Promise<Charity> {
+
+    public async GetCharityByID(ID: string): Promise<Charity> {
         let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/get/"+ID.toString
+        let newurl = url + "/Charity/Get?Id="+ID
         let response = await fetch(newurl, {
             method: "GET",
             headers: headers
@@ -81,33 +84,38 @@ export class APIService implements IAPIService {
 
         let responseJson = await response.json();
 
-        let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+        let c = new Charity("","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
         return c 
     }
 
+    //this is now working but not using the domain service
     public async GetCharityByDomain(): Promise<Charity> {
-        console.log("In GetCharityByDomain");
-        let domain = "kylerspenguins.com";
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/?domain="+domain
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
+        try{
+            console.log("In GetCharityByDomain");
+            let domain = "kylerspenguins3.com";
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Get?domain="+domain
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
 
-        let responseJson = await response.json();
-        console.error(responseJson)
-
-        let id = responseJson["data"]["id"];
-        let name = responseJson["data"]["name"];
-        let res_domain = responseJson["data"]["domain"];
-        let description = responseJson["data"]["description"];
-        let charityObject = new Charity(id, name, res_domain, description)
-
-
-
-        let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
-        return charityObject 
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                let id = responseJson.data.charityId;
+                let name = responseJson.data.charityName;
+                let description = responseJson.data.charityDescription;
+                let res_domains = responseJson.data.domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                return charityObject
+            }else{
+                throw Error("Domain not found");
+            }
+        }catch(e){
+            console.error("error:"+e);
+            let c = new Charity("","error","error","error");
+            return c;
+        }
     }
 
     //This works successfully -kyler
@@ -144,6 +152,7 @@ export class APIService implements IAPIService {
             let newurl = url + "/Admin/Charity/Update"
             let response = await fetch(newurl, {
                 method: "POST",
+                mode:"cors",
                 headers: headers,
                 body: body
             })
@@ -161,10 +170,11 @@ export class APIService implements IAPIService {
         }   
 
     }
+
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify(charity);
-        let newurl = url + "/Charity/Update"
+        let newurl = url + "/Charity/Delete"
         let response = await fetch(newurl, {
             method: "POST",
             headers: headers,

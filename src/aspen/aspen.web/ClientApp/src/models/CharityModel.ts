@@ -1,10 +1,10 @@
 export class Charity {
-    readonly ID: number|null ;
+    readonly ID: string ;
     readonly CharityName: string;
     readonly CharityDescription: string;
     readonly Domains: [any];
 
-    public constructor(ID: number ,
+    public constructor(ID: string ,
         CharityName: string ,
         Domains: string,
         CharityDescription: string) {
