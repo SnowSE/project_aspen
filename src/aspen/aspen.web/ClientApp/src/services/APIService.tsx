@@ -109,7 +109,7 @@ export class APIService implements IAPIService {
         let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
         return charityObject 
     }
-    
+
     //This works successfully -kyler
     public async PostCreateCharity(charity : Charity): Promise<boolean> {
         try{
@@ -136,7 +136,7 @@ export class APIService implements IAPIService {
             return false;
         }  
     }
-
+    //this is talking to the api correctly
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -149,14 +149,14 @@ export class APIService implements IAPIService {
             })
             let responseJson = await response.json();
             if(responseJson.status == "Success"){
-                console.error("We added the charity successfully");
+                console.error("We Updated the charity successfully");
                 return true;
             }else{
-                console.error("adding the charity failed");
+                console.error("Updating the charity failed");
                 return false;
             }
         }catch(e){
-            console.error("adding the charity failed");
+            console.error("Updating the charity failed");
             return false;
         }   
 
