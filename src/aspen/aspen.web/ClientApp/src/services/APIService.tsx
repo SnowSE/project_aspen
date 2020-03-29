@@ -109,48 +109,57 @@ export class APIService implements IAPIService {
         let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
         return charityObject 
     }
-
-
-    //this is working -kyler
+    
+    //This works successfully -kyler
     public async PostCreateCharity(charity : Charity): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let Charity = {CharityName:"Kylers Penguins",
-                    CharityDescription:"Kyler has a lot of penguins",
-                    Domains: [
-                        { "charitydomain": "kylerspenguins.com"}
-                    ]};
-        let body = JSON.stringify(Charity);
-        console.error("body:"+body);
-        let newurl = url + "/Admin/Charity/Create"
-        let response = await fetch(newurl, {
-            method: "POST",
-            mode:"cors",
-            headers: headers,
-            body: body
-        });
-        let responseJson = await response.json();
-        console.error(responseJson);
-        return true;
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            console.error("body:"+body);
+            let newurl = url + "/Admin/Charity/Create"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            });
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("We added the charity successfully");
+                return true;
+            }else{
+                console.error("adding the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("adding the charity failed");
+            return false;
+        }  
     }
 
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let Charity = {CharityName:charity.CharityName,
-                    CharityDescription:charity.CharityName,
-                    Domains: charity.Domains};
-        let body = JSON.stringify(Charity);
-        let newurl = url + "/Admin/Charity/Create"
-        let response = await fetch(newurl, {
-            method: "POST",
-            headers: headers,
-            body: body
-        })
-        let responseJson = await response.json();
-        if(responseJson.status == "Success"){
-            return true;
-        }else{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            let newurl = url + "/Admin/Charity/Update"
+            let response = await fetch(newurl, {
+                method: "POST",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("We added the charity successfully");
+                return true;
+            }else{
+                console.error("adding the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("adding the charity failed");
             return false;
-        }
+        }   
+
     }
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
