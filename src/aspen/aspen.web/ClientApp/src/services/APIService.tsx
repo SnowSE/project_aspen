@@ -4,7 +4,9 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
-const url = process.env.REACT_APP_API_URL
+const url = "http://192.168.107.128:5000" 
+
+// const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
@@ -108,20 +110,21 @@ export class APIService implements IAPIService {
         return charityObject 
     }
 
+
+    //this is working -kyler
     public async PostCreateCharity(charity : Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
-        let Charity = {
-            CharityName:"Kylers Penguins",
-            CharityDescription:"Kyler has a lot of penguins",
-            Domains: [
-                { charitydomain: "kylerspenguins.com"}
-            ]
-        };
-        let body = JSON.stringify(charity);
+        let Charity = {CharityName:"Kylers Penguins",
+                    CharityDescription:"Kyler has a lot of penguins",
+                    Domains: [
+                        { "charitydomain": "kylerspenguins.com"}
+                    ]};
+        let body = JSON.stringify(Charity);
         console.error("body:"+body);
         let newurl = url + "/Admin/Charity/Create"
         let response = await fetch(newurl, {
             method: "POST",
+            mode:"cors",
             headers: headers,
             body: body
         });
@@ -132,11 +135,9 @@ export class APIService implements IAPIService {
 
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };
-        let Charity = {CharityName:"Kylers Penguins",
-                    CharityDescription:"Kyler has a lot of penguins",
-                    Domains: [
-                        { "charitydomain": "kylerspenguins.com"}
-                    ]};
+        let Charity = {CharityName:charity.CharityName,
+                    CharityDescription:charity.CharityName,
+                    Domains: charity.Domains};
         let body = JSON.stringify(Charity);
         let newurl = url + "/Admin/Charity/Create"
         let response = await fetch(newurl, {
@@ -144,10 +145,12 @@ export class APIService implements IAPIService {
             headers: headers,
             body: body
         })
-
         let responseJson = await response.json();
-        console.error(responseJson);
-        return true;
+        if(responseJson.status == "Success"){
+            return true;
+        }else{
+            return false;
+        }
     }
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
         let headers = { "Content-Type": "application/json" };

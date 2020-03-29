@@ -9,7 +9,7 @@ export class Charity {
         Domains: string,
         CharityDescription: string) {
         this.CharityDescription = CharityDescription;
-        this.Domains = [{CharityDomain: Domains}];
+        this.Domains = [{charitydomain: Domains}];
         this.ID = ID;
         this.CharityName = CharityName
     };
