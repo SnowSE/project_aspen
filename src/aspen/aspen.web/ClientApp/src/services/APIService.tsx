@@ -16,47 +16,14 @@ export class APIService implements IAPIService {
         this.IDomainService = IDomainService
     }
 
-    public async GetCharityThemeByID(id :string):Promise<Theme>{
-        try{
-            let headers = { "Content-Type": "application/json" };
-            let newurl = url + "/Charity/Gettheme?charityid="+id
-            let response = await fetch(newurl, {
-                method: "GET",
-                headers: headers
-            })
-
-            let responseJson = await response.json();
-            if(responseJson.status == "Success"){
-                console.error(responseJson.data);
-                let primaryMainColor:string = responseJson.data.primaryMainColor;
-                let primaryLightColor:string = responseJson.data.primaryLightColor;
-                let primaryContrastColor:string = responseJson.data.primaryContrastColor;
-                let secondaryMainColor:string = responseJson.data.secondaryMainColor;
-                let fontFamily:string = responseJson.data.fontFamily;
-                let themeObject = new Theme(primaryMainColor,primaryLightColor,primaryContrastColor,secondaryMainColor,fontFamily);
-                return themeObject
-            }else{
-                throw Error("Domain not found");
-            }
-        }catch(e){
-            console.error("error:"+e);
-            let themeObject = new Theme("","","","","");
-            return themeObject
-        }
-    }
-
-
+    //working
     public async GetCharityHomePage(): Promise<CharityHomePage> {
         let charity: Charity = await this.GetCharityByDomain();
         let theme: Theme = await this.GetCharityThemeByID(charity.ID);
         return new CharityHomePage(theme, charity);
-        //TODO: make a second api call to get the theme and remove the theme from the first api call 
-        // let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
-        // let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
-        // let charityHomePage = new CharityHomePage(theme,charityObject);
     }
 
-
+    //working
     public async GetAllCharities(): Promise<Charity[]> {
         let headers = { "Content-Type": "application/json" };
         let newurl = url + "admin/charity/GetAll"
@@ -71,6 +38,7 @@ export class APIService implements IAPIService {
         return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
     }
 
+    //working
     public async GetCharityByID(ID: string): Promise<Charity> {
         let headers = { "Content-Type": "application/json" };
         let newurl = url + "/Charity/Get?Id="+ID
@@ -114,7 +82,38 @@ export class APIService implements IAPIService {
         }
     }
 
-    //This works successfully -kyler
+    //working
+    public async GetCharityThemeByID(id :string):Promise<Theme>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Gettheme?charityid="+id
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error(responseJson.data);
+                let primaryMainColor:string = responseJson.data.primaryMainColor;
+                let primaryLightColor:string = responseJson.data.primaryLightColor;
+                let primaryContrastColor:string = responseJson.data.primaryContrastColor;
+                let secondaryMainColor:string = responseJson.data.secondaryMainColor;
+                let fontFamily:string = responseJson.data.fontFamily;
+                let themeObject = new Theme(primaryMainColor,primaryLightColor,primaryContrastColor,secondaryMainColor,fontFamily);
+                return themeObject
+            }else{
+                throw Error("Domain not found");
+            }
+        }catch(e){
+            console.error("error:"+e);
+            let themeObject = new Theme("","","","","");
+            return themeObject
+        }
+    }
+
+
+    //working
     public async PostCreateCharity(charity : Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -140,7 +139,7 @@ export class APIService implements IAPIService {
             return false;
         }  
     }
-    //this is talking to the api correctly
+    //working
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -167,18 +166,30 @@ export class APIService implements IAPIService {
 
     }
 
+    //not working
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let body = JSON.stringify(charity);
-        let newurl = url + "/Charity/Delete"
-        let response = await fetch(newurl, {
-            method: "POST",
-            headers: headers,
-            body: body
-        })
-
-        let responseJson = await response.json();
-        return true;
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            let newurl = url + "/Admin/Charity/Delete"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("Deleted the charity successfully");
+                return true;
+            }else{
+                console.error("Deleting the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("Deleting the charity failed:"+e);
+            return false;
+        }   
     }
 
 }
