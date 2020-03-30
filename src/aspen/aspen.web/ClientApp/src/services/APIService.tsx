@@ -34,10 +34,10 @@ export class APIService implements IAPIService {
         let responseJson = await response.json()
         console.error(responseJson)
 
-        return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
+        return [new Charity("","Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
     }
 
-    //working
+    //not yet wired
     public async GetCharityByID(ID: string): Promise<Charity> {
         let headers = { "Content-Type": "application/json" };
         let newurl = url + "/Charity/Get?Id="+ID
@@ -117,7 +117,6 @@ export class APIService implements IAPIService {
         try{
             let headers = { "Content-Type": "application/json" };
             let body = JSON.stringify(charity);
-            console.error("body:"+body);
             let newurl = url + "/Admin/Charity/Create"
             let response = await fetch(newurl, {
                 method: "POST",
