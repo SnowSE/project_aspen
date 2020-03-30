@@ -46,7 +46,7 @@ const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
             {props.charityList.map((Charity, key)=> (
                 <Link to={`/globalAdministration/details/${Charity.ID}`} key={key}>
                     <p className={keyIsEven(key)? classes.CharityDefault: classes.CharityDefault +" "+ classes.CharityOdd}>
-                        {Charity.Domain}
+                        {Charity.Domains[0]}
                     </p>
                 </Link>
             ))}

@@ -31,9 +31,10 @@ function deleteCharity(deletedCharity: Charity): ActionTypes.CharityAdminActionT
     };
 };
 
-export function addCharity(): ActionTypes.CharityAdminActionTypes{
+export function addCharity(charity: Charity): ActionTypes.CharityAdminActionTypes{
     return {
         type: ActionTypes.ADD_API_SUCCESS,
+        addedCharity: charity
     };
 };
 
@@ -59,7 +60,7 @@ export function adminFetchAllCharities(): AppThunkAction<ActionTypes.CharityAdmi
     };
 };
 
-export function adminFetchSpecificCharity(id: number): AppThunkAction<ActionTypes.CharityAdminActionTypes> {
+export function adminFetchSpecificCharity(id: string): AppThunkAction<ActionTypes.CharityAdminActionTypes> {
     return function(dispatch) {
         return apiService
             .GetCharityByID(id)
@@ -68,11 +69,11 @@ export function adminFetchSpecificCharity(id: number): AppThunkAction<ActionType
     };
 };
 
-export function adminAddCharity(): AppThunkAction<ActionTypes.CharityAdminActionTypes> {
+export function adminAddCharity(charity: Charity): AppThunkAction<ActionTypes.CharityAdminActionTypes> {
     return function(dispatch) {
         return apiService
-            .PostCreateCharity()
-            .then(result => dispatch(addCharity()))
+            .PostCreateCharity(charity)
+            .then(result => dispatch(addCharity(charity)))
             .catch(e => dispatch(failedApiCall()))
     }
 }

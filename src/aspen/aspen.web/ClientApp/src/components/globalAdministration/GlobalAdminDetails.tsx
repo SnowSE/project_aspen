@@ -30,7 +30,7 @@ interface GlobalAdminDetailsProps extends RouteComponentProps<MyRouteProps> {
 
 const GlobalAdminDetails: React.FC<GlobalAdminDetailsProps> = props => {
   useEffect(() => {
-    props.adminFetchSpecificCharity(+props.match.params.id);
+    props.adminFetchSpecificCharity(props.match.params.id);
   }, []);
 
   const classes = useStyles();
@@ -61,7 +61,7 @@ const GlobalAdminDetails: React.FC<GlobalAdminDetailsProps> = props => {
   if (props.selectedCharity !== null) {
       return (
         <>
-            <h1>{props.selectedCharity.Domain} Settings</h1>
+            <h1>{props.selectedCharity.Domains[0]} Settings</h1>
             <AddUpdateCharityForm Charity={undefined} />
             <Button className={classes.deleteBtn} onClick={() => deleteOrg()}>
             Delete

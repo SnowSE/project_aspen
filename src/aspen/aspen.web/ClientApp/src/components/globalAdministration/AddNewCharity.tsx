@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/GlobalAdmin/actions";
 import { ApplicationState } from "../../store";
+import { Charity } from "../../models/CharityModel";
 
 interface AddNewCharityProps {
     adminAddCharity: typeof actionCreators.adminAddCharity
@@ -15,7 +16,7 @@ const AddNewCharity:React.FC<AddNewCharityProps> = props => {
         <>
             <h1>Add New Charity</h1>
             <AddUpdateCharityForm/>
-            <Button onClick={()=>props.adminAddCharity()}>Submit</Button>
+            <Button onClick={()=>props.adminAddCharity(new Charity("0","","",""))}>Submit</Button>
         </>
     )
 }

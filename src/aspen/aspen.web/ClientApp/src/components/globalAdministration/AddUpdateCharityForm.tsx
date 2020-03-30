@@ -17,7 +17,7 @@ const AddUpdateCharityForm:React.FC<AddUpdateCharityFormProps> = props => {
 }
 
 AddUpdateCharityForm.defaultProps = {
-    Charity: new Charity(0,"","",""),
+    Charity: new Charity("0","","",""),
 }
 
 export default AddUpdateCharityForm;
