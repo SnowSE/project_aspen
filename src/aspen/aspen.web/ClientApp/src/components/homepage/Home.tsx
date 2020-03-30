@@ -29,11 +29,7 @@ const Home: FunctionComponent<HomeProps> = props => {
 
   const handleHomeData = async () => {
     let dummyapiservice = new APIService(new DomainService());
-    // let kylerspenguins = new Charity(0, "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins like a lot like way to mna")
-    // let data = dummyapiservice.PostUpdateCharity(kylerspenguins);
-    //let homepagedata = await dummyapiservice.GetCharityByDomain();
-    console.error(await dummyapiservice.GetCharityByDomain());
-    console.error(await dummyapiservice.GetCharityByID("89e0a4d3-f42c-4479-af22-2a3cba6bff8a"))
+    //let charityHomePage = await dummyapiservice.GetCharityHomePage();
     let description = "This charity does not exist";
     let charityName = "This charity does not exist";
     setDescription(description);

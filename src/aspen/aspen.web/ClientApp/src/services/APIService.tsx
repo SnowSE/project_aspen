@@ -16,47 +16,44 @@ export class APIService implements IAPIService {
         this.IDomainService = IDomainService
     }
 
-    public async GetCharityThemeByDomain():Promise<Theme>{
-        
+    public async GetCharityThemeByID(id :string):Promise<Theme>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Gettheme?charityid="+id
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error(responseJson.data);
+                let primaryMainColor:string = responseJson.data.primaryMainColor;
+                let primaryLightColor:string = responseJson.data.primaryLightColor;
+                let primaryContrastColor:string = responseJson.data.primaryContrastColor;
+                let secondaryMainColor:string = responseJson.data.secondaryMainColor;
+                let fontFamily:string = responseJson.data.fontFamily;
+                let themeObject = new Theme(primaryMainColor,primaryLightColor,primaryContrastColor,secondaryMainColor,fontFamily);
+                return themeObject
+            }else{
+                throw Error("Domain not found");
+            }
+        }catch(e){
+            console.error("error:"+e);
+            let themeObject = new Theme("","","","","");
+            return themeObject
+        }
     }
 
 
     public async GetCharityHomePage(): Promise<CharityHomePage> {
-        let domain = this.IDomainService.GetDomain();
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/charity/getbydomain?domain="+ domain;
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
-
-        console.error("called charity")
-        console.error(response);
-        let responseJson = await response.json()
-
-        console.warn(responseJson);
-
-        if(responseJson.Status == "Success"){
-            let id = responseJson["data"]["id"];
-            let name = responseJson["data"]["name"];
-            let domain = responseJson["data"]["domain"];
-            let description = responseJson["data"]["description"];
-            let charityObject = new Charity(id, name, domain, description)
-            
-            // TODO get the theme and place it here. 
-            let fontFamily = responseJson["data"]["fontFamily"];
-            let PrimaryMainColor = responseJson["data"]["PrimaryMainColor"];
-            let PrimaryLightColor = responseJson["data"]["PrimaryLightColor"];
-            let PrimaryContrastTextColor = responseJson["data"]["PrimaryContrastTextColor"];
-            let SecondaryMainColor = responseJson["data"]["SecondaryMainColor"];
-            let theme =  new Theme(PrimaryMainColor, PrimaryLightColor, PrimaryContrastTextColor, SecondaryMainColor, fontFamily)
-            return new CharityHomePage(theme, charityObject)
-        }
+        let charity: Charity = await this.GetCharityByDomain();
+        let theme: Theme = await this.GetCharityThemeByID(charity.ID);
+        return new CharityHomePage(theme, charity);
         //TODO: make a second api call to get the theme and remove the theme from the first api call 
-        let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
-        let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
-        let charityHomePage = new CharityHomePage(theme,charityObject);
-        return charityHomePage;
+        // let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
+        // let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
+        // let charityHomePage = new CharityHomePage(theme,charityObject);
     }
 
 
@@ -91,8 +88,7 @@ export class APIService implements IAPIService {
     //this is now working but not using the domain service
     public async GetCharityByDomain(): Promise<Charity> {
         try{
-            console.log("In GetCharityByDomain");
-            let domain = "kylerspenguins3.com";
+            let domain = "kylerspenguins2.com";
             let headers = { "Content-Type": "application/json" };
             let newurl = url + "/Charity/Get?domain="+domain
             let response = await fetch(newurl, {
