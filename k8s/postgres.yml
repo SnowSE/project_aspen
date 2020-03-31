@@ -8,8 +8,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-  matchLabels:
-    app: postgres
+    matchLabels:
+      app: postgres
   template:
     metadata:
       labels:
