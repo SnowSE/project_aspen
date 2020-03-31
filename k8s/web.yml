@@ -40,10 +40,9 @@ spec:
     app: aspen-web
   type:  ClusterIP
   ports:
-  - name:  http
-    port: 80
+  - port: 3000
     protocol: TCP
-    targetPort: 3000
+      
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1beta1
@@ -51,7 +50,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-staging
-  name: CHANGE_ME
+  name: aspen-web-ingress
 spec:
   rules:
   - host: {{ ingress }}

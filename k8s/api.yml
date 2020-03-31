@@ -36,10 +36,7 @@ metadata:
 spec:
   selector:
     app: aspen-api
-    type:  ClusterIP
-    ports:
-    - name:  http
-      port: 5000
-      protocol: TCP
-      targetPort: 80
-  
+  type:  ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
