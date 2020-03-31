@@ -88,5 +88,5 @@ deploy-dev-api:
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
     - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE --ingress dev-api-aspen.k8sd.unitedangels.org
     - /scripts/k8s-deploy.py -f k8s/web.yml --web_image $WEB_IMAGE --ingress dev-aspen.k8sd.unitedangels.org --api_url https://dev-api-aspen.k8sd.unitedangels.org
-    - /scripts/k8s-deploy.py -f k8s/posgres.yml
+    - /scripts/k8s-deploy.py -f k8s/posgress.yml
 #    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this
