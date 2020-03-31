@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { Button, makeStyles, createStyles } from "@material-ui/core";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import AddUpdateCharityForm from "./AddUpdateCharityForm";
+import UpdateCharityForm from "./UpdateCharityForm";
 import { ApplicationState } from "../../store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -61,8 +61,9 @@ const GlobalAdminDetails: React.FC<GlobalAdminDetailsProps> = props => {
   if (props.selectedCharity !== null) {
       return (
         <>
-            <h1>{props.selectedCharity.Domains[0]} Settings</h1>
-            <AddUpdateCharityForm Charity={undefined} />
+            {/* <h1>{props.selectedCharity.Domains[0]} Settings</h1> */}
+          <h1>{props.selectedCharity.CharityName}</h1>
+            <UpdateCharityForm Charity={undefined} />
             <Button className={classes.deleteBtn} onClick={() => deleteOrg()}>
             Delete
             </Button>

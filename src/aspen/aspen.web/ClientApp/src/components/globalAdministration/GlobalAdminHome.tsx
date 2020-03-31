@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import mockApiResult from "./tempMockResult";
-import AddUpdateCharityForm from "./AddUpdateCharityForm";
 import { Link } from "react-router-dom";
 import { Container, Button, createStyles, makeStyles } from "@material-ui/core";
 import { ApplicationState } from "../../store";
@@ -46,9 +45,7 @@ const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
                 <>
                 <p >{key} </p>
                 <Link to={`/globalAdministration/details/${Charity.ID}`} key={Charity.ID}>
-                    
                     <p>{ Charity.CharityName}</p>
-                    
                 </Link>
                 </>
             ))}

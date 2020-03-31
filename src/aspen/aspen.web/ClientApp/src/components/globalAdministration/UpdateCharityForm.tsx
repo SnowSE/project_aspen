@@ -10,12 +10,12 @@ import { RouteComponentProps } from "react-router";
 interface MyRouteProps {
     title: string;
 }
-interface AddUpdateCharityFormProps extends RouteComponentProps<MyRouteProps> {
+interface UpdateCharityFormProps extends RouteComponentProps<MyRouteProps> {
     Charity?: Charity,
     adminAddCharity: typeof actionCreators.adminAddCharity,
 }
 
-const AddUpdateCharityForm:React.FC<AddUpdateCharityFormProps> = props => {
+const UpdateCharityForm:React.FC<UpdateCharityFormProps> = props => {
     let [charityName, setCharityName] = React.useState("");
     let [charityDomain, setCharityDomain] = React.useState("");
     let [charityDescription, setCharityDescription] = React.useState("");
@@ -47,4 +47,4 @@ const mapStateToProps = (state: ApplicationState) => {
 export default connect(
   mapStateToProps,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(withRouter(AddUpdateCharityForm));
+)(withRouter(UpdateCharityForm));
