@@ -55,10 +55,10 @@ spec:
   - host: {{ ingress }}
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
           serviceName: aspen-web-service
-          servicePort: 3000
-        path: /
+          servicePort: 80
   tls:
   - hosts:
     - {{ ingress }}
