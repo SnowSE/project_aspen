@@ -15,8 +15,7 @@ const AddNewCharity:React.FC<AddNewCharityProps> = props => {
     return (
         <>
             <h1>Add New Charity</h1>
-            <AddUpdateCharityForm/>
-            <Button onClick={()=>props.adminAddCharity(new Charity("","kylers penguins","kylerspenguines.com","this is where the penguins live"))}>Submit</Button>
+            <AddUpdateCharityForm />
         </>
     )
 }

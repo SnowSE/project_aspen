@@ -56,17 +56,21 @@ export class APIService implements IAPIService {
 
     //not yet wired
     public async GetCharityByID(ID: string): Promise<Charity> {
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/Get?Id="+ID
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Get?Id="+ID
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
 
-        let responseJson = await response.json();
-
-        let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
-        return c 
+            let responseJson = await response.json();
+            let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+            return c
+        }catch(e){
+            let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+            return c
+        } 
     }
 
     //this is now working but not using the domain service
