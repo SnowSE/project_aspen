@@ -41,8 +41,7 @@ spec:
   type:  ClusterIP
   ports:
   - port: 3000
-    protocol: TCP
-      
+    protocol: TCP   
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1beta1
@@ -58,7 +57,7 @@ spec:
       paths:
       - backend:
           serviceName: aspen-web-service
-          servicePort: 80
+          servicePort: 3000
         path: /
   tls:
   - hosts:
