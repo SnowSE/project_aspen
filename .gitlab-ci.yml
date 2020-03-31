@@ -11,8 +11,6 @@ stages:
   - deploy
 
 variables:
-  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  # DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   REGISTRY: us.gcr.io
   PROJECT: united-angels-web
@@ -58,13 +56,6 @@ build_web:
   script:
     - docker build -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/aspen.web
     - docker push $WEB_IMAGE
-
-# test2:
-#   #integration tests
-#   stage: test
-#   script:
-#     - docker pull $CONTAINER_TEST_IMAGE
-#     - docker run $CONTAINER_TEST_IMAGE /script/to/run/another/test
 
 # release-image:
 #   stage: release
