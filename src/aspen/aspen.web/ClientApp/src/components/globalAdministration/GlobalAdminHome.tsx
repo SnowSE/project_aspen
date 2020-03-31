@@ -33,21 +33,18 @@ interface GlobalAdminHomeProps {
 
 const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
     useEffect(() => {
-      props.adminFetchAllCharities();
+        
+      console.error(props.adminFetchAllCharities())
     }, []);
 
     const classes = useStyles();
-    const keyIsEven = (key: number) => {
-        return ((key % 2) === 0)
-    };
+
     return (
         <Container>
             <h2>Charity List</h2>
             {props.charityList.map((Charity, key)=> (
-                <Link to={`/globalAdministration/details/${Charity.ID}`} key={key}>
-                    <p className={keyIsEven(key)? classes.CharityDefault: classes.CharityDefault +" "+ classes.CharityOdd}>
-                        {Charity.Domains[0]}
-                    </p>
+                <Link to={`/globalAdministration/details/${Charity.ID}`} key={Charity.ID}>
+                    <p >{Charity.CharityName}</p>
                 </Link>
             ))}
             <Button className={classes.AddButton} href={`/globalAdministration/new`}>Add New</Button>

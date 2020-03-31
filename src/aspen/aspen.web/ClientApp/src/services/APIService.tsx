@@ -4,8 +4,8 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
-
-const url = process.env.REACT_APP_API_URL 
+const url = "http://206.189.218.168:5000"
+// const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
@@ -24,17 +24,34 @@ export class APIService implements IAPIService {
 
     //working
     public async GetAllCharities(): Promise<Charity[]> {
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "admin/charity/GetAll"
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/admin/charity/GetAll"
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+            let responseJson = await response.json()
 
-        let responseJson = await response.json()
-        console.error(responseJson)
+            let charityList: Charity[] = [];
 
-        return [new Charity("","Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
+            for(let i = 0; i < responseJson.data.length;i++){
+                let id = responseJson.data[i].charityId;
+                let name = responseJson.data[i].charityName;
+                let description = responseJson.data[i].charityDescription;
+                let res_domains = responseJson.data[i].domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                charityList.push(charityObject);
+            }
+
+
+
+            return charityList;
+        }catch(e){
+            console.error(e);
+            return [new Charity("","ERROR","","")]
+        }
+
     }
 
     //not yet wired
@@ -48,7 +65,7 @@ export class APIService implements IAPIService {
 
         let responseJson = await response.json();
 
-        let c = new Charity("","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+        let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
         return c 
     }
 
