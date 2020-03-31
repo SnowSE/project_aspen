@@ -28,19 +28,18 @@ spec:
           value: aspen
         - name: POSTGRES_DB
           value: aspen
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: postgres
-#   namespace: aspen
-#   labels:
-#     app: postgres
-# spec:
-#   type: NodePort
-#   sessionAffinity: ClientIP
-#   ports:
-#   - port: 5432
-#   nodePort: 30001
-#   selector:
-#     app: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: aspen
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  type:  ClusterIP
+  ports:
+  - port: 5432
+    protocol: TCP
