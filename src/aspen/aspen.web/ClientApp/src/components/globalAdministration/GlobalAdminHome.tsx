@@ -43,9 +43,14 @@ const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
         <Container>
             <h2>Charity List</h2>
             {props.charityList.map((Charity, key)=> (
+                <>
+                <p >{key} </p>
                 <Link to={`/globalAdministration/details/${Charity.ID}`} key={Charity.ID}>
-                    <p >{Charity.CharityName}</p>
+                    
+                    <p>{ Charity.CharityName}</p>
+                    
                 </Link>
+                </>
             ))}
             <Button className={classes.AddButton} href={`/globalAdministration/new`}>Add New</Button>
         </Container>

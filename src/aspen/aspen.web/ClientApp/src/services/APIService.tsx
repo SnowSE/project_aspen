@@ -58,15 +58,24 @@ export class APIService implements IAPIService {
     public async GetCharityByID(ID: string): Promise<Charity> {
         try{
             let headers = { "Content-Type": "application/json" };
-            let newurl = url + "/Charity/Get?Id="+ID
+            let newurl = url + "/admin/charity/Get?charityid="+ID
             let response = await fetch(newurl, {
                 method: "GET",
                 headers: headers
             })
-
+            
             let responseJson = await response.json();
-            let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
-            return c
+
+            if(responseJson.status == "Success"){
+                let id = responseJson.data.charityId;
+                let name = responseJson.data.charityName;
+                let description = responseJson.data.charityDescription;
+                let res_domains = responseJson.data.domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                return charityObject
+            }else{
+                throw Error("ID not found");
+            }
         }catch(e){
             let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
             return c
