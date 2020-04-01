@@ -4,8 +4,6 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
-// const url = "https://dev-api-aspen.k8sd.unitedangels.org"
-// const url = "http://206.189.218.168:5000"
 const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
@@ -26,14 +24,12 @@ export class APIService implements IAPIService {
 
 
 
-    //working
     public async GetCharityHomePage(): Promise<CharityHomePage> {
         let charity: Charity = await this.GetCharityByDomain();
         let theme: Theme = await this.GetCharityThemeByID(charity.ID);
         return new CharityHomePage(theme, charity);
     }
 
-    //working
     public async GetAllCharities(): Promise<Charity[]> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -65,7 +61,6 @@ export class APIService implements IAPIService {
 
     }
 
-    //not yet wired
     public async GetCharityByID(ID: string): Promise<Charity> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -93,7 +88,6 @@ export class APIService implements IAPIService {
         } 
     }
 
-    //this is now working but not using the domain service
     public async GetCharityByDomain(): Promise<Charity> {
         try{
             let domain = this.IDomainService.GetDomain();
@@ -122,7 +116,6 @@ export class APIService implements IAPIService {
         }
     }
 
-    //working
     public async GetCharityThemeByID(id :string):Promise<Theme>{
         try{
             let headers = { "Content-Type": "application/json" };
@@ -152,8 +145,6 @@ export class APIService implements IAPIService {
         }
     }
 
-
-    //working
     public async PostCreateCharity(charity : Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -178,7 +169,7 @@ export class APIService implements IAPIService {
             return false;
         }  
     }
-    //working
+
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
@@ -205,7 +196,7 @@ export class APIService implements IAPIService {
 
     }
 
-    //not working
+    //not working error 405 method not allowed
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
         try{
             let headers = { "Content-Type": "application/json" };
