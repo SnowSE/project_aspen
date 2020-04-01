@@ -3,7 +3,6 @@ import Header from "./Header";
 import { connect } from "react-redux";
 import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
-import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
@@ -11,17 +10,9 @@ import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 import { Charity } from "../../models/CharityModel";
 
-const useStyles = makeStyles(props=>({
-  testDiv:{
-    backgroundColor: props.palette.primary.main,
-  }
-}));
-
-
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
 
 const Home: FunctionComponent<HomeProps> = props => {
-  const classes = useStyles(props);
   const [description, setDescription] = useState("");
   const [charityName, setCharityName] = useState("");
   const [GlobalAdminDomain, setGlobalAdminDomain] = useState("");
@@ -45,13 +36,10 @@ const Home: FunctionComponent<HomeProps> = props => {
     <React.Fragment>
       <Header
         greeting={charityName === "" ? "Loading..." : charityName}
-        backgroundImage={
+        image={
           "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg"
         }
       />
-      <div className={classes.testDiv}>
-        Holiwis
-      </div>
       <Grid container>
         <Grid item xs={9}>
           <ContentCard

@@ -1,86 +1,53 @@
-import React from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { NavLink } from "reactstrap";
-import { positions } from '@material-ui/system';
-import { Link } from "react-router-dom";
-import theme from "../../theme";
-import NavBar from "../NavBar";
-const useStyles = makeStyles({
-  header: {
-    height: 600,
-    position: 'relative',
-    width: "100%",
-    backgroundImage: `linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)), url("https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg")`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-  },
-  navbar: {
-    display: "inline-flex",
-    width: "100%",
-    padding: 10,
-    backgroundColor: theme.palette.primary.main,
-  },
-  logo: {
-    backgroundImage: `url("http://www.unitedangels.org/wp-content/themes/parallelus-razor/assets/images/header-logo.png")`,
-    height: 50,
-    backgroundPosition: "left",
-    backgroundRepeat: "no-repeat",
-    display: "inline-block",
-    width: "50%",
+import React, { FunctionComponent, Props } from "react";
+import * as ThemeStore from "../../store/Theme";
+import { ApplicationState } from "../../store";
+import { connect } from "react-redux";
 
-  },
-  links: {
-    width: "50%",
-    display: "inline-block",
-    height: 50,
-    float: 'right',
-  },
-  overlay:{
-    height: 175,
-    backgroundColor: theme.palette.secondary.main,
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    color: 'white',
-    opacity: 0.75
-  },
-  overlayText:{
-    position: 'absolute',
-    bottom: 100,
-    width: '100%',
-    color: 'white',
-    fontSize: 32,
-    padding: 10,
-    textAlign: 'center'
-  },
-  link: {
-    color: "white",
-    display: 'inline-block',
-    float: 'right',
-    fontSize: 20,
-    fontFamily: theme.typography.fontFamily,
-    textDecoration: 'none',
-    '&:hover': {
-      color: theme.palette.primary.light,
-    }
-  },
-});
-
-interface HeaderProps {
+interface HeaderInterface {
     greeting: string,
-    backgroundImage: string
+    image: string,
 }
 
-const Header:React.FC<HeaderProps> = props => {
-  const classes = useStyles();
+type HeaderProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & HeaderInterface;
+
+const Header: FunctionComponent<HeaderProps> = props => {
+    //Styles Fixup
+      let header = {
+        height: 600,
+        position: 'relative',
+        width: "100%",
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)), url("https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg")`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      } as React.CSSProperties;
+
+      let overlay = {
+        height: 175,
+        backgroundColor: String(props.palette.primary.main),
+        position: "absolute",
+        bottom: 0,
+        width: '100%',
+        color: 'white',
+        opacity: 0.75
+      } as React.CSSProperties;
+
+      let overlayText = {
+        position: 'absolute',
+        bottom: 100,
+        width: '100%',
+        color: String(props.palette.primary.contrastText),
+        fontSize: 32,
+        padding: 10,
+        textAlign: 'center'
+      } as React.CSSProperties;
 
   return (
     <React.Fragment>
-      <div className={classes.header}>
-        <div className={classes.overlay}>
+      <div style={header}>
+        <div style={overlay}>
         </div>
-        <div className={classes.overlayText}>
+        <div style={overlayText}>
             {props.greeting}
         </div>
       </div>
@@ -88,4 +55,7 @@ const Header:React.FC<HeaderProps> = props => {
   );
 };
 
-export default Header;
+export default connect(
+  (state: ApplicationState) => state.theme,
+  ThemeStore.actionCreators
+)(Header);
