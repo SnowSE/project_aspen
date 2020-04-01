@@ -4,6 +4,7 @@ using Aspen.Core.Models;
 
 namespace Aspen.Core
 {
+    //alternatives: internalresult
     public struct Result<T>
     {
         public bool IsFailure => !IsSucccess;
