@@ -5,8 +5,8 @@ import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
 // const url = "https://dev-api-aspen.k8sd.unitedangels.org"
-const url = "http://206.189.218.168:5000"
-// const url = process.env.REACT_APP_API_URL 
+// const url = "http://206.189.218.168:5000"
+const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
