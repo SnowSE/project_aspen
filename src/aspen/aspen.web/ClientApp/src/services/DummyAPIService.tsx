@@ -9,24 +9,24 @@ export class DummyAPIService implements IAPIService{
     IDomainService: IDomainService = new DomainService();
     public async GetCharityHomePage(): Promise <CharityHomePage> {
         let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
-        let charity = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
+        let charity = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a","Kylers penguin's","kyler.com","this is where the awesome penguin's live")
         let charityHomePage = new CharityHomePage(theme,charity);
         
         return charityHomePage;
     }
     public async GetAllCharities(): Promise<Charity[]> {
-        let charity = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
+        let charity = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a","Kylers penguin's","kyler.com","this is where the awesome penguin's live")
         return [charity]
     }
-    public async GetCharityByID(ID: number): Promise<Charity> {
-        if(ID == 1){
-            let charity = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")
+    public async GetCharityByID(ID: string): Promise<Charity> {
+        if(ID == "89e0a4d3-f42c-4479-af22-2a3cba6bff8a"){
+            let charity = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a","Kylers penguin's","kyler.com","this is where the awesome penguin's live")
             return charity
         }else{
-            return new Charity(0,"","","")
+            return new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a","","","")
         }
     }
-    public async PostCreateCharity(): Promise<boolean> {
+    public async PostCreateCharity(charity : Charity): Promise<boolean> {
         return true
     }
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {

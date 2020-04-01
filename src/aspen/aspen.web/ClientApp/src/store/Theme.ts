@@ -42,11 +42,11 @@ export const actionCreators = {
 
 const typ: Typography = { fontFamily: "Arial" };
 const prim: Primary = {
-  main: "#fcb8ab",
-  light: "#ffddd6",
-  contrastText: "#000000"
+  main: "#438f00",
+  light: "#67cc0e",
+  contrastText: "#FFFFFF"
 };
-const sec: Secondary = { main: "#ffe0a6" };
+const sec: Secondary = { main: "#608045" };
 const pal: Palette = { primary: prim, secondary: sec };
 
 const initialState: ThemeState = {

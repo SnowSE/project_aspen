@@ -4,7 +4,7 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
-const url = process.env.REACT_APP_API_URL
+const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 export class APIService implements IAPIService {
@@ -12,154 +12,214 @@ export class APIService implements IAPIService {
 
     constructor(IDomainService: IDomainService) {
         this.IDomainService = IDomainService
-        console.error("url: "+url)
-        console.error("global admin domain:"+globaladmindomain)
+        this.Initilize();
     }
+
+    public Initilize(){
+        let kylerspenguins = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a", "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins")
+        this.PostCreateCharity(kylerspenguins);
+        let data =  this.GetCharityHomePage();
+        console.error(data);
+    }
+
 
 
     public async GetCharityHomePage(): Promise<CharityHomePage> {
-        let domain = this.IDomainService.GetDomain();
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/charity/getbydomain?domain="+ domain;
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
-
-        console.error("called charity")
-        console.error(response);
-        let responseJson = await response.json()
-
-        console.warn(responseJson);
-
-        if(responseJson.Status == "Success"){
-            let id = responseJson["data"]["id"];
-            let name = responseJson["data"]["name"];
-            let domain = responseJson["data"]["domain"];
-            let description = responseJson["data"]["description"];
-            let charityObject = new Charity(id, name, domain, description)
-            
-            // TODO get the theme and place it here. 
-            let fontFamily = responseJson["data"]["fontFamily"];
-            let PrimaryMainColor = responseJson["data"]["PrimaryMainColor"];
-            let PrimaryLightColor = responseJson["data"]["PrimaryLightColor"];
-            let PrimaryContrastTextColor = responseJson["data"]["PrimaryContrastTextColor"];
-            let SecondaryMainColor = responseJson["data"]["SecondaryMainColor"];
-            let theme =  new Theme(PrimaryMainColor, PrimaryLightColor, PrimaryContrastTextColor, SecondaryMainColor, fontFamily)
-            return new CharityHomePage(theme, charityObject)
-        }
-        //TODO: make a second api call to get the theme and remove the theme from the first api call 
-        let theme = new Theme("#438f00","#67cc0e","#FFFFFF", "#608045","Arial");
-        let charityObject = new Charity(1,"FAILED","FAILED","FAILED")
-        let charityHomePage = new CharityHomePage(theme,charityObject);
-        return charityHomePage;
+        let charity: Charity = await this.GetCharityByDomain();
+        let theme: Theme = await this.GetCharityThemeByID(charity.ID);
+        return new CharityHomePage(theme, charity);
     }
-
 
     public async GetAllCharities(): Promise<Charity[]> {
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "admin/charity/GetAll"
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/admin/charity/GetAll"
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+            let responseJson = await response.json()
 
-        let responseJson = await response.json()
-        console.error(responseJson)
+            let charityList: Charity[] = [];
 
-        return [new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live")]
+            for(let i = 0; i < responseJson.data.length;i++){
+                let id = responseJson.data[i].charityId;
+                let name = responseJson.data[i].charityName;
+                let description = responseJson.data[i].charityDescription;
+                let res_domains = responseJson.data[i].domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                charityList.push(charityObject);
+            }
+
+
+
+            return charityList;
+        }catch(e){
+            console.error(e);
+            return [new Charity("","ERROR","","")]
+        }
+
     }
-    public async GetCharityByID(ID: number): Promise<Charity> {
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/get/"+ID.toString
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
 
-        let responseJson = await response.json();
+    public async GetCharityByID(ID: string): Promise<Charity> {
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/admin/charity/Get?charityid="+ID
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+            
+            let responseJson = await response.json();
 
-        let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
-        return c 
+            if(responseJson.status == "Success"){
+                let id = responseJson.data.charityId;
+                let name = responseJson.data.charityName;
+                let description = responseJson.data.charityDescription;
+                let res_domains = responseJson.data.domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                return charityObject
+            }else{
+                throw Error("ID not found");
+            }
+        }catch(e){
+            let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
+            return c
+        } 
     }
 
     public async GetCharityByDomain(): Promise<Charity> {
-        console.log("In GetCharityByDomain");
-        let domain = "kylerspenguins.com";
-        let headers = { "Content-Type": "application/json" };
-        let newurl = url + "/Charity/?domain="+domain
-        let response = await fetch(newurl, {
-            method: "GET",
-            headers: headers
-        })
+        try{
+            let domain = this.IDomainService.GetDomain();
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Get?domain="+domain
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
 
-        let responseJson = await response.json();
-        console.error(responseJson)
-
-        let id = responseJson["data"]["id"];
-        let name = responseJson["data"]["name"];
-        let res_domain = responseJson["data"]["domain"];
-        let description = responseJson["data"]["description"];
-        let charityObject = new Charity(id, name, res_domain, description)
-
-
-
-        let c = new Charity(1,"Kylers penguin's","kyler.com","this is where the awesome penguin's live");
-        return charityObject 
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                let id = responseJson.data.charityId;
+                let name = responseJson.data.charityName;
+                let description = responseJson.data.charityDescription;
+                let res_domains = responseJson.data.domains;
+                let charityObject = new Charity(id, name, res_domains, description);
+                return charityObject
+            }else{
+                throw Error("Domain not found");
+            }
+        }catch(e){
+            console.error("error:"+e);
+            let c = new Charity("","error","error","error");
+            return c;
+        }
     }
 
-    public async PostCreateCharity(): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let Charity = {
-            CharityName:"Kylers Penguins",
-            CharityDescription:"Kyler has a lot of penguins",
-            Domains: [
-                { charitydomain: "kylerspenguins.com"}
-            ]
-        };
-        let body = JSON.stringify(Charity);
-        let newurl = url + "/Admin/Charity/Create"
-        let response = await fetch(newurl, {
-            method: "POST",
-            headers: headers,
-            body: body
-        });
-        let responseJson = await response.json();
-        console.error(responseJson);
-        return true;
+    public async GetCharityThemeByID(id :string):Promise<Theme>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let newurl = url + "/Charity/Gettheme?charityid="+id
+            let response = await fetch(newurl, {
+                method: "GET",
+                headers: headers
+            })
+
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error(responseJson.data);
+                let primaryMainColor:string = responseJson.data.primaryMainColor;
+                let primaryLightColor:string = responseJson.data.primaryLightColor;
+                let primaryContrastColor:string = responseJson.data.primaryContrastColor;
+                let secondaryMainColor:string = responseJson.data.secondaryMainColor;
+                let fontFamily:string = responseJson.data.fontFamily;
+                let themeObject = new Theme(primaryMainColor,primaryLightColor,primaryContrastColor,secondaryMainColor,fontFamily);
+                return themeObject
+            }else{
+                throw Error("Domain not found");
+            }
+        }catch(e){
+            console.error("error:"+e);
+            let themeObject = new Theme("","","","","");
+            return themeObject
+        }
+    }
+
+    public async PostCreateCharity(charity : Charity): Promise<boolean> {
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            let newurl = url + "/Admin/Charity/Create"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            });
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("We added the charity successfully");
+                return true;
+            }else{
+                console.error("adding the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("adding the charity failed");
+            return false;
+        }  
     }
 
     public async PostUpdateCharity(charity: Charity): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let Charity = {CharityName:"Kylers Penguins",
-                    CharityDescription:"Kyler has a lot of penguins",
-                    Domains: [
-                        { "charitydomain": "kylerspenguins.com"}
-                    ]};
-        let body = JSON.stringify(Charity);
-        let newurl = url + "/Admin/Charity/Create"
-        let response = await fetch(newurl, {
-            method: "POST",
-            headers: headers,
-            body: body
-        })
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            let newurl = url + "/Admin/Charity/Update"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("We Updated the charity successfully");
+                return true;
+            }else{
+                console.error("Updating the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("Updating the charity failed");
+            return false;
+        }   
 
-        let responseJson = await response.json();
-        console.error(responseJson);
-        return true;
     }
-    public async PostDeleteCharity(charity: Charity): Promise<boolean> {
-        let headers = { "Content-Type": "application/json" };
-        let body = JSON.stringify(charity);
-        let newurl = url + "/Charity/Update"
-        let response = await fetch(newurl, {
-            method: "POST",
-            headers: headers,
-            body: body
-        })
 
-        let responseJson = await response.json();
-        return true;
+    //not working error 405 method not allowed
+    public async PostDeleteCharity(charity: Charity): Promise<boolean> {
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(charity);
+            let newurl = url + "/Admin/Charity/Delete"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("Deleted the charity successfully");
+                return true;
+            }else{
+                console.error("Deleting the charity failed");
+                return false;
+            }
+        }catch(e){
+            console.error("Deleting the charity failed:"+e);
+            return false;
+        }   
     }
 
 }
