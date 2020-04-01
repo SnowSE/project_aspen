@@ -164,8 +164,7 @@ namespace Aspen.Core.Repositories
         {
             await dbConnection.ExecuteAsync(
                     @"delete from Charity
-                    where CharityId = @charityId
-                    and CharityName = @charityName;",
+                    where CharityId = @charityId;",
                     charity
                 );
         }

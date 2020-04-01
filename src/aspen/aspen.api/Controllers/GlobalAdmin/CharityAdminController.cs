@@ -61,7 +61,7 @@ namespace Aspen.Api.Controllers
             return StatusReturn.Success(null);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<StatusReturn> Delete([FromBody]Charity charity)
         {
             await charityRepository.Delete(charity);

@@ -10,7 +10,7 @@ namespace Aspen.Core.Models
         private void valiateDomains(IEnumerable<Domain> domains)
         {
             if(domains == null) throw new ArgumentException("domains cannot be null");
-            if(domains.Count() == 0) throw new ArgumentException("domains cannot be empty");
+            // if(domains.Count() == 0) throw new ArgumentException("domains cannot be empty");
         }
         
         [JsonConstructor]
