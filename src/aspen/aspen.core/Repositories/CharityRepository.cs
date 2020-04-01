@@ -76,20 +76,34 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<Charity> GetByDomain(Domain domain)
+        public async Task<Result<Charity>> GetByDomain(Domain domain)
         {
             using (var dbConnection = getDbConnection())
             {
-                var charityId = await getCharityIdByDomain(domain, dbConnection);
-                return await getCharityWithDomain(dbConnection, charityId);
+                try
+                {
+                    var charityId = await getCharityIdByDomain(domain, dbConnection);
+                    var charity = await getCharityWithDomain(dbConnection, charityId);
+                    return Result<Charity>.Success(charity);
+                }
+                catch(InvalidOperationException e)
+                {
+                    if(e.Message == "Sequence contains no elements")
+                        return Result<Charity>.Failure("Domain does not exist");
+                    else
+                        return Result<Charity>.Failure(e.Message);
+                }
             }
         }
 
-        public async Task<Charity> GetById(Guid charityId)
+        public async Task<Result<Charity>> GetById(Guid charityId)
         {
             using (var dbConnection = getDbConnection())
             {
-                return await getCharityWithDomain(dbConnection, charityId);
+                var charity = await getCharityWithDomain(dbConnection, charityId);
+                return charity != null
+                    ? Result<Charity>.Success(charity)
+                    : Result<Charity>.Failure("Charity id does not exist");
             }
         }
 

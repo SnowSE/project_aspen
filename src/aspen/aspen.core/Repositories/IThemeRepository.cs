@@ -10,7 +10,7 @@ namespace Aspen.Core.Repositories
         Task Create(Theme theme);
         Task Delete(Guid charityId);
         Task<IEnumerable<Theme>> GetAll();
-        Task<Theme> GetByCharityId(Guid charityId);
+        Task<Result<Theme>> GetByCharityId(Guid charityId);
         Task Update(Theme theme);
     }
 }

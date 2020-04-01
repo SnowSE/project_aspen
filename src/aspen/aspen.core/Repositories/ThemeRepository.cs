@@ -30,15 +30,15 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<Theme> GetByCharityId(Guid charityId)
+        public async Task<Result<Theme>> GetByCharityId(Guid charityId)
         {
             using (var dbConnection = getDbConnection())
             {
-                return await dbConnection.QueryFirstAsync<Theme>(
+                return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
                     @"select * from Theme
                         where Theme.CharityId = @charityId;",
                     new { charityId }
-                );
+                ));
             }
         }
 

@@ -1,13 +1,11 @@
 using System.Threading.Tasks;
-using Aspen.Api.Models;
-using Aspen.Core.Models;
 using Aspen.Core.Repositories;
 using System.Linq;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Cors;
+using Aspen.Core;
+using Aspen.Core.Models;
 
 namespace Aspen.Api.Controllers
 {
@@ -45,8 +43,8 @@ namespace Aspen.Api.Controllers
         private async Task<StatusReturn> CreateCharity(Charity charity)
         {
             await charityRepository.Create(charity);
-            var dbCharity = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(dbCharity.CharityId));
+            var result = await charityRepository.GetByDomain(charity.Domains.First());
+            await themeRepository.Create(Theme.Default(result.State.CharityId));
             return StatusReturn.Success(null);
         }
 
@@ -54,8 +52,8 @@ namespace Aspen.Api.Controllers
         public async Task<StatusReturn> Create([FromBody]Charity charity)
         {
             await charityRepository.Create(charity);
-            var dbCharity = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(dbCharity.CharityId));
+            var result = await charityRepository.GetByDomain(charity.Domains.First());
+            await themeRepository.Create(Theme.Default(result.State.CharityId));
             return StatusReturn.Success(null);
         }
 
