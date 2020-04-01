@@ -4,6 +4,7 @@ import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 
+// const url = "https://dev-api-aspen.k8sd.unitedangels.org"
 const url = "http://206.189.218.168:5000"
 // const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
@@ -13,7 +14,17 @@ export class APIService implements IAPIService {
 
     constructor(IDomainService: IDomainService) {
         this.IDomainService = IDomainService
+        this.Initilize();
     }
+
+    public Initilize(){
+        let kylerspenguins = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a", "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins")
+        this.PostCreateCharity(kylerspenguins);
+        let data =  this.GetCharityHomePage();
+        console.error(data);
+    }
+
+
 
     //working
     public async GetCharityHomePage(): Promise<CharityHomePage> {
@@ -85,7 +96,7 @@ export class APIService implements IAPIService {
     //this is now working but not using the domain service
     public async GetCharityByDomain(): Promise<Charity> {
         try{
-            let domain = "kylerspenguins2.com";
+            let domain = this.IDomainService.GetDomain();
             let headers = { "Content-Type": "application/json" };
             let newurl = url + "/Charity/Get?domain="+domain
             let response = await fetch(newurl, {

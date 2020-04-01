@@ -10,6 +10,7 @@ import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 import { Charity } from "../../models/CharityModel";
+import {DummyDomainService} from "../../services/DummyDomainService"
 
 const useStyles = makeStyles(props=>({
   testDiv:{
@@ -28,21 +29,13 @@ const Home: FunctionComponent<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let dummyapiservice = new APIService(new DomainService());
-    //not sure why it says adding the chairty fails it looks like it is create just fine.
-    let kylerspenguins = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a", "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins")
-    await dummyapiservice.PostCreateCharity(kylerspenguins);
-    let data = await dummyapiservice.GetCharityHomePage();
-    console.error(data);
-    let charity = data.Charity;
-    let charity2 = new Charity(charity.ID,"Kylers Penguins18","kylerspenguins2.com","he sure does like penguines")
-    await dummyapiservice.PostUpdateCharity(charity2)
-    await dummyapiservice.GetCharityHomePage();
-
-    let charityHomePage = await dummyapiservice.GetCharityHomePage();
+    let apiservice = new APIService(new DomainService());
+    let charityHomePage = await apiservice.GetCharityHomePage();
     console.error(charityHomePage);
-    let description = "This charity does not exist";
-    let charityName = "This charity does not exist";
+    let description = charityHomePage.Charity.CharityDescription;
+    let charityName = charityHomePage.Charity.CharityName;
+
+
     setDescription(description);
     setCharityName(charityName);
   };
@@ -59,9 +52,6 @@ const Home: FunctionComponent<HomeProps> = props => {
           "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg"
         }
       />
-      <div className={classes.testDiv}>
-        Holiwis
-      </div>
       <Grid container>
         <Grid item xs={9}>
           <ContentCard
