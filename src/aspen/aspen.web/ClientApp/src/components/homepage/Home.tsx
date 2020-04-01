@@ -9,6 +9,7 @@ import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 import { Charity } from "../../models/CharityModel";
+import {DummyDomainService} from "../../services/DummyDomainService"
 
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
 
@@ -19,11 +20,13 @@ const Home: FunctionComponent<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let dummyapiservice = new APIService(new DomainService());
-    let data = dummyapiservice.PostCreateCharity();
-    //let homepagedata = await dummyapiservice.GetCharityByDomain();
-    let description = "This charity does not exist";
-    let charityName = "This charity does not exist";
+    let apiservice = new APIService(new DomainService());
+    let charityHomePage = await apiservice.GetCharityHomePage();
+    console.error(charityHomePage);
+    let description = charityHomePage.Charity.CharityDescription;
+    let charityName = charityHomePage.Charity.CharityName;
+
+
     setDescription(description);
     setCharityName(charityName);
   };

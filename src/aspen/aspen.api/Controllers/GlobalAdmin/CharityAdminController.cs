@@ -21,9 +21,6 @@ namespace Aspen.Api.Controllers
         {
             this.charityRepository = charityRepository;
             this.themeRepository = themeRepository;
-            var domains = new List<Domain>{new Domain("localhost")};
-            var charity = new Charity(Guid.NewGuid(),"kylers angry penguins","this is penguins",domains);
-            this.CreateCharity(charity);
         }
 
         [HttpGet]

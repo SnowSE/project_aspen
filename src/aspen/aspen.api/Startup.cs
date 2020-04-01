@@ -53,7 +53,6 @@ namespace Aspen.Api
                     {
                         builder
                             .AllowAnyOrigin()
-                            // .WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
