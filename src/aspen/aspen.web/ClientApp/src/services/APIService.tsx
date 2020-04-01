@@ -3,6 +3,7 @@ import { CharityHomePage } from "../models/CharityHomePageModel";
 import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
+import {Team} from "../models/TeamModel";
 
 const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
@@ -214,13 +215,40 @@ export class APIService implements IAPIService {
                 console.error("Deleted the charity successfully");
                 return true;
             }else{
-                console.error("Deleting the charity failed");
-                return false;
+                throw Error("Failed to delete the charity")
             }
         }catch(e){
             console.error("Deleting the charity failed:"+e);
             return false;
         }   
     }
+
+
+    public async PostCreateTeam(team:Team,charityId: string): Promise<boolean>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(team);
+            console.log("charity: " + body)
+            let newurl = url + "/Teams/Create"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                console.error("Deleted the charity successfully");
+                return true;
+            }else{
+                throw Error("Failed to delete the charity")
+            }
+        }catch(e){
+            console.error("Deleting the charity failed:"+e);
+            return false;
+        } 
+    }
+
+
 
 }
