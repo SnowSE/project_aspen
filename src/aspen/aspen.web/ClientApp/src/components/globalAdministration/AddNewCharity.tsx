@@ -1,5 +1,5 @@
 import React from "react";
-import AddUpdateCharityForm from "./AddUpdateCharityForm";
+import AddCharityForm from "./AddCharityForm";
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -15,8 +15,7 @@ const AddNewCharity:React.FC<AddNewCharityProps> = props => {
     return (
         <>
             <h1>Add New Charity</h1>
-            <AddUpdateCharityForm/>
-            <Button onClick={()=>props.adminAddCharity(new Charity("0","","",""))}>Submit</Button>
+            <AddCharityForm />
         </>
     )
 }

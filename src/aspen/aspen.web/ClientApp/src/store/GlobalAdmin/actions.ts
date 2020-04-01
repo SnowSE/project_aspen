@@ -75,6 +75,7 @@ export function adminAddCharity(charity: Charity): AppThunkAction<ActionTypes.Ch
             .PostCreateCharity(charity)
             .then(result => dispatch(addCharity(charity)))
             .catch(e => dispatch(failedApiCall()))
+            
     }
 }
 
