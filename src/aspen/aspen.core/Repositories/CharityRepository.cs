@@ -151,31 +151,37 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task Delete(Charity charity)
+        public async Task<Result<bool>> Delete(Charity charity)
         {
             using (var dbConnection = getDbConnection())
             {
-                await deleteDomains(charity, dbConnection);
-                await deleteCharity(charity, dbConnection);
+                return await Result<Charity>.Success(charity)
+                    .ApplyAsync(async c => await deleteDomains(c, dbConnection))
+                    .ApplyAsync(async c => await deleteCharity(c, dbConnection));
             }
         }
 
-        private static async Task deleteCharity(Charity charity, IDbConnection dbConnection)
+        private static async Task<Result<bool>> deleteCharity(Charity charity, IDbConnection dbConnection)
         {
-            await dbConnection.ExecuteAsync(
+            var rowsAffected = await dbConnection.ExecuteAsync(
                     @"delete from Charity
                     where CharityId = @charityId;",
                     charity
                 );
+
+            if(rowsAffected == 0)
+                return Result<bool>.Failure("Cannot delete non-existant charity.");
+            return Result<bool>.Success(true);
         }
 
-        private static async Task deleteDomains(Charity charity, IDbConnection dbConnection)
+        private static async Task<Result<Charity>> deleteDomains(Charity charity, IDbConnection dbConnection)
         {
             await dbConnection.ExecuteAsync(
                     @"delete from Domain
-                    where charityId = @charityId",
+                    where charityId = @charityId;",
                     charity
                 );
+            return Result<Charity>.Success(charity);
         }
     }
 }
