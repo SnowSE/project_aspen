@@ -4,8 +4,9 @@ import { APIService } from "../services/APIService";
 import { DomainService } from "../services/DomainService"
 import { Typography } from "@material-ui/core";
 import { AppThunkAction } from "./index";
+import {LoggerService} from "../services/LoggerService"
 
-const apiService = new APIService(new DomainService())
+const apiService = new APIService(new DomainService(),new LoggerService())
 
 //State
 export interface ThemeState {
