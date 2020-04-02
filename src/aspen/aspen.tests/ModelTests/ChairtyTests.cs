@@ -14,12 +14,5 @@ namespace Aspen.Tests.ModelTests
 
             act.Should().Throw<ArgumentException>().WithMessage("domains cannot be null");
         }
-        [Test]
-        public void CannotCreateCharityWithEmptyDomains()
-        {
-            Action act = () => new Charity(Guid.NewGuid(), "charityname", "description", new Domain[] {});
-
-            act.Should().Throw<ArgumentException>().WithMessage("domains cannot be empty");
-        }
     }
 }

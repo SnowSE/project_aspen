@@ -22,7 +22,6 @@ namespace Aspen.Tests.ControllerTests
             charityRepoMoq = new Mock<ICharityRepository>();
             themeRepoMoq = new Mock<IThemeRepository>();
             charityController = new CharityController(charityRepoMoq.Object, themeRepoMoq.Object);
-
         }
 
         [Test]

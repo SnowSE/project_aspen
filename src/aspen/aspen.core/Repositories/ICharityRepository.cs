@@ -13,6 +13,6 @@ namespace Aspen.Core.Repositories
         Task Update(Charity charity);
         Task<Result<Charity>> GetById(Guid charityId);
         Task<Result<Charity>> GetByDomain(Domain Domain);
-        Task Delete(Charity charity);
+        Task<Result<bool>> Delete(Charity charity);
     }
 }
