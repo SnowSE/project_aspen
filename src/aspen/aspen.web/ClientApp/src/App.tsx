@@ -11,7 +11,12 @@ import { bindActionCreators } from "redux";
 import { Theme } from "./models/Theme";
 import * as ThemeStore from "./store/Theme";
 
-const App: React.FC = () => (
+type AppProps = typeof ThemeStore.actionCreators
+
+const App: React.FC<AppProps> = props => {
+    props.loadThemeAction();
+    return(
+
     <>
         <NavBar/>
         <Switch>
@@ -21,9 +26,10 @@ const App: React.FC = () => (
             <Route path="/globalAdministration" component={GlobalAdminRouter} />
         </Switch>
     </>
-);
+    )
+    };
 
 export default connect(
     null,
-    ThemeStore.actionCreators
+    dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
 )(App);
