@@ -8,9 +8,8 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
-import { Charity } from "../../models/CharityModel";
-import { DummyDomainService } from "../../services/DummyDomainService";
 import {LoggerService} from "../../services/LoggerService"
+import { Team } from "../../models/TeamModel";
 
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
 
@@ -23,12 +22,9 @@ const Home: FunctionComponent<HomeProps> = props => {
   const handleHomeData = async () => {
     let apiservice = new APIService(new DomainService(),new LoggerService());
     let charityHomePage = await apiservice.GetCharityHomePage();
-    console.error(charityHomePage);
-    let description = charityHomePage.Charity.CharityDescription;
-    let charityName = charityHomePage.Charity.CharityName;
-
-    setDescription(description);
-    setCharityName(charityName);
+    setDescription(charityHomePage.Charity.CharityDescription);
+    setCharityName(charityHomePage.Charity.CharityName);
+    apiservice.PostDeleteTeam(new Team("kylers Team","kylers awesome team"),charityHomePage.Charity.ID);
   };
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { CharityHomePage } from "../models/CharityHomePageModel";
 import { Charity } from "../models/CharityModel";
 import { Theme } from "../models/Theme";
 import {DomainService} from "./DomainService"
+import { Team } from "../models/TeamModel";
 
 export class DummyAPIService implements IAPIService{
     IDomainService: IDomainService = new DomainService();
@@ -34,5 +35,14 @@ export class DummyAPIService implements IAPIService{
     }
     public async PostDeleteCharity(charity: Charity): Promise<boolean> {
         return true
+    }
+    public async PostUpdateTeam(team: Team, charityId: string): Promise<boolean> {
+        return true;
+    }
+    public async PostCreateTeam(team: Team, charityId: string): Promise<boolean> {
+        return true;
+    }
+    GetTeamByCharityID(charityId: string): Promise<Team[]> {
+        throw new Error("Method not implemented.");
     }
 }
