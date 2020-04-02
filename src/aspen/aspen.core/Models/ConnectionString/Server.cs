@@ -14,7 +14,7 @@ namespace Aspen.Core.Models
 
         private static string getAndValidateServer(string connectionString)
         {
-            var serverPattern = @"Port=([a-z0-9-.]+);";
+            var serverPattern = @"Server=([a-z0-9-.]+);";
             var match = Regex.Match(connectionString, serverPattern);
             if(match.Success)
                 return match.Groups[1].Value;
@@ -22,6 +22,6 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Invalid server");
         }
 
-        public override string ToString() => data.ToString();
+        public override string ToString() => "Server=" + data.ToString() + "; ";
     }
 }
