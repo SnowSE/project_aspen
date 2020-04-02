@@ -111,5 +111,15 @@ namespace Aspen.Integration.RepositoryTests
             result.IsSucccess.Should().BeFalse();
             result.Error.Should().Be("Domain does not exist");
         }
+
+        [Test]
+        public async Task Delete_HandlesCallWithEmptyCharity()
+        {
+            var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", new Domain[] {});
+            var result = await charityRepository.Delete(nonExistantCharity);
+
+            result.IsSucccess.Should().BeFalse();
+            result.Error.Should().Be("Cannot delete non-existant charity.");
+        }
     }
 }

@@ -62,10 +62,16 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<StatusReturn> Delete([FromBody]Charity charity)
+        public async Task<StatusReturn> Delete([FromBody]Charity charity) =>
+            await charity
+                .ValidateFunction(validateCharity)
+                .ApplyAsync(charityRepository.Delete)
+                .ReturnWithStatus();
+        
+        
+        private Result<Charity> validateCharity(Charity charity)
         {
-            await charityRepository.Delete(charity);
-            return StatusReturn.Success(null);
+            return Result<Charity>.Success(charity);
         }
 
     }
