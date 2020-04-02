@@ -32,6 +32,7 @@ namespace Aspen.Tests.ControllerTests
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
+                "no conn string",
                 new Domain[] { penguinDomain });
             
             charityRepoMoq
@@ -53,6 +54,7 @@ namespace Aspen.Tests.ControllerTests
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
+                "no conn string",
                 new Domain[] { penguinDomain });
             
             charityRepoMoq
@@ -74,6 +76,7 @@ namespace Aspen.Tests.ControllerTests
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
+                "no conn string",
                 new Domain[] { penguinDomain });
             
             var color = "#000000";

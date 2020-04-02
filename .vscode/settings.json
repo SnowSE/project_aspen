@@ -10,8 +10,10 @@
             "username": "Aspen"
         },
         {
-            "database": "Aspen",
+            "database": "Admin",
             "dialect": "PostgreSQL",
+            "isActive": false,
+            "isConnected": false,
             "name": "aspen_integration",
             "password": "Aspen",
             "port": 5433,

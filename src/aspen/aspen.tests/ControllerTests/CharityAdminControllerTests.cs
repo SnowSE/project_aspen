@@ -27,7 +27,7 @@ namespace Aspen.Tests.ControllerTests
         [Test]
         public async Task Delete_HandlesBadInput()
         {
-            var badcharity = new Charity(Guid.NewGuid(), "nonexistantcharity", "description", new Domain[] {});
+            var badcharity = new Charity(Guid.NewGuid(), "nonexistantcharity", "description", "no conn string", new Domain[] {});
             charityRepoMoq
                 .Setup(cr => cr.Delete(badcharity))
                 .ReturnsAsync(Result<bool>.Failure("Charity does not exist"));

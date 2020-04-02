@@ -21,13 +21,16 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
-                charity = new Charity(Guid.NewGuid(), charity.CharityName, charity.CharityDescription, charity.Domains);
+                charity = new Charity(Guid.NewGuid(), charity.CharityName, charity.CharityDescription, charity.ConnectionString, charity.Domains);
                 await dbConnection.ExecuteAsync(
-                    @"insert into Charity (CharityId, CharityName, CharityDescription)
-                    values (@CharityId, @CharityName, @CharityDescription);",
+                    @"insert into Charity (CharityId, CharityName, CharityDescription, ConnectionString)
+                    values (@CharityId, @CharityName, @CharityDescription, @ConnectionString);",
                     charity
                 );
-
+                
+                //do not create charity if it has no domains
+                //very bad if this happens
+                //TODO: FIX THIS
                 foreach (var domain in charity.Domains)
                 {
                     await dbConnection.ExecuteAsync(
@@ -57,6 +60,9 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
+                // return await dbConnection.QueryAsync<Charity>(
+                //     @"select * from Charity;"
+                // );
                 var charityDict = new Dictionary<Guid, Charity>();
 
                 await dbConnection.QueryAsync<Charity, Domain, Charity>(

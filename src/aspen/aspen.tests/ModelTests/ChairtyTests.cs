@@ -10,7 +10,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void CannotCreateACharityWithNullDomains()
         {
-            Action act = () => new Charity(Guid.NewGuid(), "charityname", "description", null);
+            Action act = () => new Charity(Guid.NewGuid(), "charityname", "description", "no conn string", null);
 
             act.Should().Throw<ArgumentException>().WithMessage("domains cannot be null");
         }

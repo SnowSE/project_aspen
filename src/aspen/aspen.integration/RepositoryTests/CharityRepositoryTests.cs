@@ -9,6 +9,7 @@ using Dapper;
 using FluentAssertions;
 using NUnit.Framework;
 using Aspen.Integration.Helpers;
+using Newtonsoft.Json;
 
 namespace Aspen.Integration.RepositoryTests
 {
@@ -36,6 +37,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
+                "no conn string",
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
 
             await charityRepository.Create(alexsTurtles);
@@ -45,10 +47,25 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanAddCharityToDatabase()
         {
             var all_charities = await charityRepository.GetAll();
-
+            Console.WriteLine(JsonConvert.SerializeObject(all_charities));
             Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
             var dbAlexsTurtles = all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).First();
             dbAlexsTurtles.Domains.First().Should().BeEquivalentTo(alexsTurtles.Domains.First());
+        }
+
+        [Test]
+        public async Task CreatingCharityCreatesCharityDatabase()
+        {
+            var dbname = alexsTurtles.CharityId.ToString().Replace("-", "");
+            using(var dbConnection = getDbConnection())
+            {
+                var databases = await dbConnection.QueryAsync<string>(
+                    @"SELECT datname FROM pg_database
+                    WHERE datistemplate = false;"
+                );
+                databases.Should().Contain(dbname);
+            }
+
         }
 
         [Test]
@@ -115,7 +132,7 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", new Domain[] {});
+            var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", "no conn string", new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 
             result.IsSucccess.Should().BeFalse();

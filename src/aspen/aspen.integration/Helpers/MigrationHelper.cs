@@ -10,7 +10,7 @@ namespace Aspen.Integration.Helpers
     public static class MigrationHelper
     {
 
-        private static string defaultConnectionString = "Server=localhost; Port=5433; Database=Aspen; User ID=Aspen; Password=Aspen;";
+        private static string defaultConnectionString = "Server=localhost; Port=5433; Database=Admin; User ID=Aspen; Password=Aspen;";
         private static string connectionString = Environment.GetEnvironmentVariable("INTEGRATION_TEST_CONNECTION")??defaultConnectionString;
         public static void Migrate()
         {
