@@ -6,8 +6,17 @@ import Register from './components/authentication/Register';
 import GlobalAdminRouter from "./components/globalAdministration/GlobalAdminRouter";
 import NavBar from "./components/NavBar";
 import './custom.css'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Theme } from "./models/Theme";
+import * as ThemeStore from "./store/Theme";
 
-export default () => (
+type AppProps = typeof ThemeStore.actionCreators
+
+const App: React.FC<AppProps> = props => {
+    props.loadThemeAction();
+    return(
+
     <>
         <NavBar/>
         <Switch>
@@ -17,4 +26,10 @@ export default () => (
             <Route path="/globalAdministration" component={GlobalAdminRouter} />
         </Switch>
     </>
-);
+    )
+    };
+
+export default connect(
+    null,
+    dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
+)(App);

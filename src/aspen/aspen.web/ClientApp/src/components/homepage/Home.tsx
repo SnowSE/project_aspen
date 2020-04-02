@@ -9,7 +9,7 @@ import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 import { Charity } from "../../models/CharityModel";
-import {DummyDomainService} from "../../services/DummyDomainService"
+import { DummyDomainService } from "../../services/DummyDomainService";
 
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
 
@@ -25,7 +25,6 @@ const Home: FunctionComponent<HomeProps> = props => {
     console.error(charityHomePage);
     let description = charityHomePage.Charity.CharityDescription;
     let charityName = charityHomePage.Charity.CharityName;
-
 
     setDescription(description);
     setCharityName(charityName);
@@ -62,9 +61,7 @@ const Home: FunctionComponent<HomeProps> = props => {
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
-        description={
-          APIURL === "" ? "Loading..." : APIURL
-        }
+        description={APIURL === "" ? "Loading..." : APIURL}
       />
       <ContentCard
         title={"Another One"}
@@ -79,7 +76,4 @@ const Home: FunctionComponent<HomeProps> = props => {
   );
 };
 
-export default connect(
-  (state: ApplicationState) => state.theme,
-  ThemeStore.actionCreators
-)(Home);
+export default Home;

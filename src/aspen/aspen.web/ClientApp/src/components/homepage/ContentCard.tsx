@@ -9,6 +9,7 @@ import "./ContentCard.css"
 import * as ThemeStore from "../../store/Theme";
 import { ApplicationState } from "../../store";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 interface ContentCardInterface {
   title: string,
@@ -64,5 +65,5 @@ const ContentCard:React.FC<ContentCardProps> = props => {
 
 export default connect(
   (state: ApplicationState) => state.theme,
-  ThemeStore.actionCreators
+  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
 )(ContentCard);
