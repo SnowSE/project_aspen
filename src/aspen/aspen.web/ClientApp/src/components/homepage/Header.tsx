@@ -2,6 +2,7 @@ import React, { FunctionComponent, Props } from "react";
 import * as ThemeStore from "../../store/Theme";
 import { ApplicationState } from "../../store";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 interface HeaderInterface {
     greeting: string,
@@ -57,5 +58,5 @@ const Header: FunctionComponent<HeaderProps> = props => {
 
 export default connect(
   (state: ApplicationState) => state.theme,
-  ThemeStore.actionCreators
+  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
 )(Header);

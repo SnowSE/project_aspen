@@ -4,6 +4,7 @@ import * as ThemeStore from "../store/Theme";
 import { ApplicationState } from "../store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
 
 interface NavbarInterface {}
 
@@ -66,5 +67,5 @@ const Navbar: React.FC<NavbarProps> = props => {
 
 export default connect(
   (state: ApplicationState) => state.theme,
-  ThemeStore.actionCreators
+  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
 )(Navbar);
