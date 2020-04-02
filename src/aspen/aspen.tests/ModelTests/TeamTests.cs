@@ -10,7 +10,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void CanCreateValidTeam()
         {
-            Action act = () => new Team("Diego's Fans", "We want to support Diego!!");
+            Action act = () => new Team(Guid.NewGuid(), "Diego's Fans", "We want to support Diego!!");
 
             act.Should().NotThrow<Exception>();
         }
@@ -19,7 +19,7 @@ namespace Aspen.Tests.ModelTests
         public void CannotCreateTeamWithLargeName()
         {
             var excessiveName = "Diego's Fans!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-            Action act = () => new Team(excessiveName, "We want to support Diego!!");
+            Action act = () => new Team(Guid.NewGuid(), excessiveName, "We want to support Diego!!");
 
             act.Should()
                 .Throw<ArgumentException>()

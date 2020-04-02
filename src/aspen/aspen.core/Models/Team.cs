@@ -4,11 +4,13 @@ namespace Aspen.Core.Models
 {
     public class Team
     {
+        public Guid Id { get; }
         public string Name { get; }
         public string Description { get; }
 
-        public Team(string name, string description)
+        public Team(Guid id, string name, string description)
         {
+            Id = id;
             Name = validateName(name);
             Description = description;
         }

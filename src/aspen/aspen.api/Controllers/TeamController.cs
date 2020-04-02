@@ -1,4 +1,5 @@
 using System;
+using Aspen.Api.Http;
 using Aspen.Core;
 using Aspen.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,16 @@ namespace Aspen.Api.Controllers
         public StatusReturn GetByCharityId([FromQuery(Name = "CharityId")] Guid charityId)
         {
             return StatusReturn.Success(
-                new Team("Sample Team Name", "Description of sample Team")
+                new Team(Guid.Empty, "Sample Team Name", "Description of sample Team")
             );
         }
 
         [HttpPost]
-        public StatusReturn Create([FromBody] Team team)
+        public StatusReturn Create([FromBody] TeamCreateRequest request)
         {
-            return StatusReturn.Success(null);
+            return StatusReturn.Success(
+                new Team(Guid.Empty, "Sample Team Name", "Description of sample Team")
+            );
         }
 
         [HttpPost]
