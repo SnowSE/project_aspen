@@ -5,8 +5,9 @@ import { IAPIService } from "../../services/IAPIService";
 import { APIService } from "../../services/APIService";
 import { DummyAPIService } from "../../services/DummyAPIService";
 import { DomainService } from "../../services/DomainService";
+import {LoggerService} from "../../services/LoggerService"
 
-const apiService: IAPIService = new APIService(new DomainService());
+const apiService: IAPIService = new APIService(new DomainService(),new LoggerService());
 //for testing without the api
 //const apiService: IAPIService = new DummyAPIService();
 

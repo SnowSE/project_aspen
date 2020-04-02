@@ -10,6 +10,7 @@ import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import { connect } from "react-redux";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
+import { bindActionCreators } from "redux";
 
 interface RankingsInterface{
 
@@ -109,5 +110,5 @@ const Rankings:React.FC<RankingsProps> = props => {
 
 export default connect(
   (state: ApplicationState) => state.theme,
-  ThemeStore.actionCreators
+  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
 )(Rankings);

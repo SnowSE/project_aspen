@@ -3,15 +3,21 @@ import { CharityHomePage } from "../models/CharityHomePageModel";
 import { Charity } from "../models/CharityModel";
 import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
+import {Team} from "../models/TeamModel";
+import {ILoggerService} from "../services/ILoggerService"
 
+
+//const url = "https://dev-api-aspen.k8sd.unitedangels.org"
 const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
+
 export class APIService implements IAPIService {
     IDomainService: IDomainService;
-
-    constructor(IDomainService: IDomainService) {
+    ILoggerService: ILoggerService;
+    constructor(IDomainService: IDomainService, ILoggerService: ILoggerService) {
         this.IDomainService = IDomainService
+        this.ILoggerService = ILoggerService
         this.Initilize();
     }
 
@@ -19,7 +25,7 @@ export class APIService implements IAPIService {
         let kylerspenguins = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a", "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins")
         this.PostCreateCharity(kylerspenguins);
         let data =  this.GetCharityHomePage();
-        console.error(data);
+        this.ILoggerService.Error(data);
     }
 
 
@@ -50,12 +56,9 @@ export class APIService implements IAPIService {
                 let charityObject = new Charity(id, name, res_domains, description);
                 charityList.push(charityObject);
             }
-
-
-
             return charityList;
         }catch(e){
-            console.error(e);
+            this.ILoggerService.Error(e);
             return [new Charity("","ERROR","","")]
         }
 
@@ -83,6 +86,7 @@ export class APIService implements IAPIService {
                 throw Error("ID not found");
             }
         }catch(e){
+            this.ILoggerService.Error("ID not found:"+e)
             let c = new Charity("asdf","Kylers penguin's","kyler.com","this is where the awesome penguin's live");
             return c
         } 
@@ -110,8 +114,8 @@ export class APIService implements IAPIService {
                 throw Error("Domain not found");
             }
         }catch(e){
-            console.error("error:"+e);
-            let c = new Charity("","error","error","error");
+            this.ILoggerService.Error("error:"+e);
+            let c = new Charity("","error: Charity Not Found","error: Charity Not Found","error: Charity Not Found");
             return c;
         }
     }
@@ -127,7 +131,7 @@ export class APIService implements IAPIService {
 
             let responseJson = await response.json();
             if(responseJson.status == "Success"){
-                console.error(responseJson.data);
+                this.ILoggerService.Log(responseJson.data);
                 let primaryMainColor:string = responseJson.data.primaryMainColor;
                 let primaryLightColor:string = responseJson.data.primaryLightColor;
                 let primaryContrastColor:string = responseJson.data.primaryContrastColor;
@@ -139,8 +143,8 @@ export class APIService implements IAPIService {
                 throw Error("Domain not found");
             }
         }catch(e){
-            console.error("error:"+e);
-            let themeObject = new Theme("","","","","");
+            this.ILoggerService.Error("error:"+e);
+            let themeObject = new Theme("#ff0000","#ff0000","#ffffff","#ff0000","");
             return themeObject
         }
     }
@@ -158,14 +162,13 @@ export class APIService implements IAPIService {
             });
             let responseJson = await response.json();
             if(responseJson.status == "Success"){
-                console.error("We added the charity successfully");
+                this.ILoggerService.Log("We added the charity successfully");
                 return true;
             }else{
-                console.error("adding the charity failed");
-                return false;
+                throw Error("adding the charity failed");
             }
         }catch(e){
-            console.error("adding the charity failed");
+            this.ILoggerService.Error("adding the charity failed");
             return false;
         }  
     }
@@ -183,14 +186,13 @@ export class APIService implements IAPIService {
             })
             let responseJson = await response.json();
             if(responseJson.status == "Success"){
-                console.error("We Updated the charity successfully");
+                this.ILoggerService.Log("We Updated the charity successfully");
                 return true;
             }else{
-                console.error("Updating the charity failed");
-                return false;
+                throw Error("Updating the charity failed");
             }
         }catch(e){
-            console.error("Updating the charity failed");
+            this.ILoggerService.Error("Updating the charity failed");
             return false;
         }   
 
@@ -201,7 +203,7 @@ export class APIService implements IAPIService {
         try{
             let headers = { "Content-Type": "application/json" };
             let body = JSON.stringify(charity);
-            console.log("charity: " + body)
+            this.ILoggerService.Log("charity: " + body)
             let newurl = url + "/Admin/Charity/Delete"
             let response = await fetch(newurl, {
                 method: "POST",
@@ -211,16 +213,119 @@ export class APIService implements IAPIService {
             })
             let responseJson = await response.json();
             if(responseJson.status == "Success"){
-                console.error("Deleted the charity successfully");
+                this.ILoggerService.Log("Deleted the charity successfully");
                 return true;
             }else{
-                console.error("Deleting the charity failed");
-                return false;
+                throw Error("Failed to delete the charity")
             }
         }catch(e){
-            console.error("Deleting the charity failed:"+e);
+            this.ILoggerService.Error("Deleting the charity failed:"+e);
             return false;
         }   
     }
+
+
+    public async PostCreateTeam(team:Team,charityId: string): Promise<boolean>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(team);
+            this.ILoggerService.Log("Team: " + body)
+            let newurl = url + "/Team/Create"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                this.ILoggerService.Log("Created the Team successfully");
+                return true;
+            }else{
+                throw Error("Failed to create the Team")
+            }
+        }catch(e){
+            this.ILoggerService.Error("Failed to create the Team:"+e);
+            return false;
+        } 
+    }
+
+    public async PostUpdateTeam(team:Team,charityId: string): Promise<boolean>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(team);
+            this.ILoggerService.Log("Team: " + body)
+            let newurl = url + "/Team/Update"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                this.ILoggerService.Log("Updated the Team successfully");
+                return true;
+            }else{
+                throw Error("Failed to Update the Team")
+            }
+        }catch(e){
+            this.ILoggerService.Error("Failed to Update the Team:"+e);
+            return false;
+        } 
+    }
+
+    public async GetTeamByCharityID(charityId: string): Promise<Team[]> {
+        try{
+            let headers = { "Content-Type": "application/json" };
+            this.ILoggerService.Log("getting teams for charityId:" + charityId)
+            let newurl = url + "/Team/GetByCharityId?CharityId="+charityId;
+            let response = await fetch(newurl, {
+                method: "GET",
+                mode:"cors",
+                headers: headers,
+            })
+            let responseJson = await response.json();
+            this.ILoggerService.Log(responseJson.data);
+            if(responseJson.status == "Success"){
+                this.ILoggerService.Log("Got the teams successfully");
+                let array: Team[] = []
+                return array;
+            }else{
+                throw Error("Failed to Get Teams")
+            }
+        }catch(e){
+            this.ILoggerService.Error("Failed to Get Teams:"+e);
+            let array: Team[] = []
+            return array;
+        } 
+    }
+
+    public async PostDeleteTeam(team:Team,charityId: string): Promise<boolean>{
+        try{
+            let headers = { "Content-Type": "application/json" };
+            let body = JSON.stringify(team);
+            this.ILoggerService.Log("Team: " + body)
+            let newurl = url + "/Team/Delete"
+            let response = await fetch(newurl, {
+                method: "POST",
+                mode:"cors",
+                headers: headers,
+                body: body
+            })
+            let responseJson = await response.json();
+            if(responseJson.status == "Success"){
+                this.ILoggerService.Log("Deleted the Team successfully");
+                return true;
+            }else{
+                throw Error("Failed to Delete the Team")
+            }
+        }catch(e){
+            this.ILoggerService.Error("Failed to Delete the Team:"+e);
+            return false;
+        } 
+    }
+
+
 
 }
