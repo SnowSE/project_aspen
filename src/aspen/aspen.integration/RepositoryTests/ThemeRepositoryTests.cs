@@ -38,7 +38,8 @@ namespace Aspen.Integration.RepositoryTests
                 "Kyler has a lot of turtles",
                 new Domain[]{ new Domain(salt+"kylerspenguins.com")});
             await charityRepository.Create(penguins);
-            kylersPenguins = await charityRepository.GetByDomain(penguins.Domains.First());
+            var res = await charityRepository.GetByDomain(penguins.Domains.First());
+            kylersPenguins = res.State;
         }
 
         [Test]
@@ -50,8 +51,8 @@ namespace Aspen.Integration.RepositoryTests
 
             await themeRepository.Create(penguinTheme);
 
-            var dbTheme = await themeRepository.GetByCharityId(kylersPenguins.CharityId);
-            dbTheme.Should().BeEquivalentTo(penguinTheme);
+            var result = await themeRepository.GetByCharityId(kylersPenguins.CharityId);
+            result.State.Should().BeEquivalentTo(penguinTheme);
         }
 
         [Test]
@@ -65,8 +66,8 @@ namespace Aspen.Integration.RepositoryTests
             var newColor = "#111111";
             await themeRepository.Update(penguinTheme.UpdatePrimaryMainColor(newColor));
 
-            var dbTheme = await themeRepository.GetByCharityId(kylersPenguins.CharityId);
-            dbTheme.PrimaryMainColor.Should().Be(newColor);
+            var result = await themeRepository.GetByCharityId(kylersPenguins.CharityId);
+            result.State.PrimaryMainColor.Should().Be(newColor);
         }
 
         [Test]

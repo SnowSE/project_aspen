@@ -15,7 +15,8 @@ namespace Aspen.Integration.RepositoryTests
     public class CharityRepositoryTests
     {
         private Func<IDbConnection> getDbConnection { get; set; }
-
+        private int salt;
+        public Charity alexsTurtles { get; set; }
         private CharityRepository charityRepository;
 
         public CharityRepositoryTests()
@@ -25,23 +26,24 @@ namespace Aspen.Integration.RepositoryTests
 
             charityRepository = new CharityRepository(getDbConnection);
         }
+        
         [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
-        public async Task CanAddCharityToDatabase()
+        public async Task Setup()
         {
             var random = new Random();
-            var salt = random.Next();
-            var alexsTurtles = new Charity(
+            salt = random.Next();
+            alexsTurtles = new Charity(
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
 
             await charityRepository.Create(alexsTurtles);
+        }
+
+        [Test]
+        public async Task CanAddCharityToDatabase()
+        {
             var all_charities = await charityRepository.GetAll();
 
             Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
@@ -52,15 +54,8 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task CanUpdateInDatabase()
         {
-            var random = new Random();
-            var salt = random.Next();
-            var alexsTurtles = new Charity(
-                Guid.NewGuid(),
-                "Alex's Turtles" + salt,
-                "alex likes turtles",
-                new Domain[]{ new Domain(salt+"alexsturtles.com")});
-            await charityRepository.Create(alexsTurtles);
-            alexsTurtles = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            alexsTurtles = res.State;
 
             var newAlexsTurtles = alexsTurtles.UpdateCharityName("Alex's other turtles" + salt);
             await charityRepository.Update(newAlexsTurtles);
@@ -73,34 +68,18 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task CanGetCharityById()
         {
-            var random = new Random();
-            var salt = random.Next();
-            var alexsTurtles = new Charity(
-                Guid.NewGuid(),
-                "Alex's Turtles" + salt,
-                "alex likes turtles",
-                new Domain[]{ new Domain(salt+"alexsturtles.com")});
+            var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            alexsTurtles = res.State;
 
-            await charityRepository.Create(alexsTurtles);
-            alexsTurtles = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
-
-            var alexsTurtlesById = await charityRepository.GetById(alexsTurtles.CharityId);
-            alexsTurtles.Should().BeEquivalentTo(alexsTurtlesById);
+            var statusResult = await charityRepository.GetById(alexsTurtles.CharityId);
+            alexsTurtles.Should().BeEquivalentTo(statusResult.State);
         }
 
         [Test]
         public async Task CanDeleteCharity()
         {
-            var random = new Random();
-            var salt = random.Next();
-            var alexsTurtles = new Charity(
-                Guid.NewGuid(),
-                "Alex's Turtles" + salt,
-                "alex likes turtles",
-                new Domain[]{ new Domain(salt+"alexsturtles.com")});
-
-            await charityRepository.Create(alexsTurtles);
-            alexsTurtles = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            alexsTurtles = res.State;
 
             await charityRepository.Delete(alexsTurtles);
 
@@ -111,18 +90,26 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task GettingCharityByIdAlsoGetsDomains()
         {
-            var random = new Random();
-            var salt = random.Next();
-            var alexsTurtles = new Charity(
-                Guid.NewGuid(),
-                "Alex's Turtles" + salt,
-                "alex likes turtles",
-                new Domain[]{ new Domain(salt+"alexsturtles.com")});
-
-            await charityRepository.Create(alexsTurtles);
-            var dbCharity = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            var dbCharity = res.State;
 
             dbCharity.Domains.First().Should().BeEquivalentTo(alexsTurtles.Domains.First());
+        }
+
+        [Test]
+        public async Task GetById_WhenIdDoesNotExist()
+        {
+            var result = await charityRepository.GetById(Guid.Empty);
+            result.IsSucccess.Should().BeFalse();
+            result.Error.Should().Be("Charity id does not exist");
+        }
+
+        [Test]
+        public async Task GetByDomain_WhenDomainDoesNotExist()
+        {
+            var result = await charityRepository.GetByDomain(new Domain("NotARealDomain"));
+            result.IsSucccess.Should().BeFalse();
+            result.Error.Should().Be("Domain does not exist");
         }
     }
 }

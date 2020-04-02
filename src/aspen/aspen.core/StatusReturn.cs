@@ -1,7 +1,8 @@
 using Newtonsoft.Json;
 
-namespace Aspen.Api.Models
+namespace Aspen.Core
 {
+    //alternatives: apiresult
     public class StatusReturn
     {
         private StatusReturn(string status, object data)

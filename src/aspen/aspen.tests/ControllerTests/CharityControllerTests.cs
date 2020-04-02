@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Aspen.Core.Models;
 using System;
 using FluentAssertions;
-using Aspen.Api.Models;
+using Aspen.Core;
 
 namespace Aspen.Tests.ControllerTests
 {
@@ -30,13 +30,37 @@ namespace Aspen.Tests.ControllerTests
         {
             var penguinDomain = new Domain("kylerspenguins.com");
             var kylersPenguins = new Charity(
-                Guid.NewGuid(), "Kyler's Penguins", "kyler has a lot of penguins", new Domain[] { penguinDomain });
-
+                Guid.NewGuid(),
+                "Kyler's Penguins",
+                "kyler has a lot of penguins",
+                new Domain[] { penguinDomain });
+            
             charityRepoMoq
                 .Setup(sr => sr.GetByDomain(penguinDomain))
-                .ReturnsAsync(kylersPenguins);
+                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
 
             var response = await charityController.Get(penguinDomain.ToString());
+            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+
+            var actualCharity = (Charity)response.Data;
+            actualCharity.Should().BeEquivalentTo(kylersPenguins);
+        }
+
+        [Test]
+        public async Task CanGetCharityById()
+        {
+            var penguinDomain = new Domain("kylerspenguins.com");
+            var kylersPenguins = new Charity(
+                Guid.NewGuid(),
+                "Kyler's Penguins",
+                "kyler has a lot of penguins",
+                new Domain[] { penguinDomain });
+            
+            charityRepoMoq
+                .Setup(sr => sr.GetById(kylersPenguins.CharityId))
+                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+
+            var response = await charityController.Get(kylersPenguins.CharityId);
             response.Status.Should().Be(StatusReturn.StatusConstants.Success);
 
             var actualCharity = (Charity)response.Data;
@@ -48,7 +72,10 @@ namespace Aspen.Tests.ControllerTests
         {
             var penguinDomain = new Domain("kylerspenguins.com");
             var kylersPenguins = new Charity(
-                Guid.NewGuid(), "Kyler's Penguins", "kyler has a lot of penguins", new Domain[] { penguinDomain });
+                Guid.NewGuid(),
+                "Kyler's Penguins",
+                "kyler has a lot of penguins",
+                new Domain[] { penguinDomain });
             
             var color = "#000000";
             var fontFamily = "Times";
@@ -56,13 +83,47 @@ namespace Aspen.Tests.ControllerTests
 
             themeRepoMoq
                 .Setup(tr => tr.GetByCharityId(penguinTheme.CharityId))
-                .ReturnsAsync(penguinTheme);
+                .ReturnsAsync(Result<Theme>.Success(penguinTheme));
             
             var response = await charityController.GetTheme(penguinTheme.CharityId);
             response.Status.Should().Be(StatusReturn.StatusConstants.Success);
 
             var actualTheme = (Theme) response.Data;
             actualTheme.Should().BeEquivalentTo(penguinTheme);
+        }
+
+        [Test]
+        public async Task ReturnsFailureIfDomainDoesntExist()
+        {
+            var error = "Domain does not exist";
+            charityRepoMoq
+                .Setup(cr => cr.GetByDomain(It.IsAny<Domain>()))
+                .ReturnsAsync(Result<Charity>.Failure(error));
+            
+            var res = await charityController.Get("baddomain");
+            res.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            res.Data.Should().Be(error);
+        }
+
+        [Test]
+        public async Task HandelsBadDomainsGracefully()
+        {
+            var statusResult = await charityController.Get("invalid***///**/\\domain");
+            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Data.Should().Be("Illegal charaters in domain");
+        }
+
+        [Test]
+        public async Task HandleWrongCharityIdGetTheme()
+        {
+            var error = "No CharityId: " + Guid.Empty;
+            themeRepoMoq
+                .Setup(tr => tr.GetByCharityId(It.IsAny<Guid>()))
+                .ReturnsAsync(Result<Theme>.Failure(error));
+
+            var statusResult = await charityController.GetTheme(Guid.Empty);
+            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Data.Should().Be(error);
         }
     }
 }

@@ -24,14 +24,14 @@ namespace Aspen.Core.Models
         {
             if (charityDomain.Length > 60)
             {
-                throw new ArgumentException("domain longer than 60 characters");
+                throw new ArgumentException("Domain longer than 60 characters");
             }
 
             charityDomain = charityDomain.ToLower();
             var validDomain = new Regex(@"^[a-z0-9-.]+$");
             if (validDomain.IsMatch(charityDomain) == false)
             {
-                throw new ArgumentException("illegal charaters in domain");
+                throw new ArgumentException("Illegal charaters in domain");
             }
 
             return charityDomain;

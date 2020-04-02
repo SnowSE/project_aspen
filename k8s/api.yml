@@ -23,8 +23,8 @@ spec:
         - containerPort: 80 
         env:
           # hack: replace with reall connection string
-        - name: DB_CONNECTION
-          value: "Server=postgres; Port=5432; Database=aspen; User ID=aspen; Password=aspen;"
+        - name: DefaultConnection
+          value: "Server=postgres-service; Port=5432; Database=aspen; User ID=aspen; Password=aspen;"
 ---
 apiVersion: v1
 kind: Service
@@ -40,3 +40,24 @@ spec:
   ports:
   - port: 80
     protocol: TCP
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: aspen-api-ingress
+spec:
+  rules:
+  - host: {{ ingress }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: aspen-api-service
+          servicePort: 80
+  tls:
+  - hosts:
+    - {{ ingress }}
+    secretName: {{ ingress }}-cert

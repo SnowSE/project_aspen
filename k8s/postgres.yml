@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: aspen
+  namespace: {{ name }}
   labels:
     app: postgres
 spec:
   replicas: 1
   selector:
-  matchLabels:
-    app: postgres
+    matchLabels:
+      app: postgres
   template:
     metadata:
       labels:
@@ -28,19 +28,18 @@ spec:
           value: aspen
         - name: POSTGRES_DB
           value: aspen
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: postgres
-#   namespace: aspen
-#   labels:
-#     app: postgres
-# spec:
-#   type: NodePort
-#   sessionAffinity: ClientIP
-#   ports:
-#   - port: 5432
-#   nodePort: 30001
-#   selector:
-#     app: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: {{ name }}
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  type:  ClusterIP
+  ports:
+  - port: 5432
+    protocol: TCP

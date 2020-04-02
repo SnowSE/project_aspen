@@ -202,6 +202,7 @@ export class APIService implements IAPIService {
         try{
             let headers = { "Content-Type": "application/json" };
             let body = JSON.stringify(charity);
+            console.log("charity: " + body)
             let newurl = url + "/Admin/Charity/Delete"
             let response = await fetch(newurl, {
                 method: "POST",
