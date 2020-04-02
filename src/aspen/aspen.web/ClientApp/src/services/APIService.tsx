@@ -18,17 +18,7 @@ export class APIService implements IAPIService {
     constructor(IDomainService: IDomainService, ILoggerService: ILoggerService) {
         this.IDomainService = IDomainService
         this.ILoggerService = ILoggerService
-        this.Initilize();
     }
-
-    public Initilize(){
-        let kylerspenguins = new Charity("89e0a4d3-f42c-4479-af22-2a3cba6bff8a", "Kylers Penguins18","kylerspenguins2.com","Kyler has a lot of penguins")
-        this.PostCreateCharity(kylerspenguins);
-        let data =  this.GetCharityHomePage();
-        this.ILoggerService.Error(data);
-    }
-
-
 
     public async GetCharityHomePage(): Promise<CharityHomePage> {
         let charity: Charity = await this.GetCharityByDomain();
