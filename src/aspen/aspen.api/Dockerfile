@@ -4,6 +4,10 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+RUN mkdir -p /app/ssl/certs
+RUN mkdir -p /app/ssl/private
+RUN chmod 700 /app/ssl/certs
+RUN chmod 700 /app/ssl/private
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
@@ -20,4 +24,6 @@ RUN dotnet publish "aspen.api.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN chown -R www-data:www-data /app
+USER www-data
 ENTRYPOINT ["dotnet", "aspen.api.dll"]
