@@ -1,4 +1,7 @@
 import { Action, Reducer } from "redux";
+import { Theme } from "../models/Theme";
+import { APIService } from "../services/APIService";
+import { Typography } from "@material-ui/core";
 
 //State
 export interface ThemeState {
@@ -28,12 +31,13 @@ export interface Secondary {
 //Actions
 interface ReceiveThemeAction {
   type: "LOADING_THEME";
-  typography: Typography;
-  palette: Palette;
+  // typography: Typography;
+  // palette: Palette;
+  theme: Theme;
 }
 
 export const actionCreators = {
-  receiveTheme: (typography: Typography, palette: Palette) =>
+  receiveTheme: (theme: Theme) =>
     ({
       type: "LOADING_THEME"
     } as ReceiveThemeAction)
@@ -69,10 +73,63 @@ export const reducer: Reducer<ThemeState> = (
   switch (action.type) {
     case "LOADING_THEME":
       return {
-        typography: action.typography,
-        palette: action.palette
+        typography: action.theme.typography,
+        palette: action.theme.palette
       };
     default:
         return state;
   }
 };
+
+// const adaptTheme: ThemeState = (theme: Theme) => {
+//   let pal = theme.palette as Palette;
+//   let primary = {
+//     main: theme.palette.primary.main,
+//     light: theme.palette.primary.light,
+//     contrastText: theme.palette.primary.contrastText
+//   } as Primary;
+  
+//   let secondary = {
+//     main: theme.palette.secondary.main
+//   } as Secondary;
+  
+//   let typ = {
+//     fontFamily: theme.typography.fontFamily
+//   } as Typography;
+
+//   let newState = {
+//     typography: typ,
+//     palette: {
+//       primary,
+//       secondary,
+//     } as Palette
+//   } as ThemeState;
+  
+//   return newState;
+// }
+
+// export class Theme {
+//   readonly palette: any;
+//   readonly typography: any;
+
+//   constructor(
+//       PrimaryMainColor: string,
+//       PrimaryLightColor: string,
+//       PrimaryContrastTextColor: string,
+//       SecondaryMainColor: string,
+//       fontFamily: string) {
+//           this.typography = {
+//               "fontFamily": fontFamily
+//           }
+//           this.palette = {
+//               "primary": {
+//                   "main": PrimaryMainColor,
+//                   "light": PrimaryLightColor,
+//                   "contrastText": PrimaryContrastTextColor
+//               },
+//               "secondary": {
+//                   "main": SecondaryMainColor
+//               }
+//           }
+//   }
+// }
