@@ -1,7 +1,11 @@
 import { Action, Reducer } from "redux";
 import { Theme } from "../models/Theme";
 import { APIService } from "../services/APIService";
+import { DomainService } from "../services/DomainService"
 import { Typography } from "@material-ui/core";
+import { AppThunkAction } from "./index";
+
+const apiService = new APIService(new DomainService())
 
 //State
 export interface ThemeState {
@@ -36,13 +40,25 @@ interface ReceiveThemeAction {
   theme: Theme;
 }
 
-export const actionCreators = {
-  receiveTheme: (theme: Theme) =>
-    ({
-      type: "LOADING_THEME"
-    } as ReceiveThemeAction)
+function receiveTheme(theme: Theme) : ReceiveThemeAction {
+  return {
+    type: "LOADING_THEME",
+    theme: theme
+  }
+}
+
+export const loadThemeAction = (): AppThunkAction<KnownAction> => {
+  return function(dispatch) {
+    return apiService
+    .GetCharityHomePage()
+    .then(result => dispatch(receiveTheme(result.Theme)))
+    .catch(e => e);
+  };
 };
 
+export const actionCreators = {
+  loadThemeAction
+};
 
 const typ: Typography = { fontFamily: "Arial" };
 const prim: Primary = {
@@ -80,56 +96,3 @@ export const reducer: Reducer<ThemeState> = (
         return state;
   }
 };
-
-// const adaptTheme: ThemeState = (theme: Theme) => {
-//   let pal = theme.palette as Palette;
-//   let primary = {
-//     main: theme.palette.primary.main,
-//     light: theme.palette.primary.light,
-//     contrastText: theme.palette.primary.contrastText
-//   } as Primary;
-  
-//   let secondary = {
-//     main: theme.palette.secondary.main
-//   } as Secondary;
-  
-//   let typ = {
-//     fontFamily: theme.typography.fontFamily
-//   } as Typography;
-
-//   let newState = {
-//     typography: typ,
-//     palette: {
-//       primary,
-//       secondary,
-//     } as Palette
-//   } as ThemeState;
-  
-//   return newState;
-// }
-
-// export class Theme {
-//   readonly palette: any;
-//   readonly typography: any;
-
-//   constructor(
-//       PrimaryMainColor: string,
-//       PrimaryLightColor: string,
-//       PrimaryContrastTextColor: string,
-//       SecondaryMainColor: string,
-//       fontFamily: string) {
-//           this.typography = {
-//               "fontFamily": fontFamily
-//           }
-//           this.palette = {
-//               "primary": {
-//                   "main": PrimaryMainColor,
-//                   "light": PrimaryLightColor,
-//                   "contrastText": PrimaryContrastTextColor
-//               },
-//               "secondary": {
-//                   "main": SecondaryMainColor
-//               }
-//           }
-//   }
-// }
