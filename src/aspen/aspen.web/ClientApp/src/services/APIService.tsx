@@ -5,8 +5,8 @@ import { IDomainService } from "./IDomainService";
 import { Theme } from "../models/Theme";
 import {Team} from "../models/TeamModel";
 
-const url = "http://206.189.218.168:5000"
-//const url = "https://dev-api-aspen.k8sd.unitedangels.org"
+
+const url = "https://dev-api-aspen.k8sd.unitedangels.org"
 //const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
@@ -143,7 +143,7 @@ export class APIService implements IAPIService {
             }
         }catch(e){
             console.error("error:"+e);
-            let themeObject = new Theme("#ff0000","#ff0000","","#ff0000","");
+            let themeObject = new Theme("#ff0000","#ff0000","#ffffff","#ff0000","");
             return themeObject
         }
     }
