@@ -32,13 +32,10 @@ namespace Aspen.Api
             services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
-                    // Add Postgres support to FluentMigrator
                     .AddPostgres()
-                    // Set the connection string
                     .WithGlobalConnectionString(connectionString)
                     // Define the assembly containing the migrations
                     .ScanIn(typeof(FirstMigration).Assembly).For.Migrations())
-                // Enable logging to console in the FluentMigrator way
                 .AddLogging(lb => lb.AddFluentMigratorConsole());
 
             getDbConnection = () => new NpgsqlConnection(connectionString);
