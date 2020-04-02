@@ -37,9 +37,9 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                "no conn string",
+                "Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;",
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
-
+                
             await charityRepository.Create(alexsTurtles);
         }
 
@@ -47,7 +47,6 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanAddCharityToDatabase()
         {
             var all_charities = await charityRepository.GetAll();
-            Console.WriteLine(JsonConvert.SerializeObject(all_charities));
             Assert.AreEqual(all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).Count(), 1);
             var dbAlexsTurtles = all_charities.Where(c => c.CharityName == alexsTurtles.CharityName).First();
             dbAlexsTurtles.Domains.First().Should().BeEquivalentTo(alexsTurtles.Domains.First());
@@ -78,6 +77,15 @@ namespace Aspen.Integration.RepositoryTests
                 );
                 users.Should().Contain(dbUser);
             }
+        }
+
+        public async Task CreatingCharityGeneratesConnectionString()
+        {
+            var name = "client_" + alexsTurtles.CharityId.ToString().Replace("-", "");
+            var expectedConnectionString = $"Server=database; Port=5432; Database={name}; User Id={name}; Password=Aspen;";
+
+            var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
+            acutalTurtles.State.ConnectionString.Should().Be(expectedConnectionString);
         }
 
         [Test]

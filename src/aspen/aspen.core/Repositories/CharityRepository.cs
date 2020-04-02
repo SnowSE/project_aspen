@@ -21,28 +21,32 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
+                var charityConnectionString = new ConnectionString(dbConnection.ConnectionString);
+                await createCharityDatabase(charity, dbConnection, charityConnectionString);
+                await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
+
                 charity = await createCharityInDb(charity, dbConnection);
                 //do not create charity if it has no domains
                 //very bad if this happens
                 //TODO: FIX THIS
                 await createDomains(charity, dbConnection);
-
-                await createCharityDatabase(charity, dbConnection);
-                await createCharityDatabaseUser(charity, dbConnection);
             }
         }
 
-        private static async Task createCharityDatabaseUser(Charity charity, IDbConnection dbConnection)
+        private static async Task createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
         {
+            // use stored procedure in database
             var dbUser = "charity_" + charity.CharityId.ToString().Replace("-", "");
+            charityConnString = charityConnString.UpdateUser(dbUser);
             await dbConnection.ExecuteAsync(
                 @"create user " + dbUser + " with password 'mypass';",
                 new { dbUser }
             );
         }
 
-        private static async Task createCharityDatabase(Charity charity, IDbConnection dbConnection)
+        private static async Task createCharityDatabase(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
         {
+            // use stored procedure in database
             var dbName = "charity_" + charity.CharityId.ToString().Replace("-", "");
             await dbConnection.ExecuteAsync(
                 // TODO: check for injection attacks
