@@ -56,7 +56,7 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task CreatingCharityCreatesCharityDatabase()
         {
-            var dbname = alexsTurtles.CharityId.ToString().Replace("-", "");
+            var dbname = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
             using(var dbConnection = getDbConnection())
             {
                 var databases = await dbConnection.QueryAsync<string>(
@@ -65,7 +65,19 @@ namespace Aspen.Integration.RepositoryTests
                 );
                 databases.Should().Contain(dbname);
             }
+        }
 
+        [Test]
+        public async Task CreatingCharityCreatesDatabaseUser()
+        {
+            var dbUser = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
+            using(var dbConnection = getDbConnection())
+            {
+                var users = await dbConnection.QueryAsync<string>(
+                    "SELECT usename FROM pg_catalog.pg_user;"
+                );
+                users.Should().Contain(dbUser);
+            }
         }
 
         [Test]

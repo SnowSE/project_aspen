@@ -21,24 +21,55 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = getDbConnection())
             {
-                charity = new Charity(Guid.NewGuid(), charity.CharityName, charity.CharityDescription, charity.ConnectionString, charity.Domains);
-                await dbConnection.ExecuteAsync(
-                    @"insert into Charity (CharityId, CharityName, CharityDescription, ConnectionString)
-                    values (@CharityId, @CharityName, @CharityDescription, @ConnectionString);",
-                    charity
-                );
-                
+                charity = await createCharityInDb(charity, dbConnection);
                 //do not create charity if it has no domains
                 //very bad if this happens
                 //TODO: FIX THIS
-                foreach (var domain in charity.Domains)
-                {
-                    await dbConnection.ExecuteAsync(
-                        @"insert into Domain (CharityId, CharityDomain)
+                await createDomains(charity, dbConnection);
+
+                await createCharityDatabase(charity, dbConnection);
+                await createCharityDatabaseUser(charity, dbConnection);
+            }
+        }
+
+        private static async Task createCharityDatabaseUser(Charity charity, IDbConnection dbConnection)
+        {
+            var dbUser = "charity_" + charity.CharityId.ToString().Replace("-", "");
+            await dbConnection.ExecuteAsync(
+                @"create user " + dbUser + " with password 'mypass';",
+                new { dbUser }
+            );
+        }
+
+        private static async Task createCharityDatabase(Charity charity, IDbConnection dbConnection)
+        {
+            var dbName = "charity_" + charity.CharityId.ToString().Replace("-", "");
+            await dbConnection.ExecuteAsync(
+                // TODO: check for injection attacks
+                // no user input is in the dbname, but I'm still scared
+                "create database " + dbName + ";"
+            );
+        }
+
+        private static async Task<Charity> createCharityInDb(Charity charity, IDbConnection dbConnection)
+        {
+            await dbConnection.ExecuteAsync(
+                @"insert into Charity (CharityId, CharityName, CharityDescription, ConnectionString)
+                    values (@CharityId, @CharityName, @CharityDescription, @ConnectionString);",
+                charity
+            );
+            return charity;
+        }
+
+        private static async Task createDomains(Charity charity, IDbConnection dbConnection)
+        {
+            foreach (var domain in charity.Domains)
+            {
+                await dbConnection.ExecuteAsync(
+                    @"insert into Domain (CharityId, CharityDomain)
                         values (@charityId, @charityDomain);",
-                        new { charityId = charity.CharityId, charityDomain = domain.ToString() }
-                    );
-                }
+                    new { charityId = charity.CharityId, charityDomain = domain.ToString() }
+                );
             }
         }
 
