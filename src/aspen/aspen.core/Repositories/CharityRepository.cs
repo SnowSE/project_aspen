@@ -30,7 +30,7 @@ namespace Aspen.Core.Repositories
                 charity = charity.UpdateConnectionString(charityConnectionString);
 
                 charity = await createCharityInDb(charity, dbConnection);
-                migrationService.ApplyMigrations(charity.ConnectionString);
+                await migrationService.ApplyMigrations(charity.ConnectionString);
                 //do not create charity if it has no domains
                 //very bad if this happens
                 //TODO: FIX THIS

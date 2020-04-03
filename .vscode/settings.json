@@ -1,15 +1,6 @@
 {
     "sqltools.connections": [
         {
-            "database": "Aspen",
-            "dialect": "PostgreSQL",
-            "name": "aspen local dev",
-            "password": "Aspen",
-            "port": 5432,
-            "server": "localhost",
-            "username": "Aspen"
-        },
-        {
             "database": "Admin",
             "dialect": "PostgreSQL",
             "isActive": true,
@@ -28,6 +19,17 @@
             "port": 5433,
             "server": "localhost",
             "username": "charity_c717ba814bc74f728f15ddd28ba61581"
+        },
+        {
+            "database": "Admin",
+            "dialect": "PostgreSQL",
+            "isActive": false,
+            "isConnected": false,
+            "name": "aspen local dev",
+            "password": "Aspen",
+            "port": 5432,
+            "server": "localhost",
+            "username": "Aspen"
         }
     ]
 }

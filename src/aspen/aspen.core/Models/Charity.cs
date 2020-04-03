@@ -20,7 +20,7 @@ namespace Aspen.Core.Models
             this.CharityId = charityid;
             this.CharityName = charityname;
             this.CharityDescription = charitydescription;
-            this.ConnectionString = new ConnectionString(connectionstring);
+            // this.ConnectionString = new ConnectionString(connectionstring);
             this.Domains = domains;
         }
         public Charity(Guid charityId, string charityname, string charitydescription, ConnectionString connectionstring, IEnumerable<Domain> domains)
@@ -32,7 +32,7 @@ namespace Aspen.Core.Models
             this.ConnectionString = connectionstring;
             this.Domains = domains;
         }
-        
+
         private Charity(Guid charityId, string charityname, string charitydescription, string connectionstring)
         {
             this.CharityId = charityId;
@@ -58,6 +58,11 @@ namespace Aspen.Core.Models
         internal Charity UpdateConnectionString(ConnectionString charityConnectionString)
         {
             return new Charity(CharityId, CharityName, CharityDescription, charityConnectionString, Domains);
+        }
+
+        public Charity UpdateId(Guid guid)
+        {
+            return new Charity(guid, CharityName, CharityDescription, ConnectionString, Domains);
         }
 
         public override string ToString()

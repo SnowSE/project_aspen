@@ -52,8 +52,9 @@ namespace Aspen.Api
             }
 
             Thread.Sleep(200);
-            // var migrationService = new MigrationService(connectionString);
-            // migrationService.ApplyMigrations(connectionString);
+            var migrationService = new MigrationService(connectionString);
+            var t = migrationService.ApplyMigrations(connectionString);
+            t.Wait();
 
             // app.UseHttpsRedirection();
 
