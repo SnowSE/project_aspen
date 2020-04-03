@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using System.Threading;
 using Aspen.Core.Services;
 using Aspen.Core.Models;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace Aspen.Api
 {
@@ -44,7 +46,11 @@ namespace Aspen.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            ICharityRepository charityRepository,
+            IMigrationService migrationService)
         {
             if (env.IsDevelopment())
             {
@@ -52,8 +58,12 @@ namespace Aspen.Api
             }
 
             Thread.Sleep(200);
-            var migrationService = new MigrationService(connectionString);
-            var t = migrationService.ApplyMigrations(connectionString);
+            var t = new Task(async () => {
+                await migrationService.ApplyMigrations(connectionString);
+                foreach(var charity in await charityRepository.GetAll())
+                    await migrationService.ApplyMigrations(charity.ConnectionString);
+            });
+            t.Start();
             t.Wait();
 
             // app.UseHttpsRedirection();
