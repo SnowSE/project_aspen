@@ -84,13 +84,16 @@ namespace Aspen.Tests.ControllerTests
             
             var color = "#000000";
             var fontFamily = "Times";
-            var penguinTheme = new Theme(kylersPenguins.CharityId, color, color, color, color, fontFamily);
+            var penguinTheme = new Theme(color, color, color, color, fontFamily);
 
+            charityRepoMoq
+                .Setup(cr => cr.GetById(kylersPenguins.CharityId))
+                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
             themeRepoMoq
                 .Setup(tr => tr.GetByCharity(kylersPenguins))
                 .ReturnsAsync(Result<Theme>.Success(penguinTheme));
             
-            var response = await charityController.GetTheme(penguinTheme.CharityId);
+            var response = await charityController.GetTheme(kylersPenguins.CharityId);
             response.Status.Should().Be(StatusReturn.StatusConstants.Success);
 
             var actualTheme = (Theme) response.Data;
@@ -122,9 +125,9 @@ namespace Aspen.Tests.ControllerTests
         public async Task HandleWrongCharityIdGetTheme()
         {
             var error = "No CharityId: " + Guid.Empty;
-            themeRepoMoq
-                .Setup(tr => tr.GetByCharity(It.IsAny<Charity>()))
-                .ReturnsAsync(Result<Theme>.Failure(error));
+            charityRepoMoq
+                .Setup(cr => cr.GetById(It.IsAny<Guid>()))
+                .ReturnsAsync(Result<Charity>.Failure(error));
 
             var statusResult = await charityController.GetTheme(Guid.Empty);
             statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);

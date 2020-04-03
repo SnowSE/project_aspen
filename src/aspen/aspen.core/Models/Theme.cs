@@ -44,7 +44,7 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("font family too long");
         }
 
-        public static Theme Default(Guid charityid)
+        public static Theme Default()
         {
             var defaultColor = "#AAAAAA";
             var defaultFontFamily = "Arial, Helvetica, sans-serif";

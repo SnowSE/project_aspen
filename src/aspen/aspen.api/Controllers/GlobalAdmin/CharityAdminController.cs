@@ -41,7 +41,7 @@ namespace Aspen.Api.Controllers
         {
             await charityRepository.Create(charity);
             var result = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(result.State.CharityId));
+            await themeRepository.Create(Theme.Default(), result.State.ConnectionString);
             return StatusReturn.Success(null);
         }
 
@@ -50,7 +50,7 @@ namespace Aspen.Api.Controllers
         {
             await charityRepository.Create(charity);
             var result = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(result.State.CharityId));
+            await themeRepository.Create(Theme.Default(), result.State.ConnectionString);
             return StatusReturn.Success(null);
         }
 
