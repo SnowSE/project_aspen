@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Data;
 using Aspen.Core.Data;
 using Aspen.Core.Repositories;
@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using System.Threading;
+using Aspen.Api.Authentication;
 
 namespace Aspen.Api
 {
@@ -17,18 +18,12 @@ namespace Aspen.Api
     {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         private System.Func<NpgsqlConnection> getDbConnection;
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
-            
+
             services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -49,14 +44,42 @@ namespace Aspen.Api
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy( builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
+                options.AddDefaultPolicy(builder =>
+                   {
+                       builder
+                           .AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                   });
             });
+
+            services.AddIdentityServer()
+                .AddInMemoryIdentityResources(InMemoryConfig.GetIdentityResources())
+                .AddTestUsers(InMemoryConfig.GetUsers())
+                .AddInMemoryClients(InMemoryConfig.GetClients())
+                .AddInMemoryApiResources(InMemoryConfig.GetApiResources())
+                .AddDeveloperSigningCredential(); //remove for prod
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "mvc client id";
+                    options.ClientSecret = "clientsecret";
+                    options.ResponseType = "code";
+
+                    options.SaveTokens = true;
+
+                    options.Scope.Add("api1");
+                    // options.Scope.Add("profile");
+                });
 
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -72,14 +95,13 @@ namespace Aspen.Api
             Thread.Sleep(500);
             migrationRunner.MigrateUp();
 
-            //SeedService.SeedAll(new CharityRepository(getDbConnection));
-            
-
             // app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseIdentityServer();
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseCors();
             app.UseEndpoints(endpoints =>
