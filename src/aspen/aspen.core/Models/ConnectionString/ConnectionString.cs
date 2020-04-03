@@ -10,13 +10,16 @@ namespace Aspen.Core.Models
         public UserId UserId { get; }
         public Password Password { get; }
 
-        public ConnectionString(string data)
+        public ConnectionString(string connection)
         {
-            Port = new Port(data);
-            Server = new Server(data);
-            Database = new Database(data);
-            UserId = new UserId(data);
-            Password = new Password(data);
+            if (string.IsNullOrEmpty(connection))
+                throw new ArgumentException("Empty connection string");
+                
+            Port = new Port(connection);
+            Server = new Server(connection);
+            Database = new Database(connection);
+            UserId = new UserId(connection);
+            Password = new Password(connection);
         }
 
         public ConnectionString(Server server, Port port, Database database, UserId userId, Password password)
