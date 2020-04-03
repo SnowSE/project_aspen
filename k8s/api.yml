@@ -36,40 +36,28 @@ spec:
       containers:
       - image: {{ api_image }}
         name: aspen-api
-        volumeMounts:
-          - mountPath: "/app/ssl/certs"
-            name: uaf-db-ssl-certs
-            readOnly: true
-          - mountPath: "/app/ssl/private"
-            name: uaf-db-ssl-key
-            readOnly: true
         ports:
-        - containerPort: 80 
+        - containerPort: 443 
         env:
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: uaf-db-auth
-              key: dbname
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: uaf-db-auth
-              key: username
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: uaf-db-auth
-              key: password
+        - name: PGPASSFILE
+          value: "/app/.postgresql/.pgpass"
         - name: DefaultConnection
-          value: "sslmode=verify-ca; sslrootcert=/app/ssl/certs/uaf-server-ca.pem; sslcert=/app/ssl/certs/uaf-client-cert.pem; sslkey=/app/ssl/private/uaf-client-key.pem; hostaddr=10.101.160.3; port=5432; user=$POSTGRES_USER; dbname=$POSTGRES_DB; password=$POSTGRES_PASSWORD"
+          value: "SSL Mode=require"
+        volumeMounts:
+          - name: uaf-db-secrets
+            readOnly: true
+            mountPath: /app/.postgresql
       volumes:
-        - name: uaf-db-ssl-certs
+        - name: uaf-db-secrets
           secret:
-            secretName: uaf-db-ssl-certs
-        - name: uaf-db-ssl-key
-          secret:
-            secretName: uaf-db-ssl-key
+            secretName: uaf-db-secrets
+            items:
+              - key: .pgpass
+                path: .pgpass
+              - key: postgresql.crt
+                path: postgresql.crt
+              - key: postgresql.key
+                path: postgresql.key
       restartPolicy: Always
 
 ---
@@ -85,7 +73,7 @@ spec:
     app: aspen-api
   type:  ClusterIP
   ports:
-  - port: 80
+  - port: 443
     protocol: TCP
 ---
 kind: Ingress
@@ -103,7 +91,7 @@ spec:
       - path: /
         backend:
           serviceName: aspen-api-service
-          servicePort: 80
+          servicePort: 443
   tls:
   - hosts:
     - {{ ingress }}
