@@ -12,13 +12,22 @@
         {
             "database": "Admin",
             "dialect": "PostgreSQL",
-            "isActive": false,
-            "isConnected": false,
+            "isActive": true,
+            "isConnected": true,
             "name": "aspen_integration",
             "password": "Aspen",
             "port": 5433,
             "server": "localhost",
             "username": "Aspen"
+        },
+        {
+            "database": "charity_c717ba814bc74f728f15ddd28ba61581",
+            "dialect": "PostgreSQL",
+            "name": "aspen_integration_charity",
+            "password": "24feebb2-83ac-46e5-b4eb-9d41bc4c36fa",
+            "port": 5433,
+            "server": "localhost",
+            "username": "charity_c717ba814bc74f728f15ddd28ba61581"
         }
     ]
 }

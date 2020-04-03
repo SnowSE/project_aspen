@@ -45,6 +45,11 @@ namespace Aspen.Core.Models
             return new Charity(CharityId, newName, CharityDescription, ConnectionString, Domains);
         }
 
+        internal Charity UpdateConnectionString(ConnectionString charityConnectionString)
+        {
+            return new Charity(CharityId, CharityName, CharityDescription, charityConnectionString.ToString(), Domains);
+        }
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
@@ -54,7 +59,5 @@ namespace Aspen.Core.Models
         {
             return new Charity(CharityId, CharityName, CharityDescription, ConnectionString, Domains.Append(domain));
         }
-
-
     }
 }

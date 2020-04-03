@@ -22,8 +22,9 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = getDbConnection())
             {
                 var charityConnectionString = new ConnectionString(dbConnection.ConnectionString);
-                await createCharityDatabase(charity, dbConnection, charityConnectionString);
-                await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
+                charityConnectionString = await createCharityDatabase(charity, dbConnection, charityConnectionString);
+                charityConnectionString = await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
+                charity = charity.UpdateConnectionString(charityConnectionString);
 
                 charity = await createCharityInDb(charity, dbConnection);
                 //do not create charity if it has no domains
@@ -33,18 +34,21 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        private static async Task createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        private static async Task<ConnectionString> createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
         {
             // use stored procedure in database
             var dbUser = "charity_" + charity.CharityId.ToString().Replace("-", "");
-            charityConnString = charityConnString.UpdateUser(dbUser);
+            var password = Guid.NewGuid().ToString();
             await dbConnection.ExecuteAsync(
-                @"create user " + dbUser + " with password 'mypass';",
+                @"create user " + dbUser + " with password '" + password + "';",
                 new { dbUser }
             );
+            return charityConnString
+                .UpdateUser(dbUser)
+                .UpdatePassword(password);
         }
 
-        private static async Task createCharityDatabase(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        private static async Task<ConnectionString> createCharityDatabase(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
         {
             // use stored procedure in database
             var dbName = "charity_" + charity.CharityId.ToString().Replace("-", "");
@@ -53,6 +57,7 @@ namespace Aspen.Core.Repositories
                 // no user input is in the dbname, but I'm still scared
                 "create database " + dbName + ";"
             );
+            return charityConnString.UpdateDatabase(dbName);
         }
 
         private static async Task<Charity> createCharityInDb(Charity charity, IDbConnection dbConnection)

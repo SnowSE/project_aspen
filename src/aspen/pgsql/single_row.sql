@@ -6,4 +6,5 @@ CREATE TABLE onerow (
 );
 
 insert into onerow (data) values ( 'one');
+comment on table onerow is 'constraint on primary key limits to one row';
 select * from onerow; 

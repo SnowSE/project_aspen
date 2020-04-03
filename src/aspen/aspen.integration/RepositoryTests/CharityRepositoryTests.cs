@@ -10,6 +10,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Aspen.Integration.Helpers;
 using Newtonsoft.Json;
+using Npgsql;
 
 namespace Aspen.Integration.RepositoryTests
 {
@@ -79,13 +80,30 @@ namespace Aspen.Integration.RepositoryTests
             }
         }
 
+        [Test]
         public async Task CreatingCharityGeneratesConnectionString()
         {
-            var name = "client_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            var expectedConnectionString = $"Server=database; Port=5432; Database={name}; User Id={name}; Password=Aspen;";
+            var name = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
+            var expectedConnectionString = $"Server=localhost; Port=5433; Database={name}; User Id={name};";
 
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
-            acutalTurtles.State.ConnectionString.Should().Be(expectedConnectionString);
+            var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.Remove(acutalTurtles.State.ConnectionString.Length - " Password=93627842-c698-4a81-a2a5-e31d48f3c704; ".Length);
+            connectionStringWithoutPassword.Should().Be(expectedConnectionString);
+        }
+
+        [Test]
+        public async Task CreatingCharityDatabaseRunsMigrations()
+        {
+            var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
+            using(var dbConnection = new NpgsqlConnection(alexsTurtles.ConnectionString))
+            {
+                var tables = await dbConnection.QueryAsync<string>(
+                    @"SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = 'public';"
+                );
+                tables.Should().Contain("theme");
+            }
         }
 
         [Test]

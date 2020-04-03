@@ -79,5 +79,15 @@ namespace Aspen.Tests.ModelTests
 
             connectionString.ToString().Should().Be(validConnectionString);
         }
+
+        [Test]
+        public void AnotherTestForUserIds()
+        {
+            var validConnectionString = "Server=database; Port=5432; Database=Admin; User Id=charity_7cc774fd93c945d2a48520d6b2ce05e6; Password=Aspen; ";
+            var connectionString = new ConnectionString(validConnectionString);
+
+            connectionString.ToString().Should().Be(validConnectionString);
+        }
+        
     }
 }

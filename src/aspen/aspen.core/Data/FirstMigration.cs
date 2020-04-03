@@ -38,10 +38,9 @@ namespace Aspen.Core.Data
                     .WithColumn("primarycontrastcolor").AsString().NotNullable()
                     .WithColumn("secondarymaincolor").AsString().NotNullable()
                     .WithColumn("fontfamily").AsString().NotNullable();
-                Execute.Sql(@"ALTER TABLE theme ADD CONSTRAINT single_row CHECK (active='TRUE')");
+                Execute.Sql(@"ALTER TABLE theme ADD CONSTRAINT single_row CHECK (active='TRUE');");
+                Execute.Sql("comment on table theme is 'constraint on primary key limits to one row';");
             }
-
-
 
         }
 

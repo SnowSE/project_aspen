@@ -37,7 +37,17 @@ namespace Aspen.Core.Models
 
         internal ConnectionString UpdateUser(string dbUser)
         {
-            return new ConnectionString(Server, Port, Database, new UserId(dbUser), Password);
+            return new ConnectionString(Server, Port, Database, new UserId($"User Id={dbUser};"), Password);
+        }
+
+        internal ConnectionString UpdateDatabase(string dbName)
+        {
+            return new ConnectionString(Server, Port, new Database($"Database={dbName};"), UserId, Password);
+        }
+
+        internal ConnectionString UpdatePassword(string password)
+        {
+            return new ConnectionString(Server, Port, Database, UserId, new Password($"Password={password};"));
         }
     }
 }
