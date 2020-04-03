@@ -2,12 +2,9 @@
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
 EXPOSE 443
-RUN mkdir -p /app/ssl/certs
-RUN mkdir -p /app/ssl/private
-RUN chmod 700 /app/ssl/certs
-RUN chmod 700 /app/ssl/private
+RUN mkdir -p /app/.postgresql
+RUN chmod 700 /app/.postgresql
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
