@@ -7,10 +7,10 @@ namespace Aspen.Core.Repositories
 {
     public interface IThemeRepository
     {
-        Task Create(Theme theme);
-        Task Delete(Guid charityId);
-        Task<IEnumerable<Theme>> GetAll();
-        Task<Result<Theme>> GetByCharityId(Guid charityId);
-        Task Update(Theme theme);
+        Task Create(Theme theme, ConnectionString connectionString);
+        // Task Delete(Guid charityId, ConnectionString connectionString);
+        // Task<IEnumerable<Theme>> GetAll(ConnectionString connectionString);
+        Task<Result<Theme>> GetByCharity(Charity charity);
+        Task Update(Theme theme, ConnectionString connectionString);
     }
 }

@@ -6,7 +6,6 @@ namespace Aspen.Core.Models
     public class Theme
     {
         public Theme(
-            Guid charityid,
             string primaryMainColor,
             string primaryLightColor,
             string primaryContrastColor,
@@ -19,7 +18,6 @@ namespace Aspen.Core.Models
             validateColor(secondaryMainColor);
             validateFontFamily(fontFamily);
             
-            CharityId = charityid;
             PrimaryMainColor = primaryMainColor;
             PrimaryLightColor = primaryLightColor;
             PrimaryContrastColor = primaryContrastColor;
@@ -27,7 +25,6 @@ namespace Aspen.Core.Models
             FontFamily = fontFamily;
         }
 
-        public Guid CharityId { get; }
         public string PrimaryMainColor { get; }
         public string PrimaryLightColor { get; }
         public string PrimaryContrastColor { get; }
@@ -51,12 +48,12 @@ namespace Aspen.Core.Models
         {
             var defaultColor = "#AAAAAA";
             var defaultFontFamily = "Arial, Helvetica, sans-serif";
-            return new Theme(charityid, defaultColor, defaultColor, defaultColor, defaultColor, defaultFontFamily);
+            return new Theme(defaultColor, defaultColor, defaultColor, defaultColor, defaultFontFamily);
         }
 
         public Theme UpdatePrimaryMainColor(string newColor)
         {
-            return new Theme(CharityId, newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily);
+            return new Theme(newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily);
         }
     }
 }

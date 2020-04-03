@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
+using Aspen.Core.Services;
 using Dapper;
 using Newtonsoft.Json;
 
@@ -11,50 +12,39 @@ namespace Aspen.Core.Repositories
 
     public class ThemeRepository : IThemeRepository
     {
-        private readonly Func<IDbConnection> getDbConnection;
+        private readonly IMigrationService migrationService;
 
-        public ThemeRepository(Func<IDbConnection> getDbConnection)
+        public ThemeRepository(IMigrationService migrationService)
         {
-            this.getDbConnection = getDbConnection;
+            this.migrationService = migrationService;
         }
 
-        public async Task Create(Theme theme)
+        public async Task Create(Theme theme, ConnectionString connectionString)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
                 await dbConnection.ExecuteAsync(
-                    @"insert into Theme (charityid, primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily)
-                        values (@charityid, @primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily);",
+                    @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily)
+                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily);",
                     theme
                 );
             }
         }
 
-        public async Task<Result<Theme>> GetByCharityId(Guid charityId)
+        public async Task<Result<Theme>> GetByCharity(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
                 return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
-                    @"select * from Theme
-                        where Theme.CharityId = @charityId;",
-                    new { charityId }
+                    @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily
+                        from Theme;"
                 ));
             }
         }
 
-        public async Task<IEnumerable<Theme>> GetAll()
+        public async Task Update(Theme theme, ConnectionString connectionString)
         {
-            using (var dbConnection = getDbConnection())
-            {
-                return await dbConnection.QueryAsync<Theme>(
-                    @"select * from Theme;"
-                );
-            }
-        }
-
-        public async Task Update(Theme theme)
-        {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
                 await dbConnection.ExecuteAsync(
                     @"update Theme set
@@ -62,27 +52,10 @@ namespace Aspen.Core.Repositories
                         PrimaryLightColor = @PrimaryLightColor,
                         PrimaryContrastColor = @PrimaryContrastColor,
                         SecondaryMainColor = @SecondaryMainColor,
-                        FontFamily = @FontFamily
-                    where CharityId = @CharityId;",
+                        FontFamily = @FontFamily;",
                     theme
                 );
             }
         }
-
-        public async Task Delete(Guid charityId)
-        {
-            using (var dbConnection = getDbConnection())
-            {
-                await dbConnection.ExecuteAsync(
-                    @"delete from Theme
-                        where CharityId = @charityId;",
-                    new { charityId }
-                );
-            }
-        }
-
-        //update
-
-        //delete
     }
 }

@@ -28,11 +28,12 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityByDomain()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
-                "no conn string",
+                connString,
                 new Domain[] { penguinDomain });
             
             charityRepoMoq
@@ -50,11 +51,12 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityById()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
-                "no conn string",
+                connString,
                 new Domain[] { penguinDomain });
             
             charityRepoMoq
@@ -72,11 +74,12 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetThemeByCharityId()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
                 "kyler has a lot of penguins",
-                "no conn string",
+                connString,
                 new Domain[] { penguinDomain });
             
             var color = "#000000";
@@ -84,7 +87,7 @@ namespace Aspen.Tests.ControllerTests
             var penguinTheme = new Theme(kylersPenguins.CharityId, color, color, color, color, fontFamily);
 
             themeRepoMoq
-                .Setup(tr => tr.GetByCharityId(penguinTheme.CharityId))
+                .Setup(tr => tr.GetByCharity(kylersPenguins))
                 .ReturnsAsync(Result<Theme>.Success(penguinTheme));
             
             var response = await charityController.GetTheme(penguinTheme.CharityId);
@@ -120,7 +123,7 @@ namespace Aspen.Tests.ControllerTests
         {
             var error = "No CharityId: " + Guid.Empty;
             themeRepoMoq
-                .Setup(tr => tr.GetByCharityId(It.IsAny<Guid>()))
+                .Setup(tr => tr.GetByCharity(It.IsAny<Charity>()))
                 .ReturnsAsync(Result<Theme>.Failure(error));
 
             var statusResult = await charityController.GetTheme(Guid.Empty);

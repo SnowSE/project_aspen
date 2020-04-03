@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
+using Aspen.Core.Services;
 using Dapper;
 using Newtonsoft.Json;
 
@@ -11,22 +12,25 @@ namespace Aspen.Core.Repositories
 {
     public class CharityRepository : ICharityRepository
     {
-        private Func<IDbConnection> getDbConnection { get; }
-        public CharityRepository(Func<IDbConnection> getDbConnection)
+        private IMigrationService migrationService { get; }
+
+        public CharityRepository(IMigrationService migrationService)
         {
-            this.getDbConnection = getDbConnection;
+            this.migrationService = migrationService;
         }
 
         public async Task Create(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
+                // should probably be moved to a connectionstring builder
                 var charityConnectionString = new ConnectionString(dbConnection.ConnectionString);
                 charityConnectionString = await createCharityDatabase(charity, dbConnection, charityConnectionString);
                 charityConnectionString = await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
                 charity = charity.UpdateConnectionString(charityConnectionString);
 
                 charity = await createCharityInDb(charity, dbConnection);
+                await migrationService.ApplyMigrations(charity.ConnectionString);
                 //do not create charity if it has no domains
                 //very bad if this happens
                 //TODO: FIX THIS
@@ -57,7 +61,10 @@ namespace Aspen.Core.Repositories
                 // no user input is in the dbname, but I'm still scared
                 "create database " + dbName + ";"
             );
-            return charityConnString.UpdateDatabase(dbName);
+            return charityConnString
+                .UpdateServer(charityConnString.Server)
+                .UpdatePort(charityConnString.Port)
+                .UpdateDatabase(dbName);
         }
 
         private static async Task<Charity> createCharityInDb(Charity charity, IDbConnection dbConnection)
@@ -65,7 +72,12 @@ namespace Aspen.Core.Repositories
             await dbConnection.ExecuteAsync(
                 @"insert into Charity (CharityId, CharityName, CharityDescription, ConnectionString)
                     values (@CharityId, @CharityName, @CharityDescription, @ConnectionString);",
-                charity
+                new { 
+                    CharityId = charity.CharityId, 
+                    CharityName = charity.CharityName, 
+                    CharityDescription = charity.CharityDescription, 
+                    ConnectionString = charity.ConnectionString.ToString()
+                }
             );
             return charity;
         }
@@ -84,7 +96,7 @@ namespace Aspen.Core.Repositories
 
         public async Task Update(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 await dbConnection.ExecuteAsync(
                     @"update Charity set
@@ -98,7 +110,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<IEnumerable<Charity>> GetAll()
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 // return await dbConnection.QueryAsync<Charity>(
                 //     @"select * from Charity;"
@@ -124,7 +136,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Charity>> GetByDomain(Domain domain)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 try
                 {
@@ -144,7 +156,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Charity>> GetById(Guid charityId)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 var charity = await getCharityWithDomain(dbConnection, charityId);
                 return charity != null
@@ -189,7 +201,7 @@ namespace Aspen.Core.Repositories
         //canidate for optimization
         public IEnumerable<string> GetDomains()
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 return dbConnection.Query<string>(
                     "select CharitySubDomain from Charity;"
@@ -199,7 +211,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<bool>> Delete(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 return await Result<Charity>.Success(charity)
                     .ApplyAsync(async c => await deleteDomains(c, dbConnection))

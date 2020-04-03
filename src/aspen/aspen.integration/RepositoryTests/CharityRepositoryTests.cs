@@ -11,22 +11,27 @@ using NUnit.Framework;
 using Aspen.Integration.Helpers;
 using Newtonsoft.Json;
 using Npgsql;
+using Aspen.Core.Services;
+using System.Threading;
 
 namespace Aspen.Integration.RepositoryTests
 {
     public class CharityRepositoryTests
     {
-        private Func<IDbConnection> getDbConnection { get; set; }
         private int salt;
+        private MigrationService migrationService { get; }
         public Charity alexsTurtles { get; set; }
+
         private CharityRepository charityRepository;
 
         public CharityRepositoryTests()
         {
-            MigrationHelper.Migrate();
-            getDbConnection = MigrationHelper.GetDbConnection;
+            var connString = new ConnectionString(MigrationHelper.ConnectionString);
+            migrationService = new MigrationService(connString);
+            var t = migrationService.ApplyMigrations(connString);
+            t.Wait();
 
-            charityRepository = new CharityRepository(getDbConnection);
+            charityRepository = new CharityRepository(migrationService);
         }
         
         [SetUp]
@@ -38,7 +43,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                "Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;",
+                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
                 
             await charityRepository.Create(alexsTurtles);
@@ -57,9 +62,9 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityCreatesCharityDatabase()
         {
             var dbname = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            using(var dbConnection = getDbConnection())
+            using(var adminDbConnection = migrationService.GetAdminDbConnection())
             {
-                var databases = await dbConnection.QueryAsync<string>(
+                var databases = await adminDbConnection.QueryAsync<string>(
                     @"SELECT datname FROM pg_database
                     WHERE datistemplate = false;"
                 );
@@ -71,9 +76,9 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityCreatesDatabaseUser()
         {
             var dbUser = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            using(var dbConnection = getDbConnection())
+            using(var adminDbConnection = migrationService.GetAdminDbConnection())
             {
-                var users = await dbConnection.QueryAsync<string>(
+                var users = await adminDbConnection.QueryAsync<string>(
                     "SELECT usename FROM pg_catalog.pg_user;"
                 );
                 users.Should().Contain(dbUser);
@@ -84,20 +89,20 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityGeneratesConnectionString()
         {
             var name = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            var expectedConnectionString = $"Server=localhost; Port=5433; Database={name}; User Id={name};";
+            var expectedConnectionString = new ConnectionString($"Server=localhost; Port=5433; Database={name}; User Id={name}; Password=redacted; ");
 
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
-            var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.Remove(acutalTurtles.State.ConnectionString.Length - " Password=93627842-c698-4a81-a2a5-e31d48f3c704; ".Length);
-            connectionStringWithoutPassword.Should().Be(expectedConnectionString);
+            var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.UpdatePassword("redacted");
+            connectionStringWithoutPassword.Should().BeEquivalentTo(expectedConnectionString);
         }
 
         [Test]
         public async Task CreatingCharityDatabaseRunsMigrations()
         {
             var res = await charityRepository.GetByDomain(alexsTurtles.Domains.First());
-            using(var dbConnection = new NpgsqlConnection(alexsTurtles.ConnectionString))
+            using(var adminDbConnection = migrationService.GetDbConnection(res.State.ConnectionString))
             {
-                var tables = await dbConnection.QueryAsync<string>(
+                var tables = await adminDbConnection.QueryAsync<string>(
                     @"SELECT table_name
                     FROM information_schema.tables
                     WHERE table_schema = 'public';"
@@ -170,7 +175,8 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", "no conn string", new Domain[] {});
+            var connString = new ConnectionString("Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;");
+            var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", connString, new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 
             result.IsSucccess.Should().BeFalse();
