@@ -12,15 +12,6 @@
             "username": "Aspen"
         },
         {
-            "database": "charity_c717ba814bc74f728f15ddd28ba61581",
-            "dialect": "PostgreSQL",
-            "name": "aspen_integration_charity",
-            "password": "24feebb2-83ac-46e5-b4eb-9d41bc4c36fa",
-            "port": 5433,
-            "server": "localhost",
-            "username": "charity_c717ba814bc74f728f15ddd28ba61581"
-        },
-        {
             "database": "Admin",
             "dialect": "PostgreSQL",
             "isActive": false,
@@ -30,6 +21,17 @@
             "port": 5432,
             "server": "localhost",
             "username": "Aspen"
+        },
+        {
+            "database": "charity_38537c0494244059868096fb65177721",
+            "dialect": "PostgreSQL",
+            "isActive": false,
+            "isConnected": false,
+            "name": "aspen_integration_charity",
+            "password": "7aaa2152-466b-4a04-9034-6f11f4c54b54",
+            "port": 5433,
+            "server": "localhost",
+            "username": "charity_38537c0494244059868096fb65177721"
         }
     ]
 }

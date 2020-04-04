@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using Npgsql;
 using Aspen.Core.Services;
 using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Aspen.Integration.RepositoryTests
 {
@@ -83,6 +85,56 @@ namespace Aspen.Integration.RepositoryTests
                 );
                 users.Should().Contain(dbUser);
             }
+        }
+
+        [Test]
+        public async Task NewDatabaseUsersCannotAccessAdminDatabase()
+        {
+            var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
+            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("Admin");
+            Console.WriteLine(connString.ToString());
+            Action unauthorizedAccessToAdminDb = () =>
+            {
+                using(var dbConnection = migrationService.GetDbConnection(connString))
+                {
+                    dbConnection.Execute("select * from Charity");
+                }
+            };
+
+            unauthorizedAccessToAdminDb
+                .Should()
+                .Throw<PostgresException>()
+                .WithMessage("42501: permission denied for database \"Admin\"");
+        }
+
+        [Test]
+        public async Task NewDatabaseUsersCannotAccessOtherCharityDatabase()
+        {
+            var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
+            Console.WriteLine(acutalTurtles.State.ConnectionString);
+            IEnumerable<string> databases;
+            using(var adminDbConnection = migrationService.GetAdminDbConnection())
+            {
+                databases = await adminDbConnection.QueryAsync<string>(
+                    @"SELECT datname FROM pg_database
+                    WHERE datistemplate = false;"
+                );
+            }
+            var otherDatabase = databases.Where(d => d != "postgres" && d != "Admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
+            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase(otherDatabase);
+            Console.WriteLine(connString);
+            Action unauthorizedAccessToOtherDb = () =>
+            {
+                using(var dbConnection = migrationService.GetDbConnection(connString))
+                {
+                    dbConnection.Execute("select * from theme;");
+                }
+            };
+
+            unauthorizedAccessToOtherDb
+                .Should()
+                .Throw<Exception>()
+                .WithMessage("42501: permission denied for table theme");
         }
 
         [Test]

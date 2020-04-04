@@ -5,7 +5,7 @@ namespace Aspen.Core.Models
 {
     public class Database
     {
-        private string data;
+        public string data;
 
         public Database(string connectionString)
         {

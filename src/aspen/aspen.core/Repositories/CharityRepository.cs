@@ -30,6 +30,14 @@ namespace Aspen.Core.Repositories
                 charity = charity.UpdateConnectionString(charityConnectionString);
 
                 charity = await createCharityInDb(charity, dbConnection);
+
+                using(var userDbConnection = migrationService.GetDbConnection(charityConnectionString))
+                {
+                    await userDbConnection.ExecuteAsync(
+                        $"REVOKE All ON Database {charityConnectionString.Database.data} FROM PUBLIC;" +
+                        "REVOKE All ON schema public FROM PUBLIC;"
+                    );
+                }
                 await migrationService.ApplyMigrations(charity.ConnectionString);
                 //do not create charity if it has no domains
                 //very bad if this happens
@@ -59,7 +67,7 @@ namespace Aspen.Core.Repositories
             await dbConnection.ExecuteAsync(
                 // TODO: check for injection attacks
                 // no user input is in the dbname, but I'm still scared
-                "create database " + dbName + ";"
+                $"create database {dbName};" 
             );
             return charityConnString
                 .UpdateServer(charityConnString.Server)

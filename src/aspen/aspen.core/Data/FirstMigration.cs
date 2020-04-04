@@ -12,6 +12,9 @@ namespace Aspen.Core.Data
             // run api with insert/read access not alter table access
             if (ConnectionString.Contains("Database=Admin;"))
             {
+
+                Execute.Sql("REVOKE All ON DATABASE \"Admin\" FROM PUBLIC;");
+                Execute.Sql("REVOKE All ON schema public FROM PUBLIC;");
                 Create.Table("charity")
                     .WithColumn("charityid").AsGuid().NotNullable().PrimaryKey()
                     .WithColumn("charityname").AsString().NotNullable().Unique()
@@ -21,6 +24,7 @@ namespace Aspen.Core.Data
                 Create.Table("domain")
                     .WithColumn("charityid").AsGuid().ForeignKey("charity", "charityid").NotNullable()
                     .WithColumn("charitydomain").AsString().NotNullable().Unique();
+
             }
             else
             {
