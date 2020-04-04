@@ -14,30 +14,55 @@ namespace Aspen.Core.Models
         }
         
         [JsonConstructor]
-        public Charity(Guid charityid, string charityname, string charitydescription, IEnumerable<Domain> domains)
+        private Charity(Guid charityid, string charityname, string charitydescription, string connectionstring, IEnumerable<Domain> domains)
         {
             valiateDomains(domains);
             this.CharityId = charityid;
             this.CharityName = charityname;
             this.CharityDescription = charitydescription;
+            // this.ConnectionString = new ConnectionString(connectionstring);
             this.Domains = domains;
         }
-        private Charity(Guid charityId, string charityname, string charitydescription)
+        public Charity(Guid charityId, string charityname, string charitydescription, ConnectionString connectionstring, IEnumerable<Domain> domains)
+        {
+            valiateDomains(domains);
+            this.CharityId = charityId;
+            this.CharityName = charityname;
+            this.CharityDescription = charitydescription;
+            this.ConnectionString = connectionstring;
+            this.Domains = domains;
+        }
+
+        private Charity(Guid charityId, string charityname, string charitydescription, string connectionstring)
         {
             this.CharityId = charityId;
             this.CharityName = charityname;
             this.CharityDescription = charitydescription;
+            this.ConnectionString = new ConnectionString(connectionstring);
             this.Domains = new Domain[] {};
         }
 
         public Guid CharityId { get; }
         public string CharityName { get; }
         public string CharityDescription { get; }
+        
+        [JsonIgnore]
+        public ConnectionString ConnectionString { get; }
         public IEnumerable<Domain> Domains { get; }
 
         public Charity UpdateCharityName(string newName)
         {
-            return new Charity(CharityId, newName, CharityDescription, Domains);
+            return new Charity(CharityId, newName, CharityDescription, ConnectionString, Domains);
+        }
+
+        internal Charity UpdateConnectionString(ConnectionString charityConnectionString)
+        {
+            return new Charity(CharityId, CharityName, CharityDescription, charityConnectionString, Domains);
+        }
+
+        public Charity UpdateId(Guid guid)
+        {
+            return new Charity(guid, CharityName, CharityDescription, ConnectionString, Domains);
         }
 
         public override string ToString()
@@ -47,7 +72,7 @@ namespace Aspen.Core.Models
 
         internal Charity AppendDomain(Domain domain)
         {
-            return new Charity(CharityId, CharityName, CharityDescription, Domains.Append(domain));
+            return new Charity(CharityId, CharityName, CharityDescription, ConnectionString, Domains.Append(domain));
         }
     }
 }

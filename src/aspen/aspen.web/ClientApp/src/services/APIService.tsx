@@ -7,8 +7,8 @@ import {Team} from "../models/TeamModel";
 import {ILoggerService} from "../services/ILoggerService"
 
 
-const url = "https://dev-api-aspen.k8sd.unitedangels.org"
-//const url = process.env.REACT_APP_API_URL 
+//const url = "https://dev-api-aspen.k8sd.unitedangels.org"
+const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
+using Aspen.Core.Services;
 using Dapper;
 using Newtonsoft.Json;
 
@@ -11,37 +12,91 @@ namespace Aspen.Core.Repositories
 {
     public class CharityRepository : ICharityRepository
     {
-        private Func<IDbConnection> getDbConnection { get; }
-        public CharityRepository(Func<IDbConnection> getDbConnection)
+        private IMigrationService migrationService { get; }
+
+        public CharityRepository(IMigrationService migrationService)
         {
-            this.getDbConnection = getDbConnection;
+            this.migrationService = migrationService;
         }
 
         public async Task Create(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
-                charity = new Charity(Guid.NewGuid(), charity.CharityName, charity.CharityDescription, charity.Domains);
-                await dbConnection.ExecuteAsync(
-                    @"insert into Charity (CharityId, CharityName, CharityDescription)
-                    values (@CharityId, @CharityName, @CharityDescription);",
-                    charity
-                );
+                // should probably be moved to a connectionstring builder
+                var charityConnectionString = new ConnectionString(dbConnection.ConnectionString);
+                charityConnectionString = await createCharityDatabase(charity, dbConnection, charityConnectionString);
+                charityConnectionString = await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
+                charity = charity.UpdateConnectionString(charityConnectionString);
 
-                foreach (var domain in charity.Domains)
-                {
-                    await dbConnection.ExecuteAsync(
-                        @"insert into Domain (CharityId, CharityDomain)
-                        values (@charityId, @charityDomain);",
-                        new { charityId = charity.CharityId, charityDomain = domain.ToString() }
-                    );
+                charity = await createCharityInDb(charity, dbConnection);
+                await migrationService.ApplyMigrations(charity.ConnectionString);
+                //do not create charity if it has no domains
+                //very bad if this happens
+                //TODO: FIX THIS
+                await createDomains(charity, dbConnection);
+            }
+        }
+
+        private static async Task<ConnectionString> createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        {
+            // use stored procedure in database
+            var dbUser = "charity_" + charity.CharityId.ToString().Replace("-", "");
+            var password = Guid.NewGuid().ToString();
+            await dbConnection.ExecuteAsync(
+                @"create user " + dbUser + " with password '" + password + "';",
+                new { dbUser }
+            );
+            return charityConnString
+                .UpdateUser(dbUser)
+                .UpdatePassword(password);
+        }
+
+        private static async Task<ConnectionString> createCharityDatabase(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        {
+            // use stored procedure in database
+            var dbName = "charity_" + charity.CharityId.ToString().Replace("-", "");
+            await dbConnection.ExecuteAsync(
+                // TODO: check for injection attacks
+                // no user input is in the dbname, but I'm still scared
+                "create database " + dbName + ";"
+            );
+            return charityConnString
+                .UpdateServer(charityConnString.Server)
+                .UpdatePort(charityConnString.Port)
+                .UpdateDatabase(dbName);
+        }
+
+        private static async Task<Charity> createCharityInDb(Charity charity, IDbConnection dbConnection)
+        {
+            await dbConnection.ExecuteAsync(
+                @"insert into Charity (CharityId, CharityName, CharityDescription, ConnectionString)
+                    values (@CharityId, @CharityName, @CharityDescription, @ConnectionString);",
+                new { 
+                    CharityId = charity.CharityId, 
+                    CharityName = charity.CharityName, 
+                    CharityDescription = charity.CharityDescription, 
+                    ConnectionString = charity.ConnectionString.ToString()
                 }
+            );
+            return charity;
+        }
+
+        private static async Task createDomains(Charity charity, IDbConnection dbConnection)
+        {
+            foreach (var domain in charity.Domains)
+            {
+                await dbConnection.ExecuteAsync(
+                    @"insert into Domain (CharityId, CharityDomain)
+                        values (@charityId, @charityDomain);",
+                    new { charityId = charity.CharityId, charityDomain = domain.ToString() }
+                );
             }
         }
 
         public async Task Update(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 await dbConnection.ExecuteAsync(
                     @"update Charity set
@@ -55,8 +110,11 @@ namespace Aspen.Core.Repositories
 
         public async Task<IEnumerable<Charity>> GetAll()
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
+                // return await dbConnection.QueryAsync<Charity>(
+                //     @"select * from Charity;"
+                // );
                 var charityDict = new Dictionary<Guid, Charity>();
 
                 await dbConnection.QueryAsync<Charity, Domain, Charity>(
@@ -78,7 +136,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Charity>> GetByDomain(Domain domain)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 try
                 {
@@ -98,7 +156,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Charity>> GetById(Guid charityId)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 var charity = await getCharityWithDomain(dbConnection, charityId);
                 return charity != null
@@ -143,7 +201,7 @@ namespace Aspen.Core.Repositories
         //canidate for optimization
         public IEnumerable<string> GetDomains()
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 return dbConnection.Query<string>(
                     "select CharitySubDomain from Charity;"
@@ -153,7 +211,7 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<bool>> Delete(Charity charity)
         {
-            using (var dbConnection = getDbConnection())
+            using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 return await Result<Charity>.Success(charity)
                     .ApplyAsync(async c => await deleteDomains(c, dbConnection))

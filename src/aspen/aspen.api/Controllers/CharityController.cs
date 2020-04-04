@@ -52,7 +52,8 @@ namespace Aspen.Api.Controllers
         public async Task<StatusReturn> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
             await charityId
                 .ValidateFunction(id => Result<Guid>.Success(id))
-                .ApplyAsync(themeRepository.GetByCharityId)
+                .ApplyAsync(charityRepository.GetById)
+                .ApplyAsync(themeRepository.GetByCharity)
                 .ReturnWithStatus();
 
         private Result<Guid> validateCharityId(Guid id) => Result<Guid>.Success(id);

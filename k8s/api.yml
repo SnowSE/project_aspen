@@ -1,3 +1,16 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: aspen-api-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: aspen-api
+  updatePolicy:
+    updateMode: "Off"
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -6,25 +19,47 @@ metadata:
   labels: 
     app: aspen-api
 spec:
-  spec:
   replicas: 1
   selector:
     matchLabels:
       app: aspen-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: aspen-api
     spec:
       containers:
-      - name: aspen-api
-        image: {{ api_image }}
+      - image: {{ api_image }}
+        name: aspen-api
         ports:
-        - containerPort: 80 
+        - containerPort: 443 
         env:
-          # hack: replace with reall connection string
+        - name: PGPASSFILE
+          value: "/app/.postgresql/.pgpass"
         - name: DefaultConnection
-          value: "Server=postgres-service; Port=5432; Database=aspen; User ID=aspen; Password=aspen;"
+          value: "SSL Mode=require"
+        volumeMounts:
+          - name: uaf-db-secrets
+            readOnly: true
+            mountPath: /app/.postgresql
+      volumes:
+        - name: uaf-db-secrets
+          secret:
+            secretName: uaf-db-secrets
+            items:
+              - key: .pgpass
+                path: .pgpass
+              - key: postgresql.crt
+                path: postgresql.crt
+              - key: postgresql.key
+                path: postgresql.key
+      restartPolicy: Always
+
 ---
 apiVersion: v1
 kind: Service
@@ -38,7 +73,7 @@ spec:
     app: aspen-api
   type:  ClusterIP
   ports:
-  - port: 80
+  - port: 443
     protocol: TCP
 ---
 kind: Ingress
@@ -56,7 +91,7 @@ spec:
       - path: /
         backend:
           serviceName: aspen-api-service
-          servicePort: 80
+          servicePort: 443
   tls:
   - hosts:
     - {{ ingress }}

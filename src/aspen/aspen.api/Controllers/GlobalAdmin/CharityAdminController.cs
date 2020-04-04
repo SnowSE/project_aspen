@@ -36,21 +36,14 @@ namespace Aspen.Api.Controllers
             var charity = await charityRepository.GetById(charityId);
             return StatusReturn.Success(charity);
         }
-        
-        private async Task<StatusReturn> CreateCharity(Charity charity)
-        {
-            await charityRepository.Create(charity);
-            var result = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(result.State.CharityId));
-            return StatusReturn.Success(null);
-        }
 
         [HttpPost]
         public async Task<StatusReturn> Create([FromBody]Charity charity)
         {
+            charity = charity.UpdateId(Guid.NewGuid());
             await charityRepository.Create(charity);
             var result = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(result.State.CharityId));
+            await themeRepository.Create(Theme.Default(), result.State.ConnectionString);
             return StatusReturn.Success(null);
         }
 
