@@ -30,6 +30,10 @@ namespace Aspen.Core
         {
             return func(state);
         }
+        public async static Task<Result<U>> ValidateFunction<U, T>(this T state, Func<T, Task<Result<U>>> func)
+        {
+            return await func(state);
+        }
 
         public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func)
         {

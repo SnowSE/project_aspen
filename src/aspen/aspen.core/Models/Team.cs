@@ -21,5 +21,15 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Team name is greater than 60 characters");
             return name;
         }
+
+        public Team UpdateDescription(string newDescription)
+        {
+            return new Team(Id, Name, newDescription);
+        }
+
+        public Team UpdateId(Guid id)
+        {
+            return new Team(id, Name, Description);
+        }
     }
 }

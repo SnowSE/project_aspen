@@ -44,14 +44,18 @@ namespace Aspen.Core.Data
                     .WithColumn("fontfamily").AsString().NotNullable();
                 Execute.Sql(@"ALTER TABLE theme ADD CONSTRAINT single_row CHECK (active='TRUE');");
                 Execute.Sql("comment on table theme is 'constraint on primary key limits to one row';");
+
+                Create.Table("team")
+                    .WithColumn("id").AsGuid().PrimaryKey()
+                    .WithColumn("name").AsString().Unique().NotNullable()
+                    .WithColumn("description").AsString();
             }
 
         }
 
         public override void Down()
         {
-            Delete.Table("charityid");
-            Delete.Table("charitydomain");
+            //delete tables here
         }
     }
 }

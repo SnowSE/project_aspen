@@ -30,6 +30,7 @@ namespace Aspen.Api
             services.AddScoped<IMigrationService, MigrationService>();
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<IThemeRepository, ThemeRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
 
             services.AddCors(options =>
             {
