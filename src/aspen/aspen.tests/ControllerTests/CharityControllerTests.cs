@@ -7,6 +7,7 @@ using Aspen.Core.Models;
 using System;
 using FluentAssertions;
 using Aspen.Core;
+using Aspen.Api.Http;
 
 namespace Aspen.Tests.ControllerTests
 {
@@ -35,7 +36,7 @@ namespace Aspen.Tests.ControllerTests
                 "kyler has a lot of penguins",
                 connString,
                 new Domain[] { penguinDomain });
-            
+
             charityRepoMoq
                 .Setup(sr => sr.GetByDomain(penguinDomain))
                 .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
@@ -58,7 +59,7 @@ namespace Aspen.Tests.ControllerTests
                 "kyler has a lot of penguins",
                 connString,
                 new Domain[] { penguinDomain });
-            
+
             charityRepoMoq
                 .Setup(sr => sr.GetById(kylersPenguins.CharityId))
                 .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
@@ -81,7 +82,7 @@ namespace Aspen.Tests.ControllerTests
                 "kyler has a lot of penguins",
                 connString,
                 new Domain[] { penguinDomain });
-            
+
             var color = "#000000";
             var fontFamily = "Times";
             var penguinTheme = new Theme(color, color, color, color, fontFamily);
@@ -92,11 +93,11 @@ namespace Aspen.Tests.ControllerTests
             themeRepoMoq
                 .Setup(tr => tr.GetByCharity(kylersPenguins))
                 .ReturnsAsync(Result<Theme>.Success(penguinTheme));
-            
+
             var response = await charityController.GetTheme(kylersPenguins.CharityId);
             response.Status.Should().Be(StatusReturn.StatusConstants.Success);
 
-            var actualTheme = (Theme) response.Data;
+            var actualTheme = (Theme)response.Data;
             actualTheme.Should().BeEquivalentTo(penguinTheme);
         }
 
@@ -107,7 +108,7 @@ namespace Aspen.Tests.ControllerTests
             charityRepoMoq
                 .Setup(cr => cr.GetByDomain(It.IsAny<Domain>()))
                 .ReturnsAsync(Result<Charity>.Failure(error));
-            
+
             var res = await charityController.Get("baddomain");
             res.Status.Should().Be(StatusReturn.StatusConstants.Failed);
             res.Data.Should().Be(error);
@@ -132,6 +133,39 @@ namespace Aspen.Tests.ControllerTests
             var statusResult = await charityController.GetTheme(Guid.Empty);
             statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
             statusResult.Data.Should().Be(error);
+        }
+
+        [Test]
+        public async Task CanUpdateTheme()
+        {
+            var penguinDomain = new Domain("kylerspenguins.com");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var color = "#000000";
+            var fontFamily = "Times";
+            var penguinTheme = new Theme(color, color, color, color, fontFamily);
+            var kylersPenguins = new Charity(
+                Guid.NewGuid(),
+                "Kyler's Penguins",
+                "kyler has a lot of penguins",
+                connString,
+                new Domain[] { penguinDomain });
+
+            var themeRequest = new ThemeRequest
+            {
+                Theme = penguinTheme,
+                CharityId = kylersPenguins.CharityId
+            };
+
+            charityRepoMoq
+                .Setup(cr => cr.GetById(kylersPenguins.CharityId))
+                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+
+            themeRepoMoq
+                .Setup(tr => tr.Update(penguinTheme, kylersPenguins.ConnectionString))
+                .ReturnsAsync(Result<bool>.Success(true));
+
+            var res = await charityController.UpdateTheme(themeRequest);
+            res.Status.Should().Be(StatusReturn.StatusConstants.Success);
         }
     }
 }

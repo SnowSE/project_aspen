@@ -10,7 +10,9 @@ namespace Aspen.Core.Models
 
         public Team(Guid id, string name, string description)
         {
-            Id = id;
+            Id = id == Guid.Empty
+                ? Guid.NewGuid()
+                : id;
             Name = validateName(name);
             Description = description;
         }

@@ -42,11 +42,11 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task Update(Theme theme, ConnectionString connectionString)
+        public async Task<Result<bool>> Update(Theme theme, ConnectionString connectionString)
         {
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
-                await dbConnection.ExecuteAsync(
+                var affecteRows = await dbConnection.ExecuteAsync(
                     @"update Theme set
                         PrimaryMainColor = @PrimaryMainColor,
                         PrimaryLightColor = @PrimaryLightColor,
@@ -55,6 +55,10 @@ namespace Aspen.Core.Repositories
                         FontFamily = @FontFamily;",
                     theme
                 );
+                if(affecteRows == 1)
+                    return Result<bool>.Success(true);
+                else
+                    return Result<bool>.Failure("Failed to update theme");
             }
         }
     }

@@ -35,7 +35,7 @@ namespace Aspen.Api.Controllers
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => 
-                    await teamRepository.Create(request.team.UpdateId(Guid.NewGuid()), c))
+                    await teamRepository.Create(request.team, c))
                 .ReturnWithStatus();
         
         [HttpPost]

@@ -11,6 +11,6 @@ namespace Aspen.Core.Repositories
         // Task Delete(Guid charityId, ConnectionString connectionString);
         // Task<IEnumerable<Theme>> GetAll(ConnectionString connectionString);
         Task<Result<Theme>> GetByCharity(Charity charity);
-        Task Update(Theme theme, ConnectionString connectionString);
+        Task<Result<bool>> Update(Theme theme, ConnectionString connectionString);
     }
 }

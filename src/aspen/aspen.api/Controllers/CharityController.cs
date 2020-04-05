@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Aspen.Api.Http;
 using Aspen.Core;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;
@@ -63,6 +64,18 @@ namespace Aspen.Api.Controllers
         {
             const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
             return StatusReturn.Success(new HomePage(loremIpsum));
+        }
+
+        [HttpPost]
+        public async Task<StatusReturn> UpdateTheme([FromBody]ThemeRequest request) =>
+            await request
+                .ValidateFunction(getValidCharity)
+                .ApplyAsync(async c => await themeRepository.Update(request.Theme, c.ConnectionString))
+                .ReturnWithStatus();
+
+        private async Task<Result<Charity>> getValidCharity(ThemeRequest request)
+        {
+            return await charityRepository.GetById(request.CharityId);
         }
     }
 }
