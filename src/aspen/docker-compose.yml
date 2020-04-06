@@ -25,8 +25,8 @@ services:
     environment: 
       - DefaultConnection=Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;
     ports:
-       - 5000:80
-       - 443:443
+       - 5000:5000
+      #  - 443:443
     networks:
       internal:
 

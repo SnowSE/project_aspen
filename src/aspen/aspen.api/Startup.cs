@@ -58,7 +58,7 @@ namespace Aspen.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             var t = new Task(async () => {
                 await migrationService.ApplyMigrations(connectionString);
                 foreach(var charity in await charityRepository.GetAll())
