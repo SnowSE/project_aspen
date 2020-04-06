@@ -24,7 +24,6 @@ const Home: FunctionComponent<HomeProps> = props => {
     let charityHomePage = await apiservice.GetCharityHomePage();
     setDescription(charityHomePage.Charity.CharityDescription);
     setCharityName(charityHomePage.Charity.CharityName);
-    apiservice.PostDeleteTeam(new Team("kylers Team","kylers awesome team"),charityHomePage.Charity.ID);
   };
 
   useEffect(() => {
