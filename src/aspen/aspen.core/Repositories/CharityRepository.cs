@@ -29,6 +29,8 @@ namespace Aspen.Core.Repositories
                 charityConnectionString = await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
                 charity = charity.UpdateConnectionString(charityConnectionString);
 
+                await migrationService.ApplyMigrations(charity.ConnectionString);
+
                 charity = await createCharityInDb(charity, dbConnection);
 
                 using(var userDbConnection = migrationService.GetDbConnection(charityConnectionString))
