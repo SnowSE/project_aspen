@@ -6,9 +6,9 @@ import { Theme } from "../models/Theme";
 import {Team} from "../models/TeamModel";
 import {ILoggerService} from "../services/ILoggerService"
 
-
+const url = "http://206.189.218.168:5000"
 //const url = "https://dev-api-aspen.k8sd.unitedangels.org"
-const url = process.env.REACT_APP_API_URL 
+//const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
 
@@ -18,6 +18,18 @@ export class APIService implements IAPIService {
     constructor(IDomainService: IDomainService, ILoggerService: ILoggerService) {
         this.IDomainService = IDomainService
         this.ILoggerService = ILoggerService
+        this.init();
+    }
+
+    private async init(){
+        let charity = new Charity("","Kylers Penguins","localhost","an awesome charity for saving the polar icecaps");
+        await this.PostCreateCharity(charity);
+        let actualcharity = await this.GetCharityByDomain()
+        let team = new Team("Kylers Team","the team for kyler")
+        let team2 = new Team("Kylers Team2","the team for kyler")
+        await this.PostCreateTeam(team, actualcharity.ID);
+        await this.PostCreateTeam(team2, actualcharity.ID);
+        await this.ILoggerService.Warn(await this.GetTeamByCharityID(actualcharity.ID));
     }
 
     public async GetCharityHomePage(): Promise<CharityHomePage> {
@@ -218,7 +230,8 @@ export class APIService implements IAPIService {
     public async PostCreateTeam(team:Team,charityId: string): Promise<boolean>{
         try{
             let headers = { "Content-Type": "application/json" };
-            let body = JSON.stringify(team);
+            let TeamRequest = {team:team,CharityID:charityId}
+            let body = JSON.stringify(TeamRequest);
             this.ILoggerService.Log("Team: " + body)
             let newurl = url + "/Team/Create"
             let response = await fetch(newurl, {
@@ -243,7 +256,8 @@ export class APIService implements IAPIService {
     public async PostUpdateTeam(team:Team,charityId: string): Promise<boolean>{
         try{
             let headers = { "Content-Type": "application/json" };
-            let body = JSON.stringify(team);
+            let TeamRequest = {team:team,CharityID:charityId}
+            let body = JSON.stringify(TeamRequest);
             this.ILoggerService.Log("Team: " + body)
             let newurl = url + "/Team/Update"
             let response = await fetch(newurl, {
@@ -276,10 +290,14 @@ export class APIService implements IAPIService {
                 headers: headers,
             })
             let responseJson = await response.json();
-            this.ILoggerService.Log(responseJson.data);
+
             if(responseJson.status == "Success"){
                 this.ILoggerService.Log("Got the teams successfully");
                 let array: Team[] = []
+                for(let index in responseJson.data){
+                    this.ILoggerService.Error(responseJson.data[index]);
+                    array.push(new Team(responseJson.data[index]["name"],responseJson.data[index]["description"]))
+                }
                 return array;
             }else{
                 throw Error("Failed to Get Teams")
@@ -294,7 +312,8 @@ export class APIService implements IAPIService {
     public async PostDeleteTeam(team:Team,charityId: string): Promise<boolean>{
         try{
             let headers = { "Content-Type": "application/json" };
-            let body = JSON.stringify(team);
+            let TeamRequest = {team:team,CharityID:charityId}
+            let body = JSON.stringify(TeamRequest);
             this.ILoggerService.Log("Team: " + body)
             let newurl = url + "/Team/Delete"
             let response = await fetch(newurl, {
