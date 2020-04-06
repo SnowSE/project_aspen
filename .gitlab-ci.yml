@@ -37,7 +37,7 @@ api_integration_test:
   services:
     - postgres:12.0
   variables:
-    POSTGRES_DB: aspen
+    POSTGRES_DB: Admin
     POSTGRES_USER: aspen
     POSTGRES_PASSWORD: super_secret_aspen_password
     INTEGRATION_TEST_CONNECTION: "Server=postgres; Port=5432; Database=$POSTGRES_DB; User Id=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
