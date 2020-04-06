@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS base
 WORKDIR /app
 EXPOSE 443
+RUN adduser -h /app app -D -s /usr/sbin/nologin
 RUN mkdir -p /app/.postgresql
 RUN chmod 700 /app/.postgresql
 
@@ -21,6 +22,6 @@ RUN dotnet publish "aspen.api.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN chown -R www-data:www-data /app
-USER www-data
+RUN chown -R app:app /app
+USER app
 ENTRYPOINT ["dotnet", "aspen.api.dll"]
