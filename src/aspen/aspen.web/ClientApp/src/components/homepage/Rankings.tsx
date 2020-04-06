@@ -26,14 +26,12 @@ type RankingsProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & 
 
 const Rankings:React.FC<RankingsProps> = props => {
 const [teams1, setTeams1] = useState<Team[]>([]);
-var Teams: Team[] = []
+
 const getteams = async() =>{
   let apiservice = new APIService(new DomainService(),new LoggerService());
   let charity  = await apiservice.GetCharityByDomain();
   let teams = await apiservice.GetTeamByCharityID(charity.ID);
   setTeams1(teams);
-  Teams.concat(teams);
-  console.warn(Teams);
 }
   const classes = {
     rankingCard: {
