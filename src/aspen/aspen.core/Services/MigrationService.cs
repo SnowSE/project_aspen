@@ -22,7 +22,7 @@ namespace Aspen.Core.Services
 
         public Task ApplyMigrations(ConnectionString connectionString)
         {
-            var t = new Task(() =>
+            return Task.Run(() =>
             {
                 var serviceProvider = new ServiceCollection()
                         .AddFluentMigratorCore()
@@ -35,8 +35,6 @@ namespace Aspen.Core.Services
                 var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
                 runner.MigrateUp();
             });
-            t.Start();
-            return t;
         }
 
         public IDbConnection GetDbConnection(ConnectionString connectionString) =>
