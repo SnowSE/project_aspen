@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS base
 WORKDIR /app
 EXPOSE 443
-RUN useradd -m -d /app app
+RUN adduser -h /app app -D -s /usr/sbin/nologin
 RUN mkdir -p /app/.postgresql
 RUN chmod 700 /app/.postgresql
 
