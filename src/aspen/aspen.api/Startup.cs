@@ -26,7 +26,9 @@ namespace Aspen.Api
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
             connectionStringBuilder.Passfile = passfilePath;
 
-            var passfile = File.ReadAllText(passfilePath).Split(":");
+            var alltext = File.ReadAllText(passfilePath);
+            var passfile = alltext.Split(":");
+
             connectionStringBuilder.SslMode = SslMode.Require;
             connectionStringBuilder.TrustServerCertificate = true;
             connectionStringBuilder.Host = passfile[0];

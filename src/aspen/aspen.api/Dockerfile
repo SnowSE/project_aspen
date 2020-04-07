@@ -26,4 +26,5 @@ COPY --from=publish /app/publish .
 RUN chown -R app:app /app
 ENV ASPNETCORE_URLS=http://+:5000
 USER app
-ENTRYPOINT ["dotnet", "aspen.api.dll"]
+# ENTRYPOINT ["dotnet", "aspen.api.dll"]
+ENTRYPOINT [ "top" ]
