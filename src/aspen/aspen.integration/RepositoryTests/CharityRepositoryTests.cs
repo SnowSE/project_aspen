@@ -142,9 +142,13 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityGeneratesConnectionString()
         {
             var name = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            var expectedConnectionString = new ConnectionString($"Host=localhost; Port=5433; Database={name}; Username={name}; Password=redacted; ");
+            var tmpConnString = new ConnectionString(migrationService.GetAdminDbConnection().ConnectionString);
+            var host = tmpConnString.Host.data;
+            var port = tmpConnString.Port.data;
+            var expectedConnectionString = new ConnectionString($"Host={host}; Port={port}; Database={name}; Username={name}; Password=redacted; ");
 
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
+            Console.WriteLine(acutalTurtles);
             var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.UpdatePassword("redacted");
             connectionStringWithoutPassword.Should().BeEquivalentTo(expectedConnectionString);
         }

@@ -5,7 +5,7 @@ namespace Aspen.Core.Models
     public class ConnectionString
     {
         public Port Port { get; }
-        public Host Server { get; }
+        public Host Host { get; }
         public Database Database { get; }
         public UserId UserId { get; }
         public Password Password { get; }
@@ -20,7 +20,7 @@ namespace Aspen.Core.Models
                 : "";
                 
             Port = new Port(connection);
-            Server = new Host(connection);
+            Host = new Host(connection);
             Database = new Database(connection);
             UserId = new UserId(connection);
             Password = connection.Contains("Passfile")
@@ -30,7 +30,7 @@ namespace Aspen.Core.Models
 
         public ConnectionString(Host server, Port port, Database database, UserId userId, Password password, String ssl)
         {
-            Server = server;
+            Host = server;
             Port = port;
             Database = database;
             UserId = userId;
@@ -40,7 +40,7 @@ namespace Aspen.Core.Models
 
         public override string ToString() =>
             Ssl +
-            Server.ToString() + 
+            Host.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
             UserId.ToString() + 
@@ -48,7 +48,7 @@ namespace Aspen.Core.Models
 
         //should only be used for testing purposes
         public string ToInsecureString() =>
-            Server.ToString() + 
+            Host.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
             UserId.ToString() + 
@@ -56,17 +56,17 @@ namespace Aspen.Core.Models
 
         public ConnectionString UpdateUser(string dbUser)
         {
-            return new ConnectionString(Server, Port, Database, new UserId($"Username={dbUser};"), Password, Ssl);
+            return new ConnectionString(Host, Port, Database, new UserId($"Username={dbUser};"), Password, Ssl);
         }
 
         public ConnectionString UpdateDatabase(string dbName)
         {
-            return new ConnectionString(Server, Port, new Database($"Database={dbName};"), UserId, Password, Ssl);
+            return new ConnectionString(Host, Port, new Database($"Database={dbName};"), UserId, Password, Ssl);
         }
 
         public ConnectionString UpdatePassword(string password)
         {
-            return new ConnectionString(Server, Port, Database, UserId, new Password($"Password={password};"), Ssl);
+            return new ConnectionString(Host, Port, Database, UserId, new Password($"Password={password};"), Ssl);
         }
 
         public ConnectionString UpdateServer(Host server)
@@ -76,7 +76,7 @@ namespace Aspen.Core.Models
 
         public ConnectionString UpdatePort(Port port)
         {
-            return new ConnectionString(Server, port, Database, UserId, Password, Ssl);
+            return new ConnectionString(Host, port, Database, UserId, Password, Ssl);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Aspen.Core.Repositories
                 var startingConnectionString = new ConnectionString(dbConnection.ConnectionString);
 
                 var connectionBuilder = new NpgsqlConnectionStringBuilder();
-                connectionBuilder.Host = startingConnectionString.Server.data;
+                connectionBuilder.Host = startingConnectionString.Host.data;
                 connectionBuilder.Port = startingConnectionString.Port.data;
                 
                 await createCharityDatabase(charity, dbConnection, connectionBuilder);
@@ -35,10 +35,6 @@ namespace Aspen.Core.Repositories
                 var newConnectionString = new ConnectionString(connectionBuilder.ConnectionString + ";");
 
                 charity = charity.UpdateConnectionString(newConnectionString);
-                // Console.WriteLine(connectionBuilder.ConnectionString);
-                // Console.WriteLine(newConnectionString);
-                // Console.WriteLine(charity.ConnectionString);
-
                 charity = await createCharityInDb(charity, dbConnection);
 
                 using(var userDbConnection = migrationService.GetDbConnection(charity.ConnectionString))
