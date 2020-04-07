@@ -24,7 +24,7 @@ namespace Aspen.Integration.RepositoryTests
         public TeamRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString);
+            migrationService = new MigrationService(connString, secure: false);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
 
@@ -41,7 +41,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;"),
+                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")}
             );
                 

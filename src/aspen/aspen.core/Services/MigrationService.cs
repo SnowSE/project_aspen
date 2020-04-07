@@ -12,11 +12,16 @@ namespace Aspen.Core.Services
 
     public class MigrationService : IMigrationService
     {
-        private ConnectionString adminConnectionString { get; }
+        private readonly bool secure;
 
-        public MigrationService(ConnectionString adminConnectionString)
+        private string adminConnectionString { get; }
+
+        public MigrationService(ConnectionString adminConnectionString, bool secure = true)
         {
-            this.adminConnectionString = adminConnectionString;
+            this.adminConnectionString = secure
+                ? adminConnectionString.ToString()
+                : adminConnectionString.ToInsecureString();
+            this.secure = secure;
         }
 
 
@@ -24,11 +29,15 @@ namespace Aspen.Core.Services
         {
             var t = new Task(() =>
             {
+                var connString = secure
+                    ? connectionString.ToString()
+                    : connectionString.ToInsecureString();
+
                 var serviceProvider = new ServiceCollection()
                         .AddFluentMigratorCore()
                         .ConfigureRunner(rb => rb
                             .AddPostgres()
-                            .WithGlobalConnectionString(connectionString.ToString())
+                            .WithGlobalConnectionString(connString)
                             .ScanIn(typeof(FirstMigration).Assembly).For.Migrations())
                         .AddLogging(lb => lb.AddFluentMigratorConsole())
                         .BuildServiceProvider(false);
@@ -40,9 +49,13 @@ namespace Aspen.Core.Services
         }
 
         public IDbConnection GetDbConnection(ConnectionString connectionString) =>
-            new NpgsqlConnection(connectionString.ToString());
+            new NpgsqlConnection(secure
+                ? connectionString.ToString()
+                : connectionString.ToInsecureString());
+        // public IDbConnection GetDbConnection(string connectionString) =>
+        //     new NpgsqlConnection(connectionString);
 
         public IDbConnection GetAdminDbConnection() =>
-            new NpgsqlConnection(adminConnectionString.ToString());
+            new NpgsqlConnection(adminConnectionString);
     }
 }

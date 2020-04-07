@@ -40,7 +40,7 @@ api_integration_test:
     POSTGRES_DB: Admin
     POSTGRES_USER: aspen
     POSTGRES_PASSWORD: super_secret_aspen_password
-    INTEGRATION_TEST_CONNECTION: "Server=postgres; Port=5432; Database=$POSTGRES_DB; User Id=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
+    INTEGRATION_TEST_CONNECTION: "Server=postgres; Port=5432; Database=$POSTGRES_DB; Username=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
   image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
   script:
     - dotnet test src/aspen/aspen.integration/

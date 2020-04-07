@@ -27,7 +27,7 @@ namespace Aspen.Tests.ControllerTests
         [Test]
         public async Task Delete_HandlesBadInput()
         {
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var badcharity = new Charity(Guid.NewGuid(), "nonexistantcharity", "description", connString, new Domain[] {});
             charityRepoMoq
                 .Setup(cr => cr.Delete(badcharity))

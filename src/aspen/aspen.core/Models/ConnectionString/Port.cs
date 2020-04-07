@@ -25,6 +25,6 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Invalid port");
         }
 
-        public override string ToString() => "Port=" + data.ToString() + "; ";
+        public override string ToString() => "Port=" + data.ToString() + ";";
     }
 }

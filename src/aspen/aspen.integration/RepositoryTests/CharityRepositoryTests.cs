@@ -29,7 +29,7 @@ namespace Aspen.Integration.RepositoryTests
         public CharityRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString);
+            migrationService = new MigrationService(connString, secure: false);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
 
@@ -45,7 +45,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;"),
+                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
                 
             await charityRepository.Create(alexsTurtles);
@@ -92,7 +92,7 @@ namespace Aspen.Integration.RepositoryTests
         {
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
             var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("Admin");
-            Console.WriteLine(connString.ToString());
+            Console.WriteLine(connString.ToInsecureString());
             Action unauthorizedAccessToAdminDb = () =>
             {
                 using(var dbConnection = migrationService.GetDbConnection(connString))
@@ -111,7 +111,6 @@ namespace Aspen.Integration.RepositoryTests
         public async Task NewDatabaseUsersCannotAccessOtherCharityDatabase()
         {
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
-            Console.WriteLine(acutalTurtles.State.ConnectionString);
             IEnumerable<string> databases;
             using(var adminDbConnection = migrationService.GetAdminDbConnection())
             {
@@ -120,9 +119,10 @@ namespace Aspen.Integration.RepositoryTests
                     WHERE datistemplate = false;"
                 );
             }
+
             var otherDatabase = databases.Where(d => d != "postgres" && d != "Admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
             var connString = acutalTurtles.State.ConnectionString.UpdateDatabase(otherDatabase);
-            Console.WriteLine(connString);
+
             Action unauthorizedAccessToOtherDb = () =>
             {
                 using(var dbConnection = migrationService.GetDbConnection(connString))
@@ -141,7 +141,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityGeneratesConnectionString()
         {
             var name = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            var expectedConnectionString = new ConnectionString($"Server=localhost; Port=5433; Database={name}; User Id={name}; Password=redacted; ");
+            var expectedConnectionString = new ConnectionString($"Server=localhost; Port=5433; Database={name}; Username={name}; Password=redacted; ");
 
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
             var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.UpdatePassword("redacted");
@@ -227,7 +227,7 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var connString = new ConnectionString("Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;");
+            var connString = new ConnectionString("Server=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;");
             var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", connString, new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 

@@ -23,7 +23,7 @@ services:
     depends_on: 
       - database
     environment: 
-      - DefaultConnection=Server=database; Port=5432; Database=Admin; User Id=Aspen; Password=Aspen;
+      - DefaultConnection=Server=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;
     ports:
        - 5000:5000
       #  - 443:443

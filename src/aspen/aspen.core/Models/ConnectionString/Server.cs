@@ -22,6 +22,6 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Invalid server");
         }
 
-        public override string ToString() => "Server=" + data.ToString() + "; ";
+        public override string ToString() => "Server=" + data.ToString() + ";";
     }
 }

@@ -29,7 +29,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityByDomain()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -52,7 +52,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityById()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -75,7 +75,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetThemeByCharityId()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -139,7 +139,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanUpdateTheme()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var color = "#000000";
             var fontFamily = "Times";
             var penguinTheme = new Theme(color, color, color, color, fontFamily);

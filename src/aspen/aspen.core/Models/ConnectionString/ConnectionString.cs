@@ -32,6 +32,15 @@ namespace Aspen.Core.Models
         }
 
         public override string ToString() =>
+            "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;" +
+            Server.ToString() + 
+            Port.ToString() + 
+            Database.ToString() + 
+            UserId.ToString() + 
+            Password.ToString();
+
+        //should only be used for testing purposes
+        public string ToInsecureString() =>
             Server.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
@@ -40,7 +49,7 @@ namespace Aspen.Core.Models
 
         public ConnectionString UpdateUser(string dbUser)
         {
-            return new ConnectionString(Server, Port, Database, new UserId($"User Id={dbUser};"), Password);
+            return new ConnectionString(Server, Port, Database, new UserId($"Username={dbUser};"), Password);
         }
 
         public ConnectionString UpdateDatabase(string dbName)

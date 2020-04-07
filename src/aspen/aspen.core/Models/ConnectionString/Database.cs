@@ -22,6 +22,6 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Invalid database");
         }
 
-        public override string ToString() => "Database=" + data.ToString() + "; ";
+        public override string ToString() => "Database=" + data.ToString() + ";";
     }
 }
