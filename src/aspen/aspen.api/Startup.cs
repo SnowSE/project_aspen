@@ -35,8 +35,8 @@ namespace Aspen.Api
             connectionStringBuilder.Port = int.Parse(passfile[1]);
             connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
-
-            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString);
+            
+            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
