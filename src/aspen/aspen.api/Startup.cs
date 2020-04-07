@@ -33,7 +33,7 @@ namespace Aspen.Api
             connectionStringBuilder.TrustServerCertificate = true;
             connectionStringBuilder.Host = passfile[0];
             connectionStringBuilder.Port = int.Parse(passfile[1]);
-            connectionStringBuilder.Database = passfile[2];
+            connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
 
             connectionString = new ConnectionString(connectionStringBuilder.ConnectionString);
