@@ -18,6 +18,7 @@ using System.Collections.Generic;
 
 namespace Aspen.Integration.RepositoryTests
 {
+    [Category("Charity")]
     public class CharityRepositoryTests
     {
         private int salt;
@@ -45,7 +46,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
+                new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
                 
             await charityRepository.Create(alexsTurtles);
@@ -141,7 +142,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CreatingCharityGeneratesConnectionString()
         {
             var name = "charity_" + alexsTurtles.CharityId.ToString().Replace("-", "");
-            var expectedConnectionString = new ConnectionString($"Server=localhost; Port=5433; Database={name}; Username={name}; Password=redacted; ");
+            var expectedConnectionString = new ConnectionString($"Host=localhost; Port=5433; Database={name}; Username={name}; Password=redacted; ");
 
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
             var connectionStringWithoutPassword = acutalTurtles.State.ConnectionString.UpdatePassword("redacted");
@@ -227,7 +228,7 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var connString = new ConnectionString("Server=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;");
+            var connString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;");
             var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", connString, new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 

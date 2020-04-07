@@ -41,7 +41,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
+                new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")}
             );
                 

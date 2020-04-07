@@ -41,7 +41,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Kyler's Penguins" + salt,
                 "Kyler has a lot of turtles",
-                new ConnectionString("Server=database; Port=5432; Database=kylersturtles; Username=Aspen; Password=Aspen;"),
+                new ConnectionString("Host=database; Port=5432; Database=kylersturtles; Username=Aspen; Password=Aspen;"),
                 new Domain[]{ new Domain(salt+"kylerspenguins.com")});
             await charityRepository.Create(penguins);
             var res = await charityRepository.GetByDomain(penguins.Domains.First());

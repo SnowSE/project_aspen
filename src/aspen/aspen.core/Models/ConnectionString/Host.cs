@@ -3,10 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Aspen.Core.Models
 {
-    public class Server
+    public class Host
     {
-        private string data { get; }
-        public Server(string connectionString)
+        public string data { get; }
+        public Host(string connectionString)
         {
             data = getAndValidateServer(connectionString);
         }
@@ -14,14 +14,14 @@ namespace Aspen.Core.Models
 
         private static string getAndValidateServer(string connectionString)
         {
-            var serverPattern = @"Server=([a-z0-9-.]+);";
+            var serverPattern = @"Host=([a-z0-9-.]+);";
             var match = Regex.Match(connectionString, serverPattern);
             if(match.Success)
                 return match.Groups[1].Value;
             else
-                throw new ArgumentException("Invalid server");
+                throw new ArgumentException("Invalid Host");
         }
 
-        public override string ToString() => "Server=" + data.ToString() + ";";
+        public override string ToString() => "Host=" + data.ToString() + ";";
     }
 }

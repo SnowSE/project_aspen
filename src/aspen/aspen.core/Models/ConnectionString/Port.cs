@@ -5,7 +5,7 @@ namespace Aspen.Core.Models
 {
     public class Port
     {
-        private int data;
+        public int data;
 
         public Port(string connectionString)
         {
