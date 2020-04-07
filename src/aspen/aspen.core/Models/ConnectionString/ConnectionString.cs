@@ -9,6 +9,7 @@ namespace Aspen.Core.Models
         public Database Database { get; }
         public UserId UserId { get; }
         public Password Password { get; }
+        public string ssl { get; set; }
 
         public ConnectionString(string connection)
         {
@@ -36,8 +37,7 @@ namespace Aspen.Core.Models
             Server.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
-            UserId.ToString() + 
-            Password.ToString();
+            UserId.ToString();
 
         //should only be used for testing purposes
         public string ToInsecureString() =>

@@ -10,6 +10,8 @@ using Aspen.Core.Services;
 using Aspen.Core.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using Npgsql;
+using System.IO;
 
 namespace Aspen.Api
 {
@@ -20,7 +22,19 @@ namespace Aspen.Api
 
         public Startup(IConfiguration configuration)
         {
-            connectionString = new ConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"));
+            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+            connectionStringBuilder.Passfile = passfilePath;
+
+            var passfile = File.ReadAllText(passfilePath).Split(":");
+            connectionStringBuilder.SslMode = SslMode.Require;
+            connectionStringBuilder.TrustServerCertificate = true;
+            connectionStringBuilder.Host = passfile[0];
+            connectionStringBuilder.Port = int.Parse(passfile[1]);
+            connectionStringBuilder.Database = passfile[2];
+            connectionStringBuilder.Username = passfile[3];
+
+            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
