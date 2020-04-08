@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-//TODO: Edit so they come from the right place
+using Aspen.Core.Services;
+using Aspen.Core.Models;
 using Aspen.Api.Services;
-using Aspen.Api.Models;
-using System.Linq;
 
 namespace Aspen.Api.Controllers
 {
@@ -33,6 +32,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Admin")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();

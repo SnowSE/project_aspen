@@ -25,23 +25,28 @@ namespace Aspen.Api
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         private ConnectionString connectionString;
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
-            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
-            var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            connectionStringBuilder.Passfile = passfilePath;
+            // var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            // var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+            // connectionStringBuilder.Passfile = passfilePath;
 
-            var alltext = File.ReadAllText(passfilePath);
-            var passfile = alltext.Split(":");
+            // var alltext = File.ReadAllText(passfilePath);
+            // var passfile = alltext.Split(":");
 
-            connectionStringBuilder.SslMode = SslMode.Require;
-            connectionStringBuilder.TrustServerCertificate = true;
-            connectionStringBuilder.Host = passfile[0];
-            connectionStringBuilder.Port = int.Parse(passfile[1]);
-            connectionStringBuilder.Database = "Admin";
-            connectionStringBuilder.Username = passfile[3];
-            
-            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
+            // connectionStringBuilder.SslMode = SslMode.Require;
+            // connectionStringBuilder.TrustServerCertificate = true;
+            // connectionStringBuilder.Host = passfile[0];
+            // connectionStringBuilder.Port = int.Parse(passfile[1]);
+            // connectionStringBuilder.Database = "Admin";
+            // connectionStringBuilder.Username = passfile[3];
+
+            // connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
+            connectionString = new ConnectionString("Host=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
+
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -52,12 +57,25 @@ namespace Aspen.Api
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<IThemeRepository, ThemeRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
-            
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+               {
+                   builder
+                       .AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+               });
+            });
+
+            services.AddControllers().AddNewtonsoftJson();
+
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-            
 
-                        var appSettings = appSettingsSection.Get<AppSettings>();
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
             {
@@ -80,18 +98,10 @@ namespace Aspen.Api
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
 
-            services.AddCors(options =>
+            services.AddAuthorization(options =>
             {
-                options.AddDefaultPolicy( builder =>
-                {
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
+                options.AddPolicy("Admin", policy => policy.RequireClaim("AdminClaim"));
             });
-
-            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,9 +117,10 @@ namespace Aspen.Api
             }
 
             Thread.Sleep(500);
-            var t = new Task(async () => {
+            var t = new Task(async () =>
+            {
                 await migrationService.ApplyMigrations(connectionString);
-                foreach(var charity in await charityRepository.GetAll())
+                foreach (var charity in await charityRepository.GetAll())
                     await migrationService.ApplyMigrations(charity.ConnectionString);
             });
             t.Start();
@@ -119,6 +130,8 @@ namespace Aspen.Api
 
             app.UseRouting();
 
+            // authentication has to be before authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors();

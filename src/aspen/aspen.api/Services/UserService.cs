@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
 using Aspen.Api.Helpers;
 
-namespace Aspen.Core.Services
+namespace Aspen.Api.Services
 {
     public class UserService : IUserService
     {
@@ -29,7 +29,6 @@ namespace Aspen.Core.Services
         public User Authenticate(string username, string password)
         {
             var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
-
             // return null if user not found
             if (user == null)
                 return null;
@@ -42,6 +41,7 @@ namespace Aspen.Core.Services
                 Subject = new ClaimsIdentity(new Claim[] 
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
+                    // new Claim("AdminClaim", "true")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

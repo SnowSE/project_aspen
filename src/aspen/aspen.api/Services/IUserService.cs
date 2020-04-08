@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Aspen.Core.Models;
 
-namespace Aspen.Core.Services
+namespace Aspen.Api.Services
 {
     public interface IUserService
     {
