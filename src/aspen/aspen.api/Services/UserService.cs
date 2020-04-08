@@ -44,6 +44,7 @@ namespace Aspen.Api.Services
                     // new Claim("AdminClaim", "true")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
+                NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
