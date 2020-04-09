@@ -29,22 +29,22 @@ namespace Aspen.Api
 
         public Startup(IConfiguration configuration)
         {
-            // var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
-            // var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            // connectionStringBuilder.Passfile = passfilePath;
+            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+            connectionStringBuilder.Passfile = passfilePath;
 
-            // var alltext = File.ReadAllText(passfilePath);
-            // var passfile = alltext.Split(":");
+            var alltext = File.ReadAllText(passfilePath);
+            var passfile = alltext.Split(":");
 
-            // connectionStringBuilder.SslMode = SslMode.Require;
-            // connectionStringBuilder.TrustServerCertificate = true;
-            // connectionStringBuilder.Host = passfile[0];
-            // connectionStringBuilder.Port = int.Parse(passfile[1]);
-            // connectionStringBuilder.Database = "Admin";
-            // connectionStringBuilder.Username = passfile[3];
+            connectionStringBuilder.SslMode = SslMode.Require;
+            connectionStringBuilder.TrustServerCertificate = true;
+            connectionStringBuilder.Host = passfile[0];
+            connectionStringBuilder.Port = int.Parse(passfile[1]);
+            connectionStringBuilder.Database = "Admin";
+            connectionStringBuilder.Username = passfile[3];
 
-            // connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
-            connectionString = new ConnectionString("Host=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
+            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
+            // connectionString = new ConnectionString("Host=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
 
             Configuration = configuration;
         }
