@@ -29,8 +29,8 @@ namespace Aspen.Core.Data
                     .WithColumn("id").AsGuid().PrimaryKey().NotNullable()
                     .WithColumn("firstname").AsString().NotNullable()
                     .WithColumn("lastname").AsString().NotNullable()
-                    .WithColumn("username").AsString().NotNullable()
-                    .WithColumn("salt").AsString().NotNullable()
+                    .WithColumn("username").AsString().NotNullable().Unique()
+                    .WithColumn("salt").AsBinary().NotNullable()
                     .WithColumn("hashedpassword").AsString().NotNullable();
             }
             else

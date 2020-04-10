@@ -10,11 +10,11 @@ namespace Aspen.Api.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase, IUsersController
+    public class UserController : ControllerBase
     {
         private IUserService _userService;
 
-        public UsersController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }

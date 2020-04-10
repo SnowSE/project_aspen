@@ -4,10 +4,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
 using Aspen.Api.Helpers;
+
 
 namespace Aspen.Api.Services
 {
@@ -16,7 +19,7 @@ namespace Aspen.Api.Services
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
         private List<User> _users = new List<User>
         { 
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" } 
+            new User(Guid.NewGuid(), "Bob", "TheBuilder", "builder4lyfe", "", new byte[]{}, "")
         };
 
         private readonly AppSettings _appSettings;
@@ -26,11 +29,21 @@ namespace Aspen.Api.Services
             _appSettings = appSettings.Value;
         }
 
+        // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-3.1
         public User Authenticate(string username, string password)
         {
-            var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
-            // return null if user not found
+            var user = _users.FirstOrDefault(x => x.Username == username);
             if (user == null)
+                return null;
+
+            string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: user.Salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            if(hash != user.HashedPassword)
                 return null;
 
             // authentication successful so generate jwt token
@@ -48,14 +61,14 @@ namespace Aspen.Api.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+            user = user.UpdateToken(tokenHandler.WriteToken(token));
 
-            return user.WithoutPassword();
+            return user;
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _users.WithoutPasswords();
+            return _users;
         }
     }
 }

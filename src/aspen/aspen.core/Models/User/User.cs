@@ -6,7 +6,7 @@ namespace Aspen.Core.Models
 {
     public class User
     {
-        public User(Guid id, string firstname, string lastname, string username, string hashedpassword, string salt, string token)
+        public User(Guid id, string firstname, string lastname, string username, string hashedpassword, byte[] salt, string token)
         {
             this.Id = id;
             FirstName = firstname;
@@ -17,7 +17,7 @@ namespace Aspen.Core.Models
             Token = token;
         }
 
-        private User(Guid id, string firstname, string lastname, string username, string salt, string hashedpassword)
+        private User(Guid id, string firstname, string lastname, string username, byte[] salt, string hashedpassword)
         {
             this.Id = id;
             FirstName = firstname;
@@ -34,13 +34,18 @@ namespace Aspen.Core.Models
         public string Username { get; }
         public string HashedPassword { get; }
         [JsonIgnore]
-        public string Salt { get; }
+        public byte[] Salt { get; }
         [JsonIgnore]
         public string Token { get; }
 
-        public User UpdateFirstName(string firstname)
+        public User UpdateFirstName(string newFirstName)
         {
-            return new User(Id, firstname, LastName, Username, HashedPassword, Salt, Token);
+            return new User(Id, newFirstName, LastName, Username, HashedPassword, Salt, Token);
+        }
+
+        public User UpdateToken(string newToken)
+        {
+            return new User(Id, FirstName, LastName, Username, HashedPassword, Salt, newToken);
         }
     }
 }

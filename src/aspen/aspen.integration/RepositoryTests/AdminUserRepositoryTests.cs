@@ -20,8 +20,10 @@ namespace Aspen.Integration.RepositoryTests
         [SetUp]
         public async Task SetUp()
         {
+            var rand = new Random();
+            var usernameSalt = rand.Next();
             bobTheBuilder = new User(
-                Guid.NewGuid(), "bob", "thebuilder", "bobthebuilder", "12345abc", "", ""
+                Guid.NewGuid(), "bob", "thebuilder", "bobthebuilder"+usernameSalt, "12345abc", new byte[]{}, ""
             );
 
             await adminUserRepo.Create(bobTheBuilder);
