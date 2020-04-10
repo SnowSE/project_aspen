@@ -20,7 +20,7 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task Create(Charity charity)
+        public async Task<Result<Charity>> Create(Charity charity)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
@@ -49,6 +49,8 @@ namespace Aspen.Core.Repositories
                 //very bad if this happens
                 //TODO: FIX THIS
                 await createDomains(charity, dbConnection);
+
+                return Result<Charity>.Success(charity);
             }
         }
 
@@ -104,7 +106,7 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task Update(Charity charity)
+        public async Task<Result<Charity>> Update(Charity charity)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
@@ -115,6 +117,8 @@ namespace Aspen.Core.Repositories
                     where CharityId = @charityId;",
                     charity
                 );
+
+                return Result<Charity>.Success(charity);
             }
         }
 
@@ -144,7 +148,7 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<InternalResult<Charity>> GetByDomain(Domain domain)
+        public async Task<Result<Charity>> GetByDomain(Domain domain)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
@@ -152,26 +156,26 @@ namespace Aspen.Core.Repositories
                 {
                     var charityId = await getCharityIdByDomain(domain, dbConnection);
                     var charity = await getCharityWithDomain(dbConnection, charityId);
-                    return InternalResult<Charity>.Success(charity);
+                    return Result<Charity>.Success(charity);
                 }
                 catch(InvalidOperationException e)
                 {
                     if(e.Message == "Sequence contains no elements")
-                        return InternalResult<Charity>.Failure("Domain does not exist");
+                        return Result<Charity>.Failure("Domain does not exist");
                     else
-                        return InternalResult<Charity>.Failure(e.Message);
+                        return Result<Charity>.Failure(e.Message);
                 }
             }
         }
 
-        public async Task<InternalResult<Charity>> GetById(Guid charityId)
+        public async Task<Result<Charity>> GetById(Guid charityId)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 var charity = await getCharityWithDomain(dbConnection, charityId);
                 return charity != null
-                    ? InternalResult<Charity>.Success(charity)
-                    : InternalResult<Charity>.Failure("Charity id does not exist");
+                    ? Result<Charity>.Success(charity)
+                    : Result<Charity>.Failure("Charity id does not exist");
             }
         }
 
@@ -219,17 +223,17 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<InternalResult<bool>> Delete(Charity charity)
+        public async Task<Result<bool>> Delete(Charity charity)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
-                return await InternalResult<Charity>.Success(charity)
+                return await Result<Charity>.Success(charity)
                     .ApplyAsync(async c => await deleteDomains(c, dbConnection))
                     .ApplyAsync(async c => await deleteCharity(c, dbConnection));
             }
         }
 
-        private static async Task<InternalResult<bool>> deleteCharity(Charity charity, IDbConnection dbConnection)
+        private static async Task<Result<bool>> deleteCharity(Charity charity, IDbConnection dbConnection)
         {
             var rowsAffected = await dbConnection.ExecuteAsync(
                     @"delete from Charity
@@ -238,18 +242,18 @@ namespace Aspen.Core.Repositories
                 );
 
             if(rowsAffected == 0)
-                return InternalResult<bool>.Failure("Cannot delete non-existant charity.");
-            return InternalResult<bool>.Success(true);
+                return Result<bool>.Failure("Cannot delete non-existant charity.");
+            return Result<bool>.Success(true);
         }
 
-        private static async Task<InternalResult<Charity>> deleteDomains(Charity charity, IDbConnection dbConnection)
+        private static async Task<Result<Charity>> deleteDomains(Charity charity, IDbConnection dbConnection)
         {
             await dbConnection.ExecuteAsync(
                     @"delete from Domain
                     where charityId = @charityId;",
                     charity
                 );
-            return InternalResult<Charity>.Success(charity);
+            return Result<Charity>.Success(charity);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task Create(Theme theme, ConnectionString connectionString)
+        public async Task<Result<Theme>> Create(Theme theme, ConnectionString connectionString)
         {
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
@@ -29,20 +29,21 @@ namespace Aspen.Core.Repositories
                     theme
                 );
             }
+            return Result<Theme>.Success(theme);
         }
 
-        public async Task<InternalResult<Theme>> GetByCharity(Charity charity)
+        public async Task<Result<Theme>> GetByCharity(Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
-                return InternalResult<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
+                return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
                     @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily
                         from Theme;"
                 ));
             }
         }
 
-        public async Task<InternalResult<bool>> Update(Theme theme, ConnectionString connectionString)
+        public async Task<Result<bool>> Update(Theme theme, ConnectionString connectionString)
         {
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
@@ -56,9 +57,9 @@ namespace Aspen.Core.Repositories
                     theme
                 );
                 if(affecteRows == 1)
-                    return InternalResult<bool>.Success(true);
+                    return Result<bool>.Success(true);
                 else
-                    return InternalResult<bool>.Failure("Failed to update theme");
+                    return Result<bool>.Failure("Failed to update theme");
             }
         }
     }

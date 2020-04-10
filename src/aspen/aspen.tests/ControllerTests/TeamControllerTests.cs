@@ -45,7 +45,7 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(cr => cr.GetById(alexsTurtles.CharityId))
-                .ReturnsAsync(InternalResult<Charity>.Success(alexsTurtles));
+                .ReturnsAsync(Result<Charity>.Success(alexsTurtles));
 
             turtlePower = new Team(
                 Guid.NewGuid(),
@@ -65,7 +65,7 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Create(turtlePower, alexsTurtles))
-                .ReturnsAsync(InternalResult<bool>.Success(true));
+                .ReturnsAsync(Result<bool>.Success(true));
 
             var response = await teamController.Create(request);
             response.Status.Should().Be(ApiResult.StatusConstants.Success);
@@ -77,7 +77,7 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Update(turtlePower, alexsTurtles))
-                .ReturnsAsync(InternalResult<Team>.Success(turtlePower));
+                .ReturnsAsync(Result<Team>.Success(turtlePower));
             
             var response = await teamController.Update(request);
             response.Status.Should().Be(ApiResult.StatusConstants.Success);
@@ -89,7 +89,7 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Delete(turtlePower, alexsTurtles))
-                .ReturnsAsync(InternalResult<bool>.Success(true));
+                .ReturnsAsync(Result<bool>.Success(true));
             
             var response = await teamController.Delete(request);
             response.Status.Should().Be(ApiResult.StatusConstants.Success);
@@ -102,7 +102,7 @@ namespace Aspen.Tests.ControllerTests
             IEnumerable<Team> teamList = new Team[] { turtlePower };
             teamRepoMoq
                 .Setup(tr => tr.GetByCharity(alexsTurtles))
-                .ReturnsAsync(InternalResult<IEnumerable<Team>>.Success(teamList));
+                .ReturnsAsync(Result<IEnumerable<Team>>.Success(teamList));
 
             var response = await teamController.GetByCharityId(alexsTurtles.CharityId);
             response.Status.Should().Be(ApiResult.StatusConstants.Success);

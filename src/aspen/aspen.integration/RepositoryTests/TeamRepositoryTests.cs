@@ -45,7 +45,7 @@ namespace Aspen.Integration.RepositoryTests
                 new Domain[]{ new Domain(salt+"alexsturtles.com")}
             );
                 
-            await charityRepository.Create(alexsTurtles);
+            await charityRepository.Create(InternalResult<Charity>.Success(alexsTurtles));
             alexsTurtles = (await charityRepository.GetById(alexsTurtles.CharityId)).State;
 
             turtlePower = new Team(

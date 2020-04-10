@@ -17,7 +17,7 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task<InternalResult<bool>> Create(Team team, Charity charity)
+        public async Task<Result<bool>> Create(Team team, Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
@@ -27,25 +27,25 @@ namespace Aspen.Core.Repositories
                     team
                 );
                 if (affectedRows == 1)
-                    return InternalResult<bool>.Success(true);
+                    return Result<bool>.Success(true);
                 else
-                    return InternalResult<bool>.Failure("Team not inserted into database");
+                    return Result<bool>.Failure("Team not inserted into database");
 
             }
         }
 
-        public async Task<InternalResult<IEnumerable<Team>>> GetByCharity(Charity charity)
+        public async Task<Result<IEnumerable<Team>>> GetByCharity(Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
                 var teams = await dbConnection.QueryAsync<Team>(
                     @"select * from team;"
                 );
-                return InternalResult<IEnumerable<Team>>.Success(teams);
+                return Result<IEnumerable<Team>>.Success(teams);
             }
         }
 
-        public async Task<InternalResult<bool>> Delete(Team team, Charity charity)
+        public async Task<Result<bool>> Delete(Team team, Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
@@ -55,13 +55,13 @@ namespace Aspen.Core.Repositories
                     team
                 );
                 if (affectedRows == 1)
-                    return InternalResult<bool>.Success(true);
+                    return Result<bool>.Success(true);
                 else
-                    return InternalResult<bool>.Failure("Cannot delete, team does not exist");
+                    return Result<bool>.Failure("Cannot delete, team does not exist");
             }
         }
 
-        public async Task<InternalResult<Team>> Update(Team team, Charity charity)
+        public async Task<Result<Team>> Update(Team team, Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
@@ -73,9 +73,9 @@ namespace Aspen.Core.Repositories
                     team
                 );
                 if (affectedRows == 1)
-                    return InternalResult<Team>.Success(team);
+                    return Result<Team>.Success(team);
                 else
-                    return InternalResult<Team>.Failure("Could not update team, Id not found");
+                    return Result<Team>.Failure("Could not update team, Id not found");
             }
         }
     }

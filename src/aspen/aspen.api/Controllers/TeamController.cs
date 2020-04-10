@@ -52,12 +52,12 @@ namespace Aspen.Api.Controllers
                 .ApplyAsync(async c => await teamRepository.Delete(request.team, c))
                 .ReturnApiResult();
 
-        private async Task<InternalResult<Charity>> getValidCharity(TeamRequest request)
+        private async Task<Result<Charity>> getValidCharity(TeamRequest request)
         {
             return await charityRepository.GetById(request.CharityId);
         }
 
-        private async Task<InternalResult<Charity>> getValidCharity(Guid charityId)
+        private async Task<Result<Charity>> getValidCharity(Guid charityId)
         {
             return await charityRepository.GetById(charityId);
         }

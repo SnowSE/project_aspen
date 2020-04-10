@@ -6,9 +6,9 @@ namespace Aspen.Core.Repositories
 {
     public interface ITeamRepository
     {
-        Task<InternalResult<bool>> Create(Team team, Charity charity);
-        Task<InternalResult<bool>> Delete(Team team, Charity charity);
-        Task<InternalResult<IEnumerable<Team>>> GetByCharity(Charity charity);
-        Task<InternalResult<Team>> Update(Team team, Charity charity);
+        Task<Result<bool>> Create(Team team, Charity charity);
+        Task<Result<bool>> Delete(Team team, Charity charity);
+        Task<Result<IEnumerable<Team>>> GetByCharity(Charity charity);
+        Task<Result<Team>> Update(Team team, Charity charity);
     }
 }

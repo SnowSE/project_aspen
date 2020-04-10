@@ -36,28 +36,28 @@ namespace Aspen.Api.Controllers
                 .ApplyAsync(charityRepository.GetById)
                 .ReturnApiResult();
 
-        private InternalResult<Domain> validateDomain(string domain)
+        private Result<Domain> validateDomain(string domain)
         {
             try
             {
                 var d = new Domain(domain);
-                return InternalResult<Domain>.Success(d);
+                return Result<Domain>.Success(d);
             }
             catch(ArgumentException e)
             {
-                return InternalResult<Domain>.Failure(e.Message);
+                return Result<Domain>.Failure(e.Message);
             }
         }
 
         [HttpGet]
         public async Task<ApiResult> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
             await charityId
-                .ValidateFunction(id => InternalResult<Guid>.Success(id))
+                .ValidateFunction(id => Result<Guid>.Success(id))
                 .ApplyAsync(charityRepository.GetById)
                 .ApplyAsync(themeRepository.GetByCharity)
                 .ReturnApiResult();
 
-        private InternalResult<Guid> validateCharityId(Guid id) => InternalResult<Guid>.Success(id);
+        private Result<Guid> validateCharityId(Guid id) => Result<Guid>.Success(id);
 
         [HttpGet]
         public async Task<ApiResult> GetHomePage([FromQuery(Name = "charityId")] Guid charityId)
@@ -73,7 +73,7 @@ namespace Aspen.Api.Controllers
                 .ApplyAsync(async c => await themeRepository.Update(request.Theme, c.ConnectionString))
                 .ReturnApiResult();
 
-        private async Task<InternalResult<Charity>> getValidCharity(ThemeRequest request)
+        private async Task<Result<Charity>> getValidCharity(ThemeRequest request)
         {
             return await charityRepository.GetById(request.CharityId);
         }

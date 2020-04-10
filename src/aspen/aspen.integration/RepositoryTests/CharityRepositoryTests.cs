@@ -15,6 +15,7 @@ using Aspen.Core.Services;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
+using Aspen.Core;
 
 namespace Aspen.Integration.RepositoryTests
 {
@@ -49,7 +50,7 @@ namespace Aspen.Integration.RepositoryTests
                 new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")});
                 
-            await charityRepository.Create(alexsTurtles);
+            await charityRepository.Create(InternalResult<Charity>.Success(alexsTurtles));
         }
 
         [Test]

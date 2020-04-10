@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Aspen.Core.Repositories;
 using System.Linq;
 using System;
@@ -10,12 +10,12 @@ using Aspen.Core.Models;
 namespace Aspen.Api.Controllers
 {
     [Route("admin/charity/{action}")]
-    public class CharityAdminController : ControllerBase
+    public class AdminCharityController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;
         private readonly IThemeRepository themeRepository;
 
-        public CharityAdminController(
+        public AdminCharityController(
             ICharityRepository charityRepository,
             IThemeRepository themeRepository)
         {
@@ -38,21 +38,20 @@ namespace Aspen.Api.Controllers
         
 
         [HttpPost]
-        public async Task<ApiResult> Create([FromBody]Charity charity)
-        {
-            charity = charity.UpdateId(Guid.NewGuid());
-            await charityRepository.Create(charity);
-            var result = await charityRepository.GetByDomain(charity.Domains.First());
-            await themeRepository.Create(Theme.Default(), result.State.ConnectionString);
-            return ApiResult.Success(null);
-        }
+        public async Task<ApiResult> Create([FromBody]Charity charity) =>
+            await charity
+                .ValidateFunction(c => Result<Charity>.Success(c.UpdateId(Guid.NewGuid())))
+                .ApplyAsync(charityRepository.Create)
+                .ApplyAsync(async c => await themeRepository.Create(Theme.Default(), c.ConnectionString))
+                .ReturnEmptyApiResult();
+
 
         [HttpPost]
-        public async Task<ApiResult> Update([FromBody]Charity charity)
-        {
-            await charityRepository.Update(charity);
-            return ApiResult.Success(null);
-        }
+        public async Task<ApiResult> Update([FromBody]Charity charity) =>
+            await charity
+                .ValidateFunction(c => Result<Charity>.Success(c))
+                .ApplyAsync(charityRepository.Update)
+                .ReturnEmptyApiResult();
 
         [HttpPost]
         public async Task<ApiResult> Delete([FromBody]Charity charity) =>
@@ -62,9 +61,9 @@ namespace Aspen.Api.Controllers
                 .ReturnApiResult();
         
         
-        private InternalResult<Charity> validateCharity(Charity charity)
+        private Result<Charity> validateCharity(Charity charity)
         {
-            return InternalResult<Charity>.Success(charity);
+            return Result<Charity>.Success(charity);
         }
 
     }
