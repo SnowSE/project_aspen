@@ -31,18 +31,18 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task<Result<Theme>> GetByCharity(Charity charity)
+        public async Task<InternalResult<Theme>> GetByCharity(Charity charity)
         {
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
-                return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
+                return InternalResult<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
                     @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily
                         from Theme;"
                 ));
             }
         }
 
-        public async Task<Result<bool>> Update(Theme theme, ConnectionString connectionString)
+        public async Task<InternalResult<bool>> Update(Theme theme, ConnectionString connectionString)
         {
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
@@ -56,9 +56,9 @@ namespace Aspen.Core.Repositories
                     theme
                 );
                 if(affecteRows == 1)
-                    return Result<bool>.Success(true);
+                    return InternalResult<bool>.Success(true);
                 else
-                    return Result<bool>.Failure("Failed to update theme");
+                    return InternalResult<bool>.Failure("Failed to update theme");
             }
         }
     }

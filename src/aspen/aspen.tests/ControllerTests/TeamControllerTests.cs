@@ -45,7 +45,7 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(cr => cr.GetById(alexsTurtles.CharityId))
-                .ReturnsAsync(Result<Charity>.Success(alexsTurtles));
+                .ReturnsAsync(InternalResult<Charity>.Success(alexsTurtles));
 
             turtlePower = new Team(
                 Guid.NewGuid(),
@@ -65,10 +65,10 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Create(turtlePower, alexsTurtles))
-                .ReturnsAsync(Result<bool>.Success(true));
+                .ReturnsAsync(InternalResult<bool>.Success(true));
 
             var response = await teamController.Create(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(true);
         }
 
@@ -77,10 +77,10 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Update(turtlePower, alexsTurtles))
-                .ReturnsAsync(Result<Team>.Success(turtlePower));
+                .ReturnsAsync(InternalResult<Team>.Success(turtlePower));
             
             var response = await teamController.Update(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(turtlePower);
         }
 
@@ -89,10 +89,10 @@ namespace Aspen.Tests.ControllerTests
         {
             teamRepoMoq
                 .Setup(tr => tr.Delete(turtlePower, alexsTurtles))
-                .ReturnsAsync(Result<bool>.Success(true));
+                .ReturnsAsync(InternalResult<bool>.Success(true));
             
             var response = await teamController.Delete(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(true);
         }
 
@@ -102,10 +102,10 @@ namespace Aspen.Tests.ControllerTests
             IEnumerable<Team> teamList = new Team[] { turtlePower };
             teamRepoMoq
                 .Setup(tr => tr.GetByCharity(alexsTurtles))
-                .ReturnsAsync(Result<IEnumerable<Team>>.Success(teamList));
+                .ReturnsAsync(InternalResult<IEnumerable<Team>>.Success(teamList));
 
             var response = await teamController.GetByCharityId(alexsTurtles.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(teamList);
         }
     }

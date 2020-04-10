@@ -11,8 +11,8 @@ namespace Aspen.Core.Repositories
         Task<IEnumerable<Charity>> GetAll();
         IEnumerable<string> GetDomains();
         Task Update(Charity charity);
-        Task<Result<Charity>> GetById(Guid charityId);
-        Task<Result<Charity>> GetByDomain(Domain Domain);
-        Task<Result<bool>> Delete(Charity charity);
+        Task<InternalResult<Charity>> GetById(Guid charityId);
+        Task<InternalResult<Charity>> GetByDomain(Domain Domain);
+        Task<InternalResult<bool>> Delete(Charity charity);
     }
 }

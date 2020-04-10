@@ -24,47 +24,47 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> GetAll()
+        public async Task<ApiResult> GetAll()
         {
             var allCharities = await charityRepository.GetAll();
-            return StatusReturn.Success(allCharities);
+            return ApiResult.Success(allCharities);
         }
 
         [HttpGet]
-        public async Task<StatusReturn> Get(Guid charityId)
-        {
-            var charity = await charityRepository.GetById(charityId);
-            return StatusReturn.Success(charity);
-        }
+        public async Task<ApiResult> Get(Guid charityId) =>
+            await charityId
+                .ValidateFunction(async id => await charityRepository.GetById(id))
+                .ReturnApiResult();
+        
 
         [HttpPost]
-        public async Task<StatusReturn> Create([FromBody]Charity charity)
+        public async Task<ApiResult> Create([FromBody]Charity charity)
         {
             charity = charity.UpdateId(Guid.NewGuid());
             await charityRepository.Create(charity);
             var result = await charityRepository.GetByDomain(charity.Domains.First());
             await themeRepository.Create(Theme.Default(), result.State.ConnectionString);
-            return StatusReturn.Success(null);
+            return ApiResult.Success(null);
         }
 
         [HttpPost]
-        public async Task<StatusReturn> Update([FromBody]Charity charity)
+        public async Task<ApiResult> Update([FromBody]Charity charity)
         {
             await charityRepository.Update(charity);
-            return StatusReturn.Success(null);
+            return ApiResult.Success(null);
         }
 
         [HttpPost]
-        public async Task<StatusReturn> Delete([FromBody]Charity charity) =>
+        public async Task<ApiResult> Delete([FromBody]Charity charity) =>
             await charity
                 .ValidateFunction(validateCharity)
                 .ApplyAsync(charityRepository.Delete)
-                .ReturnWithStatus();
+                .ReturnApiResult();
         
         
-        private Result<Charity> validateCharity(Charity charity)
+        private InternalResult<Charity> validateCharity(Charity charity)
         {
-            return Result<Charity>.Success(charity);
+            return InternalResult<Charity>.Success(charity);
         }
 
     }

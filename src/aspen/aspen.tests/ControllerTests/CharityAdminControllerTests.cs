@@ -31,11 +31,24 @@ namespace Aspen.Tests.ControllerTests
             var badcharity = new Charity(Guid.NewGuid(), "nonexistantcharity", "description", connString, new Domain[] {});
             charityRepoMoq
                 .Setup(cr => cr.Delete(badcharity))
-                .ReturnsAsync(Result<bool>.Failure("Charity does not exist"));
+                .ReturnsAsync(InternalResult<bool>.Failure("Charity does not exist"));
 
             var result = await charityAdminController.Delete(badcharity);
-            result.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            result.Status.Should().Be(ApiResult.StatusConstants.Failed);
             result.Data.Should().Be("Charity does not exist");
+        }
+
+        [Test]
+        public async Task GetByIdHandlesBadId()
+        {
+            var failureMessage = "Charity does not exist";
+            charityRepoMoq
+                .Setup(cr => cr.GetById(It.IsAny<Guid>()))
+                .ReturnsAsync(InternalResult<Charity>.Failure(failureMessage));
+            
+            var statusReturn = await charityAdminController.Get(Guid.Empty);
+            statusReturn.Status.Should().Be(ApiResult.StatusConstants.Failed);
+            statusReturn.Data.Should().Be(failureMessage);
         }
     }
 }

@@ -39,10 +39,10 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(sr => sr.GetByDomain(penguinDomain))
-                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+                .ReturnsAsync(InternalResult<Charity>.Success(kylersPenguins));
 
             var response = await charityController.Get(penguinDomain.ToString());
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualCharity = (Charity)response.Data;
             actualCharity.Should().BeEquivalentTo(kylersPenguins);
@@ -62,10 +62,10 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(sr => sr.GetById(kylersPenguins.CharityId))
-                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+                .ReturnsAsync(InternalResult<Charity>.Success(kylersPenguins));
 
             var response = await charityController.Get(kylersPenguins.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualCharity = (Charity)response.Data;
             actualCharity.Should().BeEquivalentTo(kylersPenguins);
@@ -89,13 +89,13 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(cr => cr.GetById(kylersPenguins.CharityId))
-                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+                .ReturnsAsync(InternalResult<Charity>.Success(kylersPenguins));
             themeRepoMoq
                 .Setup(tr => tr.GetByCharity(kylersPenguins))
-                .ReturnsAsync(Result<Theme>.Success(penguinTheme));
+                .ReturnsAsync(InternalResult<Theme>.Success(penguinTheme));
 
             var response = await charityController.GetTheme(kylersPenguins.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualTheme = (Theme)response.Data;
             actualTheme.Should().BeEquivalentTo(penguinTheme);
@@ -107,10 +107,10 @@ namespace Aspen.Tests.ControllerTests
             var error = "Domain does not exist";
             charityRepoMoq
                 .Setup(cr => cr.GetByDomain(It.IsAny<Domain>()))
-                .ReturnsAsync(Result<Charity>.Failure(error));
+                .ReturnsAsync(InternalResult<Charity>.Failure(error));
 
             var res = await charityController.Get("baddomain");
-            res.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            res.Status.Should().Be(ApiResult.StatusConstants.Failed);
             res.Data.Should().Be(error);
         }
 
@@ -118,7 +118,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task HandelsBadDomainsGracefully()
         {
             var statusResult = await charityController.Get("invalid***///**/\\domain");
-            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Status.Should().Be(ApiResult.StatusConstants.Failed);
             statusResult.Data.Should().Be("Illegal charaters in domain");
         }
 
@@ -128,10 +128,10 @@ namespace Aspen.Tests.ControllerTests
             var error = "No CharityId: " + Guid.Empty;
             charityRepoMoq
                 .Setup(cr => cr.GetById(It.IsAny<Guid>()))
-                .ReturnsAsync(Result<Charity>.Failure(error));
+                .ReturnsAsync(InternalResult<Charity>.Failure(error));
 
             var statusResult = await charityController.GetTheme(Guid.Empty);
-            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Status.Should().Be(ApiResult.StatusConstants.Failed);
             statusResult.Data.Should().Be(error);
         }
 
@@ -158,14 +158,14 @@ namespace Aspen.Tests.ControllerTests
 
             charityRepoMoq
                 .Setup(cr => cr.GetById(kylersPenguins.CharityId))
-                .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
+                .ReturnsAsync(InternalResult<Charity>.Success(kylersPenguins));
 
             themeRepoMoq
                 .Setup(tr => tr.Update(penguinTheme, kylersPenguins.ConnectionString))
-                .ReturnsAsync(Result<bool>.Success(true));
+                .ReturnsAsync(InternalResult<bool>.Success(true));
 
             var res = await charityController.UpdateTheme(themeRequest);
-            res.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            res.Status.Should().Be(ApiResult.StatusConstants.Success);
         }
     }
 }
