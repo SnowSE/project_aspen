@@ -25,6 +25,13 @@ namespace Aspen.Core.Data
                     .WithColumn("charityid").AsGuid().ForeignKey("charity", "charityid").NotNullable()
                     .WithColumn("charitydomain").AsString().NotNullable().Unique();
 
+                Create.Table("adminuser")
+                    .WithColumn("id").AsGuid().PrimaryKey().NotNullable()
+                    .WithColumn("firstname").AsString().NotNullable()
+                    .WithColumn("lastname").AsString().NotNullable()
+                    .WithColumn("username").AsString().NotNullable()
+                    .WithColumn("salt").AsString().NotNullable()
+                    .WithColumn("hashedpassword").AsString().NotNullable();
             }
             else
             {
