@@ -48,7 +48,7 @@ namespace Aspen.Integration.RepositoryTests
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
                 new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
-                new Domain[]{ new Domain(salt+"alexsturtles.com")});
+                new Domain[]{ new Domain(salt+"alexsturtles.com") });
                 
             await charityRepository.Create(alexsTurtles);
         }
