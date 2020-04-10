@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aspen.Core.Models;
 using Aspen.Core.Services;
@@ -21,7 +22,7 @@ namespace Aspen.Core.Repositories
             {
                 await dbConnection.ExecuteAsync(
                     @"insert into AdminUser
-                    values (@id, @firstname, @lastname, @username, @salt, @passwordhash);",
+                    values (@id, @firstname, @lastname, @username, @salt, @hashedpassword);",
                     user
                 );
             }
@@ -38,6 +39,45 @@ namespace Aspen.Core.Repositories
                     new {
                         Id = id
                     }
+                );
+            }
+        }
+
+        public async Task Update(User user)
+        {
+            using(var dbConnection = migrationService.GetAdminDbConnection())
+            {
+                await dbConnection.ExecuteAsync(
+                    @"update adminuser set
+                        firstname = @firstname,
+                        lastname = @lastname,
+                        username = @username,
+                        hashedpassword = @hashedpassword,
+                        salt = @salt
+                    where id = @id",
+                    user
+                );
+            }
+        }
+
+        public async Task Delete(User user)
+        {
+            using(var dbConnection = migrationService.GetAdminDbConnection())
+            {
+                await dbConnection.ExecuteAsync(
+                    @"delete from adminuser
+                    where id = @id;",
+                    user
+                );
+            }
+        }
+
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            using(var dbConnection = migrationService.GetAdminDbConnection())
+            {
+                return await dbConnection.QueryAsync<User>(
+                    @"select * from adminuser;" 
                 );
             }
         }

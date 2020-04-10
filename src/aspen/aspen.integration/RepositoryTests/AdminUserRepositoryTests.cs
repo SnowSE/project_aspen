@@ -43,5 +43,20 @@ namespace Aspen.Integration.RepositoryTests
             bobTheBuilder.Should().BeEquivalentTo(bobInDatabase);
         }
 
+        [Test]
+        public async Task CanUpdateUserInDatabase(){
+            var newJoe = bobTheBuilder.UpdateFirstName("joe");
+            await adminUserRepo.Update(newJoe);
+            var joeFromDatabase = await adminUserRepo.Get(newJoe.Id);
+            joeFromDatabase.Should().BeEquivalentTo(newJoe);
+        }
+
+        [Test]
+        public async Task CanDeleteUserFromDatabase(){
+            await adminUserRepo.Delete(bobTheBuilder);
+            var allUsers = await adminUserRepo.GetAll();
+            allUsers.Should().NotContain(bobTheBuilder);
+        }
+
     }
 }
