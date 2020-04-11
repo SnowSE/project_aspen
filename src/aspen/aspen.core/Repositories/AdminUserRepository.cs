@@ -16,38 +16,58 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task Create(User user)
+        public async Task<Result<bool>> Create(User user)
         {
             using(var dbConnection = migrationService.GetAdminDbConnection())
             {
-                await dbConnection.ExecuteAsync(
-                    @"insert into AdminUser
-                    values (@id, @firstname, @lastname, @username, @salt, @hashedpassword);",
-                    user
-                );
+                try
+                {
+                    await dbConnection.ExecuteAsync(
+                        @"insert into AdminUser
+                        values (@id, @firstname, @lastname, @username, @salt, @hashedpassword);",
+                        user
+                    );
+
+                    return Result<bool>.Success(true);
+                }
+                catch(Npgsql.PostgresException e)
+                {
+                    return Result<bool>.Failure("User already exists in database");
+                }
+
             }
         }
 
-        public async Task<User> Get(Guid id)
+        public async Task<Result<User>> Get(Guid id)
         {
             using(var dbConnection = migrationService.GetAdminDbConnection())
             {
-                return await dbConnection.QueryFirstAsync<User>(
-                    @"
-                    select * from AdminUser
-                    where Id = @Id;",
-                    new {
-                        Id = id
-                    }
-                );
+                try
+                {
+                    var user = await dbConnection.QueryFirstAsync<User>(
+                        @"
+                        select * from AdminUser
+                        where Id = @Id;",
+                        new {
+                            Id = id
+                        }
+                    );
+                    
+                    return Result<User>.Success(user);
+                }
+                catch(System.InvalidOperationException e)
+                {
+                    return Result<User>.Failure("User does not exist in database");
+                }
+
             }
         }
 
-        public async Task Update(User user)
+        public async Task<Result<bool>> Update(User user)
         {
             using(var dbConnection = migrationService.GetAdminDbConnection())
             {
-                await dbConnection.ExecuteAsync(
+                var affectedRows = await dbConnection.ExecuteAsync(
                     @"update adminuser set
                         firstname = @firstname,
                         lastname = @lastname,
@@ -57,28 +77,41 @@ namespace Aspen.Core.Repositories
                     where id = @id",
                     user
                 );
+
+                if(affectedRows == 1)
+                    return Result<bool>.Success(true);
+                else
+                    return Result<bool>.Failure("User does not exist in database");
             }
         }
 
-        public async Task Delete(User user)
+        public async Task<Result<bool>> Delete(User user)
         {
             using(var dbConnection = migrationService.GetAdminDbConnection())
             {
-                await dbConnection.ExecuteAsync(
+                var affectedRows = await dbConnection.ExecuteAsync(
                     @"delete from adminuser
                     where id = @id;",
                     user
                 );
+
+                if(affectedRows == 1)
+                    return Result<bool>.Success(true);
+                else
+                    return Result<bool>.Failure("User does not exist in database");
+
             }
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<Result<IEnumerable<User>>> GetAll()
         {
             using(var dbConnection = migrationService.GetAdminDbConnection())
             {
-                return await dbConnection.QueryAsync<User>(
+                var users = await dbConnection.QueryAsync<User>(
                     @"select * from adminuser;" 
                 );
+
+                return Result<IEnumerable<User>>.Success(users);
             }
         }
     }
