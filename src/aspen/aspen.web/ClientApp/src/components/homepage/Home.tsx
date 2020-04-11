@@ -8,8 +8,7 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
-import {LoggerService} from "../../services/LoggerService"
-import { Team } from "../../models/TeamModel";
+import { LoggerService } from "../../services/LoggerService"
 
 type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
 
@@ -20,7 +19,7 @@ const Home: FunctionComponent<HomeProps> = props => {
   const [APIURL, setAPIURL] = useState("");
 
   const handleHomeData = async () => {
-    let apiservice = new APIService(new DomainService(),new LoggerService());
+    let apiservice = new APIService(new DomainService(), new LoggerService());
     let charityHomePage = await apiservice.GetCharityHomePage();
     setDescription(charityHomePage.Charity.CharityDescription);
     setCharityName(charityHomePage.Charity.CharityName);

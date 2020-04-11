@@ -8,7 +8,7 @@ import { ApplicationState } from "../../store";
 
 const AuthRoute = (props) => {
   const ready = true;
-  const authenticated = false;
+  const authenticated = props.token != null;
 
   const redirectUrl = `${LOGIN_ROUTE}?returnUrl=${encodeURI(
     window.location.href

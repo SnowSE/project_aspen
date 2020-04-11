@@ -7,9 +7,14 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
 import theme from "../../theme";
-import NavBar from "../NavBar";
 import APIAuthorizationService from "../../services/APIAuthorizationService";
 import { LoggerService } from '../../services/LoggerService';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/Authentication/actions";
+import { ApplicationState } from "../../store";
+import Token from '../../models/TokenModel';
+import { RouteComponentProps } from 'react-router';
 
 
 const useStyles = makeStyles(() =>
@@ -44,8 +49,13 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-interface LoginProps {
+interface MyRouteProps {
 
+}
+
+interface LoginProps extends RouteComponentProps<MyRouteProps> {
+  token: Token | null,
+  login: typeof actionCreators.login,
 }
 
 const Login: React.FC<LoginProps> = props => {
@@ -68,9 +78,10 @@ const Login: React.FC<LoginProps> = props => {
   const authservice = new APIAuthorizationService(loggerservice);
 
   const handleLogin = async () => {
-    let token = await authservice.Login(username, password)
-    if (token) {
-      loggerservice.Error(token.key)
+    props.login(username, password);
+    props.history.push("/globalAdministration"); //todo get returnURL from query string
+    if (props.token) {
+      loggerservice.Error(props.token.key)
       setError(false);
       alert('Login Successfully');
     } else {
@@ -135,4 +146,13 @@ const Login: React.FC<LoginProps> = props => {
   );
 }
 
-export default Login;
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    token: state.auth.token,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(Login);
