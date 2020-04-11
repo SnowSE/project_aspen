@@ -14,14 +14,14 @@ namespace Aspen.Core.Models
 
         private static string getAndValidateUser(string connectionString)
         {
-            var UserIdPattern = @"User Id=([a-zA-Z_]+[a-zA-Z0-9_]*);";
+            var UserIdPattern = @"Username=([a-zA-Z_]+[a-zA-Z0-9_]*);";
             var match = Regex.Match(connectionString, UserIdPattern);
             if(match.Success)
                 return match.Groups[1].Value;
             else
-                throw new ArgumentException("Invalid user id");
+                throw new ArgumentException("Invalid Username");
         }
 
-        public override string ToString() => "User Id=" + data.ToString() + "; ";
+        public override string ToString() => "Username=" + data.ToString() + ";";
     }
 }

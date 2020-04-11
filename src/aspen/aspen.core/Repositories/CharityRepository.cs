@@ -7,6 +7,7 @@ using Aspen.Core.Models;
 using Aspen.Core.Services;
 using Dapper;
 using Newtonsoft.Json;
+using Npgsql;
 
 namespace Aspen.Core.Repositories
 {
@@ -19,22 +20,27 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task Create(Charity charity)
+        public async Task<Result<Charity>> Create(Charity charity)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
-                // should probably be moved to a connectionstring builder
-                var charityConnectionString = new ConnectionString(dbConnection.ConnectionString);
-                charityConnectionString = await createCharityDatabase(charity, dbConnection, charityConnectionString);
-                charityConnectionString = await createCharityDatabaseUser(charity, dbConnection, charityConnectionString);
-                charity = charity.UpdateConnectionString(charityConnectionString);
+                var startingConnectionString = new ConnectionString(dbConnection.ConnectionString);
 
+                var connectionBuilder = new NpgsqlConnectionStringBuilder();
+                connectionBuilder.Host = startingConnectionString.Host.data;
+                connectionBuilder.Port = startingConnectionString.Port.data;
+                
+                await createCharityDatabase(charity, dbConnection, connectionBuilder);
+                await createCharityDatabaseUser(charity, dbConnection, connectionBuilder);
+                var newConnectionString = new ConnectionString(connectionBuilder.ConnectionString + ";");
+
+                charity = charity.UpdateConnectionString(newConnectionString);
                 charity = await createCharityInDb(charity, dbConnection);
 
-                using(var userDbConnection = migrationService.GetDbConnection(charityConnectionString))
+                using(var userDbConnection = migrationService.GetDbConnection(charity.ConnectionString))
                 {
                     await userDbConnection.ExecuteAsync(
-                        $"REVOKE All ON Database {charityConnectionString.Database.data} FROM PUBLIC;" +
+                        $"REVOKE All ON Database {charity.ConnectionString.Database.data} FROM PUBLIC;" +
                         "REVOKE All ON schema public FROM PUBLIC;"
                     );
                 }
@@ -43,10 +49,12 @@ namespace Aspen.Core.Repositories
                 //very bad if this happens
                 //TODO: FIX THIS
                 await createDomains(charity, dbConnection);
+
+                return Result<Charity>.Success(charity);
             }
         }
 
-        private static async Task<ConnectionString> createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        private static async Task createCharityDatabaseUser(Charity charity, IDbConnection dbConnection, NpgsqlConnectionStringBuilder connectionBuilder)
         {
             // use stored procedure in database
             var dbUser = "charity_" + charity.CharityId.ToString().Replace("-", "");
@@ -55,12 +63,11 @@ namespace Aspen.Core.Repositories
                 @"create user " + dbUser + " with password '" + password + "';",
                 new { dbUser }
             );
-            return charityConnString
-                .UpdateUser(dbUser)
-                .UpdatePassword(password);
+            connectionBuilder.Username = dbUser;
+            connectionBuilder.Password = password;
         }
 
-        private static async Task<ConnectionString> createCharityDatabase(Charity charity, IDbConnection dbConnection, ConnectionString charityConnString)
+        private static async Task createCharityDatabase(Charity charity, IDbConnection dbConnection, NpgsqlConnectionStringBuilder connectionBuilder)
         {
             // use stored procedure in database
             var dbName = "charity_" + charity.CharityId.ToString().Replace("-", "");
@@ -69,10 +76,7 @@ namespace Aspen.Core.Repositories
                 // no user input is in the dbname, but I'm still scared
                 $"create database {dbName};" 
             );
-            return charityConnString
-                .UpdateServer(charityConnString.Server)
-                .UpdatePort(charityConnString.Port)
-                .UpdateDatabase(dbName);
+            connectionBuilder.Database = dbName;
         }
 
         private static async Task<Charity> createCharityInDb(Charity charity, IDbConnection dbConnection)
@@ -102,7 +106,7 @@ namespace Aspen.Core.Repositories
             }
         }
 
-        public async Task Update(Charity charity)
+        public async Task<Result<Charity>> Update(Charity charity)
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
@@ -113,6 +117,8 @@ namespace Aspen.Core.Repositories
                     where CharityId = @charityId;",
                     charity
                 );
+
+                return Result<Charity>.Success(charity);
             }
         }
 

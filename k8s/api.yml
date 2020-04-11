@@ -41,6 +41,10 @@ spec:
         env:
         - name: PGPASSFILE
           value: "/app/.postgresql/.pgpass"
+        - name: PGSSLCERT
+          value: "/app/.postgresql/postgresql.crt"
+        - name: PGSSLKEY
+          value: "/app/.postgresql/postgresql.key"
         - name: DefaultConnection
           value: "SSL Mode=require"
         volumeMounts:

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspen.Core;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;
 using Aspen.Core.Services;
@@ -24,7 +25,7 @@ namespace Aspen.Integration.RepositoryTests
         public ThemeRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString);
+            migrationService = new MigrationService(connString, secure: false);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
             themeRepository = new ThemeRepository(migrationService);
@@ -41,7 +42,7 @@ namespace Aspen.Integration.RepositoryTests
                 Guid.NewGuid(),
                 "Kyler's Penguins" + salt,
                 "Kyler has a lot of turtles",
-                new ConnectionString("Server=database; Port=5432; Database=kylersturtles; User Id=Aspen; Password=Aspen;"),
+                new ConnectionString("Host=database; Port=5432; Database=kylersturtles; Username=Aspen; Password=Aspen;"),
                 new Domain[]{ new Domain(salt+"kylerspenguins.com")});
             await charityRepository.Create(penguins);
             var res = await charityRepository.GetByDomain(penguins.Domains.First());

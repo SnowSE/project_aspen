@@ -39,7 +39,7 @@ namespace Aspen.Tests.ControllerTests
                 Guid.NewGuid(),
                 "Alex's Turtles" + salt,
                 "alex likes turtles",
-                new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;"),
+                new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
                 new Domain[]{ new Domain(salt+"alexsturtles.com")}
             );
 
@@ -68,7 +68,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<bool>.Success(true));
 
             var response = await teamController.Create(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(true);
         }
 
@@ -80,7 +80,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Team>.Success(turtlePower));
             
             var response = await teamController.Update(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(turtlePower);
         }
 
@@ -92,7 +92,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<bool>.Success(true));
             
             var response = await teamController.Delete(request);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(true);
         }
 
@@ -105,7 +105,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<IEnumerable<Team>>.Success(teamList));
 
             var response = await teamController.GetByCharityId(alexsTurtles.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
             response.Data.Should().Be(teamList);
         }
     }

@@ -4,7 +4,7 @@ using Aspen.Core.Models;
 
 namespace Aspen.Core
 {
-    //alternatives: internalresult
+    //maybe rename to internalresult
     public struct Result<T>
     {
         public bool IsFailure => !IsSucccess;
@@ -19,7 +19,7 @@ namespace Aspen.Core
             this.Error = error;
         }
 
-        public static Result<T> Success<T>(T state) => new Result<T>(true, state, null);
+        public static Result<T> Success(T state) => new Result<T>(true, state, null);
         public static Result<T> Failure(string error) => new Result<T>(false, default(T), error);
 
     }
@@ -72,16 +72,29 @@ namespace Aspen.Core
             }
         }
 
-        public static async Task<StatusReturn> ReturnWithStatus<T>(this Task<Result<T>> task)
+        public static async Task<ApiResult> ReturnApiResult<T>(this Task<Result<T>> task)
         {
             await task;
             if (task.Result.IsSucccess)
             {
-                return StatusReturn.Success(task.Result.State);
+                return ApiResult.Success(task.Result.State);
             }
             else
             {
-                return StatusReturn.Failed(task.Result.Error);
+                return ApiResult.Failed(task.Result.Error);
+            }
+        }
+
+        public static async Task<ApiResult> ReturnEmptyApiResult<T>(this Task<Result<T>> task)
+        {
+            await task;
+            if (task.Result.IsSucccess)
+            {
+                return ApiResult.Success(null);
+            }
+            else
+            {
+                return ApiResult.Failed(task.Result.Error);
             }
         }
     }

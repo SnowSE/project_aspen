@@ -10,6 +10,13 @@ using Aspen.Core.Services;
 using Aspen.Core.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using Npgsql;
+using System.IO;
+using Aspen.Api.Helpers;
+using Aspen.Api.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Aspen.Api
 {
@@ -18,9 +25,29 @@ namespace Aspen.Api
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         private ConnectionString connectionString;
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
-            connectionString = new ConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"));
+            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+            connectionStringBuilder.Passfile = passfilePath;
+
+            var alltext = File.ReadAllText(passfilePath);
+            var passfile = alltext.Split(":");
+
+            connectionStringBuilder.SslMode = SslMode.Require;
+            connectionStringBuilder.TrustServerCertificate = true;
+            connectionStringBuilder.Host = passfile[0];
+            connectionStringBuilder.Port = int.Parse(passfile[1]);
+            connectionStringBuilder.Database = "Admin";
+            connectionStringBuilder.Username = passfile[3];
+            connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
+
+            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
+            // connectionString = new ConnectionString("Host=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
+
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,16 +61,48 @@ namespace Aspen.Api
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy( builder =>
-                {
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
+                options.AddDefaultPolicy(builder =>
+               {
+                   builder
+                       .AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+               });
             });
 
             services.AddControllers().AddNewtonsoftJson();
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("AdminClaim"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,10 +117,11 @@ namespace Aspen.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            Thread.Sleep(200);
-            var t = new Task(async () => {
+            Thread.Sleep(500);
+            var t = new Task(async () =>
+            {
                 await migrationService.ApplyMigrations(connectionString);
-                foreach(var charity in await charityRepository.GetAll())
+                foreach (var charity in await charityRepository.GetAll())
                     await migrationService.ApplyMigrations(charity.ConnectionString);
             });
             t.Start();
@@ -71,6 +131,8 @@ namespace Aspen.Api
 
             app.UseRouting();
 
+            // authentication has to be before authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors();

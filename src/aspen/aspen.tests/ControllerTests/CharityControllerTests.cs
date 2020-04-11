@@ -29,7 +29,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityByDomain()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -42,7 +42,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
 
             var response = await charityController.Get(penguinDomain.ToString());
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualCharity = (Charity)response.Data;
             actualCharity.Should().BeEquivalentTo(kylersPenguins);
@@ -52,7 +52,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetCharityById()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -65,7 +65,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Charity>.Success(kylersPenguins));
 
             var response = await charityController.Get(kylersPenguins.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualCharity = (Charity)response.Data;
             actualCharity.Should().BeEquivalentTo(kylersPenguins);
@@ -75,7 +75,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanGetThemeByCharityId()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",
@@ -95,7 +95,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Theme>.Success(penguinTheme));
 
             var response = await charityController.GetTheme(kylersPenguins.CharityId);
-            response.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            response.Status.Should().Be(ApiResult.StatusConstants.Success);
 
             var actualTheme = (Theme)response.Data;
             actualTheme.Should().BeEquivalentTo(penguinTheme);
@@ -110,7 +110,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Charity>.Failure(error));
 
             var res = await charityController.Get("baddomain");
-            res.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            res.Status.Should().Be(ApiResult.StatusConstants.Failed);
             res.Data.Should().Be(error);
         }
 
@@ -118,7 +118,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task HandelsBadDomainsGracefully()
         {
             var statusResult = await charityController.Get("invalid***///**/\\domain");
-            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Status.Should().Be(ApiResult.StatusConstants.Failed);
             statusResult.Data.Should().Be("Illegal charaters in domain");
         }
 
@@ -131,7 +131,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<Charity>.Failure(error));
 
             var statusResult = await charityController.GetTheme(Guid.Empty);
-            statusResult.Status.Should().Be(StatusReturn.StatusConstants.Failed);
+            statusResult.Status.Should().Be(ApiResult.StatusConstants.Failed);
             statusResult.Data.Should().Be(error);
         }
 
@@ -139,7 +139,7 @@ namespace Aspen.Tests.ControllerTests
         public async Task CanUpdateTheme()
         {
             var penguinDomain = new Domain("kylerspenguins.com");
-            var connString = new ConnectionString("Server=notlocalhost; Port=5433; Database=changeme; User Id=changeme; Password=changeme;");
+            var connString = new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var color = "#000000";
             var fontFamily = "Times";
             var penguinTheme = new Theme(color, color, color, color, fontFamily);
@@ -165,7 +165,7 @@ namespace Aspen.Tests.ControllerTests
                 .ReturnsAsync(Result<bool>.Success(true));
 
             var res = await charityController.UpdateTheme(themeRequest);
-            res.Status.Should().Be(StatusReturn.StatusConstants.Success);
+            res.Status.Should().Be(ApiResult.StatusConstants.Success);
         }
     }
 }

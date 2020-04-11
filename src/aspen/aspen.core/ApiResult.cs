@@ -2,23 +2,22 @@ using Newtonsoft.Json;
 
 namespace Aspen.Core
 {
-    //alternatives: apiresult
-    public class StatusReturn
+    public class ApiResult
     {
-        private StatusReturn(string status, object data)
+        private ApiResult(string status, object data)
         {
             this.Status = status;
             this.Data = data;
         }
         public string Status { get; }
         public object Data { get; }
-        public static StatusReturn Success(object data)
+        public static ApiResult Success(object data)
         {
-            return new StatusReturn(StatusConstants.Success, data);
+            return new ApiResult(StatusConstants.Success, data);
         }
-        public static StatusReturn Failed(object data)
+        public static ApiResult Failed(object data)
         {
-            return new StatusReturn(StatusConstants.Failed, data);
+            return new ApiResult(StatusConstants.Failed, data);
         }
         public static class StatusConstants
         {

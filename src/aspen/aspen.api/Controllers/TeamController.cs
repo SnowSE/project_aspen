@@ -24,33 +24,33 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> GetByCharityId([FromQuery(Name = "CharityId")] Guid charityId) =>
+        public async Task<ApiResult> GetByCharityId([FromQuery(Name = "CharityId")] Guid charityId) =>
             await charityId
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(teamRepository.GetByCharity)
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         [HttpPost]
-        public async Task<StatusReturn> Create([FromBody] TeamRequest request) =>
+        public async Task<ApiResult> Create([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => 
                     await teamRepository.Create(request.team, c))
-                .ReturnWithStatus();
+                .ReturnApiResult();
         
         [HttpPost]
-        public async Task<StatusReturn> Update([FromBody] TeamRequest request) =>
+        public async Task<ApiResult> Update([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => await teamRepository.Update(request.team, c))
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         [HttpPost]
-        public async Task<StatusReturn> Delete([FromBody] TeamRequest request) =>
+        public async Task<ApiResult> Delete([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => await teamRepository.Delete(request.team, c))
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         private async Task<Result<Charity>> getValidCharity(TeamRequest request)
         {

@@ -24,17 +24,17 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> Get([FromQuery(Name = "domain")] string domain) =>
+        public async Task<ApiResult> Get([FromQuery(Name = "domain")] string domain) =>
             await domain
                 .ValidateFunction(validateDomain)
                 .ApplyAsync(charityRepository.GetByDomain)
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
-        public async Task<StatusReturn> Get([FromQuery(Name = "CharityId")] Guid charityId) =>
+        public async Task<ApiResult> Get([FromQuery(Name = "CharityId")] Guid charityId) =>
             await charityId
                 .ValidateFunction(validateCharityId)
                 .ApplyAsync(charityRepository.GetById)
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         private Result<Domain> validateDomain(string domain)
         {
@@ -50,28 +50,28 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<StatusReturn> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
+        public async Task<ApiResult> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
             await charityId
                 .ValidateFunction(id => Result<Guid>.Success(id))
                 .ApplyAsync(charityRepository.GetById)
                 .ApplyAsync(themeRepository.GetByCharity)
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         private Result<Guid> validateCharityId(Guid id) => Result<Guid>.Success(id);
 
         [HttpGet]
-        public async Task<StatusReturn> GetHomePage([FromQuery(Name = "charityId")] Guid charityId)
+        public async Task<ApiResult> GetHomePage([FromQuery(Name = "charityId")] Guid charityId)
         {
             const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-            return StatusReturn.Success(new HomePage(loremIpsum));
+            return ApiResult.Success(new HomePage(loremIpsum));
         }
 
         [HttpPost]
-        public async Task<StatusReturn> UpdateTheme([FromBody]ThemeRequest request) =>
+        public async Task<ApiResult> UpdateTheme([FromBody]ThemeRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => await themeRepository.Update(request.Theme, c.ConnectionString))
-                .ReturnWithStatus();
+                .ReturnApiResult();
 
         private async Task<Result<Charity>> getValidCharity(ThemeRequest request)
         {

@@ -5,7 +5,7 @@ namespace Aspen.Core.Models
 {
     public class Port
     {
-        private int data;
+        public int data;
 
         public Port(string connectionString)
         {
@@ -25,6 +25,6 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("Invalid port");
         }
 
-        public override string ToString() => "Port=" + data.ToString() + "; ";
+        public override string ToString() => "Port=" + data.ToString() + ";";
     }
 }

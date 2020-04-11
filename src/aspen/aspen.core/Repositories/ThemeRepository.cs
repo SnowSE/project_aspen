@@ -19,7 +19,7 @@ namespace Aspen.Core.Repositories
             this.migrationService = migrationService;
         }
 
-        public async Task Create(Theme theme, ConnectionString connectionString)
+        public async Task<Result<Theme>> Create(Theme theme, ConnectionString connectionString)
         {
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
@@ -29,6 +29,7 @@ namespace Aspen.Core.Repositories
                     theme
                 );
             }
+            return Result<Theme>.Success(theme);
         }
 
         public async Task<Result<Theme>> GetByCharity(Charity charity)
