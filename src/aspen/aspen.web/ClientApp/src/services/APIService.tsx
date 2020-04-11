@@ -18,7 +18,7 @@ export class APIService implements IAPIService {
     constructor(IDomainService: IDomainService, ILoggerService: ILoggerService) {
         this.IDomainService = IDomainService
         this.ILoggerService = ILoggerService
-        this.init();
+        //this.init();
     }
 
     private async init() {

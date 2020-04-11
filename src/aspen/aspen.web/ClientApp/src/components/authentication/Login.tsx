@@ -8,6 +8,9 @@ import Button from '@material-ui/core/Button';
 import CardHeader from '@material-ui/core/CardHeader';
 import theme from "../../theme";
 import NavBar from "../NavBar";
+import APIAuthorizationService from "../../services/APIAuthorizationService";
+import { LoggerService } from '../../services/LoggerService';
+
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -32,11 +35,11 @@ const useStyles = makeStyles(() =>
       color: theme.palette.primary.contrastText
     },
     card: {
-      marginTop: theme.spacing(15) 
+      marginTop: theme.spacing(15)
     },
     background: {
-        background: "#e5e5e5",
-        height: "100vh"
+      background: "#e5e5e5",
+      height: "100vh"
     }
   }),
 );
@@ -61,9 +64,13 @@ const Login: React.FC<LoginProps> = props => {
     }
   }, [username, password]);
 
-  const handleLogin = () => {
-    //TODO
-    if (username === 'abc@email.com' && password === 'password') {
+  const loggerservice = new LoggerService();
+  const authservice = new APIAuthorizationService(loggerservice);
+
+  const handleLogin = async () => {
+    let token = await authservice.Login(username, password)
+    if (token) {
+      loggerservice.Error(token.key)
       setError(false);
       alert('Login Successfully');
     } else {
@@ -72,7 +79,7 @@ const Login: React.FC<LoginProps> = props => {
     }
   };
 
-  const handleKeyPress = (e:any) => {
+  const handleKeyPress = (e: any) => {
     if (e.keyCode === 13 || e.which === 13) {
       isButtonDisabled || handleLogin();
     }
@@ -80,49 +87,49 @@ const Login: React.FC<LoginProps> = props => {
 
   return (
     <React.Fragment>
-    <div className={classes.background}>
-      <form className={classes.container} noValidate autoComplete="off">
-        <Card className={classes.card}>
-          <CardHeader className={classes.header} title="Login" />
-          <CardContent>
-            <div>
-              <TextField
-                error={error}
-                fullWidth
-                id="username"
-                type="email"
-                label="Username"
-                placeholder="Username"
-                margin="normal"
-                onChange={(e)=>setUsername(e.target.value)}
-                onKeyPress={(e)=>handleKeyPress(e)}
-              />
-              <TextField
-                error={error}
-                fullWidth
-                id="password"
-                type="password"
-                label="Password"
-                placeholder="Password"
-                margin="normal"
-                helperText={helperText}
-                onChange={(e)=>setPassword(e.target.value)}
-                onKeyPress={(e)=>handleKeyPress(e)}
-              />
-            </div>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              size="large"
-              className={classes.loginBtn}
-              onClick={()=>handleLogin()}
-              disabled={isButtonDisabled}>
-              Login
+      <div className={classes.background}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <Card className={classes.card}>
+            <CardHeader className={classes.header} title="Login" />
+            <CardContent>
+              <div>
+                <TextField
+                  error={error}
+                  fullWidth
+                  id="username"
+                  type="email"
+                  label="Username"
+                  placeholder="Username"
+                  margin="normal"
+                  onChange={(e) => setUsername(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e)}
+                />
+                <TextField
+                  error={error}
+                  fullWidth
+                  id="password"
+                  type="password"
+                  label="Password"
+                  placeholder="Password"
+                  margin="normal"
+                  helperText={helperText}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyPress={(e) => handleKeyPress(e)}
+                />
+              </div>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                size="large"
+                className={classes.loginBtn}
+                onClick={() => handleLogin()}
+                disabled={isButtonDisabled}>
+                Login
             </Button>
-          </CardActions>
-        </Card>
-      </form>
+            </CardActions>
+          </Card>
+        </form>
       </div>
     </React.Fragment>
   );
