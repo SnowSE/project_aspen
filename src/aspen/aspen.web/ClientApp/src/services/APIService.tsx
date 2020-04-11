@@ -76,7 +76,7 @@ export class APIService implements IAPIService {
             })
 
             let responseJson = await response.json();
-
+            console.error(responseJson)
             if (responseJson.status == "Success") {
                 let id = responseJson.data.charityId;
                 let name = responseJson.data.charityName;

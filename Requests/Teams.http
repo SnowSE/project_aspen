@@ -25,7 +25,7 @@ mode: cors
 }
 
 ### GetTeamsByCharityID
-GET http://206.189.218.168:5000/Team/GetByCharityId?CharityId=
+GET http://206.189.218.168:5000/Team/GetByCharityId?CharityId=51a1d9c2-87e4-46da-a42d-65b874628ec9
 
 ### Delete Teams
 POST http://206.189.218.168:5000/Team/Delete
