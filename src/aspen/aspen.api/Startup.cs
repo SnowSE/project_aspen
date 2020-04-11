@@ -45,12 +45,11 @@ namespace Aspen.Api
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
 
             // connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
-             connectionString = new ConnectionString("Host=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
+            connectionString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
 
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ConnectionString>(c => connectionString);
@@ -78,23 +77,24 @@ namespace Aspen.Api
 
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+            services
+                .AddAuthentication(x =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
@@ -105,7 +105,6 @@ namespace Aspen.Api
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
@@ -117,15 +116,7 @@ namespace Aspen.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            Thread.Sleep(500);
-            var t = new Task(async () =>
-            {
-                await migrationService.ApplyMigrations(connectionString);
-                foreach (var charity in await charityRepository.GetAll())
-                    await migrationService.ApplyMigrations(charity.ConnectionString);
-            });
-            t.Start();
-            t.Wait();
+            applyDatabaseMigrations(charityRepository, migrationService);
 
             // app.UseHttpsRedirection();
 
@@ -140,6 +131,19 @@ namespace Aspen.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void applyDatabaseMigrations(ICharityRepository charityRepository, IMigrationService migrationService)
+        {
+            Thread.Sleep(500);
+            var t = new Task(async () =>
+            {
+                await migrationService.ApplyMigrations(connectionString);
+                foreach (var charity in await charityRepository.GetAll())
+                    await migrationService.ApplyMigrations(charity.ConnectionString);
+            });
+            t.Start();
+            t.Wait();
         }
     }
 }
