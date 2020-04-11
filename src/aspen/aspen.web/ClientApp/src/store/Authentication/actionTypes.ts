@@ -1,3 +1,5 @@
+import Token from "../../models/TokenModel";
+
 export const LOGIN_INVALID_CREDENTIALS = "LOGIN_INVALID_CREDENTIALS";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const API_FAILURE = "API_FAILURE";
@@ -5,7 +7,7 @@ export const LOGOUT_ACTION = "LOGOUT_ACTION";
 
 interface LoginSuccessAction {
     type: typeof LOGIN_SUCCESS,
-    token: string,
+    token: Token,
 };
 
 interface InvalidCredentialAction {

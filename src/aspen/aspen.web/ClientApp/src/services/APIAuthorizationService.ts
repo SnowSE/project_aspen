@@ -1,29 +1,42 @@
 import IAPIAuthorizationService from "./IAPIAuthorizationService";
 import Token from "../models/TokenModel";
+import { ILoggerService } from "./ILoggerService"
 
 export default class APIAuthorizationService implements IAPIAuthorizationService {
     readonly url = "http://206.189.218.168";
-    public async Login(username: string, password: string): Promise<Token> {
-        try{
-            let newurl = this.url + "/Login";
-            let body = JSON.stringify({User:user});
+    readonly iloggerservice: ILoggerService;
+    constructor(ILoggerService: ILoggerService) {
+        this.iloggerservice = ILoggerService
+    }
+    public async Login(username: string, password: string): Promise<Token | null> {
+        try {
+            let newurl = this.url + "/Users/Authenticate";
+            let body = JSON.stringify({
+                AuthenticateModel: {
+                    Username: username,
+                    Password: password
+                }
+            }
+            );
             let headers = { "Content-Type": "application/json" };
             let response = await fetch(newurl, {
                 method: "POST",
-                mode:"cors",
+                mode: "cors",
                 headers: headers,
                 body: body
             })
             let responseJson = await response.json();
-            if(responseJson.Status == "success"){
+            if (responseJson.Status == "success") {
                 let token = new Token(responseJson.accessToken)
+                this.iloggerservice.Error(token.key);
                 return token;
-            }else{
+
+            } else {
                 throw Error("Login Failed");
             }
 
-        }catch(e){
-            console.error(e)
+        } catch (e) {
+            this.iloggerservice.Error(e)
             return null
         }
     }
