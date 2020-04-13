@@ -22,6 +22,6 @@ namespace Aspen.Core.Models
             //     throw new ArgumentException("Invalid password");
         }
 
-        public override string ToString() => "Password=" + data.ToString() + ";";
+        public override string ToString() => data == string.Empty ? "" : "Password=" + data.ToString() + ";";
     }
 }
