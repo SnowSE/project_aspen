@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Dapper;
+using System.Text.RegularExpressions;
 
 namespace Aspen.Api
 {
@@ -43,7 +44,7 @@ namespace Aspen.Api
             connectionStringBuilder.Port = int.Parse(passfile[1]);
             connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
-            connectionStringBuilder.Password = passfile[4];
+            connectionStringBuilder.Password = Regex.Unescape(passfile[4]);
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
             
             Console.WriteLine(connectionStringBuilder.ConnectionString);
