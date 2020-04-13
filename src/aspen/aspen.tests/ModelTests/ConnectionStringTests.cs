@@ -71,23 +71,23 @@ namespace Aspen.Tests.ModelTests
                 .WithMessage("Invalid password");
         }
 
-        [Test]
-        public void CanGetCorrectConnectionStringBack()
-        {
-            var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;Host=database;Port=5432;Database=Admin;Username=Aspen;Password=;";
-            var connectionString = new ConnectionString(validConnectionString);
+        // [Test]
+        // public void CanGetCorrectConnectionStringBack()
+        // {
+        //     var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;Host=database;Port=5432;Database=Admin;Username=Aspen;Password=;";
+        //     var connectionString = new ConnectionString(validConnectionString);
 
-            connectionString.ToString().Should().Be(validConnectionString);
-        }
+        //     connectionString.ToString().Should().Be(validConnectionString);
+        // }
 
-        [Test]
-        public void AnotherTestForUserIds()
-        {
-            var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;Host=database;Port=5432;Database=Admin;Username=charity_7cc774fd93c945d2a48520d6b2ce05e6;Password=;";
-            var connectionString = new ConnectionString(validConnectionString);
+        // [Test]
+        // public void AnotherTestForUserIds()
+        // {
+        //     var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;Host=database;Port=5432;Database=Admin;Username=charity_7cc774fd93c945d2a48520d6b2ce05e6;Password=;";
+        //     var connectionString = new ConnectionString(validConnectionString);
 
-            connectionString.ToString().Should().Be(validConnectionString);
-        }
+        //     connectionString.ToString().Should().Be(validConnectionString);
+        // }
         
     }
 }
