@@ -58,8 +58,6 @@ spec:
                 path: .pgpass
               - key: postgresql.crt
                 path: postgresql.crt
-              - key: postgresql.key
-                path: postgresql.key
       restartPolicy: Always
 
 ---
