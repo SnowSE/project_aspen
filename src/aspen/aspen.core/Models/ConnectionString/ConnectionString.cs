@@ -16,7 +16,7 @@ namespace Aspen.Core.Models
             if (string.IsNullOrEmpty(connection))
                 throw new ArgumentException("Empty connection string");
             Ssl = connection.Contains("Passfile")
-                ? "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True; Client Certificate=/app/.postgresql/postgresql.crt;"
+                ? "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True;"
                 : "";
                 
             Port = new Port(connection);
