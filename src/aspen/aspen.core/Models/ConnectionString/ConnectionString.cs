@@ -23,9 +23,10 @@ namespace Aspen.Core.Models
             Host = new Host(connection);
             Database = new Database(connection);
             UserId = new UserId(connection);
-            Password = connection.Contains("Password")
-                ? new Password(connection)
-                : new Password("");
+            // Password = connection.Contains("Password")
+            //     ? new Password(connection)
+            //     : new Password("");
+            Password = new Password(connection);
         }
 
         public ConnectionString(Host server, Port port, Database database, UserId userId, Password password, String ssl)
@@ -39,7 +40,7 @@ namespace Aspen.Core.Models
         }
 
         public override string ToString() =>
-            Ssl +
+            "SSL Mode=Require; Trust Server Certificate=True;" +
             Host.ToString() + 
             Port.ToString() + 
             Database.ToString() + 

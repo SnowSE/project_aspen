@@ -32,7 +32,7 @@ namespace Aspen.Api
         {
             var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            connectionStringBuilder.Passfile = passfilePath;
+            // connectionStringBuilder.Passfile = passfilePath;
 
             var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
