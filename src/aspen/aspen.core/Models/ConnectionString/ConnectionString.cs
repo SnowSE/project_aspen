@@ -16,7 +16,7 @@ namespace Aspen.Core.Models
             if (string.IsNullOrEmpty(connection))
                 throw new ArgumentException("Empty connection string");
             Ssl = connection.Contains("Passfile")
-                ? "Passfile=/app/.postgresql/.pgpass; SSL Mode=Require; Trust Server Certificate=True; "
+                ? "SSL Mode=Require; Trust Server Certificate=True; "
                 : "";
                 
             Port = new Port(connection);
@@ -27,6 +27,7 @@ namespace Aspen.Core.Models
                 ? new Password(connection)
                 : new Password("");
             // Password = new Password(connection);
+            Console.WriteLine(ToString());
         }
 
         public ConnectionString(Host server, Port port, Database database, UserId userId, Password password, String ssl)
@@ -40,11 +41,12 @@ namespace Aspen.Core.Models
         }
 
         public override string ToString() =>
-            "Passfile=/app/.postgresql/.pgpass; SSL Mode=Require; Trust Server Certificate=True;" +
+            "SSL Mode=Require; Trust Server Certificate=True;" +
             Host.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
-            UserId.ToString() ;
+            UserId.ToString() +
+            Password.ToString();
 
         //should only be used for testing purposes
         public string ToInsecureString() =>

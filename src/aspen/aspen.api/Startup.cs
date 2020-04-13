@@ -43,9 +43,10 @@ namespace Aspen.Api
             connectionStringBuilder.Port = int.Parse(passfile[1]);
             connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
-            // connectionStringBuilder.Password = passfile[4];
+            connectionStringBuilder.Password = passfile[4];
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
-
+            
+            // Console.WriteLine(connectionStringBuilder.ConnectionString);
             connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
             // connectionString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
 
