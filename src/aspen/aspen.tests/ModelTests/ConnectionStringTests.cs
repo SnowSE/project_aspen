@@ -60,16 +60,16 @@ namespace Aspen.Tests.ModelTests
                 .WithMessage("Invalid Username");
         }
 
-        [Test]
-        public void InvalidPasswordThrowsErrors()
-        {
-            var invalidConnectionString = "Host=database;Port=5432;Database=Admin;Username=Aspen;Password=Aspe n;";
-            Action act = () => new ConnectionString(invalidConnectionString);
+        // [Test]
+        // public void InvalidPasswordThrowsErrors()
+        // {
+        //     var invalidConnectionString = "Host=database;Port=5432;Database=Admin;Username=Aspen;Password=Aspe n;";
+        //     Action act = () => new ConnectionString(invalidConnectionString);
 
-            act.Should()
-                .Throw<ArgumentException>()
-                .WithMessage("Invalid password");
-        }
+        //     act.Should()
+        //         .Throw<ArgumentException>()
+        //         .WithMessage("Invalid password");
+        // }
 
         // [Test]
         // public void CanGetCorrectConnectionStringBack()
