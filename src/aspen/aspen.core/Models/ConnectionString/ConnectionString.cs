@@ -25,7 +25,7 @@ namespace Aspen.Core.Models
             UserId = new UserId(connection);
             Password = connection.Contains("Password")
                 ? new Password(connection)
-                : new Password("");
+                : new Password("Password=;");
             // Password = new Password(connection);
             Console.WriteLine(ToString());
         }
