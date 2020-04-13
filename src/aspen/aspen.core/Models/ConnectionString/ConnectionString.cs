@@ -45,8 +45,7 @@ namespace Aspen.Core.Models
             Host.ToString() + 
             Port.ToString() + 
             Database.ToString() + 
-            UserId.ToString() +
-            Password.ToString();
+            UserId.ToString() ;
 
         //should only be used for testing purposes
         public string ToInsecureString() =>
