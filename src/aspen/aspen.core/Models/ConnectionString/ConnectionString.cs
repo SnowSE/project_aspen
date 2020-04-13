@@ -15,16 +15,16 @@ namespace Aspen.Core.Models
         {
             if (string.IsNullOrEmpty(connection))
                 throw new ArgumentException("Empty connection string");
-            Ssl = connection.Contains("Passfile")
-                ? "SSL Mode=Require;Trust Server Certificate=True;"
-                : "";
+            Ssl = connection.Contains("Password")
+                ? ""
+                : "SSL Mode=Require;Trust Server Certificate=True;";
                 
             Port = new Port(connection);
             Host = new Host(connection);
             Database = new Database(connection);
             UserId = new UserId(connection);
             Password = connection.Contains("Passfile")
-                ? new Password("Password=;")
+                ? new Password("")
                 : new Password(connection);
         }
 
