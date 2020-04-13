@@ -17,6 +17,7 @@ using Aspen.Api.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Dapper;
 
 namespace Aspen.Api
 {
@@ -118,6 +119,16 @@ namespace Aspen.Api
             }
 
             applyDatabaseMigrations(charityRepository, migrationService);
+            using(var dbConnection = migrationService.GetAdminDbConnection())
+            {
+                dbConnection.Execute(@"SELECT
+                        *
+                    FROM
+                        pg_catalog.pg_tables
+                    WHERE
+                        schemaname != 'pg_catalog'
+                    AND schemaname != 'information_schema';");
+            }
 
             // app.UseHttpsRedirection();
 
@@ -136,15 +147,15 @@ namespace Aspen.Api
 
         private void applyDatabaseMigrations(ICharityRepository charityRepository, IMigrationService migrationService)
         {
-            Thread.Sleep(500);
-            var t = new Task(async () =>
-            {
-                await migrationService.ApplyMigrations(connectionString);
-                foreach (var charity in await charityRepository.GetAll())
-                    await migrationService.ApplyMigrations(charity.ConnectionString);
-            });
-            t.Start();
-            t.Wait();
+            // Thread.Sleep(500);
+            // var t = new Task(async () =>
+            // {
+            //     await migrationService.ApplyMigrations(connectionString);
+            //     foreach (var charity in await charityRepository.GetAll())
+            //         await migrationService.ApplyMigrations(charity.ConnectionString);
+            // });
+            // t.Start();
+            // t.Wait();
         }
     }
 }
