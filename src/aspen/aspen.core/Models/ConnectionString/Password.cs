@@ -16,12 +16,12 @@ namespace Aspen.Core.Models
         {
             var UserIdPattern = @"Password=([\S]*);";
             var match = Regex.Match(connectionString, UserIdPattern);
-            // if(match.Success)
-            return match.Groups[1].Value;
-            // else
-            //     throw new ArgumentException("Invalid password");
+            if(match.Success)
+                return match.Groups[1].Value;
+            else
+                throw new ArgumentException("Invalid password");
         }
 
-        public override string ToString() => data == string.Empty ? "" : "Password=" + data.ToString() + ";";
+        public override string ToString() => "Password=" + data.ToString() + ";";
     }
 }
