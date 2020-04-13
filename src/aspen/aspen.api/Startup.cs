@@ -32,7 +32,7 @@ namespace Aspen.Api
         {
             var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            // connectionStringBuilder.Passfile = passfilePath;
+            connectionStringBuilder.Passfile = passfilePath;
 
             var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
@@ -43,7 +43,7 @@ namespace Aspen.Api
             connectionStringBuilder.Port = int.Parse(passfile[1]);
             connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
-            // connectionStringBuilder.Password = passfile[4];
+            connectionStringBuilder.Password = passfile[4];
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
 
             connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
