@@ -26,5 +26,5 @@ COPY --from=publish /app/publish .
 RUN chown -R app:app /app
 ENV ASPNETCORE_URLS=http://+:5000
 USER app
-RUN echo "host:32:database:username:pa*s$w#ord" > /app/notpgpass
+RUN echo "host:32:database:username:pa*s\$w#ord" > /app/notpgpass
 ENTRYPOINT ["dotnet", "aspen.api.dll"]
