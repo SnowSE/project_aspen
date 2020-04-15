@@ -63,11 +63,11 @@ export const actionCreators = {
 
 const typ: Typography = { fontFamily: "Arial" };
 const prim: Primary = {
-  main: "#438f00",
-  light: "#67cc0e",
+  main: "#ffffff",
+  light: "#ffffff",
   contrastText: "#FFFFFF"
 };
-const sec: Secondary = { main: "#608045" };
+const sec: Secondary = { main: "#ffffff" };
 const pal: Palette = { primary: prim, secondary: sec };
 
 const initialState: ThemeState = {
