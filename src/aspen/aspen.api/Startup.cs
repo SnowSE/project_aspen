@@ -114,7 +114,7 @@ namespace Aspen.Api
             }
             applyDatabaseMigrations(charityRepository, migrationService);
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

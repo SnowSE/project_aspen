@@ -24,6 +24,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 RUN chown -R app:app /app
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=https://+:5000
 USER app
 ENTRYPOINT ["dotnet", "aspen.api.dll"]
