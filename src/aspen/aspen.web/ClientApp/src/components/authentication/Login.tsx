@@ -82,6 +82,7 @@ const Login: React.FC<LoginProps> = props => {
     props.history.push("/globalAdministration"); //todo get returnURL from query string
     if (props.token) {
       loggerservice.Error(props.token.key)
+      localStorage.setItem('KEY', props.token.key);
       setError(false);
       alert('Login Successfully');
     } else {

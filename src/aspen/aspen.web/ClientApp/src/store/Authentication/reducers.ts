@@ -8,8 +8,9 @@ export interface AuthState {
 message: string;
 }
 
+let key = localStorage.getItem('KEY')
 const initialState: AuthState = {
-  token: null,
+  token: key!=null?new Token(key):null,
   message: "",
 };
 
