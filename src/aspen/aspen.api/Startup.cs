@@ -42,7 +42,7 @@ namespace Aspen.Api
             connectionStringBuilder.TrustServerCertificate = true;
             connectionStringBuilder.Host = passfile[0];
             connectionStringBuilder.Port = int.Parse(passfile[1]);
-            connectionStringBuilder.Database = "Admin";
+            connectionStringBuilder.Database = "admin";
             connectionStringBuilder.Username = passfile[3];
             connectionStringBuilder.Password = passfile[4];
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
