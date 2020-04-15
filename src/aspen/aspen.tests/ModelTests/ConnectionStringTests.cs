@@ -10,7 +10,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void CanCreateValidConnectionString()
         {
-            var validConnectionString = "Host=database;Port=5432;Database=Admin;Username=Aspen;Password=Aspen;";
+            var validConnectionString = "Host=database;Port=5432;Database=admin;Username=Aspen;Password=Aspen;";
             Action act = () => new ConnectionString(validConnectionString);
 
             act.Should().NotThrow<Exception>();
@@ -19,7 +19,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void InvalidPortThrowsArgumentError()
         {
-            var invalidConnectionString = "Host=database;Port=70000;Database=Admin;Username=Aspen;Password=Aspen;";
+            var invalidConnectionString = "Host=database;Port=70000;Database=admin;Username=Aspen;Password=Aspen;";
             Action act = () => new ConnectionString(invalidConnectionString);
 
             act.Should()
@@ -30,7 +30,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void InvalidHostThrowsError()
         {
-            var invalidConnectionString = "Host=database%$#$%#$%#$%#;Port=5432;Database=Admin;Username=Aspen;Password=Aspen;";
+            var invalidConnectionString = "Host=database%$#$%#$%#$%#;Port=5432;Database=admin;Username=Aspen;Password=Aspen;";
             Action act = () => new ConnectionString(invalidConnectionString);
 
             act.Should()
@@ -41,7 +41,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void InvalidDatabaseThrowsErrors()
         {
-            var invalidConnectionString = "Host=database;Port=5432;Database=0Admin;Username=Aspen;Password=Aspen;";
+            var invalidConnectionString = "Host=database;Port=5432;Database=0admin;Username=Aspen;Password=Aspen;";
             Action act = () => new ConnectionString(invalidConnectionString);
 
             act.Should()
@@ -52,7 +52,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void InvalidUserIdThrowsErrors()
         {
-            var invalidConnectionString = "Host=database;Port=5432;Database=Admin;Username=0Aspen;Password=Aspen;";
+            var invalidConnectionString = "Host=database;Port=5432;Database=admin;Username=0Aspen;Password=Aspen;";
             Action act = () => new ConnectionString(invalidConnectionString);
 
             act.Should()
@@ -63,7 +63,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void InvalidPasswordThrowsErrors()
         {
-            var invalidConnectionString = "Host=database;Port=5432;Database=Admin;Username=Aspen;Password=Aspe n;";
+            var invalidConnectionString = "Host=database;Port=5432;Database=admin;Username=Aspen;Password=Aspe n;";
             Action act = () => new ConnectionString(invalidConnectionString);
 
             act.Should()
@@ -74,7 +74,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void CanGetCorrectConnectionStringBack()
         {
-            var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True; Client Certificate=/app/.postgresql/postgresql.crt;Host=database;Port=5432;Database=Admin;Username=Aspen;Password=;";
+            var validConnectionString = "SSL Mode=Require; Trust Server Certificate=True;Host=database;Port=5432;Database=admin;Username=Aspen;Password=;";
             var connectionString = new ConnectionString(validConnectionString);
 
             connectionString.ToString().Should().Be(validConnectionString);
@@ -83,7 +83,7 @@ namespace Aspen.Tests.ModelTests
         [Test]
         public void AnotherTestForUserIds()
         {
-            var validConnectionString = "Passfile=/app/.postgresql/.pgpass;SSL Mode=Require;Trust Server Certificate=True; Client Certificate=/app/.postgresql/postgresql.crt;Host=database;Port=5432;Database=Admin;Username=charity_7cc774fd93c945d2a48520d6b2ce05e6;Password=;";
+            var validConnectionString = "SSL Mode=Require; Trust Server Certificate=True;Host=database;Port=5432;Database=admin;Username=charity_7cc774fd93c945d2a48520d6b2ce05e6;Password=;";
             var connectionString = new ConnectionString(validConnectionString);
 
             connectionString.ToString().Should().Be(validConnectionString);

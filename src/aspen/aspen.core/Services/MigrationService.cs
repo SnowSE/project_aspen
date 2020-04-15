@@ -14,13 +14,11 @@ namespace Aspen.Core.Services
     {
         private readonly bool secure;
 
-        private string adminConnectionString { get; }
+        private ConnectionString adminConnectionString { get; }
 
         public MigrationService(ConnectionString adminConnectionString, bool secure = true)
         {
-            this.adminConnectionString = secure
-                ? adminConnectionString.ToString()
-                : adminConnectionString.ToInsecureString();
+            this.adminConnectionString = adminConnectionString;
             this.secure = secure;
         }
 
@@ -56,6 +54,8 @@ namespace Aspen.Core.Services
         //     new NpgsqlConnection(connectionString);
 
         public IDbConnection GetAdminDbConnection() =>
-            new NpgsqlConnection(adminConnectionString);
+            new NpgsqlConnection(secure
+                ? adminConnectionString.ToString()
+                : adminConnectionString.ToInsecureString());
     }
 }
