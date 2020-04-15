@@ -40,11 +40,7 @@ namespace Aspen.Core.Models
         }
 
         public override string ToString() =>
-            "SSL Mode=Require; Trust Server Certificate=True;" +
-            Host.ToString() + 
-            Port.ToString() + 
-            Database.ToString() + 
-            UserId.ToString() ;
+            $"SSL Mode=Require; Trust Server Certificate=True;{Host}{Port}{Database}{UserId}{Password}";
 
         //should only be used for testing purposes
         public string ToInsecureString() =>
