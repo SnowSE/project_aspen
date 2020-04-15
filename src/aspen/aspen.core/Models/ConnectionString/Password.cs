@@ -19,7 +19,10 @@ namespace Aspen.Core.Models
             if(match.Success)
                 return match.Groups[1].Value;
             else
+            {
+                Console.WriteLine(connectionString);
                 throw new ArgumentException("Invalid password");
+            }
         }
 
         public override string ToString() => "Password=" + data.ToString() + ";";
