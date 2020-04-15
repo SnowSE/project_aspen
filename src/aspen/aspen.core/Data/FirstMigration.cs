@@ -10,10 +10,10 @@ namespace Aspen.Core.Data
         {
             // split migrations into its own microservice, with account to edit database tables
             // run api with insert/read access not alter table access
-            if (ConnectionString.Contains("Database=Admin;"))
+            if (ConnectionString.Contains("Database=admin;"))
             {
 
-                Execute.Sql("REVOKE All ON DATABASE \"Admin\" FROM PUBLIC;");
+                Execute.Sql("REVOKE All ON DATABASE admin FROM PUBLIC;");
                 Execute.Sql("REVOKE All ON schema public FROM PUBLIC;");
                 Create.Table("charity")
                     .WithColumn("charityid").AsGuid().NotNullable().PrimaryKey()

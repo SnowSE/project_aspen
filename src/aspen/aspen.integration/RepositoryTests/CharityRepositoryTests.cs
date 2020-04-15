@@ -32,6 +32,7 @@ namespace Aspen.Integration.RepositoryTests
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
             migrationService = new MigrationService(connString, secure: false);
+            Console.WriteLine(connString);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
 
@@ -93,7 +94,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task NewDatabaseUsersCannotAccessAdminDatabase()
         {
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
-            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("Admin");
+            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("admin");
             Console.WriteLine(connString.ToInsecureString());
             Action unauthorizedAccessToAdminDb = () =>
             {
@@ -106,7 +107,7 @@ namespace Aspen.Integration.RepositoryTests
             unauthorizedAccessToAdminDb
                 .Should()
                 .Throw<PostgresException>()
-                .WithMessage("42501: permission denied for database \"Admin\"");
+                .WithMessage("42501: permission denied for database \"admin\"");
         }
 
         [Test]
@@ -122,7 +123,7 @@ namespace Aspen.Integration.RepositoryTests
                 );
             }
 
-            var otherDatabase = databases.Where(d => d != "postgres" && d != "Admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
+            var otherDatabase = databases.Where(d => d != "postgres" && d != "admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
             var connString = acutalTurtles.State.ConnectionString.UpdateDatabase(otherDatabase);
 
             Action unauthorizedAccessToOtherDb = () =>
