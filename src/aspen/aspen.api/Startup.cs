@@ -48,7 +48,8 @@ namespace Aspen.Api
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
             
             Console.WriteLine(connectionStringBuilder.ConnectionString);
-            connectionString = new ConnectionString(connectionStringBuilder.ConnectionString + ";");
+            var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
+            connectionString = new ConnectionString(validConnString);
             // connectionString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
 
             Configuration = configuration;
