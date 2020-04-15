@@ -120,18 +120,6 @@ namespace Aspen.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            applyDatabaseMigrations(charityRepository, migrationService);
-            using(var dbConnection = migrationService.GetAdminDbConnection())
-            {
-                dbConnection.Execute(@"SELECT
-                        *
-                    FROM
-                        pg_catalog.pg_tables
-                    WHERE
-                        schemaname != 'pg_catalog'
-                    AND schemaname != 'information_schema';");
-            }
-
             // app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -149,15 +137,15 @@ namespace Aspen.Api
 
         private void applyDatabaseMigrations(ICharityRepository charityRepository, IMigrationService migrationService)
         {
-            // Thread.Sleep(500);
-            // var t = new Task(async () =>
-            // {
-            //     await migrationService.ApplyMigrations(connectionString);
-            //     foreach (var charity in await charityRepository.GetAll())
-            //         await migrationService.ApplyMigrations(charity.ConnectionString);
-            // });
-            // t.Start();
-            // t.Wait();
+            Thread.Sleep(500);
+            var t = new Task(async () =>
+            {
+                await migrationService.ApplyMigrations(connectionString);
+                foreach (var charity in await charityRepository.GetAll())
+                    await migrationService.ApplyMigrations(charity.ConnectionString);
+            });
+            t.Start();
+            t.Wait();
         }
     }
 }
