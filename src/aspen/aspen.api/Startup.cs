@@ -33,8 +33,6 @@ namespace Aspen.Api
         {
             var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
-            // connectionStringBuilder.Passfile = passfilePath;
-
             var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
 
@@ -45,11 +43,9 @@ namespace Aspen.Api
             connectionStringBuilder.Database = "admin";
             connectionStringBuilder.Username = passfile[3];
             connectionStringBuilder.Password = passfile[4];
-            // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
             
             var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
-            connectionString = new ConnectionString(validConnString);
-            // connectionString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 
+            connectionString = new ConnectionString(validConnString); 
 
             Configuration = configuration;
         }
@@ -61,6 +57,7 @@ namespace Aspen.Api
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<IThemeRepository, ThemeRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddCors(options =>
             {
@@ -72,8 +69,6 @@ namespace Aspen.Api
                        .AllowAnyMethod();
                });
             });
-
-            services.AddControllers().AddNewtonsoftJson();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -100,9 +95,7 @@ namespace Aspen.Api
                     };
                 });
 
-            // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
-
+            services.AddControllers().AddNewtonsoftJson();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireClaim("AdminClaim"));
@@ -119,6 +112,7 @@ namespace Aspen.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            applyDatabaseMigrations(charityRepository, migrationService);
 
             // app.UseHttpsRedirection();
 

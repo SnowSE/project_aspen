@@ -234,7 +234,7 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var connString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;");
+            var connString = new ConnectionString("Host=database; Port=5432; Database=admin; Username=Aspen; Password=Aspen;");
             var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", connString, new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 
