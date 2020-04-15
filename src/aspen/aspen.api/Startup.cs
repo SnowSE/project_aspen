@@ -35,7 +35,7 @@ namespace Aspen.Api
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
             // connectionStringBuilder.Passfile = passfilePath;
 
-            var alltext = File.ReadAllText("/app/notpgpass");
+            var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
 
             connectionStringBuilder.SslMode = SslMode.Require;
@@ -44,10 +44,9 @@ namespace Aspen.Api
             connectionStringBuilder.Port = int.Parse(passfile[1]);
             connectionStringBuilder.Database = "Admin";
             connectionStringBuilder.Username = passfile[3];
-            connectionStringBuilder.Password = Regex.Unescape(passfile[4]);
+            connectionStringBuilder.Password = passfile[4];
             // connectionStringBuilder.ClientCertificate = "/app/.postgresql/postgresql.crt";
             
-            Console.WriteLine(connectionStringBuilder.ConnectionString);
             var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
             connectionString = new ConnectionString(validConnString);
             // connectionString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"); 

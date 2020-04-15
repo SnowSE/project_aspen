@@ -27,7 +27,6 @@ namespace Aspen.Core.Models
                 ? new Password(connection)
                 : new Password("Password=;");
             // Password = new Password(connection);
-            Console.WriteLine(ToString());
         }
 
         public ConnectionString(Host server, Port port, Database database, UserId userId, Password password, String ssl)
