@@ -6,7 +6,7 @@ import { ApplicationState } from ".";
 import { AdminState } from "./GlobalAdmin/reducers";
 
 const initialCharityState: CharityState = {
-    description: "Insert charity description"
+    charity: null
 };
 
 const typ: Typography = { fontFamily: "Arial" };
@@ -38,5 +38,6 @@ const initialAdminState: AdminState = {
 export const initialState: ApplicationState = {
     theme: initialThemeState,
     admin: initialAdminState,
-    auth: initialAuthState
+    auth: initialAuthState,
+    charity: initialCharityState,
 }

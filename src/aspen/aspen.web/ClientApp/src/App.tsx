@@ -11,12 +11,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Theme } from "./models/Theme";
 import * as ThemeStore from "./store/Theme";
+import * as CharityStore from "./store/Charity"
 import * as RouteConstants from "./RouteConstants";
 
-type AppProps = typeof ThemeStore.actionCreators
+type AppProps = typeof ThemeStore.actionCreators & typeof CharityStore.actionCreators
 
 const App: React.FC<AppProps> = props => {
     props.loadThemeAction();
+    props.loadCharityAction();
     return(
 
     <>
@@ -33,5 +35,5 @@ const App: React.FC<AppProps> = props => {
 
 export default connect(
     null,
-    dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
+    dispatch => bindActionCreators({...ThemeStore.actionCreators, ...CharityStore.actionCreators}, dispatch)
 )(App);

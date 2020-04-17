@@ -1,38 +1,24 @@
-import React, { useEffect, useState, FunctionComponent } from "react";
+import React from "react";
 import Header from "./Header";
 import { connect } from "react-redux";
 import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import Grid from "@material-ui/core/Grid";
-import { APIService } from "../../services/APIService";
-import { DomainService } from "../../services/DomainService";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
-import { LoggerService } from "../../services/LoggerService"
+import { Charity } from "../../models/CharityModel";
 
-type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators;
+interface HomePropsInterface {
+  charity: Charity
+}
 
-const Home: FunctionComponent<HomeProps> = props => {
-  const [description, setDescription] = useState("");
-  const [charityName, setCharityName] = useState("");
-  const [GlobalAdminDomain, setGlobalAdminDomain] = useState("");
-  const [APIURL, setAPIURL] = useState("");
+type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & HomePropsInterface;
 
-  const handleHomeData = async () => {
-    let apiservice = new APIService(new DomainService(), new LoggerService());
-    let charityHomePage = await apiservice.GetCharityHomePage();
-    setDescription(charityHomePage.Charity.CharityDescription);
-    setCharityName(charityHomePage.Charity.CharityName);
-  };
-
-  useEffect(() => {
-    handleHomeData();
-  }, []);
-
+const Home: React.FC<HomeProps> = props => {
   return (
     <React.Fragment>
       <Header
-        greeting={charityName === "" ? "Loading..." : charityName}
+        greeting={props.charity === null ? "Loading..." : props.charity.CharityName}
         image={
           "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg"
         }
@@ -44,7 +30,7 @@ const Home: FunctionComponent<HomeProps> = props => {
             image={
               "https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg"
             }
-            description={description === "" ? "Loading..." : description}
+            description={(props.charity === null || props.charity.CharityDescription === null) ? "Loading..." : props.charity.CharityDescription}
           />
         </Grid>
         <Grid item xs={3}>
@@ -52,11 +38,11 @@ const Home: FunctionComponent<HomeProps> = props => {
         </Grid>
       </Grid>
       <ContentCard
-        title={GlobalAdminDomain === "" ? "Loading..." : GlobalAdminDomain}
+        title={"Welcome to the second part of this charity"}
         image={
           "https://images.pexels.com/photos/46253/mt-fuji-sea-of-clouds-sunrise-46253.jpeg"
         }
-        description={APIURL === "" ? "Loading..." : APIURL}
+        description={"the second one"}
       />
       <ContentCard
         title={"Another One"}
@@ -71,4 +57,13 @@ const Home: FunctionComponent<HomeProps> = props => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+    charity: state.charity.charity,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Home);

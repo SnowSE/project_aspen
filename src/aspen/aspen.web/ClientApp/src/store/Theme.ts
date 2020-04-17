@@ -37,8 +37,6 @@ export interface Secondary {
 //Actions
 interface ReceiveThemeAction {
   type: "LOADING_THEME";
-  // typography: Typography;
-  // palette: Palette;
   theme: Theme;
 }
 

@@ -1,12 +1,14 @@
 import * as Theme from './Theme';
 import * as Admin from './GlobalAdmin/reducers'
 import * as Auth from './Authentication/reducers'
+import * as Charity from "./Charity";
 
 // The top-level state object
 export interface ApplicationState {
     theme: Theme.ThemeState | undefined;
     admin: Admin.AdminState;
     auth: Auth.AuthState;
+    charity: Charity.CharityState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -15,7 +17,8 @@ export interface ApplicationState {
 export const reducers = {
     theme: Theme.reducer,
     admin: Admin.reducer,
-    auth: Auth.reducer
+    auth: Auth.reducer,
+    charity: Charity.reducer,
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are
