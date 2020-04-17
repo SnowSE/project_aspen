@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import * as ActionTypes from "./actionTypes";
 import Token from "../../models/TokenModel";
+import {initialState} from "../initialState"
 
 //State
 export interface AuthState {
@@ -8,14 +9,8 @@ export interface AuthState {
 message: string;
 }
 
-let key = localStorage.getItem('KEY')
-const initialState: AuthState = {
-  token: key!=null?new Token(key):null,
-  message: "",
-};
-
 //Reducer
-export const reducer: Reducer<AuthState> = (state = initialState, action: ActionTypes.AuthActionTypes) => {
+export const reducer: Reducer<AuthState> = (state = initialState.auth, action: ActionTypes.AuthActionTypes) => {
   switch (action.type) {
     case ActionTypes.LOGIN_SUCCESS:
       return { ...state, token: action.token };

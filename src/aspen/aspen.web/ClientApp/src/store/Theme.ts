@@ -4,7 +4,8 @@ import { APIService } from "../services/APIService";
 import { DomainService } from "../services/DomainService"
 import { Typography } from "@material-ui/core";
 import { AppThunkAction } from "./index";
-import {LoggerService} from "../services/LoggerService"
+import {LoggerService} from "../services/LoggerService";
+import {initialThemeState} from "./initialState";
 
 const apiService = new APIService(new DomainService(),new LoggerService())
 
@@ -61,20 +62,6 @@ export const actionCreators = {
   loadThemeAction
 };
 
-const typ: Typography = { fontFamily: "Arial" };
-const prim: Primary = {
-  main: "#ffffff",
-  light: "#ffffff",
-  contrastText: "#FFFFFF"
-};
-const sec: Secondary = { main: "#ffffff" };
-const pal: Palette = { primary: prim, secondary: sec };
-
-const initialState: ThemeState = {
-  typography: typ,
-  palette: pal
-};
-
 //Known Actions
 export type KnownAction = ReceiveThemeAction;
 //Reducer
@@ -83,7 +70,7 @@ export const reducer: Reducer<ThemeState> = (
   incomingAction: Action
 ): ThemeState => {
   if (state == undefined) {
-    return initialState;
+    return initialThemeState;
   }
 
   const action = incomingAction as KnownAction;

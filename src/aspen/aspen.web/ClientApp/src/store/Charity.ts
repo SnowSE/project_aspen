@@ -1,5 +1,5 @@
 import { Action, Reducer } from "redux";
-
+import { initialState } from "./initialState";
 //State
 export interface CharityState {
   description: string;
@@ -17,11 +17,9 @@ export const actionCreators = {
       type: "LOADING_CHARITY"
     } as ReceiveCharityAction)
 };
-
-const initialState: CharityState = {
+const initialCharityState: CharityState = {
   description: "Insert charity description"
 };
-
 export type KnownAction = ReceiveCharityAction;
 //Reducer
 export const reducer: Reducer<CharityState> = (
@@ -29,17 +27,17 @@ export const reducer: Reducer<CharityState> = (
   incomingAction: Action
 ): CharityState => {
   if (state == undefined) {
-    return initialState;
+    return initialCharityState;
   }
 
   const action = incomingAction as KnownAction;
   switch (action.type) {
     case "LOADING_CHARITY":
       return {
-        description: action. description
+        description: action.description
       };
     default:
-        return state;
+      return state;
   }
 };
 
