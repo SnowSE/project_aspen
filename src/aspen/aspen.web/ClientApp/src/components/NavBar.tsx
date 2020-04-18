@@ -5,7 +5,7 @@ import { ApplicationState } from "../store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import * as RouteConstants from "../RouteConstants";
+import * as RouteConstants from "../constants/RouteConstants";
 
 interface NavbarInterface {}
 

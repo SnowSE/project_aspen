@@ -12,7 +12,7 @@ import { bindActionCreators } from "redux";
 import { Theme } from "./models/Theme";
 import * as ThemeStore from "./store/Theme";
 import * as CharityStore from "./store/Charity"
-import * as RouteConstants from "./RouteConstants";
+import * as RouteConstants from "./constants/RouteConstants";
 
 type AppProps = typeof ThemeStore.actionCreators & typeof CharityStore.actionCreators
 

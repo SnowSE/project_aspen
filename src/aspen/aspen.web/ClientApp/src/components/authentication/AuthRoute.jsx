@@ -1,17 +1,18 @@
 import React from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { LOGIN_ROUTE } from "../../RouteConstants";
+import { LOGIN_ROUTE } from "../../constants/RouteConstants";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/Authentication/actions";
+import { RETURN_URL } from "../../constants/QueryConstants";
 import { ApplicationState } from "../../store";
 
 const AuthRoute = (props) => {
   const ready = true;
   const authenticated = props.token != null;
 
-  const redirectUrl = `${LOGIN_ROUTE}?returnUrl=${encodeURI(
-    window.location.href
+  const redirectUrl = `${LOGIN_ROUTE}?${RETURN_URL}=${encodeURI(
+    window.location.pathname
   )}`;
   if (!ready) {
     return <></>;

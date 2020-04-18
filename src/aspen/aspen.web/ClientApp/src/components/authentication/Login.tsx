@@ -15,6 +15,8 @@ import { actionCreators } from "../../store/Authentication/actions";
 import { ApplicationState } from "../../store";
 import Token from '../../models/TokenModel';
 import { RouteComponentProps } from 'react-router';
+import { HOME_ROUTE } from "../../constants/RouteConstants";
+import { RETURN_URL } from "../../constants/QueryConstants";
 
 
 const useStyles = makeStyles(() =>
@@ -65,6 +67,7 @@ const Login: React.FC<LoginProps> = props => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
+  const returnURL = new URLSearchParams(props.location.search).get(RETURN_URL) || HOME_ROUTE
 
   useEffect(() => {
     if (username.trim() && password.trim()) {
@@ -79,7 +82,7 @@ const Login: React.FC<LoginProps> = props => {
 
   const handleLogin = async () => {
     props.login(username, password);
-    props.history.push("/globalAdministration"); //todo get returnURL from query string
+    props.history.push(returnURL);
     if (props.token) {
       loggerservice.Error(props.token.key)
       localStorage.setItem('KEY', props.token.key);
