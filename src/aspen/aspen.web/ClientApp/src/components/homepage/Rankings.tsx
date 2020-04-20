@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, FunctionComponent } from "react";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,6 +11,10 @@ import { connect } from "react-redux";
 import { ApplicationState } from "../../store";
 import * as ThemeStore from "../../store/Theme";
 import { bindActionCreators } from "redux";
+import {LoggerService} from "../../services/LoggerService"
+import { APIService } from "../../services/APIService";
+import { DomainService } from "../../services/DomainService";
+import { Team } from "../../models/TeamModel";
 
 interface RankingsInterface{
 
@@ -18,33 +22,17 @@ interface RankingsInterface{
 
 type RankingsProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & RankingsInterface;
 
+
+
 const Rankings:React.FC<RankingsProps> = props => {
-  const teams = [
-    {
-      teamName: "DiegoTeam"
-    },
-    {
-      teamName: "MikeTeam"
-    },
-    {
-      teamName: "BrandonTeam"
-    },
-    {
-      teamName: "AlexTeam"
-    },
-    {
-      teamName: "JonathanTeam"
-    },
-    {
-      teamName: "KylerTeam"
-    },
-    {
-      teamName: "KylerTeam"
-    },
-    {
-      teamName: "KylerTeam"
-    },
-  ];
+const [teams1, setTeams1] = useState<Team[]>([]);
+
+const getteams = async() =>{
+  let apiservice = new APIService(new DomainService(),new LoggerService());
+  let charity  = await apiservice.GetCharityByDomain();
+  let teams = await apiservice.GetTeamByCharityID(charity.ID);
+  setTeams1(teams);
+}
   const classes = {
     rankingCard: {
       marginTop: 20,
@@ -75,6 +63,9 @@ const Rankings:React.FC<RankingsProps> = props => {
       color: "white"
     }
   };
+  useEffect(() => {
+    getteams();
+  }, []);
 
   return (
     <div style={classes.rankingCard}>
@@ -83,15 +74,15 @@ const Rankings:React.FC<RankingsProps> = props => {
           title={(<React.Fragment><BeenhereOutlinedIcon/> Top Teams</React.Fragment>)}
           style={{...classes.cardHeader, ...classes.title}}
         />
-        {teams
-          ? teams.map(team => (
+        {teams1
+          ? teams1.map(team => (
               <List
                 component="nav"
                 style={classes.list}
                 aria-label="mailbox folders"
               >
                 <ListItem button>
-                  <ListItemText primary={team.teamName} />
+                  <ListItemText primary={team.Name} />
                 </ListItem>
                 <Divider />
               </List>

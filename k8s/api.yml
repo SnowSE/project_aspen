@@ -37,14 +37,12 @@ spec:
       - image: {{ api_image }}
         name: aspen-api
         ports:
-        - containerPort: 443 
+        - containerPort: 5000
         env:
         - name: PGPASSFILE
           value: "/app/.postgresql/.pgpass"
         - name: PGSSLCERT
           value: "/app/.postgresql/postgresql.crt"
-        - name: PGSSLKEY
-          value: "/app/.postgresql/postgresql.key"
         - name: DefaultConnection
           value: "SSL Mode=require"
         volumeMounts:
@@ -60,8 +58,6 @@ spec:
                 path: .pgpass
               - key: postgresql.crt
                 path: postgresql.crt
-              - key: postgresql.key
-                path: postgresql.key
       restartPolicy: Always
 
 ---
@@ -77,8 +73,10 @@ spec:
     app: aspen-api
   type:  ClusterIP
   ports:
-  - port: 443
+  - name:  http
+    port: 443
     protocol: TCP
+    targetPort: 5000
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1beta1

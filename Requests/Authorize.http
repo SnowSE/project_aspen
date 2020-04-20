@@ -1,0 +1,10 @@
+## logging in should return a token
+POST http://206.189.218.168:5000/Admin/User/Authenticate
+content-type: application/json
+mode: cors
+
+{
+    "Password": "asdf",
+    "Username": "builder4lyfe",
+    "Charity":  "some garbage"
+}

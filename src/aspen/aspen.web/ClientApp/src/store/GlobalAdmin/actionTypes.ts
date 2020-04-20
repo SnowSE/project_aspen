@@ -17,7 +17,7 @@ interface GetSuccessAction {
     selectedCharity: Charity,
 }
 
-interface GetCharityAdminFailureAction {
+interface ApiFailureAction {
     type: typeof API_FAILURE,
 };
 
@@ -39,7 +39,7 @@ interface DeleteSuccessAction {
 export type CharityAdminActionTypes = 
     GetAllSuccessAction |
     GetSuccessAction |
-    GetCharityAdminFailureAction |
+    ApiFailureAction |
     AddSuccessAction |
     UpdateSuccessAction |
     DeleteSuccessAction;

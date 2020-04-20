@@ -89,7 +89,7 @@ export function adminDeleteCharity(charity: Charity): AppThunkAction<ActionTypes
     };
 };
 
-export const adminUpdateCharity = (charity: Charity): AppThunkAction<ActionTypes.CharityAdminActionTypes> => {
+export function adminUpdateCharity(charity: Charity): AppThunkAction<ActionTypes.CharityAdminActionTypes> {
     return function(dispatch) {
         return apiService
             .PostUpdateCharity(charity)

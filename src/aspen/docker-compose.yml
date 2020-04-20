@@ -7,7 +7,8 @@ services:
     environment:
       - POSTGRES_USER=Aspen
       - POSTGRES_PASSWORD=Aspen
-      - POSTGRES_DB=Admin
+      - POSTGRES_DB=admin
+      - PGPASSFILE=blank
     ports: 
       - 5432:5432
     expose:
@@ -23,7 +24,7 @@ services:
     depends_on: 
       - database
     environment: 
-      - DefaultConnection=Server=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;
+      - DefaultConnection=Server=database; Port=5432; Database=admin; Username=Aspen; Password=Aspen;
     ports:
        - 5000:5000
       #  - 443:443

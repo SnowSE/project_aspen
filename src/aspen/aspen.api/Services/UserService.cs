@@ -19,7 +19,7 @@ namespace Aspen.Api.Services
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
         private List<User> _users = new List<User>
         { 
-            new User(Guid.NewGuid(), "Bob", "TheBuilder", "builder4lyfe", "", new byte[]{}, "")
+            new User(Guid.NewGuid(), "Bob", "TheBuilder", "builder4lyfe", "asdf", new byte[]{}, "")
         };
 
         private readonly AppSettings _appSettings;
@@ -43,7 +43,7 @@ namespace Aspen.Api.Services
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-            if(hash != user.HashedPassword)
+            if(password != user.HashedPassword)
                 return null;
 
             // authentication successful so generate jwt token
@@ -54,6 +54,7 @@ namespace Aspen.Api.Services
                 Subject = new ClaimsIdentity(new Claim[] 
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
+                    // add role
                     // new Claim("AdminClaim", "true")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),

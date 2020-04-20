@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Aspen.Core.Services;
 using Aspen.Core.Models;
 using Aspen.Api.Services;
+using System.Threading.Tasks;
+using Aspen.Core;
 
 namespace Aspen.Api.Controllers
 {
-
-    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("admin/user/{action}")]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
@@ -19,16 +19,15 @@ namespace Aspen.Api.Controllers
             _userService = userService;
         }
 
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]AuthenticateModel model)
+        [HttpPost]
+        public async Task<ApiResult> Authenticate([FromBody]AuthenticateModel model)
         {
             var user = _userService.Authenticate(model.Username, model.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                ApiResult.Failed("");
 
-            return Ok(user);
+            return ApiResult.Success(user.Token);
         }
 
         [HttpGet]

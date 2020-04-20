@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 
 namespace Aspen.Core.Models
 {
-    public class UserId
+    public class Username
     {
         private string data;
 
-        public UserId(string connectionString)
+        public Username(string connectionString)
         {
             data = getAndValidateUser(connectionString);
         }

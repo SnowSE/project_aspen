@@ -5,6 +5,7 @@ import { ApplicationState } from "../store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
+import * as RouteConstants from "../RouteConstants";
 
 interface NavbarInterface {}
 
@@ -50,13 +51,13 @@ const Navbar: React.FC<NavbarProps> = props => {
       <div style={classes.navbar}>
         <div style={classes.logo}></div>
         <div style={classes.links}>
-          <NavLink tag={Link} style={classes.link} to="/login">
+          <NavLink tag={Link} style={classes.link} to={RouteConstants.LOGIN_ROUTE}>
             Login
           </NavLink>
-          <NavLink tag={Link} style={classes.link} to="/register">
+          <NavLink tag={Link} style={classes.link} to={RouteConstants.REGISTER_ROUTE}>
             Register
           </NavLink>
-          <NavLink tag={Link} style={classes.link} to="/">
+          <NavLink tag={Link} style={classes.link} to={RouteConstants.HOME_ROUTE}>
             Home
           </NavLink>
         </div>
