@@ -31,6 +31,14 @@ namespace Aspen.Api
 
         public Startup(IConfiguration configuration)
         {
+            string validConnString = getConnectionStringFromConfig();
+            connectionString = new ConnectionString(validConnString);
+
+            Configuration = configuration;
+        }
+
+        private static string getConnectionStringFromConfig()
+        {
             var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
             var alltext = File.ReadAllText(passfilePath);
@@ -43,11 +51,9 @@ namespace Aspen.Api
             connectionStringBuilder.Database = "admin";
             connectionStringBuilder.Username = passfile[3];
             connectionStringBuilder.Password = passfile[4];
-            
-            var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
-            connectionString = new ConnectionString(validConnString); 
 
-            Configuration = configuration;
+            var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
+            return validConnString;
         }
 
         public void ConfigureServices(IServiceCollection services)

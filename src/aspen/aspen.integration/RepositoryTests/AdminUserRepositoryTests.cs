@@ -40,25 +40,64 @@ namespace Aspen.Integration.RepositoryTests
         }
 
         [Test]
-        public async Task CanGetUserFromDatabase(){
-            var bobInDatabase = await adminUserRepo.Get(bobTheBuilder.Id);
+        public async Task CanGetUserFromDatabase()
+        {
+            var result = await adminUserRepo.Get(bobTheBuilder.Id);
+            var bobInDatabase = result.State;
             bobTheBuilder.Should().BeEquivalentTo(bobInDatabase);
         }
 
         [Test]
-        public async Task CanUpdateUserInDatabase(){
+        public async Task CanUpdateUserInDatabase()
+        {
             var newJoe = bobTheBuilder.UpdateFirstName("joe");
             await adminUserRepo.Update(newJoe);
-            var joeFromDatabase = await adminUserRepo.Get(newJoe.Id);
+            var result = await adminUserRepo.Get(newJoe.Id);
+            var joeFromDatabase = result.State;
             joeFromDatabase.Should().BeEquivalentTo(newJoe);
         }
 
         [Test]
-        public async Task CanDeleteUserFromDatabase(){
+        public async Task CanDeleteUserFromDatabase()
+        {
             await adminUserRepo.Delete(bobTheBuilder);
-            var allUsers = await adminUserRepo.GetAll();
+            var res = await adminUserRepo.GetAll();
+            var allUsers = res.State;
             allUsers.Should().NotContain(bobTheBuilder);
         }
 
+        [Test]
+        public async Task GracefullyHandlesInsertingDuplicateUsers()
+        {
+            var response = await adminUserRepo.Create(bobTheBuilder);
+            response.IsFailure.Should().BeTrue();
+            response.Error.Should().Be("User already exists in database");
+        }
+
+        [Test]
+        public async Task GracefullyHandlesGettingUnexistentUserId()
+        {
+            var response = await adminUserRepo.Get(Guid.NewGuid());
+            response.IsFailure.Should().BeTrue();
+            response.Error.Should().Be("User does not exist in database");
+        }
+
+        [Test]
+        public async Task GracefullyHandlesUpdatingUnexistentUserId()
+        {
+            bobTheBuilder = bobTheBuilder.UpdateId(Guid.NewGuid());
+            var response = await adminUserRepo.Update(bobTheBuilder);
+            response.IsFailure.Should().BeTrue();
+            response.Error.Should().Be("User does not exist in database");
+        }
+
+        [Test]
+        public async Task GracefullyHandlesDeletingUnexistentUser()
+        {
+            bobTheBuilder = bobTheBuilder.UpdateId(Guid.NewGuid());
+            var response = await adminUserRepo.Delete(bobTheBuilder);
+            response.IsFailure.Should().BeTrue();
+            response.Error.Should().Be("User does not exist in database");
+        }
     }
 }
