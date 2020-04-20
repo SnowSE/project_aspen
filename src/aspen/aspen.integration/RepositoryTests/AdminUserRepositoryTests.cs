@@ -61,7 +61,8 @@ namespace Aspen.Integration.RepositoryTests
         public async Task CanDeleteUserFromDatabase()
         {
             await adminUserRepo.Delete(bobTheBuilder);
-            var allUsers = await adminUserRepo.GetAll();
+            var res = await adminUserRepo.GetAll();
+            var allUsers = res.State;
             allUsers.Should().NotContain(bobTheBuilder);
         }
 

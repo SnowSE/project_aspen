@@ -48,11 +48,8 @@ namespace Aspen.Core.Repositories
                         @"
                         select * from AdminUser
                         where Id = @Id;",
-                        new {
-                            Id = id
-                        }
+                        new { Id = id }
                     );
-                    
                     return Result<User>.Success(user);
                 }
                 catch(System.InvalidOperationException e)
