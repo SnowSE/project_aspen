@@ -37,5 +37,39 @@ namespace Aspen.Api.Controllers
             var users = _userService.GetAll();
             return Ok(users);
         }
+
+        [HttpGet]
+        public async Task<ApiResult> GetByUserId([FromQuery(Name = "UserId")] Guid userId) =>
+            await userId
+                .ValidateFunction(getValidUser)
+                .ReturnApiResult();
+
+        [HttpPost]
+        public async Task<ApiResult> Create([FromBody] UserRequest request) =>
+            await request
+                .ValidateFunction(getValidUser)
+                .ReturnApiResult();
+        
+        [HttpPost]
+        public async Task<ApiResult> Update([FromBody] UserRequest request) =>
+            await request
+                .ValidateFunction(getValidUser)              
+                .ReturnApiResult();
+
+        [HttpPost]
+        public async Task<ApiResult> Delete([FromBody] UserRequest request) =>
+            await request
+                .ValidateFunction(getValidUser)
+                .ReturnApiResult();
+
+        private async Task<Result<User>> getValidUser(UserRequest request)
+        {
+            return await _userService.getValidUser(request.User.userId);
+        }
+
+        private async Task<Result<User>> getValidUser(Guid userId)
+        {
+            return await _userService.GetByUserId(userId);
+        }
     }
 }
