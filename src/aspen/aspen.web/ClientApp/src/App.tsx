@@ -9,15 +9,12 @@ import AuthRoute from "./components/authentication/AuthRoute";
 import './custom.css'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Theme } from "./models/Theme";
-import * as ThemeStore from "./store/Theme";
-import * as CharityStore from "./store/Charity"
+import {actionCreators} from "./store/Charity/actions"
 import * as RouteConstants from "./constants/RouteConstants";
 
-type AppProps = typeof ThemeStore.actionCreators & typeof CharityStore.actionCreators
+type AppProps = typeof actionCreators
 
 const App: React.FC<AppProps> = props => {
-    props.loadThemeAction();
     props.loadCharityAction();
     return(
 
@@ -35,5 +32,5 @@ const App: React.FC<AppProps> = props => {
 
 export default connect(
     null,
-    dispatch => bindActionCreators({...ThemeStore.actionCreators, ...CharityStore.actionCreators}, dispatch)
+    dispatch => bindActionCreators({...actionCreators}, dispatch)
 )(App);

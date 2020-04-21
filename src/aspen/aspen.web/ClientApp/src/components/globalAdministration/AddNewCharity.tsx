@@ -1,11 +1,9 @@
 import React from "react";
 import AddCharityForm from "./AddCharityForm";
-import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/GlobalAdmin/actions";
 import { ApplicationState } from "../../store";
-import { Charity } from "../../models/CharityModel";
 
 interface AddNewCharityProps {
     adminAddCharity: typeof actionCreators.adminAddCharity

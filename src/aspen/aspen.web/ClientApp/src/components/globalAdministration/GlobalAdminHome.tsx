@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from "react";
-import mockApiResult from "./tempMockResult";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Button, createStyles, makeStyles } from "@material-ui/core";
 import { ApplicationState } from "../../store";
@@ -32,9 +31,8 @@ interface GlobalAdminHomeProps {
 
 const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
     useEffect(() => {
-        
       console.error(props.adminFetchAllCharities())
-    }, []);
+    });
 
     const classes = useStyles();
 

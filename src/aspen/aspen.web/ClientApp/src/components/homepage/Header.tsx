@@ -1,17 +1,16 @@
-import React, { FunctionComponent, Props } from "react";
-import * as ThemeStore from "../../store/Theme";
+import React from "react";
 import { ApplicationState } from "../../store";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { Theme } from "../../models/Theme";
 
-interface HeaderInterface {
+interface HeaderProps {
+    theme: Theme
     greeting: string,
     image: string,
 }
 
-type HeaderProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & HeaderInterface;
 
-const Header: FunctionComponent<HeaderProps> = props => {
+const Header: React.FC<HeaderProps> = props => {
     //Styles Fixup
       let header = {
         height: 600,
@@ -25,7 +24,7 @@ const Header: FunctionComponent<HeaderProps> = props => {
 
       let overlay = {
         height: 175,
-        backgroundColor: String(props.palette.primary.main),
+        backgroundColor: String(props.theme.palette.primary.main),
         position: "absolute",
         bottom: 0,
         width: '100%',
@@ -37,7 +36,7 @@ const Header: FunctionComponent<HeaderProps> = props => {
         position: 'absolute',
         bottom: 100,
         width: '100%',
-        color: String(props.palette.primary.contrastText),
+        color: String(props.theme.palette.primary.contrastText),
         fontSize: 32,
         padding: 10,
         textAlign: 'center'
@@ -56,7 +55,12 @@ const Header: FunctionComponent<HeaderProps> = props => {
   );
 };
 
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+      theme: state.charity.theme
+  }
+}
+
 export default connect(
-  (state: ApplicationState) => state.theme,
-  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
+  mapStateToProps
 )(Header);

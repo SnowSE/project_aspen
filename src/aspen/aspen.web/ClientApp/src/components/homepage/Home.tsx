@@ -5,14 +5,11 @@ import ContentCard from "./ContentCard";
 import Rankings from "./Rankings";
 import Grid from "@material-ui/core/Grid";
 import { ApplicationState } from "../../store";
-import * as ThemeStore from "../../store/Theme";
 import { Charity } from "../../models/CharityModel";
 
-interface HomePropsInterface {
-  charity: Charity
+interface HomeProps {
+  charity: Charity | null
 }
-
-type HomeProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & HomePropsInterface;
 
 const Home: React.FC<HomeProps> = props => {
   return (
@@ -64,6 +61,5 @@ const mapStateToProps = (state: ApplicationState) => {
 };
 
 export default connect(
-  mapStateToProps,
-  null
+  mapStateToProps
 )(Home);

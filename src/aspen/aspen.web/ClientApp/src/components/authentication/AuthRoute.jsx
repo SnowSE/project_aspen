@@ -1,11 +1,12 @@
 import React from "react";
-import { Route, Redirect, RouteProps } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../constants/RouteConstants";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/Authentication/actions";
 import { RETURN_URL } from "../../constants/QueryConstants";
-import { ApplicationState } from "../../store";
+
+//To eventually convert to TSX. Proptypes should extend RouteProps from "react-router-dom"
 
 const AuthRoute = (props) => {
   const ready = true;

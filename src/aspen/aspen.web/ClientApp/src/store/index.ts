@@ -1,11 +1,9 @@
-import * as Theme from './Theme';
 import * as Admin from './GlobalAdmin/reducers'
 import * as Auth from './Authentication/reducers'
-import * as Charity from "./Charity";
+import * as Charity from "./Charity/reducers";
 
 // The top-level state object
 export interface ApplicationState {
-    theme: Theme.ThemeState | undefined;
     admin: Admin.AdminState;
     auth: Auth.AuthState;
     charity: Charity.CharityState;
@@ -15,7 +13,6 @@ export interface ApplicationState {
 // the reducer with the matching name. It's important that the names match exactly, and that the reducer
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
-    theme: Theme.reducer,
     admin: Admin.reducer,
     auth: Auth.reducer,
     charity: Charity.reducer,

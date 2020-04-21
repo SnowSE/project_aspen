@@ -6,7 +6,7 @@ import {initialState} from "../initialState"
 //State
 export interface AuthState {
   token: Token | null;
-message: string;
+  message: string;
 }
 
 //Reducer

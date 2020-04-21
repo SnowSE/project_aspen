@@ -1,28 +1,14 @@
-import { CharityState } from "./Charity";
-import { Typography, Primary, Secondary, Palette, ThemeState } from "./Theme";
 import { AuthState } from "./Authentication/reducers";
 import Token from "../models/TokenModel"
 import { ApplicationState } from ".";
 import { AdminState } from "./GlobalAdmin/reducers";
+import { Theme } from "../models/Theme";
+import {CharityState} from "./Charity/reducers"
 
 const initialCharityState: CharityState = {
-    charity: null
+    charity: null,
+    theme: new Theme("#ffffff","#ffffff","#FFFFFF","#ffffff","Arial")
 };
-
-const typ: Typography = { fontFamily: "Arial" };
-const prim: Primary = {
-    main: "#ffffff",
-    light: "#ffffff",
-    contrastText: "#FFFFFF"
-};
-const sec: Secondary = { main: "#ffffff" };
-const pal: Palette = { primary: prim, secondary: sec };
-
-export const initialThemeState: ThemeState = {
-    typography: typ,
-    palette: pal
-};
-
 
 let key = localStorage.getItem('KEY')
 const initialAuthState: AuthState = {
@@ -36,7 +22,6 @@ const initialAdminState: AdminState = {
   };
 
 export const initialState: ApplicationState = {
-    theme: initialThemeState,
     admin: initialAdminState,
     auth: initialAuthState,
     charity: initialCharityState,
