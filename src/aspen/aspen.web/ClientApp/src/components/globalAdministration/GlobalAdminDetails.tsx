@@ -31,7 +31,7 @@ interface GlobalAdminDetailsProps extends RouteComponentProps<MyRouteProps> {
 const GlobalAdminDetails: React.FC<GlobalAdminDetailsProps> = props => {
   useEffect(() => {
     props.adminFetchSpecificCharity(props.match.params.id);
-  });
+  },[]);
 
   const classes = useStyles();
 

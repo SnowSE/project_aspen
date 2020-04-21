@@ -32,7 +32,7 @@ interface GlobalAdminHomeProps {
 const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
     useEffect(() => {
       console.error(props.adminFetchAllCharities())
-    });
+    },[]);
 
     const classes = useStyles();
 
