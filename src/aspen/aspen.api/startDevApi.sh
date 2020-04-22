@@ -1,2 +1,2 @@
-export DefaultConnection="Server=localhost; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;"
+export DefaultConnection="Server=localhost; Port=5432; Database=admin; Username=Aspen; Password=Aspen;"
 dotnet run

@@ -5,10 +5,10 @@ mode: cors
 
 {
     "team":{
-        "Name":"Bob",
+        "Name":"run with kyler",
         "Description":"This is bobs team"
     },
-    "CharityID": "51a1d9c2-87e4-46da-a42d-65b874628ec9"
+    "CharityID": "83af4842-b437-40c7-bb00-fbf22ab1191a"
 }
 
 ### Update Team

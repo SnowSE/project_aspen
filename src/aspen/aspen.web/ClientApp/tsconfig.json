@@ -19,6 +19,6 @@
     "skipLibCheck": false
   },
   "include": [
-    "src"
+    "src", "Tests/App.test.tsx"
   ]
 }

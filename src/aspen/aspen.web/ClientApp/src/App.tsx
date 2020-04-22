@@ -6,32 +6,31 @@ import Register from './components/authentication/Register';
 import GlobalAdminRouter from "./components/globalAdministration/GlobalAdminRouter";
 import NavBar from "./components/NavBar";
 import AuthRoute from "./components/authentication/AuthRoute";
-import './custom.css'
+import './custom.css';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Theme } from "./models/Theme";
-import * as ThemeStore from "./store/Theme";
-import * as RouteConstants from "./RouteConstants";
+import {actionCreators} from "./store/Charity/actions";
+import * as RouteConstants from "./constants/RouteConstants";
+import {GLOBAL_ADMIN} from "./constants/RoleConstants";
 
-type AppProps = typeof ThemeStore.actionCreators
+type AppProps = typeof actionCreators;
 
 const App: React.FC<AppProps> = props => {
-    props.loadThemeAction();
+    props.loadCharityAction();
     return(
-
-    <>
-        <NavBar/>
-        <Switch>
-            <Route exact path={RouteConstants.HOME_ROUTE} component={Home} />
-            <Route path={RouteConstants.LOGIN_ROUTE} component={Login} />
-            <Route path={RouteConstants.REGISTER_ROUTE} component={Register} />
-            <AuthRoute path={RouteConstants.GLOBAL_ADMIN_ROUTE} component={GlobalAdminRouter} />
-        </Switch>
-    </>
+        <>
+            <NavBar/>
+            <Switch>
+                <Route exact path={RouteConstants.HOME_ROUTE} component={Home} />
+                <Route path={RouteConstants.LOGIN_ROUTE} component={Login} />
+                <Route path={RouteConstants.REGISTER_ROUTE} component={Register} />
+                <AuthRoute role={GLOBAL_ADMIN} path={RouteConstants.GLOBAL_ADMIN_ROUTE} component={GlobalAdminRouter} />
+            </Switch>
+        </>
     )
     };
 
 export default connect(
     null,
-    dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
+    dispatch => bindActionCreators({...actionCreators}, dispatch)
 )(App);

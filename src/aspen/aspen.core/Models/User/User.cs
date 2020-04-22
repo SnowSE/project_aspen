@@ -47,5 +47,11 @@ namespace Aspen.Core.Models
         {
             return new User(Id, FirstName, LastName, Username, HashedPassword, Salt, newToken);
         }
+
+        public User UpdateId(Guid guid)
+        {
+            return new User(guid, FirstName, LastName, Username, HashedPassword, Salt, Token);
+
+        }
     }
 }

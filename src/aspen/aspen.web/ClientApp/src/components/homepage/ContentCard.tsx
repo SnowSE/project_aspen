@@ -1,23 +1,20 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {Card, CardActions, CardContent} from "@material-ui/core";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import "./ContentCard.css"
-import * as ThemeStore from "../../store/Theme";
+import "./ContentCard.css";
 import { ApplicationState } from "../../store";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { Theme } from "../../models/Theme";
 
-interface ContentCardInterface {
+interface ContentCardProps {
   title: string,
   image: string,
-  description: string
+  description: string,
+  theme: Theme
 }
-
-type ContentCardProps = ThemeStore.ThemeState & typeof ThemeStore.actionCreators & ContentCardInterface;
 
 const ContentCard:React.FC<ContentCardProps> = props => {
   const classes = {
@@ -29,10 +26,10 @@ const ContentCard:React.FC<ContentCardProps> = props => {
       height: 300,
     },
     title:{
-      color: props.palette.primary.main,
+      color: props.theme.palette.primary.main,
     },
     buttons:{
-      color: props.palette.secondary.main,
+      color: props.theme.palette.secondary.main,
     }
   }
   return (
@@ -63,7 +60,12 @@ const ContentCard:React.FC<ContentCardProps> = props => {
   );
 };
 
+const mapStateToProps = (state: ApplicationState) => {
+  return {
+      theme: state.charity.theme
+  }
+}
+
 export default connect(
-  (state: ApplicationState) => state.theme,
-  dispatch => bindActionCreators(ThemeStore.actionCreators, dispatch)
+  mapStateToProps
 )(ContentCard);

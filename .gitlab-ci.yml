@@ -1,5 +1,3 @@
-# build containers for all our services
-
 image: docker:19.03.1
 services:
   - docker:19.03.1-dind
@@ -37,7 +35,7 @@ api_integration_test:
   services:
     - postgres:12.0
   variables:
-    POSTGRES_DB: Admin
+    POSTGRES_DB: admin
     POSTGRES_USER: aspen
     POSTGRES_PASSWORD: super_secret_aspen_password
     INTEGRATION_TEST_CONNECTION: "Host=postgres; Port=5432; Database=$POSTGRES_DB; Username=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
@@ -88,5 +86,4 @@ deploy-dev-api:
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
     - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE --ingress dev-api-aspen.k8sd.unitedangels.org
     - /scripts/k8s-deploy.py -f k8s/web.yml --web_image $WEB_IMAGE --ingress dev-aspen.k8sd.unitedangels.org --api_url https://dev-api-aspen.k8sd.unitedangels.org
-    - /scripts/k8s-deploy.py -f k8s/postgres.yml
 #    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this

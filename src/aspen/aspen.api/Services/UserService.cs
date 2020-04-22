@@ -54,6 +54,7 @@ namespace Aspen.Api.Services
                 Subject = new ClaimsIdentity(new Claim[] 
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
+                    // add role
                     // new Claim("AdminClaim", "true")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),

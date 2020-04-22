@@ -123,7 +123,7 @@ namespace Aspen.Tests.ControllerTests
         }
 
         [Test]
-        public async Task HandleWrongCharityIdGetTheme()
+        public async Task HandleWrongCharityId_GetTheme()
         {
             var error = "No CharityId: " + Guid.Empty;
             charityRepoMoq

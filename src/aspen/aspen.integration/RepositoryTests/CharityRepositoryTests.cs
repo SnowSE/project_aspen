@@ -32,6 +32,7 @@ namespace Aspen.Integration.RepositoryTests
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
             migrationService = new MigrationService(connString, secure: false);
+            Console.WriteLine(connString);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
 
@@ -93,7 +94,7 @@ namespace Aspen.Integration.RepositoryTests
         public async Task NewDatabaseUsersCannotAccessAdminDatabase()
         {
             var acutalTurtles = await charityRepository.GetById(alexsTurtles.CharityId);
-            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("Admin");
+            var connString = acutalTurtles.State.ConnectionString.UpdateDatabase("admin");
             Console.WriteLine(connString.ToInsecureString());
             Action unauthorizedAccessToAdminDb = () =>
             {
@@ -106,7 +107,7 @@ namespace Aspen.Integration.RepositoryTests
             unauthorizedAccessToAdminDb
                 .Should()
                 .Throw<PostgresException>()
-                .WithMessage("42501: permission denied for database \"Admin\"");
+                .WithMessage("42501: permission denied for database \"admin\"");
         }
 
         [Test]
@@ -122,7 +123,7 @@ namespace Aspen.Integration.RepositoryTests
                 );
             }
 
-            var otherDatabase = databases.Where(d => d != "postgres" && d != "Admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
+            var otherDatabase = databases.Where(d => d != "postgres" && d != "admin" && d != acutalTurtles.State.ConnectionString.Database.data).First();
             var connString = acutalTurtles.State.ConnectionString.UpdateDatabase(otherDatabase);
 
             Action unauthorizedAccessToOtherDb = () =>
@@ -233,12 +234,38 @@ namespace Aspen.Integration.RepositoryTests
         [Test]
         public async Task Delete_HandlesCallWithEmptyCharity()
         {
-            var connString = new ConnectionString("Host=database; Port=5432; Database=Admin; Username=Aspen; Password=Aspen;");
+            var connString = new ConnectionString("Host=database; Port=5432; Database=admin; Username=Aspen; Password=Aspen;");
             var nonExistantCharity = new Charity(Guid.Empty, "bad charity", "desc", connString, new Domain[] {});
             var result = await charityRepository.Delete(nonExistantCharity);
 
             result.IsSucccess.Should().BeFalse();
             result.Error.Should().Be("Cannot delete non-existant charity.");
+        }
+
+        [Test]
+        public async Task CannotCreateCharityWithoutDomains()
+        {
+            var random = new Random();
+            salt = random.Next();
+            var alexsTurtlesWithoutDomains = new Charity(
+                Guid.NewGuid(),
+                "Alex's Turtles" + salt,
+                "alex likes turtles",
+                new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;"),
+                new Domain[]{ });
+            
+            var res = await charityRepository.Create(alexsTurtlesWithoutDomains);
+            res.IsFailure.Should().BeTrue();
+            res.Error.Should().Be("Cannot create charity without domain");
+        }
+        
+        [Test]
+        public async Task Create_HandlesDuplicateCharity()
+        {
+            var res = await charityRepository.Create(alexsTurtles);
+            res.IsFailure.Should().BeTrue();
+            res.Error.Should().Be("Cannot create charity, it already exists");
+            
         }
     }
 }

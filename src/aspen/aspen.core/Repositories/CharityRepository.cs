@@ -22,6 +22,13 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Charity>> Create(Charity charity)
         {
+            if(charity.Domains.Count() == 0)
+                return Result<Charity>.Failure("Cannot create charity without domain");
+
+            var existingCharityResult = await GetById(charity.CharityId);
+            if(existingCharityResult.IsSucccess)
+                return Result<Charity>.Failure("Cannot create charity, it already exists");
+
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
                 var startingConnectionString = new ConnectionString(dbConnection.ConnectionString);
@@ -126,9 +133,6 @@ namespace Aspen.Core.Repositories
         {
             using (var dbConnection = migrationService.GetAdminDbConnection())
             {
-                // return await dbConnection.QueryAsync<Charity>(
-                //     @"select * from Charity;"
-                // );
                 var charityDict = new Dictionary<Guid, Charity>();
 
                 await dbConnection.QueryAsync<Charity, Domain, Charity>(

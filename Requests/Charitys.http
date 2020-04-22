@@ -1,5 +1,5 @@
 ### get charity by domain
-GET http://206.189.218.168:5000/Charity/Get?domain=kyler2
+GET http://206.189.218.168:5000/Charity/Get?domain=kyler.aspen.com
 
 ### get charity by id
 GET http://206.189.218.168:5000/admin/charity/Get?charityid=
