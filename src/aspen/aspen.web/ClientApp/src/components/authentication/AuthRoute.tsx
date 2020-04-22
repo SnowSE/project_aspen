@@ -8,11 +8,12 @@ import { ApplicationState } from "../../store";
 
 interface AuthRouteProps extends RouteProps{
     token: Token | null
-    role: string
+    /**Used to check if a user has a specific role */
+    role?: string
 }
 
 const AuthRoute: React.FC<AuthRouteProps> = (props) => {
-  const ready = true;
+  const ready = true; //TODO use to ensure that the token has loaded
   const authenticated = props.token != null; //TODO check if token is expired //TODO check if token has proper role
 
   const redirectUrl = `${LOGIN_ROUTE}?${RETURN_URL}=${encodeURI(
@@ -37,4 +38,9 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
+/**
+ * An Authorization Wrapper for Route. Can be used the same as Route from "React Router" with the addition of a 'role' prop
+ *
+ * @author [Brandon Isbell](https://www.linkedin.com/in/brandonisbell/)
+ */
 export default connect(mapStateToProps)(AuthRoute);

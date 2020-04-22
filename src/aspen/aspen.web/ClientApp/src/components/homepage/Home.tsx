@@ -11,6 +11,7 @@ interface HomeProps {
   charity: Charity | null
 }
 
+
 const Home: React.FC<HomeProps> = props => {
   return (
     <React.Fragment>
