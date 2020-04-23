@@ -6,8 +6,6 @@ import { Theme } from "../models/Theme";
 import { Team } from "../models/TeamModel";
 import { ILoggerService } from "../services/ILoggerService"
 
-//const url = "http://206.189.218.168:5000"
-//const url = "https://dev-api-aspen.k8sd.unitedangels.org"
 const url = process.env.REACT_APP_API_URL 
 const globaladmindomain = process.env.REACT_APP_GLOBAL_ADMIN_DOMAIN
 
@@ -18,18 +16,6 @@ export class APIService implements IAPIService {
     constructor(IDomainService: IDomainService, ILoggerService: ILoggerService) {
         this.IDomainService = IDomainService
         this.ILoggerService = ILoggerService
-        //this.init();
-    }
-
-    private async init() {
-        let charity = new Charity("", "Kylers Penguins", "localhost", "an awesome charity for saving the polar icecaps");
-        await this.PostCreateCharity(charity);
-        let actualcharity = await this.GetCharityByDomain()
-        let team = new Team("Kylers Team", "the team for kyler")
-        let team2 = new Team("Kylers Team2", "the team for kyler")
-        await this.PostCreateTeam(team, actualcharity.ID);
-        await this.PostCreateTeam(team2, actualcharity.ID);
-        await this.ILoggerService.Warn(await this.GetTeamByCharityID(actualcharity.ID));
     }
 
     public async GetCharityHomePage(): Promise<CharityHomePage> {
