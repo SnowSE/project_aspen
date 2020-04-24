@@ -21,7 +21,6 @@ spec:
         image: {{ web_image }}
         ports:
         - containerPort: 3000
-        #hack replace with the real api url and the name of the real domain where this is hosted
         env:
         - name: REACT_APP_GLOBAL_ADMIN_DOMAIN 
           value: aspen
