@@ -5,6 +5,8 @@ using Aspen.Core.Models;
 using Aspen.Api.Services;
 using System.Threading.Tasks;
 using Aspen.Core;
+using System;
+using Aspen.Api.Http;
 
 namespace Aspen.Api.Controllers
 {
@@ -64,7 +66,7 @@ namespace Aspen.Api.Controllers
 
         private async Task<Result<User>> getValidUser(UserRequest request)
         {
-            return await _userService.getValidUser(request.User.userId);
+            return await _userService.GetByUserId(request.User.Id);
         }
 
         private async Task<Result<User>> getValidUser(Guid userId)
