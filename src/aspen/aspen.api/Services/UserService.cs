@@ -10,7 +10,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
 using Aspen.Api.Helpers;
-
+using System.Threading.Tasks;
+using Aspen.Core;
 
 namespace Aspen.Api.Services
 {
@@ -70,6 +71,12 @@ namespace Aspen.Api.Services
         public IEnumerable<User> GetAll()
         {
             return _users;
+        }
+
+        public async Task<Result<User>> GetByUserId(Guid id)
+        {
+            User user = _users.Where(user => user.Id == id).FirstOrDefault();
+            return Result<User>.Success(user);
         }
     }
 }
