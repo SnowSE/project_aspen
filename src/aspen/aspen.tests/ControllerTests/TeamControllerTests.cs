@@ -31,7 +31,7 @@ namespace Aspen.Tests.ControllerTests
         }
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             var random = new Random();
             salt = random.Next();
