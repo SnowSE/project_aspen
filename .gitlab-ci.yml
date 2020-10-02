@@ -1,5 +1,3 @@
-# build containers for all our services
-
 image: docker:19.03.1
 services:
   - docker:19.03.1-dind
@@ -11,8 +9,6 @@ stages:
   - deploy
 
 variables:
-  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  # DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
   REGISTRY: us.gcr.io
   PROJECT: united-angels-web
@@ -39,10 +35,10 @@ api_integration_test:
   services:
     - postgres:12.0
   variables:
-    POSTGRES_DB: aspen
+    POSTGRES_DB: admin
     POSTGRES_USER: aspen
     POSTGRES_PASSWORD: super_secret_aspen_password
-    INTEGRATION_TEST_CONNECTION: "Server=postgres; Port=5432; Database=$POSTGRES_DB; User ID=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
+    INTEGRATION_TEST_CONNECTION: "Host=postgres; Port=5432; Database=$POSTGRES_DB; Username=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
   image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
   script:
     - dotnet test src/aspen/aspen.integration/
@@ -58,13 +54,6 @@ build_web:
   script:
     - docker build -t $WEB_IMAGE -f src/aspen/aspen.web/Dockerfile src/aspen/aspen.web
     - docker push $WEB_IMAGE
-
-# test2:
-#   #integration tests
-#   stage: test
-#   script:
-#     - docker pull $CONTAINER_TEST_IMAGE
-#     - docker run $CONTAINER_TEST_IMAGE /script/to/run/another/test
 
 # release-image:
 #   stage: release
@@ -95,6 +84,6 @@ deploy-dev-api:
   script:
     # these script params are referenced inside the k8s-deployment as variables. Eventually we want to break the config
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
-    - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE
-    - /scripts/k8s-deploy.py -f k8s/web.yml --web_image $WEB_IMAGE
+    - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE --ingress dev-api-aspen.k8sd.unitedangels.org
+    - /scripts/k8s-deploy.py -f k8s/web.yml --web_image $WEB_IMAGE --ingress dev-aspen.k8sd.unitedangels.org --api_url https://dev-api-aspen.k8sd.unitedangels.org
 #    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this

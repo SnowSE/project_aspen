@@ -1,69 +1,151 @@
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using aspen.api.Routing;
 using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Threading;
+using Aspen.Core.Services;
+using Aspen.Core.Models;
+using System.Threading.Tasks;
+using System.Linq;
 using Npgsql;
+using System.IO;
+using Aspen.Api.Helpers;
+using Aspen.Api.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Dapper;
+using System.Text.RegularExpressions;
 
-namespace aspen.api
+namespace Aspen.Api
 {
     public class Startup
     {
-        private System.Func<NpgsqlConnection> getDbConnection;
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private ConnectionString connectionString;
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration configuration)
         {
-            services.AddScoped<ICharityRepository, CharityRepository>();
-            services.AddControllers();
-            getDbConnection = () => new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddTransient<Func<IDbConnection>>(c => getDbConnection);
+            string validConnString = getConnectionStringFromConfig();
+            connectionString = new ConnectionString(validConnString);
+
+            Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        private static string getConnectionStringFromConfig()
+        {
+            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+            var alltext = File.ReadAllText(passfilePath);
+            var passfile = alltext.Split(":");
+
+            connectionStringBuilder.SslMode = SslMode.Require;
+            connectionStringBuilder.TrustServerCertificate = true;
+            connectionStringBuilder.Host = passfile[0];
+            connectionStringBuilder.Port = int.Parse(passfile[1]);
+            connectionStringBuilder.Database = "admin";
+            connectionStringBuilder.Username = passfile[3];
+            connectionStringBuilder.Password = passfile[4];
+
+            var validConnString = connectionStringBuilder.ConnectionString.Replace("\n", "") + ";";
+            return validConnString;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<ConnectionString>(c => connectionString);
+            services.AddScoped<IMigrationService, MigrationService>();
+            services.AddScoped<ICharityRepository, CharityRepository>();
+            services.AddScoped<IThemeRepository, ThemeRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+               {
+                   builder
+                       .AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+               });
+            });
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("AdminClaim"));
+            });
+        }
+
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            ICharityRepository charityRepository,
+            IMigrationService migrationService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            applyDatabaseMigrations(charityRepository, migrationService);
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            // authentication has to be before authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    "Default",
-                    "{controller}/{action}/{id}",
-                    new { controller = "Home", action = "Get", id = ""},
-                    new { TenantAccess = new CharityRouteConstraint(new CharityRepository(getDbConnection)) } );
-                endpoints.MapControllerRoute(
-                    "Global Admin",
-                    "/admin/{controller}/{action}",
-                    new { controller = "Chartiy", action = "Get"},
-                    new { TenantAccess = new AdminRouteConstraint() } );
             });
+        }
+
+        private void applyDatabaseMigrations(ICharityRepository charityRepository, IMigrationService migrationService)
+        {
+            Thread.Sleep(500);
+            var t = new Task(async () =>
+            {
+                await migrationService.ApplyMigrations(connectionString);
+                foreach (var charity in await charityRepository.GetAll())
+                    await migrationService.ApplyMigrations(charity.ConnectionString);
+            });
+            t.Start();
+            t.Wait();
         }
     }
 }

@@ -1,0 +1,44 @@
+### get charity by domain
+GET http://206.189.218.168:5000/Charity/Get?domain=kyler.aspen.com
+
+### get charity by id
+GET http://206.189.218.168:5000/admin/charity/Get?charityid=
+
+### Get theme by ID
+GET http://206.189.218.168:5000/Charity/Gettheme?charityid=
+
+### Create Charity
+POST http://206.189.218.168:5000/Admin/Charity/Create
+Content-Type: application/json
+mode: cors
+
+{
+    "ID": "" ,
+    "CharityName": "kylers aligators",
+    "CharityDescription": "lots of aligators",
+    "Domains": [{"charitydomain": "kyler2"}]
+}
+
+### Update Charity
+POST http://206.189.218.168:5000/Admin/Charity/Update
+Content-Type: application/json
+mode: cors
+
+{
+    "ID": "51a1d9c2-87e4-46da-a42d-65b874628ec9" ,
+    "CharityName": "kylers aligators2",
+    "CharityDescription": "lots of aligators",
+    "Domains": [{"charitydomain": "kyler2"}]
+}
+
+### Delete Charity
+POST http://206.189.218.168:5000/Admin/Charity/Update
+Content-Type: application/json
+mode: cors
+
+{
+    "ID": "51a1d9c2-87e4-46da-a42d-65b874628ec9" ,
+    "CharityName": "kylers aligators2",
+    "CharityDescription": "lots of aligators",
+    "Domains": [{"charitydomain": "kyler2"}]
+}

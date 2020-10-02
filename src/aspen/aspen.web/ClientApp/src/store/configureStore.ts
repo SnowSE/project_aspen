@@ -27,3 +27,19 @@ export default function configureStore(history: History, initialState?: Applicat
         compose(applyMiddleware(...middleware), ...enhancers)
     );
 }
+
+export function configureDocsStore(initialState?: ApplicationState) {
+    const middleware = [
+        thunk
+    ];
+
+    const rootReducer = combineReducers({
+        ...reducers
+    });
+
+    return createStore(
+        rootReducer,
+        initialState,
+        compose(applyMiddleware(...middleware))
+    );
+}

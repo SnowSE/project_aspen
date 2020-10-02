@@ -1,44 +1,64 @@
-import React from "react";
-import mockApiResult from "./tempMockResult";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Button, createStyles, makeStyles } from "@material-ui/core";
+import { ApplicationState } from "../../store";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/GlobalAdmin/actions";
+import { Charity } from "../../models/CharityModel";
 
 const useStyles = makeStyles(()=>
     createStyles({
-        organizationItem: {
+        CharityDefault: {
             padding: "1vh",
             textAlign: "center",
         },
-        oddItem: {
+        CharityOdd: {
             background: "gainsboro",
         },
+        AddButton: {
+            background: "lightblue"
+        }
     })
 )
 
 interface GlobalAdminHomeProps {
-
+    adminFetchAllCharities: typeof actionCreators.adminFetchAllCharities,
+    charityList: Charity[],
 };
 
+
+
 const GlobalAdminHome:React.FC<GlobalAdminHomeProps> = props => {
+    useEffect(() => {
+      console.error(props.adminFetchAllCharities())
+    },[]);
+
     const classes = useStyles();
 
-    const keyIsEven = (key: number) => {
-        return ((key % 2) === 0)
-    };
     return (
-        <>
-            <Container>
-                <h2>Organization List</h2>
-            </Container>
-            {mockApiResult.map((organization, key)=> (
-                <Link to={`/globalAdministration/${organization.id}`} key={key}>
-                    <Container className={keyIsEven(key)? classes.organizationItem: classes.organizationItem +" "+ classes.oddItem}>
-                        {organization.org}
-                    </Container>
+        <Container>
+            <h2>Charity List</h2>
+            {props.charityList.map((Charity, key)=> (
+                <>
+                <p >{key} </p>
+                <Link to={`/globalAdministration/details/${Charity.ID}`} key={Charity.ID}>
+                    <p>{ Charity.CharityName}</p>
                 </Link>
+                </>
             ))}
-        </>
+            <Button className={classes.AddButton} href={`/globalAdministration/new`}>Add New</Button>
+        </Container>
     )
 };
 
-export default GlobalAdminHome;
+const mapStateToProps = (state: ApplicationState) => {
+    return {
+        charityList: state.admin.charityList
+    }
+}
+
+export default connect(
+  mapStateToProps,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(GlobalAdminHome);

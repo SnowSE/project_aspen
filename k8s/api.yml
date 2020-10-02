@@ -1,3 +1,16 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: aspen-api-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: aspen-api
+  updatePolicy:
+    updateMode: "Off"
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -6,25 +19,47 @@ metadata:
   labels: 
     app: aspen-api
 spec:
-  spec:
   replicas: 1
   selector:
     matchLabels:
       app: aspen-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: aspen-api
     spec:
       containers:
-      - name: aspen-api
-        image: {{ api_image }}
+      - image: {{ api_image }}
+        name: aspen-api
         ports:
-        - containerPort: 80 
+        - containerPort: 5000
         env:
-          # hack: replace with reall connection string
-        - name: DB_CONNECTION
-          value: "Server=postgres; Port=5432; Database=aspen; User ID=aspen; Password=aspen;"
+        - name: PGPASSFILE
+          value: "/app/.postgresql/.pgpass"
+        - name: PGSSLCERT
+          value: "/app/.postgresql/postgresql.crt"
+        - name: DefaultConnection
+          value: "SSL Mode=require"
+        volumeMounts:
+          - name: dbcon
+            readOnly: true
+            mountPath: /app/.postgresql
+      volumes:
+        - name: dbcon
+          secret:
+            secretName: dbcon
+            items:
+              - key: .pgpass
+                path: .pgpass
+              - key: postgresql.crt
+                path: postgresql.crt
+      restartPolicy: Always
+
 ---
 apiVersion: v1
 kind: Service
@@ -34,11 +69,32 @@ metadata:
   labels:
     app: aspen-api-service
 spec:
-  type: NodePort
-  sessionAffinity: ClientIP
-  ports:
-  - port: 80
-    protocol: TCP  
-    nodePort: 30081
   selector:
     app: aspen-api
+  type:  ClusterIP
+  ports:
+  - name:  http
+    port: 443
+    protocol: TCP
+    targetPort: 5000
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: aspen-api-ingress
+spec:
+  rules:
+  - host: {{ ingress }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: aspen-api-service
+          servicePort: 443
+  tls:
+  - hosts:
+    - {{ ingress }}
+    secretName: {{ ingress }}-cert
