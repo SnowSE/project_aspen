@@ -86,6 +86,5 @@ deploy-dev-api:
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
     - echo "apiImage=$API_IMAGE" >> k8s/overlays/dev/dev.map
     - echo "webImage=$WEB_IMAGE" >> k8s/overlays/dev/dev.map
-    - echo "piplineID=$CI_PIPELINE_URL -- $(date)" >> k8s/overlays/dev/dev.map
-    - cat k8s/overlays/dev/dev.map
+    - echo "pipelineID=$CI_PIPELINE_URL -- $(date)" >> k8s/overlays/dev/dev.map
     - /scripts/k8s-deploy.py -o dev
