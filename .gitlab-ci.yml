@@ -87,4 +87,5 @@ deploy-dev-api:
     - echo "apiImage=$API_IMAGE" >> k8s/overlays/dev/dev.map
     - echo "webImage=$WEB_IMAGE" >> k8s/overlays/dev/dev.map
     - echo "piplineID=$CI_PIPELINE_URL -- $(date)" >> k8s/overlays/dev/dev.map
+    - cat k8s/overlays/dev/dev.map
     - /scripts/k8s-deploy.py -o dev
