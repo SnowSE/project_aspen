@@ -1,0 +1,21 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: aspen-api-ingress
+spec:
+  rules:
+  - host: {{ ingress }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: aspen-api-service
+          servicePort: 443
+  tls:
+  - hosts:
+    - {{ ingress }}
+    secretName: {{ ingress }}-cert

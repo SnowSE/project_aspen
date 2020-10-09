@@ -1,0 +1,6 @@
+apiMaxReplicas=3
+apiMinReplicas=1
+apiUrl=http://aspen-api
+ingress=dev-aspen.k8sd.unitedangels.org
+webMaxReplicas=3
+webMinReplicas=1
