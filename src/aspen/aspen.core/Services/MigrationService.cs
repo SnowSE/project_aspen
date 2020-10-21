@@ -16,12 +16,11 @@ namespace Aspen.Core.Services
 
         private ConnectionString adminConnectionString { get; }
 
-        public MigrationService(ConnectionString adminConnectionString, bool secure = true)
+        public MigrationService(ConnectionString adminConnectionString)
         {
             this.adminConnectionString = adminConnectionString;
-            this.secure = secure;
+            //this.secure = adminConnectionString != SslMode.Disable;
         }
-
 
         public Task ApplyMigrations(ConnectionString connectionString)
         {

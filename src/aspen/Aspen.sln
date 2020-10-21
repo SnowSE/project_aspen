@@ -5,11 +5,39 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.core", "aspen.core\aspen.core.csproj", "{988CD416-EAEC-4EE3-92A3-EA0027A2EF45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspen.api", "aspen.api\aspen.api.csproj", "{CCD53E97-DBA4-468B-ABFC-2169B4F89880}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.api", "aspen.api\aspen.api.csproj", "{CCD53E97-DBA4-468B-ABFC-2169B4F89880}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspen.web", "aspen.web\aspen.web.csproj", "{4B65D2C5-740A-4B20-A391-3C5A7A50E0A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.tests", "aspen.tests\aspen.tests.csproj", "{508E7095-F36A-4DBA-A5ED-30E4435982C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspen.tests", "aspen.tests\aspen.tests.csproj", "{508E7095-F36A-4DBA-A5ED-30E4435982C1}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspen.web", "aspen.web\", "{13147DAA-FAF8-4503-8689-8920065C6E33}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52681"
+		Debug.AspNetCompiler.PhysicalPath = "aspen.web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52681\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52681"
+		Release.AspNetCompiler.PhysicalPath = "aspen.web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52681\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52681"
+		SlnRelativePath = "aspen.web\"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E117319-8FCB-4711-AF2A-EB2A44D6A58E}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.pgpass = .pgpass
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{71CCE76B-227B-4C2D-8039-B1F8384637AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +53,18 @@ Global
 		{CCD53E97-DBA4-468B-ABFC-2169B4F89880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCD53E97-DBA4-468B-ABFC-2169B4F89880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCD53E97-DBA4-468B-ABFC-2169B4F89880}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B65D2C5-740A-4B20-A391-3C5A7A50E0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B65D2C5-740A-4B20-A391-3C5A7A50E0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B65D2C5-740A-4B20-A391-3C5A7A50E0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B65D2C5-740A-4B20-A391-3C5A7A50E0A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13147DAA-FAF8-4503-8689-8920065C6E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13147DAA-FAF8-4503-8689-8920065C6E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13147DAA-FAF8-4503-8689-8920065C6E33}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{13147DAA-FAF8-4503-8689-8920065C6E33}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{71CCE76B-227B-4C2D-8039-B1F8384637AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CCE76B-227B-4C2D-8039-B1F8384637AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CCE76B-227B-4C2D-8039-B1F8384637AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CCE76B-227B-4C2D-8039-B1F8384637AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
