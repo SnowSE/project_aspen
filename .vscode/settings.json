@@ -9,7 +9,8 @@
             "password": "Aspen",
             "port": 5433,
             "server": "localhost",
-            "username": "Aspen"
+            "username": "Aspen",
+            "driver": "PostgreSQL"
         },
         {
             "database": "Admin",
@@ -20,7 +21,8 @@
             "password": "Aspen",
             "port": 5432,
             "server": "localhost",
-            "username": "Aspen"
+            "username": "Aspen",
+            "driver": "PostgreSQL"
         },
         {
             "database": "charity_38537c0494244059868096fb65177721",
@@ -31,7 +33,19 @@
             "password": "7aaa2152-466b-4a04-9034-6f11f4c54b54",
             "port": 5433,
             "server": "localhost",
-            "username": "charity_38537c0494244059868096fb65177721"
+            "username": "charity_38537c0494244059868096fb65177721",
+            "driver": "PostgreSQL"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "pg",
+            "database": "postgres",
+            "username": "postgres"
         }
-    ]
+    ],
+    "editor.renderWhitespace": "all"
 }
