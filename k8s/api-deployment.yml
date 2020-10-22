@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aspen-api
+  labels:
+    app: aspen-api
+  annotations:
+    kubernetes.io/change-cause: {{ pipelineID }}
+spec:
+  replicas: {{ apiMinReplicas }}
+  selector:
+    matchLabels:
+      app: aspen-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: aspen-api
+    spec:
+      containers:
+      - image: {{ apiImage }}
+        name: aspen-api
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PGPASSFILE
+          value: "/app/.postgresql/.pgpass"
+        - name: PGSSLCERT
+          value: "/app/.postgresql/postgresql.crt"
+        - name: DefaultConnection
+          value: "SSL Mode=require"
+        volumeMounts:
+          - name: dbcon
+            readOnly: true
+            mountPath: /app/.postgresql
+      volumes:
+        - name: dbcon
+          secret:
+            secretName: dbcon
+            items:
+              - key: .pgpass
+                path: .pgpass
+              - key: postgresql.crt
+                path: postgresql.crt
+      restartPolicy: Always

@@ -70,7 +70,7 @@ build_web:
 # . before a job name prevents it from running (like commenting out the entire job)
 # & gives a job a name that can then be referenced by other jobs using << essentially an include
 .deploy: &deploy
-  image: nhumrich/k8s-deploy
+  image: us.gcr.io/united-angels-web/deploy:gs-k8s-deploy
   allow_failure: false
 
 deploy-dev-api:
@@ -84,6 +84,7 @@ deploy-dev-api:
   script:
     # these script params are referenced inside the k8s-deployment as variables. Eventually we want to break the config
     # out into separate files using "kustomize" (built into k8s). For now we're taking the quick & easy approach.
-    - /scripts/k8s-deploy.py -f k8s/api.yml --api_image $API_IMAGE --ingress dev-api-aspen.k8sd.unitedangels.org
-    - /scripts/k8s-deploy.py -f k8s/web.yml --web_image $WEB_IMAGE --ingress dev-aspen.k8sd.unitedangels.org --api_url https://dev-api-aspen.k8sd.unitedangels.org
-#    - /scripts/k8s-deploy.py --tag "$CI_COMMIT_SHA" --minReplicas 1 --maxReplicas 3 --ingress dev.k8sd.united-angels.org --nodeEnv staging # currently there's no difference between stage and dev. When there is we can create the test config files and update this
+    - echo "apiImage=$API_IMAGE" >> k8s/overlays/dev/dev.map
+    - echo "webImage=$WEB_IMAGE" >> k8s/overlays/dev/dev.map
+    - echo "pipelineID=$CI_PIPELINE_URL -- $(date)" >> k8s/overlays/dev/dev.map
+    - /scripts/k8s-deploy.py -o dev

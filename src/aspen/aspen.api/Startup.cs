@@ -44,7 +44,7 @@ namespace Aspen.Api
             var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
 
-            connectionStringBuilder.SslMode = SslMode.Require;
+            connectionStringBuilder.SslMode = SslMode.Prefer;
             connectionStringBuilder.TrustServerCertificate = true;
             connectionStringBuilder.Host = passfile[0];
             connectionStringBuilder.Port = int.Parse(passfile[1]);
