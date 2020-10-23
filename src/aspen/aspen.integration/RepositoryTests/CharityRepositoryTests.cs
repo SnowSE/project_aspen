@@ -31,7 +31,7 @@ namespace Aspen.Integration.RepositoryTests
         public CharityRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString, secure: false);
+            migrationService = new MigrationService(connString);
             Console.WriteLine(connString);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();

@@ -25,7 +25,7 @@ namespace Aspen.Integration.RepositoryTests
         public ThemeRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString, secure: false);
+            migrationService = new MigrationService(connString);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
             themeRepository = new ThemeRepository(migrationService);

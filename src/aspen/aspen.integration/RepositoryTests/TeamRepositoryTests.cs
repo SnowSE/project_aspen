@@ -24,7 +24,7 @@ namespace Aspen.Integration.RepositoryTests
         public TeamRepositoryTests()
         {
             var connString = new ConnectionString(MigrationHelper.ConnectionString);
-            migrationService = new MigrationService(connString, secure: false);
+            migrationService = new MigrationService(connString);
             var t = migrationService.ApplyMigrations(connString);
             t.Wait();
 
