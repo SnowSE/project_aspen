@@ -1,5 +1,5 @@
 ### Create team
-POST http://206.189.218.168:5000/Team/Create
+POST http://kubernetes.docker.internal:5000/Team/Create
 Content-Type: application/json
 mode: cors
 
@@ -12,7 +12,7 @@ mode: cors
 }
 
 ### Update Team
-POST http://206.189.218.168:5000/Team/Create
+POST http://kubernetes.docker.internal:5000/Team/Create
 Content-Type: application/json
 mode: cors
 
@@ -25,10 +25,10 @@ mode: cors
 }
 
 ### GetTeamsByCharityID
-GET http://206.189.218.168:5000/Team/GetByCharityId?CharityId=51a1d9c2-87e4-46da-a42d-65b874628ec9
+GET http://kubernetes.docker.internal:5000/Team/GetByCharityId?CharityId=51a1d9c2-87e4-46da-a42d-65b874628ec9
 
 ### Delete Teams
-POST http://206.189.218.168:5000/Team/Delete
+POST http://kubernetes.docker.internal:5000/Team/Delete
 Content-Type: application/json
 mode: cors
 

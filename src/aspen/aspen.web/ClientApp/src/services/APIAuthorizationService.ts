@@ -3,7 +3,7 @@ import Token from "../models/TokenModel";
 import { ILoggerService } from "./ILoggerService"
 
 export default class APIAuthorizationService implements IAPIAuthorizationService {
-    //readonly url = "http://206.189.218.168:5000";
+    //readonly url = "http://kubernetes.docker.internal:5000";
     readonly url = process.env.REACT_APP_API_URL
     readonly iloggerservice: ILoggerService;
     constructor(ILoggerService: ILoggerService) {

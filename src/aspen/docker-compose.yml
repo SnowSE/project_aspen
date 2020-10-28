@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=Aspen
       - POSTGRES_DB=admin
       - PGPASSFILE=blank
-    ports: 
+    ports:
       - 5432:5432
     expose:
       - 5432
@@ -21,12 +21,14 @@ services:
       context: .
       dockerfile: aspen.api/Dockerfile
     container_name: api
-    depends_on: 
+    depends_on:
       - database
-    environment: 
-      - DefaultConnection=Server=database; Port=5432; Database=admin; Username=Aspen; Password=Aspen;
+    environment:
+      - PGPASSFILE=/.pgpass
+    volumes:
+      - .pgpass:/.pgpass
     ports:
-       - 5000:5000
+       - 5000:80
       #  - 443:443
     networks:
       internal:

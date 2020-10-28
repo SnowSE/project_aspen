@@ -1,26 +1,26 @@
 ### get charity by domain
-GET http://206.189.218.168:5000/Charity/Get?domain=kyler.aspen.com
+GET http://kubernetes.docker.internal:5000/Charity/Get?domain=kyler.aspen.com
 
 ### get charity by id
-GET http://206.189.218.168:5000/admin/charity/Get?charityid=
+GET http://kubernetes.docker.internal:5000/admin/charity/Get?charityid=
 
 ### Get theme by ID
-GET http://206.189.218.168:5000/Charity/Gettheme?charityid=
+GET http://kubernetes.docker.internal:5000/Charity/Gettheme?charityid=
 
 ### Create Charity
-POST http://206.189.218.168:5000/Admin/Charity/Create
+POST http://kubernetes.docker.internal:5000/Admin/Charity/Create
 Content-Type: application/json
 mode: cors
 
 {
     "ID": "" ,
-    "CharityName": "kylers aligators",
-    "CharityDescription": "lots of aligators",
-    "Domains": [{"charitydomain": "kyler2"}]
+    "CharityName": "Local Hosts",
+    "CharityDescription": "Local solutions for local problems",
+    "Domains": [{"charitydomain": "localhost"}]
 }
 
 ### Update Charity
-POST http://206.189.218.168:5000/Admin/Charity/Update
+POST http://kubernetes.docker.internal:5000/Admin/Charity/Update
 Content-Type: application/json
 mode: cors
 
@@ -32,7 +32,7 @@ mode: cors
 }
 
 ### Delete Charity
-POST http://206.189.218.168:5000/Admin/Charity/Update
+POST http://kubernetes.docker.internal:5000/Admin/Charity/Update
 Content-Type: application/json
 mode: cors
 
