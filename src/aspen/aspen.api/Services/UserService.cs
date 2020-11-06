@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
 using Aspen.Api.Helpers;
-
+using aspen.core.Models;
 
 namespace Aspen.Api.Services
 {
@@ -70,6 +70,28 @@ namespace Aspen.Api.Services
         public IEnumerable<User> GetAll()
         {
             return _users;
+        }
+
+        public void CreateUser(CreateUserRequest userRequest)
+        {
+            //ToDo: Generate salt
+            string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: userRequest.Password,
+                salt: null,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            User user = new User(new Guid(), 
+                                 userRequest.FirstName, 
+                                 userRequest.LastName, 
+                                 userRequest.Username, 
+                                 hash, 
+                                 null,
+                                 null);
+
+
+            _users.Add(user);
         }
     }
 }

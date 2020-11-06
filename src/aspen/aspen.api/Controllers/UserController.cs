@@ -6,6 +6,7 @@ using Aspen.Api.Services;
 using System.Threading.Tasks;
 using Aspen.Core;
 using Microsoft.Extensions.Logging;
+using aspen.core.Models;
 
 namespace Aspen.Api.Controllers
 {
@@ -43,6 +44,12 @@ namespace Aspen.Api.Controllers
         {
             var users = _userService.GetAll();
             return Ok(users);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
+        {
+            _userService.CreateUser(createUserRequest);
         }
     }
 }
