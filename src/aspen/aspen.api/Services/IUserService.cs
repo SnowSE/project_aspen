@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using aspen.core.Models;
 using Aspen.Core.Models;
 
 namespace Aspen.Api.Services
@@ -7,5 +8,9 @@ namespace Aspen.Api.Services
     {
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
+
+        void CreateUser(CreateUserRequest createUserRequest);
+
+        void DeleteUser(User user);
     }
 }

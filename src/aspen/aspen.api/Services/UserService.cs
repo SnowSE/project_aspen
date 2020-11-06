@@ -91,7 +91,16 @@ namespace Aspen.Api.Services
                                  null);
 
 
+            //ToDo: Add to database instead of list
             _users.Add(user);
+        }
+
+        public void DeleteUser(User user)
+        {
+            if (!_users.Remove(user))
+            {
+                throw new InvalidOperationException("Cannot delete user that does not exist");
+            }
         }
     }
 }

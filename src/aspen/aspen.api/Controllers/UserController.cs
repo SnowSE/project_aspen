@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Aspen.Core;
 using Microsoft.Extensions.Logging;
 using aspen.core.Models;
+using System;
 
 namespace Aspen.Api.Controllers
 {
@@ -49,7 +50,33 @@ namespace Aspen.Api.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
         {
-            _userService.CreateUser(createUserRequest);
+            try
+            {
+                _userService.CreateUser(createUserRequest);
+            } 
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+
         }
+
+        [HttpPost]
+        public IActionResult DeleteUser(User user)
+        {
+            try
+            {
+                _userService.DeleteUser(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
     }
 }
