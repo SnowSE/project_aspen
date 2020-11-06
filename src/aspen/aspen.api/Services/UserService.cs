@@ -17,7 +17,7 @@ namespace Aspen.Api.Services
     public class UserService : IUserService
     {
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
+        private IList<User> _users = new List<User>
         { 
             new User(Guid.NewGuid(), "Bob", "TheBuilder", "builder4lyfe", "asdf", new byte[]{}, "")
         };
@@ -101,6 +101,13 @@ namespace Aspen.Api.Services
             {
                 throw new InvalidOperationException("Cannot delete user that does not exist");
             }
+        }
+
+        public void UpdateUser(User user)
+        {
+            //Remove user with old information, replace with user with new information
+            _users = _users.Where(u => u.Id != user.Id) as IList<User>;
+            _users.Add(user);
         }
     }
 }

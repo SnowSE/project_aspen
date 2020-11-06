@@ -12,5 +12,7 @@ namespace Aspen.Api.Services
         void CreateUser(CreateUserRequest createUserRequest);
 
         void DeleteUser(User user);
+
+        void UpdateUser(User user);
     }
 }

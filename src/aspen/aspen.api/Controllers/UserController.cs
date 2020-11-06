@@ -78,5 +78,12 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IActionResult UpdateUser(User user)
+        {
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
     }
 }
