@@ -105,7 +105,7 @@ namespace Aspen.Api.Services
             {
 
                 await charityDbConnection.ExecuteAsync(
-                    @"insert into User
+                    @"insert into charityuser
                         values (@id, @firstname, @lastname, @username, @salt, @hashedpassword, @role);",
                     user
                 );
@@ -173,5 +173,7 @@ namespace Aspen.Api.Services
 
             return salt;
         }
+
+        
     }
 }
