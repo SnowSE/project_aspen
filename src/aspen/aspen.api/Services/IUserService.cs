@@ -10,7 +10,7 @@ namespace Aspen.Api.Services
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
 
-        void CreateUser(CreateUserRequest createUserRequest);
+        void CreateUser(CreateUserRequest createUserRequest, Guid charityID);
 
         void DeleteUser(User user);
 

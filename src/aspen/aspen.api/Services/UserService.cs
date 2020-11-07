@@ -11,6 +11,11 @@ using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
 using Aspen.Api.Helpers;
 using aspen.core.Models;
+using FluentMigrator;
+using Aspen.Core.Services;
+using System.Threading.Tasks;
+using Dapper;
+using System.Data.Common;
 
 namespace Aspen.Api.Services
 {
@@ -23,10 +28,12 @@ namespace Aspen.Api.Services
         };
 
         private readonly AppSettings _appSettings;
+        private readonly IMigrationService _migrationService;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> appSettings, IMigrationService migrationService)
         {
             _appSettings = appSettings.Value;
+            _migrationService = migrationService;
         }
 
         // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-3.1
@@ -67,23 +74,46 @@ namespace Aspen.Api.Services
             return _users;
         }
 
-        public void CreateUser(CreateUserRequest userRequest)
+        public async Task CreateUser(CreateUserRequest userRequest, Guid charityID)
         {
+            var adminDbConnection = _migrationService.GetAdminDbConnection();
+            ConnectionString charityConnectionString;
+
+            using (adminDbConnection)
+            {
+                charityConnectionString = await adminDbConnection.QueryFirstAsync<ConnectionString>(
+                    @"select connectionstring from charity
+                    where charityid = @charityID"
+                    );
+            }
+
+            var charityDbConnection = _migrationService.GetDbConnection(charityConnectionString);
+
 
             var salt = generateSalt();
             string hash = hashPassword(salt, userRequest.Password);
 
-            User user = new User(new Guid(), 
-                                 userRequest.FirstName, 
-                                 userRequest.LastName, 
-                                 userRequest.Username, 
-                                 hash, 
+            User user = new User(new Guid(),
+                                 userRequest.FirstName,
+                                 userRequest.LastName,
+                                 userRequest.Username,
+                                 hash,
                                  salt,
                                  null);
 
+            using (charityDbConnection)
+            {
+
+                await charityDbConnection.ExecuteAsync(
+                    @"insert into User
+                        values (@id, @firstname, @lastname, @username, @salt, @hashedpassword, @role);",
+                    user
+                );
+            }
 
             //ToDo: Add to database instead of list
             _users.Add(user);
+            
         }
 
         public void DeleteUser(User user)
