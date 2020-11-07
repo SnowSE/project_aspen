@@ -62,7 +62,22 @@ namespace Aspen.Core.Data
 
         public override void Down()
         {
-            //delete tables here
+            if (ConnectionString.Contains("Database=admin;"))
+            {
+
+                Delete.Table("charity");
+
+                Delete.Table("domain");
+
+                Delete.Table("adminuser");
+            }
+            else
+            {
+
+                Delete.Table("theme");
+
+                Delete.Table("team");
+            }
         }
     }
 }
