@@ -53,5 +53,10 @@ namespace Aspen.Core.Models
             return new User(guid, FirstName, LastName, Username, HashedPassword, Salt, Token);
 
         }
+
+        public User UpdatePassword(byte[] newSalt, string newPassword)
+        {
+            return new User(Id, FirstName, LastName, Username, newSalt, newPassword);
+        }
     }
 }

@@ -85,5 +85,19 @@ namespace Aspen.Api.Controllers
 
             return Ok();
         }
+
+        public IActionResult UpdateUserPassword(Guid userID, string newPassword)
+        {
+            try 
+            {
+                _userService.UpdateUserPassword(userID, newPassword);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
+        }
     }
 }

@@ -36,12 +36,7 @@ namespace Aspen.Api.Services
             if (user == null)
                 return null;
 
-            string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: user.Salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
+            string hash = hashPassword(user.Salt, password);
 
             if(password != user.HashedPassword)
                 return null;
@@ -74,20 +69,16 @@ namespace Aspen.Api.Services
 
         public void CreateUser(CreateUserRequest userRequest)
         {
-            //ToDo: Generate salt
-            string hash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: userRequest.Password,
-                salt: null,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
+
+            var salt = generateSalt();
+            string hash = hashPassword(salt, userRequest.Password);
 
             User user = new User(new Guid(), 
                                  userRequest.FirstName, 
                                  userRequest.LastName, 
                                  userRequest.Username, 
                                  hash, 
-                                 null,
+                                 salt,
                                  null);
 
 
@@ -108,6 +99,49 @@ namespace Aspen.Api.Services
             //Remove user with old information, replace with user with new information
             _users = _users.Where(u => u.Id != user.Id) as IList<User>;
             _users.Add(user);
+        }
+
+
+        public void UpdateUserPassword(Guid userID, string newPassword)
+        {
+            var user = _users.FirstOrDefault(x => x.Id == userID);
+            if (user == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            var salt = generateSalt();
+            var hashedPassword = hashPassword(salt, newPassword);
+
+            var newUser = user.UpdatePassword(salt, hashedPassword);
+
+            _users = _users.Where(u => u.Id != user.Id) as IList<User>;
+            _users.Add(newUser);
+        }
+
+
+        private string hashPassword(byte[] salt, string password)
+        {
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                       password: password,
+                       salt: salt,
+                       prf: KeyDerivationPrf.HMACSHA1,
+                       iterationCount: 10000,
+                       numBytesRequested: 256 / 8));
+        }
+
+        //https://codereview.stackexchange.com/questions/93614/salt-generation-in-c
+        private byte[] generateSalt()
+        {
+            int saltLengthLimitInBytes = 16;
+            var salt = new byte[saltLengthLimitInBytes];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetNonZeroBytes(salt);
+            }
+
+            return salt;
         }
     }
 }
