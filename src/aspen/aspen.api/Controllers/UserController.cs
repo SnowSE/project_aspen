@@ -40,10 +40,10 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "Admin")]
-        public IActionResult GetAll()
+        //[Authorize(Policy = "Admin")]
+        public  async Task<IActionResult> GetAll(Guid charityID)
         {
-            var users = _userService.GetAll();
+            var users = await _userService.GetAll(charityID);
             return Ok(users);
         }
 

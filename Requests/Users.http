@@ -11,3 +11,7 @@ mode: cors
     },
     "CharityID": ""
 }
+
+###
+
+GET http://kubernetes.docker.internal:5000/Admin/User/GetAll

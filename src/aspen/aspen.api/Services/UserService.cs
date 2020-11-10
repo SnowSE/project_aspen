@@ -16,6 +16,7 @@ using Aspen.Core.Services;
 using System.Threading.Tasks;
 using Dapper;
 using System.Data.Common;
+using System.Data;
 
 namespace Aspen.Api.Services
 {
@@ -69,25 +70,26 @@ namespace Aspen.Api.Services
             return user;
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAll(Guid charityID)
         {
-            return _users;
+            var charityDbConnection = await getDbConnection(charityID);
+
+            IEnumerable<User> users;
+
+            using (charityDbConnection)
+            {
+                users = await charityDbConnection.QueryAsync<User>(
+                    @"select * from charityuser;"
+                );
+            }
+
+            return users;
         }
 
         public async Task CreateUser(CreateUserRequest userRequest, Guid charityID)
         {
-            var adminDbConnection = _migrationService.GetAdminDbConnection();
-            ConnectionString charityConnectionString;
-
-            using (adminDbConnection)
-            {
-                charityConnectionString = await adminDbConnection.QueryFirstAsync<ConnectionString>(
-                    @"select connectionstring from charity
-                    where charityid = @charityID"
-                    );
-            }
-
-            var charityDbConnection = _migrationService.GetDbConnection(charityConnectionString);
+            
+            var charityDbConnection = await getDbConnection(charityID);
 
 
             var salt = generateSalt();
@@ -175,5 +177,23 @@ namespace Aspen.Api.Services
         }
 
         
+        private async Task<IDbConnection> getDbConnection(Guid charityID)
+        {
+            var adminDbConnection = _migrationService.GetAdminDbConnection();
+            ConnectionString charityConnectionString;
+
+
+            using (adminDbConnection)
+            {
+                charityConnectionString = await adminDbConnection.QueryFirstAsync<ConnectionString>(
+                    @"select connectionstring from charity
+                    where charityid = @charityID;"
+                    , new { charityId = charityID });
+            }
+
+
+            return _migrationService.GetDbConnection(charityConnectionString);
+        }
+
     }
 }
