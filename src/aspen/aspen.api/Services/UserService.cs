@@ -19,7 +19,7 @@ namespace Aspen.Api.Services
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
         private List<User> _users = new List<User>
         { 
-            new User(Guid.NewGuid(), "Bob", "TheBuilder", "builder4lyfe", "asdf", new byte[]{}, "")
+            new User(Guid.NewGuid(), "Bob", "TheBuilder", "admin", "password", new byte[]{}, "")
         };
 
         private readonly AppSettings _appSettings;
