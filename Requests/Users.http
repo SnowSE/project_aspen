@@ -8,8 +8,7 @@ mode: cors
         "LastName":"TheBuilder",
         "Username":"Builder4Lyfe",
         "Password":"asdf"
-    },
-    "CharityID": ""
+    }
 }
 
 ###
