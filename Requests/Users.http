@@ -1,0 +1,17 @@
+POST http://kubernetes.docker.internal:5000/Admin/User/CreateUser
+Content-Type: application/json
+mode: cors
+
+{
+    "createUserRequest":{
+        "FirstName":"Bob",
+        "LastName":"TheBuilder",
+        "Username":"Builder4Lyfe",
+        "Password":"asdf"
+    },
+    "CharityID": ""
+}
+
+###
+
+GET http://kubernetes.docker.internal:5000/Admin/User/GetAll

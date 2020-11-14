@@ -33,6 +33,7 @@ namespace Aspen.Core.Models
         public string LastName { get; }
         public string Username { get; }
         public string HashedPassword { get; }
+        public string Role { get; }
         [JsonIgnore]
         public byte[] Salt { get; }
         [JsonIgnore]
@@ -52,6 +53,11 @@ namespace Aspen.Core.Models
         {
             return new User(guid, FirstName, LastName, Username, HashedPassword, Salt, Token);
 
+        }
+
+        public User UpdatePassword(byte[] newSalt, string newPassword)
+        {
+            return new User(Id, FirstName, LastName, Username, newSalt, newPassword);
         }
     }
 }
