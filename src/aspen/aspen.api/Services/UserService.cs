@@ -86,11 +86,8 @@ namespace Aspen.Api.Services
             return users;
         }
 
-        public async Task CreateUser(CreateUserRequest userRequest, Guid charityID)
+        public async Task CreateUser(CreateUserRequest userRequest)
         {
-            
-            var charityDbConnection = await getDbConnection(charityID);
-
 
             var salt = generateSalt();
             string hash = hashPassword(salt, userRequest.Password);
@@ -102,16 +99,6 @@ namespace Aspen.Api.Services
                                  hash,
                                  salt,
                                  null);
-
-            using (charityDbConnection)
-            {
-
-                await charityDbConnection.ExecuteAsync(
-                    @"insert into charityuser
-                        values (@id, @firstname, @lastname, @username, @salt, @hashedpassword, @role);",
-                    user
-                );
-            }
 
             //ToDo: Add to database instead of list
             _users.Add(user);
