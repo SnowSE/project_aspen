@@ -48,11 +48,11 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
+        public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest, Guid charityID)
         {
             try
             {
-                _userService.CreateUser(createUserRequest);
+                _userService.CreateUser(createUserRequest, charityID);
             } 
             catch (Exception)
             {

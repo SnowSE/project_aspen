@@ -18,6 +18,7 @@ using Dapper;
 using System.Data.Common;
 using System.Data;
 
+
 namespace Aspen.Api.Services
 {
     public class UserService : IUserService
@@ -86,8 +87,11 @@ namespace Aspen.Api.Services
             return users;
         }
 
-        public async Task CreateUser(CreateUserRequest userRequest)
+        public async Task CreateUser(CreateUserRequest userRequest, Guid charityID)
         {
+
+            var charityDbConnection = await getDbConnection(charityID);
+
 
             var salt = generateSalt();
             string hash = hashPassword(salt, userRequest.Password);
@@ -100,9 +104,19 @@ namespace Aspen.Api.Services
                                  salt,
                                  null);
 
+            using (charityDbConnection)
+            {
+
+                await charityDbConnection.ExecuteAsync(
+                    @"insert into charityuser
+                        values (@id, @firstname, @lastname, @username, @salt, @hashedpassword, @role);",
+                    user
+                );
+            }
+
             //ToDo: Add to database instead of list
             _users.Add(user);
-            
+
         }
 
         public void DeleteUser(User user)
@@ -178,9 +192,9 @@ namespace Aspen.Api.Services
                     , new { charityId = charityID });
             }
 
-
             return _migrationService.GetDbConnection(charityConnectionString);
         }
 
+      
     }
 }

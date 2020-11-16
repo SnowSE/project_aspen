@@ -11,7 +11,7 @@ namespace Aspen.Api.Services
         User Authenticate(string username, string password);
         Task<IEnumerable<User>> GetAll(Guid charityID);
 
-        Task CreateUser(CreateUserRequest createUserRequest);
+        Task CreateUser(CreateUserRequest createUserRequest, Guid charityID);
 
         void DeleteUser(User user);
 
