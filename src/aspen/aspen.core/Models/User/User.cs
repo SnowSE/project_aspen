@@ -6,12 +6,13 @@ namespace Aspen.Core.Models
 {
     public class User
     {
-        public User(Guid id, string firstname, string lastname, string username, string hashedpassword, byte[] salt, string token)
+        public User(Guid id, string firstname, string lastname, string username, string hashedpassword, string role, byte[] salt, string token)
         {
             this.Id = id;
             FirstName = firstname;
             LastName = lastname;
             Username = username;
+            Role = role;
             HashedPassword = hashedpassword;
             Salt = salt;
             Token = token;
@@ -41,17 +42,17 @@ namespace Aspen.Core.Models
 
         public User UpdateFirstName(string newFirstName)
         {
-            return new User(Id, newFirstName, LastName, Username, HashedPassword, Salt, Token);
+            return new User(Id, newFirstName, LastName, Username, HashedPassword, Role, Salt, Token);
         }
 
         public User UpdateToken(string newToken)
         {
-            return new User(Id, FirstName, LastName, Username, HashedPassword, Salt, newToken);
+            return new User(Id, FirstName, LastName, Username, HashedPassword, Role, Salt, newToken);
         }
 
         public User UpdateId(Guid guid)
         {
-            return new User(guid, FirstName, LastName, Username, HashedPassword, Salt, Token);
+            return new User(guid, FirstName, LastName, Username, HashedPassword, Role, Salt, Token);
 
         }
 

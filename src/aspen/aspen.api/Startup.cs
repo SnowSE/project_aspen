@@ -31,15 +31,14 @@ namespace Aspen.Api
 
         public Startup(IConfiguration configuration)
         {
-            string validConnString = getConnectionStringFromConfig();
-            connectionString = new ConnectionString(validConnString);
+
 
             Configuration = configuration;
         }
 
-        private static string getConnectionStringFromConfig()
+        private static string getConnectionStringFromConfig(string temp)
         {
-            var passfilePath = Environment.GetEnvironmentVariable("PGPASSFILE");
+            var passfilePath = temp;
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
             var alltext = File.ReadAllText(passfilePath);
             var passfile = alltext.Split(":");
@@ -58,6 +57,10 @@ namespace Aspen.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var temp = Configuration["PGPASSFILE"];
+            string validConnString = getConnectionStringFromConfig(temp);
+            connectionString = new ConnectionString(validConnString);
+
             services.AddTransient<ConnectionString>(c => connectionString);
             services.AddScoped<IMigrationService, MigrationService>();
             services.AddScoped<ICharityRepository, CharityRepository>();
@@ -68,12 +71,12 @@ namespace Aspen.Api
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
-               {
-                   builder
-                       .AllowAnyOrigin()
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
-               });
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
 
             var appSettingsSection = Configuration.GetSection("AppSettings");

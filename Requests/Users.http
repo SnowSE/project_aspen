@@ -3,13 +3,11 @@ Content-Type: application/json
 mode: cors
 
 {
-    "createUserRequest":{
-        "FirstName":"Bob",
-        "LastName":"TheBuilder",
-        "Username":"Builder4Lyfe",
-        "Password":"asdf"
-    },
-    "charityID": "4b555f96-f477-4245-8b1a-8a4f6aa788a5"
+    "FirstName":"Test",
+    "LastName":"TheRequest",
+    "Username":"Requests4Lyfe",
+    "Password":"request",
+    "CharityID": "24d2c8e5-d3f2-4144-8925-d25a9e5f505d"
 }
 
 ###

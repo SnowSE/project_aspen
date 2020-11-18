@@ -10,5 +10,6 @@ namespace aspen.core.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public Guid CharityId { get; set; }
     }
 }

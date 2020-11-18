@@ -26,7 +26,7 @@ namespace Aspen.Api.Services
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
         private IList<User> _users = new List<User>
         { 
-            new User(Guid.NewGuid(), "Bob", "TheBuilder", "admin", "password", new byte[]{}, "")
+            new User(Guid.NewGuid(), "Bob", "TheBuilder", "admin", "password", "User", new byte[]{}, "")
         };
 
         private readonly AppSettings _appSettings;
@@ -84,34 +84,43 @@ namespace Aspen.Api.Services
                 );
             }
 
-            return users;
+            return _users;
         }
 
-        public async Task CreateUser(CreateUserRequest userRequest, Guid charityID)
+        public async Task CreateUser(CreateUserRequest userRequest)
         {
 
-            var charityDbConnection = await getDbConnection(charityID);
+            var charityDbConnection = await getDbConnection(userRequest.CharityId);
 
 
             var salt = generateSalt();
             string hash = hashPassword(salt, userRequest.Password);
 
-            User user = new User(new Guid(),
+            User user = new User(Guid.NewGuid(),
                                  userRequest.FirstName,
                                  userRequest.LastName,
                                  userRequest.Username,
                                  hash,
+                                 "User",
                                  salt,
                                  null);
 
-            using (charityDbConnection)
+            try
             {
+                using (charityDbConnection)
+                {
 
-                await charityDbConnection.ExecuteAsync(
-                    @"insert into charityuser
+                    await charityDbConnection.ExecuteAsync(
+                        @"insert into CharityUser
                         values (@id, @firstname, @lastname, @username, @salt, @hashedpassword, @role);",
-                    user
-                );
+                        user
+                    );
+                }
+
+            }
+            catch (Npgsql.PostgresException e)
+            {
+                
             }
 
             //ToDo: Add to database instead of list
@@ -182,15 +191,17 @@ namespace Aspen.Api.Services
         {
             var adminDbConnection = _migrationService.GetAdminDbConnection();
             ConnectionString charityConnectionString;
-
+            Charity charity;
 
             using (adminDbConnection)
             {
-                charityConnectionString = await adminDbConnection.QueryFirstAsync<ConnectionString>(
-                    @"select connectionstring from charity
-                    where charityid = @charityID;"
+                charity = await adminDbConnection.QueryFirstAsync<Charity>(
+                    @"select * from charity
+                    where charityid = @charityId;"
                     , new { charityId = charityID });
             }
+
+            charityConnectionString = charity.ConnectionString;
 
             return _migrationService.GetDbConnection(charityConnectionString);
         }
