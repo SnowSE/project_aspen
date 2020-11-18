@@ -13,3 +13,16 @@ mode: cors
 ###
 
 GET http://kubernetes.docker.internal:5000/Admin/User/GetAll
+
+###
+
+POST http://kubernetes.docker.internal:5000/Admin/User/Authenticate
+Content-Type: application/json
+mode: cors
+
+{
+    "Username":"Requests4Lyfe",
+    "Password":"request",
+    "Charity":"LocalHost",
+    "CharityID": "24d2c8e5-d3f2-4144-8925-d25a9e5f505d"
+}

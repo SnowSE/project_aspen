@@ -29,6 +29,18 @@ namespace Aspen.Core.Models
             Token = "";
         }
 
+        private User(Guid id, string firstname, string lastname, string username, byte[] salt, string hashedpassword, string role)
+        {
+            this.Id = id;
+            FirstName = firstname;
+            LastName = lastname;
+            Username = username;
+            HashedPassword = hashedpassword;
+            Salt = salt;
+            Role = role;
+            Token = "";
+        }
+
         public Guid Id { get; }
         public string FirstName { get; }
         public string LastName { get; }

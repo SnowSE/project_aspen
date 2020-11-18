@@ -8,7 +8,7 @@ namespace Aspen.Api.Services
 {
     public interface IUserService
     {
-        User Authenticate(string username, string password);
+        Task<User> Authenticate(string username, string password, Guid charityId);
         Task<IEnumerable<User>> GetAll(Guid charityID);
 
         Task CreateUser(CreateUserRequest createUserRequest);

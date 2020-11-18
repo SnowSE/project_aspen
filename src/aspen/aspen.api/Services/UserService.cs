@@ -39,15 +39,26 @@ namespace Aspen.Api.Services
         }
 
         // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-3.1
-        public User Authenticate(string username, string password)
+        public async Task<User> Authenticate(string username, string password, Guid charityId)
         {
-            var user = _users.FirstOrDefault(x => x.Username == username);
+            var charityDbConnection = await getDbConnection(charityId);
+            User user;
+
+            using (charityDbConnection)
+            {
+                user = await charityDbConnection.QueryFirstAsync<User>(
+                    @"select * from charityuser 
+                    where username = @Username;"
+                    , new { Username = username }
+                );
+            }
+
             if (user == null)
                 return null;
 
             string hash = hashPassword(user.Salt, password);
 
-            if(password != user.HashedPassword)
+            if(hash != user.HashedPassword)
                 return null;
 
             // authentication successful so generate jwt token

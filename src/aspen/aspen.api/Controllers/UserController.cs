@@ -29,7 +29,7 @@ namespace Aspen.Api.Controllers
         {
             _log.LogError($"model: {model}, username={model.Username}, password={model.Password}");
 
-            var user = _userService.Authenticate(model.Username, model.Password);
+            var user = await _userService.Authenticate(model.Username, model.Password, model.CharityID);
 
             _log.LogError($"User: {user?.ToString() ?? "[user object is null]"}");
 
