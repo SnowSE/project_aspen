@@ -79,9 +79,9 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser(UpdateUserRequest updateUserRequest)
         {
-            _userService.UpdateUser(user);
+            _userService.UpdateUser(updateUserRequest);
 
             return Ok();
         }

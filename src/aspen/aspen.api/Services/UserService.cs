@@ -162,11 +162,33 @@ namespace Aspen.Api.Services
             }
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser(UpdateUserRequest updateUserRequest)
         {
-            //Remove user with old information, replace with user with new information
-            _users = _users.Where(u => u.Id != user.Id) as IList<User>;
-            _users.Add(user);
+
+            var charityDbConnection = await getDbConnection(updateUserRequest.CharityId);
+
+            try
+            {
+                using (charityDbConnection)
+                {
+
+                    await charityDbConnection.ExecuteAsync(
+                         @"update CharityUser set
+                        firstname = @firstname,
+                        lastname = @lastname,
+                        username = @username,
+                        role = @role
+                        where id = @id",
+                        updateUserRequest.User
+                    );
+                }
+
+            }
+            catch (Npgsql.PostgresException e)
+            {
+                throw new Exception("Error creating user: " + e.MessageText);
+            }
+
         }
 
 

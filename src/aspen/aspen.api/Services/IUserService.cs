@@ -15,7 +15,7 @@ namespace Aspen.Api.Services
 
         Task DeleteUser(DeleteUserRequest deleteUserRequest);
 
-        void UpdateUser(User user);
+        Task UpdateUser(UpdateUserRequest updateUserRequest);
 
         void UpdateUserPassword(Guid userID, string newPassword);
     }
