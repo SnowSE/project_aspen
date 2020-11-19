@@ -64,11 +64,11 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(User user)
+        public IActionResult DeleteUser(DeleteUserRequest deleteUserRequest)
         {
             try
             {
-                _userService.DeleteUser(user);
+                _userService.DeleteUser(deleteUserRequest);
             }
             catch (Exception)
             {

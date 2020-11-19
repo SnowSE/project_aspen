@@ -131,7 +131,7 @@ namespace Aspen.Api.Services
             }
             catch (Npgsql.PostgresException e)
             {
-                
+                throw new Exception("Error creating user: " + e.MessageText);
             }
 
             //ToDo: Add to database instead of list
@@ -139,11 +139,26 @@ namespace Aspen.Api.Services
 
         }
 
-        public void DeleteUser(User user)
+        public async Task DeleteUser(DeleteUserRequest deleteUserRequest)
         {
-            if (!_users.Remove(user))
+            var charityDbConnection = await getDbConnection(deleteUserRequest.CharityId);
+            
+
+            try
             {
-                throw new InvalidOperationException("Cannot delete user that does not exist");
+                using (charityDbConnection)
+                {
+
+                    await charityDbConnection.ExecuteAsync(
+                        @"delete from CharityUser
+                        where username = @username;",
+                        new {username = deleteUserRequest.Username}
+                    );
+                }
+            }
+            catch (Npgsql.PostgresException e)
+            {
+                throw new InvalidOperationException("Cannot delete user:" + e.MessageText);
             }
         }
 

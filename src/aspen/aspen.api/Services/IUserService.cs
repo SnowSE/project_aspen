@@ -13,7 +13,7 @@ namespace Aspen.Api.Services
 
         Task CreateUser(CreateUserRequest createUserRequest);
 
-        void DeleteUser(User user);
+        Task DeleteUser(DeleteUserRequest deleteUserRequest);
 
         void UpdateUser(User user);
 

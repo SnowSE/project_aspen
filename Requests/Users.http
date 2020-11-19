@@ -1,3 +1,4 @@
+### Create User
 POST http://kubernetes.docker.internal:5000/Admin/User/CreateUser
 Content-Type: application/json
 mode: cors
@@ -7,15 +8,23 @@ mode: cors
     "LastName":"TheRequest",
     "Username":"Requests4Lyfe",
     "Password":"request",
-    "CharityID": "24d2c8e5-d3f2-4144-8925-d25a9e5f505d"
+    "CharityID": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
 }
 
-###
+### Delete User
+POST http://kubernetes.docker.internal:5000/Admin/User/DeleteUser
+Content-Type: application/json
+mode: cors
 
+{
+    "CharityId": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b",
+    "Username": "Requests4Lyfe"
+}
+
+### Get All
 GET http://kubernetes.docker.internal:5000/Admin/User/GetAll
 
-###
-
+### Authenticate
 POST http://kubernetes.docker.internal:5000/Admin/User/Authenticate
 Content-Type: application/json
 mode: cors
@@ -24,5 +33,5 @@ mode: cors
     "Username":"Requests4Lyfe",
     "Password":"request",
     "Charity":"LocalHost",
-    "CharityID": "24d2c8e5-d3f2-4144-8925-d25a9e5f505d"
+    "CharityID": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
 }
