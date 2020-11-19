@@ -17,6 +17,6 @@ namespace Aspen.Api.Services
 
         Task UpdateUser(UpdateUserRequest updateUserRequest);
 
-        void UpdateUserPassword(Guid userID, string newPassword);
+        Task UpdateUserPassword(UpdateUserRequest updateUserRequest);
     }
 }

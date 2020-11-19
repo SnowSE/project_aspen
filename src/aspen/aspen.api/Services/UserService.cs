@@ -192,21 +192,36 @@ namespace Aspen.Api.Services
         }
 
 
-        public void UpdateUserPassword(Guid userID, string newPassword)
+        public async Task UpdateUserPassword(UpdateUserRequest updateUserRequest)
         {
-            var user = _users.FirstOrDefault(x => x.Id == userID);
-            if (user == null)
-            {
-                throw new KeyNotFoundException();
-            }
+
+            var charityDbConnection = await getDbConnection(updateUserRequest.CharityId);
 
             var salt = generateSalt();
-            var hashedPassword = hashPassword(salt, newPassword);
+            var hashedPassword = hashPassword(salt, updateUserRequest.User.HashedPassword);
 
-            var newUser = user.UpdatePassword(salt, hashedPassword);
+            var newUser = updateUserRequest.User.UpdatePassword(salt, hashedPassword);
 
-            _users = _users.Where(u => u.Id != user.Id) as IList<User>;
-            _users.Add(newUser);
+            try
+            {
+                using (charityDbConnection)
+                {
+
+                    await charityDbConnection.ExecuteAsync(
+                         @"update CharityUser set
+                        hashedPassword = @hashedPassword,
+                        salt = @salt
+                        where id = @id",
+                        newUser
+                    );
+                }
+
+            }
+            catch (Npgsql.PostgresException e)
+            {
+                throw new Exception("Error creating user: " + e.MessageText);
+            }
+
         }
 
 

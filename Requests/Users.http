@@ -23,7 +23,24 @@ mode: cors
         "FirstName":"UpdatedName",
         "LastName":"TheRequest",
         "Username":"Requests4Lyfe",
-        "Password":"request",
+        "HashedPassword":"request",
+        "Role": "Admin"
+    },
+    "CharityId": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
+}
+
+### Update Password
+POST http://kubernetes.docker.internal:5000/Admin/User/UpdateUserPassword
+Content-Type: application/json
+mode: cors
+
+{
+    "User": {
+        "Id": "331399b1-3859-4873-b36f-33607020b8c2",
+        "FirstName":"UpdatedName",
+        "LastName":"TheRequest",
+        "Username":"Requests4Lyfe",
+        "HashedPassword":"newPassword",
         "Role": "Admin"
     },
     "CharityId": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
@@ -38,6 +55,8 @@ mode: cors
     "CharityId": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b",
     "Username": "Requests4Lyfe"
 }
+
+
 
 ### Get All
 GET http://kubernetes.docker.internal:5000/Admin/User/GetAll

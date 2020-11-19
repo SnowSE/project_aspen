@@ -86,11 +86,11 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
-        public IActionResult UpdateUserPassword(Guid userID, string newPassword)
+        public IActionResult UpdateUserPassword(UpdateUserRequest updateUserRequest)
         {
             try 
             {
-                _userService.UpdateUserPassword(userID, newPassword);
+                _userService.UpdateUserPassword(updateUserRequest);
                 return Ok();
             }
             catch (Exception)
