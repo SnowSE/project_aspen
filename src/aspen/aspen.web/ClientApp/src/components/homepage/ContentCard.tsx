@@ -43,6 +43,7 @@ const ContentCard:React.FC<ContentCardProps> = props => {
           <Typography gutterBottom variant="h5" component="h2" style={classes.title}>
           {props.title}
           </Typography>
+          Check it out!  Hooray!
           <div color="textSecondary" className="description">
             {props.description}
           </div>
