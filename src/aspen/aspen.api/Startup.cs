@@ -106,6 +106,8 @@ namespace Aspen.Api
             {
                 options.AddPolicy("Admin", policy => policy.RequireClaim("AdminClaim"));
             });
+
+            services.AddSwaggerGen();
         }
 
         public void Configure(
@@ -121,6 +123,12 @@ namespace Aspen.Api
             applyDatabaseMigrations(charityRepository, migrationService);
 
             // app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project Aspen API");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

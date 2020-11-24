@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("{controller}/{action}")]
+    [Route("{controller}/")]
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository teamRepository;
@@ -23,29 +23,29 @@ namespace Aspen.Api.Controllers
             this.charityRepository = charityRepository;
         }
 
-        [HttpGet]
+        [HttpGet("getbycharityid")]
         public async Task<ApiResult> GetByCharityId([FromQuery(Name = "CharityId")] Guid charityId) =>
             await charityId
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(teamRepository.GetByCharity)
                 .ReturnApiResult();
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ApiResult> Create([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
-                .ApplyAsync(async c => 
+                .ApplyAsync(async c =>
                     await teamRepository.Create(request.team, c))
                 .ReturnApiResult();
-        
-        [HttpPost]
+
+        [HttpPost("update")]
         public async Task<ApiResult> Update([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)
                 .ApplyAsync(async c => await teamRepository.Update(request.team, c))
                 .ReturnApiResult();
 
-        [HttpPost]
+        [HttpPost("delete")]
         public async Task<ApiResult> Delete([FromBody] TeamRequest request) =>
             await request
                 .ValidateFunction(getValidCharity)

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("admin/user/{action}")]
+    [Route("admin/user/")]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
@@ -22,7 +22,7 @@ namespace Aspen.Api.Controllers
             _log = log;
         }
 
-        [HttpPost]
+        [HttpPost("authenticate")]
         public async Task<ApiResult> Authenticate([FromBody]AuthenticateModel model)
         {
             _log.LogError($"model: {model}, username={model.Username}, password={model.Password}");

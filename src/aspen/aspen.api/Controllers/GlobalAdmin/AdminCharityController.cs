@@ -9,7 +9,7 @@ using Aspen.Core.Models;
 
 namespace Aspen.Api.Controllers
 {
-    [Route("admin/charity/{action}")]
+    [Route("admin/charity/")]
     public class AdminCharityController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;
@@ -23,7 +23,7 @@ namespace Aspen.Api.Controllers
             this.themeRepository = themeRepository;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public async Task<ApiResult> GetAll()
         {
             var allCharities = await charityRepository.GetAll();
@@ -35,9 +35,8 @@ namespace Aspen.Api.Controllers
             await charityId
                 .ValidateFunction(async id => await charityRepository.GetById(id))
                 .ReturnApiResult();
-        
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ApiResult> Create([FromBody]Charity charity) =>
             await charity
                 .ValidateFunction(c => Result<Charity>.Success(c.UpdateId(Guid.NewGuid())))
@@ -45,26 +44,23 @@ namespace Aspen.Api.Controllers
                 .ApplyAsync(async c => await themeRepository.Create(Theme.Default(), c.ConnectionString))
                 .ReturnEmptyApiResult();
 
-
-        [HttpPost]
+        [HttpPost("update")]
         public async Task<ApiResult> Update([FromBody]Charity charity) =>
             await charity
                 .ValidateFunction(c => Result<Charity>.Success(c))
                 .ApplyAsync(charityRepository.Update)
                 .ReturnEmptyApiResult();
 
-        [HttpPost]
+        [HttpPost("delete")]
         public async Task<ApiResult> Delete([FromBody]Charity charity) =>
             await charity
                 .ValidateFunction(validateCharity)
                 .ApplyAsync(charityRepository.Delete)
                 .ReturnApiResult();
-        
-        
+
         private Result<Charity> validateCharity(Charity charity)
         {
             return Result<Charity>.Success(charity);
         }
-
     }
 }
