@@ -37,7 +37,7 @@ namespace Aspen.Api.Controllers
                 .ReturnApiResult();
 
         [HttpPost("create")]
-        public async Task<ApiResult> Create([FromBody]Charity charity) =>
+        public async Task<ApiResult> Create(Charity charity) =>
             await charity
                 .ValidateFunction(c => Result<Charity>.Success(c.UpdateId(Guid.NewGuid())))
                 .ApplyAsync(charityRepository.Create)
@@ -52,7 +52,7 @@ namespace Aspen.Api.Controllers
                 .ReturnEmptyApiResult();
 
         [HttpPost("delete")]
-        public async Task<ApiResult> Delete([FromBody]Charity charity) =>
+        public async Task<ApiResult> Delete(Charity charity) =>
             await charity
                 .ValidateFunction(validateCharity)
                 .ApplyAsync(charityRepository.Delete)
