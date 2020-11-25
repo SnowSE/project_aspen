@@ -45,7 +45,7 @@ namespace Aspen.Api.Controllers
                 .ReturnEmptyApiResult();
 
         [HttpPost("update")]
-        public async Task<ApiResult> Update([FromBody]Charity charity) =>
+        public async Task<ApiResult> Update(Charity charity) =>
             await charity
                 .ValidateFunction(c => Result<Charity>.Success(c))
                 .ApplyAsync(charityRepository.Update)

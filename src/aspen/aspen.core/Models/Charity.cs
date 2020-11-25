@@ -9,14 +9,14 @@ namespace Aspen.Core.Models
     {
         public Guid CharityId { get; }
         public string CharityName { get; }
-        public string CharityDescription { get; }        
+        public string CharityDescription { get; }
         public IEnumerable<Domain> Domains { get; }
-        
+
         [JsonIgnore]
         public ConnectionString ConnectionString { get; }
 
         [JsonConstructor]
-        private Charity(Guid charityid, string charityname, string charitydescription, string connectionstring, IEnumerable<Domain> domains)
+        private Charity(Guid charityid, string charityname, string charitydescription, IEnumerable<Domain> domains)
         {
             valiateDomains(domains);
             this.CharityId = charityid;
@@ -48,7 +48,7 @@ namespace Aspen.Core.Models
             if(domains == null) throw new ArgumentException("domains cannot be null");
             // if(domains.Count() == 0) throw new ArgumentException("domains cannot be empty");
         }
-        
+
 
         public Charity UpdateCharityName(string newName)
         {
