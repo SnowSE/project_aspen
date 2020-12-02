@@ -13,12 +13,12 @@ namespace Aspen.Api.Controllers
 {
     [ApiController]
     [Route("admin/user/{action}")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private IUserService _userService;
-        private readonly ILogger<UserController> _log;
+        private readonly ILogger<UsersController> _log;
 
-        public UserController(IUserService userService, ILogger<UserController> log)
+        public UsersController(IUserService userService, ILogger<UsersController> log)
         {
             _userService = userService;
             _log = log;
