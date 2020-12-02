@@ -6,3 +6,4 @@ Local Admin = administrative user for a particular charity.
 
 User = regular user within a charity.
 
+Event = an instance of a walk (i.e. the May 2020 walk, the May 2021 walk, etc.)
