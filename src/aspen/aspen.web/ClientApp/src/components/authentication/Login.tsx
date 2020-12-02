@@ -82,12 +82,12 @@ const Login: React.FC<LoginProps> = props => {
 
   const handleLogin = async () => {
     props.login(username, password);
-    props.history.push(returnURL);
     if (props.token) {
       loggerservice.Error(props.token.key)
       localStorage.setItem('KEY', props.token.key);
       setError(false);
       alert('Login Successfully');
+      props.history.push(returnURL);
     } else {
       setError(true);
       setHelperText('Incorrect username or password')
