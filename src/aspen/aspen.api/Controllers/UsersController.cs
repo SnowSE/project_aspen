@@ -12,7 +12,7 @@ using System;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("admin/user/{action}")]
+    [Route("admin/user/")]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
@@ -40,7 +40,6 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "Admin")]
         public  async Task<IActionResult> GetAll(Guid charityID)
         {
             var users = await _userService.GetAll(charityID);
@@ -86,6 +85,7 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
+        [HttpPost]
         public IActionResult UpdateUserPassword(UpdateUserRequest updateUserRequest)
         {
             try 
