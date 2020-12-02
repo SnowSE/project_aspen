@@ -6,6 +6,8 @@ using Aspen.Api.Services;
 using System.Threading.Tasks;
 using Aspen.Core;
 using Microsoft.Extensions.Logging;
+using aspen.core.Models;
+using System;
 
 namespace Aspen.Api.Controllers
 {
@@ -27,7 +29,7 @@ namespace Aspen.Api.Controllers
         {
             _log.LogError($"model: {model}, username={model.Username}, password={model.Password}");
 
-            var user = _userService.Authenticate(model.Username, model.Password);
+            var user = await _userService.Authenticate(model.Username, model.Password, model.CharityID);
 
             _log.LogError($"User: {user?.ToString() ?? "[user object is null]"}");
 
@@ -38,11 +40,64 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "Admin")]
-        public IActionResult GetAll()
+        public  async Task<IActionResult> GetAll(Guid charityID)
         {
-            var users = _userService.GetAll();
+            var users = await _userService.GetAll(charityID);
             return Ok(users);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
+        {
+            try
+            {
+                _userService.CreateUser(createUserRequest);
+            } 
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteUser(DeleteUserRequest deleteUserRequest)
+        {
+            try
+            {
+                _userService.DeleteUser(deleteUserRequest);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUser(UpdateUserRequest updateUserRequest)
+        {
+            _userService.UpdateUser(updateUserRequest);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUserPassword(UpdateUserRequest updateUserRequest)
+        {
+            try 
+            {
+                _userService.UpdateUserPassword(updateUserRequest);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
         }
     }
 }

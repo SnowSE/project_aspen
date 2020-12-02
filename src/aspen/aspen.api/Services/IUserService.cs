@@ -1,11 +1,22 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using aspen.core.Models;
 using Aspen.Core.Models;
 
 namespace Aspen.Api.Services
 {
     public interface IUserService
     {
-        User Authenticate(string username, string password);
-        IEnumerable<User> GetAll();
+        Task<User> Authenticate(string username, string password, Guid charityId);
+        Task<IEnumerable<User>> GetAll(Guid charityID);
+
+        Task CreateUser(CreateUserRequest createUserRequest);
+
+        Task DeleteUser(DeleteUserRequest deleteUserRequest);
+
+        Task UpdateUser(UpdateUserRequest updateUserRequest);
+
+        Task UpdateUserPassword(UpdateUserRequest updateUserRequest);
     }
 }
