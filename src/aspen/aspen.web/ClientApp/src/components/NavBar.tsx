@@ -48,27 +48,30 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   const UserLogout = () => {
     localStorage.clear();
   };
-
   return (
     <React.Fragment>
       <div style={classes.navbar}>
         <div style={classes.logo}></div>
         <div style={classes.links}>
-          <NavLink
-            tag={Link}
-            style={classes.link}
-            to={RouteConstants.LOGIN_ROUTE}
-          >
-            Login
-          </NavLink>
-          <NavLink
-            tag={Link}
-            style={classes.link}
-            onClick={() => UserLogout()}
-            to={RouteConstants.HOME_ROUTE}
-          >
-            Logout
-          </NavLink>
+          {localStorage.getItem("KEY") == null ? (
+            <NavLink
+              tag={Link}
+              style={classes.link}
+              to={RouteConstants.LOGIN_ROUTE}
+            >
+              Login
+            </NavLink>
+          ) : (
+            <NavLink
+              tag={Link}
+              style={classes.link}
+              onClick={() => UserLogout()}
+              to={RouteConstants.HOME_ROUTE}
+            >
+              Logout
+            </NavLink>
+          )}
+
           <NavLink
             tag={Link}
             style={classes.link}
