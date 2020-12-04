@@ -23,11 +23,7 @@ namespace Aspen.Api.Services
 {
     public class UserService : IUserService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private IList<User> _users = new List<User>
-        { 
-            new User(Guid.NewGuid(), "Bob", "TheBuilder", "admin", "password", "User", new byte[]{}, "")
-        };
+        
 
         private readonly AppSettings _appSettings;
         private readonly IMigrationService _migrationService;
@@ -95,7 +91,7 @@ namespace Aspen.Api.Services
                 );
             }
 
-            return _users;
+            return users;
         }
 
         public async Task CreateUser(CreateUserRequest userRequest)
@@ -134,8 +130,6 @@ namespace Aspen.Api.Services
                 throw new Exception("Error creating user: " + e.MessageText);
             }
 
-            //ToDo: Add to database instead of list
-            _users.Add(user);
 
         }
 
