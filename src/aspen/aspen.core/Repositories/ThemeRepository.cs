@@ -25,7 +25,7 @@ namespace Aspen.Core.Repositories
             {
                 await dbConnection.ExecuteAsync(
                     @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily)
-                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily);",
+                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily, @imageurl);",
                     theme
                 );
             }
