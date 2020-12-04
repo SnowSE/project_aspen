@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("{controller}/")]
+    [Route("{controller}/{action}")]
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository teamRepository;
