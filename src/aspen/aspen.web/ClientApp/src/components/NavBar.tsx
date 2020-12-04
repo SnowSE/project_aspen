@@ -45,6 +45,10 @@ const Navbar: React.FC<NavbarProps> = props => {
     } as React.CSSProperties
   };
 
+  const UserLogout = () =>{
+    sessionStorage.clear();
+  }
+
   return (
     <React.Fragment>
       <div style={classes.navbar}>
@@ -53,9 +57,9 @@ const Navbar: React.FC<NavbarProps> = props => {
           <NavLink tag={Link} style={classes.link} to={RouteConstants.LOGIN_ROUTE}>
             Login
           </NavLink>
-          <NavLink tag={Link} style={classes.link} to={RouteConstants.HOME_ROUTE}>
+          <button style={classes.link} onClick={()=>UserLogout()}>
             Logout
-          </NavLink>
+          </button>
           <NavLink tag={Link} style={classes.link} to={RouteConstants.REGISTER_ROUTE}>
             Register
           </NavLink>
