@@ -53,6 +53,9 @@ const Navbar: React.FC<NavbarProps> = props => {
           <NavLink tag={Link} style={classes.link} to={RouteConstants.LOGIN_ROUTE}>
             Login
           </NavLink>
+          <NavLink tag={Link} style={classes.link} to={RouteConstants.HOME_ROUTE}>
+            Logout
+          </NavLink>
           <NavLink tag={Link} style={classes.link} to={RouteConstants.REGISTER_ROUTE}>
             Register
           </NavLink>
