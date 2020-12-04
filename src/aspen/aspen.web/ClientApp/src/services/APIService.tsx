@@ -55,7 +55,7 @@ export class APIService implements IAPIService {
     public async GetCharityByID(ID: string): Promise<Charity> {
         try {
             let headers = { "Content-Type": "application/json" };
-            let newurl = url + "/admin/charity/Get?charityid=" + ID
+            let newurl = url + "/admin/charity/?charityid=" + ID
             let response = await fetch(newurl, {
                 method: "GET",
                 headers: headers
@@ -84,7 +84,7 @@ export class APIService implements IAPIService {
         try {
             let domain = this.IDomainService.GetDomain();
             let headers = { "Content-Type": "application/json" };
-            let newurl = url + "/Charity/Get?domain=" + domain
+            let newurl = url + "/Charity/?domain=" + domain
             let response = await fetch(newurl, {
                 method: "GET",
                 headers: headers

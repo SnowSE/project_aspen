@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("{controller}/{action}")]
+    [Route("{controller}/")]
     public class CharityController : ControllerBase
     {
         private readonly ICharityRepository charityRepository;

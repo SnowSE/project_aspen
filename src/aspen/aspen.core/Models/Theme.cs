@@ -11,7 +11,7 @@ namespace Aspen.Core.Models
             string primaryContrastColor,
             string secondaryMainColor,
             string fontFamily,
-            string imageUrl,
+            string bannerUrl,
             string logoUrl)
         {
             validateColor(primaryMainColor);
@@ -19,7 +19,7 @@ namespace Aspen.Core.Models
             validateColor(primaryContrastColor);
             validateColor(secondaryMainColor);
             validateFontFamily(fontFamily);
-            validateImageUrl(imageUrl);
+            validateBannerUrl(bannerUrl);
             validateLogoUrl(logoUrl);
 
             PrimaryMainColor = primaryMainColor;
@@ -27,7 +27,7 @@ namespace Aspen.Core.Models
             PrimaryContrastColor = primaryContrastColor;
             SecondaryMainColor = secondaryMainColor;
             FontFamily = fontFamily;
-            ImageUrl = imageUrl;
+            BannerUrl = bannerUrl;
             LogoUrl = logoUrl;
         }
 
@@ -36,7 +36,7 @@ namespace Aspen.Core.Models
         public string PrimaryContrastColor { get; }
         public string SecondaryMainColor { get; }
         public string FontFamily { get; }
-        public string ImageUrl { get; }
+        public string BannerUrl { get; }
         public string LogoUrl { get; }
 
         private void validateColor(string color)
@@ -52,7 +52,7 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("font family too long");
         }
 
-        private void validateImageUrl(string imageUrl)
+        private void validateBannerUrl(string imageUrl)
         {
             if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
                 throw new ArgumentException("");
@@ -75,7 +75,17 @@ namespace Aspen.Core.Models
 
         public Theme UpdatePrimaryMainColor(string newColor)
         {
-            return new Theme(newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily, ImageUrl, LogoUrl);
+            return new Theme(newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily, BannerUrl, LogoUrl);
+        }
+
+        public Theme UpdateLogo(string logoUrl)
+        {
+            return new Theme(PrimaryMainColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily, BannerUrl, logoUrl);
+        }
+
+        public Theme UpdateBanner(string bannerUrl)
+        {
+            return new Theme(PrimaryMainColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily, bannerUrl, LogoUrl);
         }
     }
 }

@@ -21,11 +21,13 @@ namespace Aspen.Core.Repositories
 
         public async Task<Result<Theme>> Create(Theme theme, ConnectionString connectionString)
         {
+            theme = theme.UpdateLogo("http://localhost:3000");
+            theme = theme.UpdateBanner("http://localhost:3000");
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
                 await dbConnection.ExecuteAsync(
-                    @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, imageurl, logourl)
-                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily, @imageurl, @logourl);",
+                    @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, bannerurl, logourl)
+                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily, @bannerurl, @logourl);",
                     theme
                 );
             }
@@ -37,7 +39,7 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
                 return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
-                    @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, imageurl, logourl
+                    @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, bannerurl, logourl
                         from Theme;"
                 ));
             }
@@ -54,7 +56,7 @@ namespace Aspen.Core.Repositories
                         PrimaryContrastColor = @PrimaryContrastColor,
                         SecondaryMainColor = @SecondaryMainColor,
                         FontFamily = @FontFamily,
-                        ImageUrl = @ImageUrl,
+                        BannerUrl = @BannerUrl,
                         LogoUrl = @LogoUrl;",
                     theme
                 );
