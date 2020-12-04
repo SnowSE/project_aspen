@@ -7,10 +7,10 @@ import * as RouteConstants from "../constants/RouteConstants";
 import { Theme } from "../models/Theme";
 
 interface NavbarProps {
-  theme: Theme
+  theme: Theme;
 }
 
-const Navbar: React.FC<NavbarProps> = props => {
+const Navbar: React.FC<NavbarProps> = (props) => {
   const classes = {
     navbar: {
       display: "inline-flex",
@@ -24,13 +24,13 @@ const Navbar: React.FC<NavbarProps> = props => {
       backgroundPosition: "left",
       backgroundRepeat: "no-repeat",
       display: "inline-block",
-      width: "50%"
+      width: "50%",
     },
     links: {
       width: "50%",
       display: "inline-block",
       height: 50,
-      float: "right"
+      float: "right",
     } as React.CSSProperties,
     link: {
       color: "white",
@@ -40,26 +40,55 @@ const Navbar: React.FC<NavbarProps> = props => {
       fontFamily: props.theme.typography.fontFamily,
       textDecoration: "none",
       "&:hover": {
-        color: props.theme.palette.primary.light
-      } 
-    } as React.CSSProperties
+        color: props.theme.palette.primary.light,
+      },
+    } as React.CSSProperties,
   };
 
+  const UserLogout = () => {
+    localStorage.clear();
+  };
   return (
     <React.Fragment>
       <div style={classes.navbar}>
         <div style={classes.logo}></div>
         <div style={classes.links}>
-        <NavLink tag={Link} style={classes.link} >
+          {localStorage.getItem("KEY") == null ? (
+            <NavLink
+              tag={Link}
+              style={classes.link}
+              to={RouteConstants.LOGIN_ROUTE}
+            >
+              Login
+            </NavLink>
+          ) : (
+            <>
+            <NavLink tag={Link} style={classes.link} >
             <div id="username">{localStorage.getItem("userName")}</div>
-          </NavLink>
-          <NavLink tag={Link} style={classes.link} to={RouteConstants.LOGIN_ROUTE}>
-            Login
-          </NavLink>
-          <NavLink tag={Link} style={classes.link} to={RouteConstants.REGISTER_ROUTE}>
+            </NavLink>
+            <NavLink
+              tag={Link}
+              style={classes.link}
+              onClick={() => UserLogout()}
+              to={RouteConstants.HOME_ROUTE}
+            >
+              Logout
+            </NavLink>
+            </>
+          )}
+
+          <NavLink
+            tag={Link}
+            style={classes.link}
+            to={RouteConstants.REGISTER_ROUTE}
+          >
             Register
           </NavLink>
-          <NavLink tag={Link} style={classes.link} to={RouteConstants.HOME_ROUTE}>
+          <NavLink
+            tag={Link}
+            style={classes.link}
+            to={RouteConstants.HOME_ROUTE}
+          >
             Home
           </NavLink>
         </div>
@@ -70,10 +99,8 @@ const Navbar: React.FC<NavbarProps> = props => {
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-      theme: state.charity.theme
-  }
-}
+    theme: state.charity.theme,
+  };
+};
 
-export default connect(
-  mapStateToProps
-)(Navbar);
+export default connect(mapStateToProps)(Navbar);
