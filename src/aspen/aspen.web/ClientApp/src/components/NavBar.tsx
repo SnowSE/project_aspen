@@ -50,6 +50,9 @@ const Navbar: React.FC<NavbarProps> = props => {
       <div style={classes.navbar}>
         <div style={classes.logo}></div>
         <div style={classes.links}>
+        <NavLink tag={Link} style={classes.link} >
+            <div id="username">{localStorage.getItem("userName")}</div>
+          </NavLink>
           <NavLink tag={Link} style={classes.link} to={RouteConstants.LOGIN_ROUTE}>
             Login
           </NavLink>
