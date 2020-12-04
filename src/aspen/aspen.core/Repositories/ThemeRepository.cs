@@ -24,8 +24,8 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = migrationService.GetDbConnection(connectionString))
             {
                 await dbConnection.ExecuteAsync(
-                    @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily)
-                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily, @imageurl);",
+                    @"insert into Theme (primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, imageurl, logourl)
+                        values (@primarymaincolor, @primarylightcolor, @primarycontrastcolor, @secondarymaincolor, @fontfamily, @imageurl, @logourl);",
                     theme
                 );
             }
@@ -37,7 +37,7 @@ namespace Aspen.Core.Repositories
             using (var dbConnection = migrationService.GetDbConnection(charity.ConnectionString))
             {
                 return Result<Theme>.Success(await dbConnection.QueryFirstAsync<Theme>(
-                    @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily
+                    @"select primarymaincolor, primarylightcolor, primarycontrastcolor, secondarymaincolor, fontfamily, imageurl, logourl
                         from Theme;"
                 ));
             }
@@ -53,7 +53,9 @@ namespace Aspen.Core.Repositories
                         PrimaryLightColor = @PrimaryLightColor,
                         PrimaryContrastColor = @PrimaryContrastColor,
                         SecondaryMainColor = @SecondaryMainColor,
-                        FontFamily = @FontFamily;",
+                        FontFamily = @FontFamily,
+                        ImageUrl = @ImageUrl,
+                        LogoUrl = @LogoUrl;",
                     theme
                 );
                 if(affecteRows == 1)

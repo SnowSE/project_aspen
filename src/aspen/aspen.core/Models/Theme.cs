@@ -10,22 +10,25 @@ namespace Aspen.Core.Models
             string primaryLightColor,
             string primaryContrastColor,
             string secondaryMainColor,
-            string fontFamily)
-            // string imageUrl)
+            string fontFamily,
+            string imageUrl,
+            string logoUrl)
         {
             validateColor(primaryMainColor);
             validateColor(primaryLightColor);
             validateColor(primaryContrastColor);
             validateColor(secondaryMainColor);
             validateFontFamily(fontFamily);
-            // validateImageUrl(imageUrl);
+            validateImageUrl(imageUrl);
+            validateLogoUrl(logoUrl);
 
             PrimaryMainColor = primaryMainColor;
             PrimaryLightColor = primaryLightColor;
             PrimaryContrastColor = primaryContrastColor;
             SecondaryMainColor = secondaryMainColor;
             FontFamily = fontFamily;
-            // ImageUrl = imageUrl;
+            ImageUrl = imageUrl;
+            LogoUrl = logoUrl;
         }
 
         public string PrimaryMainColor { get; }
@@ -33,7 +36,8 @@ namespace Aspen.Core.Models
         public string PrimaryContrastColor { get; }
         public string SecondaryMainColor { get; }
         public string FontFamily { get; }
-        // public string ImageUrl { get; }
+        public string ImageUrl { get; }
+        public string LogoUrl { get; }
 
         private void validateColor(string color)
         {
@@ -48,11 +52,17 @@ namespace Aspen.Core.Models
                 throw new ArgumentException("font family too long");
         }
 
-        // private void validateImageUrl(string imageUrl)
-        // {
-        //     if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
-        //         throw new ArgumentException("");
-        // }
+        private void validateImageUrl(string imageUrl)
+        {
+            if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
+                throw new ArgumentException("");
+        }
+
+        private void validateLogoUrl(string logoUrl)
+        {
+            if (!Uri.IsWellFormedUriString(logoUrl, UriKind.Absolute))
+                throw new ArgumentException("");
+        }
 
         public static Theme Default()
         {
@@ -60,12 +70,12 @@ namespace Aspen.Core.Models
             var secondaryColor = "#AAAAAA";
             var primaryContrastColor = "#000000";
             var defaultFontFamily = "Arial, Helvetica, sans-serif";
-            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily);
+            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily, "http://localhost:3000", "http://localhost:3000");
         }
 
         public Theme UpdatePrimaryMainColor(string newColor)
         {
-            return new Theme(newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily);
+            return new Theme(newColor, PrimaryLightColor, PrimaryContrastColor, SecondaryMainColor, FontFamily, ImageUrl, LogoUrl);
         }
     }
 }
