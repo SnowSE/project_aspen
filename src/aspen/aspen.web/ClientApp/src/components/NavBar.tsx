@@ -61,7 +61,12 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           >
             Login
           </NavLink>
-          <NavLink tag={Link} style={classes.link} onClick={() => UserLogout()}>
+          <NavLink
+            tag={Link}
+            style={classes.link}
+            onClick={() => UserLogout()}
+            to={RouteConstants.HOME_ROUTE}
+          >
             Logout
           </NavLink>
           <NavLink
