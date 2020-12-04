@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = props => {
   };
 
   const UserLogout = () =>{
-    sessionStorage.clear();
+    localStorage.clear();
   }
 
   return (
