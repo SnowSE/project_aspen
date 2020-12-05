@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -83,10 +84,13 @@ const getteams = async() =>{
               </List>
             ))
           : "Loading..."}
-      </Card>
-      <Button style={classes.button} variant="outlined">
-        Create a team
-      </Button>
+          </Card>
+     
+        <Link to="/createteam">
+          <Button style={classes.button} variant="outlined">
+            Create a team
+          </Button>
+        </Link >
       <Button style={classes.button} variant="outlined">
         Join a team
       </Button>
