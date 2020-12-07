@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
+
 import TextField from "@material-ui/core/TextField";
-import TextAreaAutosize from "@material-ui/core/TextareaAutosize";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -8,6 +8,12 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import CardHeader from "@material-ui/core/CardHeader";
 import theme from "../../theme";
+
+import { Team } from '../../models/TeamModel';
+
+import { APIService } from '../../services/APIService';
+import { DomainService } from "../../services/DomainService";
+import { LoggerService } from "../../services/LoggerService";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -41,7 +47,9 @@ const useStyles = makeStyles(() =>
     })
 );
 
-interface CreateTeamProps { }
+
+
+interface CreateTeamProps {}
 
 const CreateTeam: React.FC<CreateTeamProps> = props => {
     const classes = useStyles();
@@ -49,6 +57,9 @@ const CreateTeam: React.FC<CreateTeamProps> = props => {
     const [teamDescription, setTeamDescription] = useState("");
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    
+    const apiService = new APIService(new DomainService(), new LoggerService());
 
     useEffect(() => {
         if (teamName.trim() && teamDescription.trim()) {
@@ -58,8 +69,10 @@ const CreateTeam: React.FC<CreateTeamProps> = props => {
         }
     }, [teamName, teamDescription]);
 
-    const handleSubmit = () => {
-        //Make API call, redirect
+    const handleSubmit = async () => {
+        const team = new Team(teamName, teamDescription);
+        const charity = await apiService.GetCharityByDomain()
+        apiService.PostCreateTeam(team, charity.ID);
     }
 
     const handleKeyPress = (e: any) => {
