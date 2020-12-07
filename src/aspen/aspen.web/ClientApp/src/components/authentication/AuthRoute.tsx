@@ -20,7 +20,7 @@ const AuthRoute: React.FC<AuthRouteProps> = (props) => {
     window.location.pathname
   )}`;
   if (!ready) {
-    return <></>;
+    return  <> {window.location.reload()}</>;
   } else {
     const { token, role, ...rest } = props;
     if(!authenticated) {

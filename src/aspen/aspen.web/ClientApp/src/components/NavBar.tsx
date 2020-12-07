@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
               tag={Link}
               style={classes.link}
               onClick={() => UserLogout()}
-              to={RouteConstants.HOME_ROUTE}
+              to={window.location.reload()}{...RouteConstants.HOME_ROUTE}
             >
               Logout
             </NavLink>
