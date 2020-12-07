@@ -11,7 +11,7 @@ namespace Aspen.Tests.ModelTests
         public void InvalidColorsThrowException()
         {
             var color = "notahexcolor";
-            Action act = () => new Theme(color, color, color, color, "Times new roman");
+            Action act = () => new Theme(color, color, color, color, "Times new roman", "http://localhost.com", "http://localhost.com");
 
             act.Should().Throw<ArgumentException>().WithMessage("illegal color");
         }
@@ -20,7 +20,7 @@ namespace Aspen.Tests.ModelTests
         public void FontFamilyCannotBeMoreThan30Characters()
         {
             var color = "#000000";
-            Action act = () => new Theme(color, color, color, color, "Times new romanaasdkflasdjfkasjdflaksdjflsadkweoirqoewiuroqwieurqoieuroqweurqoweurfsajdflsakdjfalsdkfjsdflkasdj");
+            Action act = () => new Theme(color, color, color, color, "Times new romanaasdkflasdjfkasjdflaksdjflsadkweoirqoewiuroqwieurqoieuroqweurqoweurfsajdflsakdjfalsdkfjsdflkasdj", "http://localhost.com", "http://localhost.com");
 
             act.Should().Throw<ArgumentException>().WithMessage("font family too long");
         }

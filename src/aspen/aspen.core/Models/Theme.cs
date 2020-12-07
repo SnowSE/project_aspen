@@ -70,7 +70,7 @@ namespace Aspen.Core.Models
             var secondaryColor = "#AAAAAA";
             var primaryContrastColor = "#000000";
             var defaultFontFamily = "Arial, Helvetica, sans-serif";
-            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily, "http://localhost:3000", "http://localhost:3000");
+            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily, "http://localhost.com", "http://localhost.com");
         }
 
         public Theme UpdatePrimaryMainColor(string newColor)
