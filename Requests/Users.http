@@ -8,7 +8,7 @@ mode: cors
     "LastName":"TheRequest",
     "Username":"Requests4Lyfe",
     "Password":"request",
-    "CharityID": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
+    "CharityID": "010a8c62-a60e-4392-9b46-6dfd010dcc57"
 }
 
 ### Update User
@@ -69,6 +69,5 @@ mode: cors
 {
     "Username":"Requests4Lyfe",
     "Password":"request",
-    "Charity":"LocalHost",
-    "CharityID": "b6052bd4-02cc-4613-bb48-6f18d85c3e5b"
+    "Charity": "010a8c62-a60e-4392-9b46-6dfd010dcc57"
 }

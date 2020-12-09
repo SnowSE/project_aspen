@@ -27,14 +27,15 @@ namespace Aspen.Api.Controllers
         [HttpPost("authenticate")]
         public async Task<ApiResult> Authenticate([FromBody]AuthenticateModel model)
         {
+            Guid CharityId = Guid.Parse(model.Charity);
             _log.LogError($"model: {model}, username={model.Username}, password={model.Password}");
 
-            var user = await _userService.Authenticate(model.Username, model.Password, model.CharityID);
+            var user = await _userService.Authenticate(model.Username, model.Password, CharityId);
 
             _log.LogError($"User: {user?.ToString() ?? "[user object is null]"}");
 
             if (user == null)
-                ApiResult.Failed("");
+                return ApiResult.Failed("");
 
             return ApiResult.Success(user.Token);
         }
