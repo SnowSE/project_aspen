@@ -14,6 +14,9 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { Team } from "../../models/TeamModel";
 import { Theme } from "../../models/Theme";
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
+import { JOIN_TEAM } from '../../constants/RouteConstants';
 
 interface RankingsProps{
   theme: Theme
@@ -87,9 +90,11 @@ const getteams = async() =>{
       <Button style={classes.button} variant="outlined">
         Create a team
       </Button>
-      <Button style={classes.button} variant="outlined">
-        Join a team
-      </Button>
+      <Link to={JOIN_TEAM}>
+        <Button style={classes.button} variant="outlined">
+          Join a team
+        </Button>
+      </Link>
     </div>
   );
 };
