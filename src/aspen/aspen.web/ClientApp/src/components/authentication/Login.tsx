@@ -17,6 +17,7 @@ import Token from '../../models/TokenModel';
 import { RouteComponentProps } from 'react-router';
 import { HOME_ROUTE } from "../../constants/RouteConstants";
 import { RETURN_URL } from "../../constants/QueryConstants";
+import { Charity } from '../../models/CharityModel';
 
 
 
@@ -58,6 +59,7 @@ interface MyRouteProps {
 
 interface LoginProps extends RouteComponentProps<MyRouteProps> {
   token: Token | null,
+  charity: Charity | null,
   login: typeof actionCreators.login,
 }
 
@@ -65,6 +67,7 @@ const Login: React.FC<LoginProps> = props => {
   const classes = useStyles();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [charityId, setCharityId] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
@@ -76,12 +79,20 @@ const Login: React.FC<LoginProps> = props => {
     } else {
       setIsButtonDisabled(true);
     }
-  }, [username, password]);
+
+    if(props.charity)
+    {
+      setCharityId(props.charity.ID);
+      console.log(charityId);
+    }
+    
+    
+  }, [username, password, charityId]);
 
   const loggerservice = new LoggerService();
   const authservice = new APIAuthorizationService(loggerservice);
   const handleLogin = async () => {
-    props.login(username, password);
+    props.login(username, password, charityId);
     if (props.token) {
       loggerservice.Error(props.token.key)
       localStorage.setItem('KEY', props.token.key);
@@ -154,6 +165,7 @@ const Login: React.FC<LoginProps> = props => {
 const mapStateToProps = (state: ApplicationState) => {
   return {
     token: state.auth.token,
+    charity: state.charity.charity,
   };
 };
 

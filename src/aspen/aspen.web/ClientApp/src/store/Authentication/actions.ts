@@ -34,10 +34,10 @@ export function logout(): ActionTypes.AuthActionTypes {
     }
 }
 
-export function login(username: string, password: string): AppThunkAction<ActionTypes.AuthActionTypes> {
+export function login(username: string, password: string, charityId:string): AppThunkAction<ActionTypes.AuthActionTypes> {
     return function (dispatch) {
         return authService
-            .Login(username, password)
+            .Login(username, password, charityId)
             .then(result => 
                 result ?
                 dispatch(loginSuccess(result)) : 
