@@ -41,7 +41,7 @@ services:
       - 3000:3000
     environment:
       - REACT_APP_GLOBAL_ADMIN_DOMAIN=aspen
-      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_API_URL=http://kubernetes.docker.internal:5000
     networks:
       internal:
     stdin_open: true
