@@ -22,10 +22,7 @@ namespace Aspen.Integration.RepositoryTests
         {
             var rand = new Random();
             var usernameSalt = rand.Next();
-            bobTheBuilder = new User(
-                Guid.NewGuid(), "bob", "thebuilder", "bobthebuilder"+usernameSalt, "12345abc", "admin", new byte[]{}, ""
-            );
-
+            bobTheBuilder = new User(Guid.NewGuid(), "bob", "thebuilder", "bobthebuilder"+usernameSalt, "12345abc", "admin", new byte[]{}, "");
             await adminUserRepo.Create(bobTheBuilder);
         }
 

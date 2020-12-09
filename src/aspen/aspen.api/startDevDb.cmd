@@ -1,6 +1,6 @@
 docker rm -f aspen_dev_db
 docker run --name aspen_dev_db ^
-  -p 5432:5432 ^
+  -p 5431:5431 ^
   -d ^
   -e POSTGRES_USER=Aspen ^
   -e POSTGRES_PASSWORD=Aspen ^
