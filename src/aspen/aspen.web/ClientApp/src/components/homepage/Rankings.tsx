@@ -15,6 +15,8 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { Team } from "../../models/TeamModel";
 import { Theme } from "../../models/Theme";
+import {CREATE_TEAM_ROUTE} from '../../constants/RouteConstants'
+import { create } from "domain";
 
 interface RankingsProps{
   theme: Theme
@@ -86,7 +88,7 @@ const getteams = async() =>{
           : "Loading..."}
           </Card>
      
-        <Link to="/createteam">
+        <Link to={CREATE_TEAM_ROUTE}>
           <Button style={classes.button} variant="outlined">
             Create a team
           </Button>
