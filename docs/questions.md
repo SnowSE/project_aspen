@@ -5,4 +5,7 @@
 - Make sure we review design.md and datamodel.drawio with them.
 
 # Answered
-- (move things here when done)
+- Different fundraising tier amounts (e.g. $500 for 6 movie tickets, $1k for a kindle, $2k an iPad, etc.)
+  - prizes are public on the sign-up page
+  - showing that info publicly for the team, whatever prize they most recently qualified for and how far away they are from the next prize.
+  - Yes, prizes are per event.  

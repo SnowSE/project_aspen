@@ -19,6 +19,7 @@ import { HOME_ROUTE } from "../../constants/RouteConstants";
 import { RETURN_URL } from "../../constants/QueryConstants";
 
 
+
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
@@ -79,15 +80,15 @@ const Login: React.FC<LoginProps> = props => {
 
   const loggerservice = new LoggerService();
   const authservice = new APIAuthorizationService(loggerservice);
-
   const handleLogin = async () => {
     props.login(username, password);
-    props.history.push(returnURL);
     if (props.token) {
       loggerservice.Error(props.token.key)
       localStorage.setItem('KEY', props.token.key);
       setError(false);
       alert('Login Successfully');
+      props.history.push(returnURL);
+      localStorage.setItem("userName", username )
     } else {
       setError(true);
       setHelperText('Incorrect username or password')

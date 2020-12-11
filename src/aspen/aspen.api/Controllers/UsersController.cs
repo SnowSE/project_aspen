@@ -46,7 +46,7 @@ namespace Aspen.Api.Controllers
             return Ok(users);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
         {
             try
@@ -62,7 +62,7 @@ namespace Aspen.Api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult DeleteUser(DeleteUserRequest deleteUserRequest)
         {
             try
@@ -77,7 +77,7 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult UpdateUser(UpdateUserRequest updateUserRequest)
         {
             _userService.UpdateUser(updateUserRequest);
@@ -85,7 +85,7 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult UpdateUserPassword(UpdateUserRequest updateUserRequest)
         {
             try 

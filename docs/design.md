@@ -10,3 +10,6 @@ A registrant can have multiple people (adults, children).
 A charity has one 'current' event; requests to the root of any one of that charity's domains will display information on the 'current' event.
 A different as-yet-undetermined URL route could/would allow access to previous/future events.
 
+Sponsors can sign up on the website, give a certain amount, upload their logo.
+Local administrators can also create sponsors and put in their images.
+Sponsors can be per-event or annual giving partners that support the charity in general.
