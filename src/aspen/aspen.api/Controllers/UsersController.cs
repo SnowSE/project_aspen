@@ -39,7 +39,7 @@ namespace Aspen.Api.Controllers
             return ApiResult.Success(user.Token);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public  async Task<IActionResult> GetAll(Guid charityID)
         {
             var users = await _userService.GetAll(charityID);
