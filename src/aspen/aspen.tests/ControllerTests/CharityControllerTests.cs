@@ -85,7 +85,7 @@ namespace Aspen.Tests.ControllerTests
 
             var color = "#000000";
             var fontFamily = "Times";
-            var penguinTheme = new Theme(color, color, color, color, fontFamily, "http://localhost.com", "http://localhost.com");
+            var penguinTheme = new Theme(color, color, color, color, fontFamily, "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg", "http://www.unitedangels.org/wp-content/themes/parallelus-razor/assets/images/header-logo.png");
 
             charityRepoMoq
                 .Setup(cr => cr.GetById(kylersPenguins.CharityId))
@@ -142,7 +142,7 @@ namespace Aspen.Tests.ControllerTests
             var connString = new ConnectionString("Host=notlocalhost; Port=5433; Database=changeme; Username=changeme; Password=changeme;");
             var color = "#000000";
             var fontFamily = "Times";
-            var penguinTheme = new Theme(color, color, color, color, fontFamily, "http://localhost.com", "http://localhost.com");
+            var penguinTheme = new Theme(color, color, color, color, fontFamily, "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg", "http://www.unitedangels.org/wp-content/themes/parallelus-razor/assets/images/header-logo.png");
             var kylersPenguins = new Charity(
                 Guid.NewGuid(),
                 "Kyler's Penguins",

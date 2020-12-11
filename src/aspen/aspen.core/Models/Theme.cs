@@ -70,7 +70,7 @@ namespace Aspen.Core.Models
             var secondaryColor = "#AAAAAA";
             var primaryContrastColor = "#000000";
             var defaultFontFamily = "Arial, Helvetica, sans-serif";
-            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily, "http://localhost.com", "http://localhost.com");
+            return new Theme(defaultColor, secondaryColor, primaryContrastColor, defaultColor, defaultFontFamily, "https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg", "http://www.unitedangels.org/wp-content/themes/parallelus-razor/assets/images/header-logo.png");
         }
 
         public Theme UpdatePrimaryMainColor(string newColor)
