@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 
 import TextField from "@material-ui/core/TextField";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -8,6 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import CardHeader from "@material-ui/core/CardHeader";
 import theme from "../../theme";
+import { HOME_ROUTE } from '../../constants/RouteConstants'
 
 import { Team } from '../../models/TeamModel';
 
@@ -52,6 +54,9 @@ const useStyles = makeStyles(() =>
 interface CreateTeamProps {}
 
 const CreateTeam: React.FC<CreateTeamProps> = props => {
+
+    const history = useHistory();
+
     const classes = useStyles();
     const [teamName, setTeamName] = useState("");
     const [teamDescription, setTeamDescription] = useState("");
@@ -73,6 +78,7 @@ const CreateTeam: React.FC<CreateTeamProps> = props => {
         const team = new Team(teamName, teamDescription);
         const charity = await apiService.GetCharityByDomain()
         apiService.PostCreateTeam(team, charity.ID);
+        history.push(HOME_ROUTE);
     }
 
     const handleKeyPress = (e: any) => {
