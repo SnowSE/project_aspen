@@ -1,74 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import CardHeader from '@material-ui/core/CardHeader';
+import React, { useState, useEffect } from "react";
+import TextField from "@material-ui/core/TextField";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import CardHeader from "@material-ui/core/CardHeader";
 import theme from "../../theme";
 import APIAuthorizationService from "../../services/APIAuthorizationService";
-import { LoggerService } from '../../services/LoggerService';
+import { LoggerService } from "../../services/LoggerService";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/Authentication/actions";
 import { ApplicationState } from "../../store";
-import Token from '../../models/TokenModel';
-import { RouteComponentProps } from 'react-router';
+import Token from "../../models/TokenModel";
+import { RouteComponentProps } from "react-router";
 import { HOME_ROUTE } from "../../constants/RouteConstants";
 import { RETURN_URL } from "../../constants/QueryConstants";
-
-
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
-      display: 'flex',
-      flexWrap: 'wrap',
+      display: "flex",
+      flexWrap: "wrap",
       width: 400,
-      margin: `${theme.spacing(0)} auto`
+      margin: `${theme.spacing(0)} auto`,
     },
     loginBtn: {
       marginTop: theme.spacing(2),
       flexGrow: 1,
       background: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
-      '&:hover': {
+      "&:hover": {
         background: theme.palette.primary.light,
-      }
+      },
     },
     header: {
-      textAlign: 'center',
+      textAlign: "center",
       background: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText
+      color: theme.palette.primary.contrastText,
     },
     card: {
-      marginTop: theme.spacing(15)
+      marginTop: theme.spacing(15),
     },
     background: {
       background: "#e5e5e5",
-      height: "100vh"
-    }
-  }),
+      height: "100vh",
+    },
+  })
 );
 
-interface MyRouteProps {
-
-}
+interface MyRouteProps {}
 
 interface LoginProps extends RouteComponentProps<MyRouteProps> {
-  token: Token | null,
-  login: typeof actionCreators.login,
+  token: Token | null;
+  login: typeof actionCreators.login;
 }
 
-const Login: React.FC<LoginProps> = props => {
+const Login: React.FC<LoginProps> = (props) => {
+  const history = useHistory();
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
-  const returnURL = new URLSearchParams(props.location.search).get(RETURN_URL) || HOME_ROUTE
+  const returnURL =
+    new URLSearchParams(props.location.search).get(RETURN_URL) || HOME_ROUTE;
 
   useEffect(() => {
     if (username.trim() && password.trim()) {
@@ -83,15 +82,16 @@ const Login: React.FC<LoginProps> = props => {
   const handleLogin = async () => {
     props.login(username, password);
     if (props.token) {
-      loggerservice.Error(props.token.key)
-      localStorage.setItem('KEY', props.token.key);
+      loggerservice.Error(props.token.key);
+      localStorage.setItem("KEY", props.token.key);
       setError(false);
-      alert('Login Successfully');
+      alert("Login Successfully");
       props.history.push(returnURL);
-      localStorage.setItem("userName", username )
+      localStorage.setItem("userName", username);
+      history.go(0);
     } else {
       setError(true);
-      setHelperText('Incorrect username or password')
+      setHelperText("Incorrect username or password");
     }
   };
 
@@ -140,16 +140,17 @@ const Login: React.FC<LoginProps> = props => {
                 size="large"
                 className={classes.loginBtn}
                 onClick={() => handleLogin()}
-                disabled={isButtonDisabled}>
+                disabled={isButtonDisabled}
+              >
                 Login
-            </Button>
+              </Button>
             </CardActions>
           </Card>
         </form>
       </div>
     </React.Fragment>
   );
-}
+};
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
@@ -157,7 +158,6 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  dispatch => bindActionCreators(actionCreators, dispatch)
+export default connect(mapStateToProps, (dispatch) =>
+  bindActionCreators(actionCreators, dispatch)
 )(Login);

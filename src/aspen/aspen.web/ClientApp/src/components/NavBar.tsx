@@ -5,12 +5,14 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as RouteConstants from "../constants/RouteConstants";
 import { Theme } from "../models/Theme";
+import { useHistory } from "react-router";
 
 interface NavbarProps {
   theme: Theme;
 }
 
 const Navbar: React.FC<NavbarProps> = (props) => {
+  const history = useHistory();
   const classes = {
     navbar: {
       display: "inline-flex",
@@ -47,6 +49,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
 
   const UserLogout = () => {
     localStorage.clear();
+    history.go(0);
   };
   return (
     <React.Fragment>
@@ -63,17 +66,17 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             </NavLink>
           ) : (
             <>
-            <NavLink tag={Link} style={classes.link} >
-            <div id="username">{localStorage.getItem("userName")}</div>
-            </NavLink>
-            <NavLink
-              tag={Link}
-              style={classes.link}
-              onClick={() => UserLogout()}
-              to={RouteConstants.HOME_ROUTE}
-            >
-              Logout
-            </NavLink>
+              <NavLink tag={Link} style={classes.link}>
+                <div id="username">{localStorage.getItem("userName")}</div>
+              </NavLink>
+              <NavLink
+                tag={Link}
+                style={classes.link}
+                onClick={() => UserLogout()}
+                to={RouteConstants.HOME_ROUTE}
+              >
+                Logout
+              </NavLink>
             </>
           )}
 
