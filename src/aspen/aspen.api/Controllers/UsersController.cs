@@ -12,7 +12,7 @@ using System;
 namespace Aspen.Api.Controllers
 {
     [ApiController]
-    [Route("admin/user/{action}")]
+    [Route("admin/user/")]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
