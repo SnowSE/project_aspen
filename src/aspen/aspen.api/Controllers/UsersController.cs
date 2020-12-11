@@ -24,10 +24,10 @@ namespace Aspen.Api.Controllers
             _log = log;
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost("[action]")]
         public async Task<ApiResult> Authenticate([FromBody]AuthenticateModel model)
         {
-            Guid CharityId = Guid.Parse(model.Charity);
+            Guid CharityId = Guid.Parse(model.CharityId);
             _log.LogError($"model: {model}, username={model.Username}, password={model.Password}");
 
             var user = await _userService.Authenticate(model.Username, model.Password, CharityId);
@@ -40,14 +40,14 @@ namespace Aspen.Api.Controllers
             return ApiResult.Success(user.Token);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public  async Task<IActionResult> GetAll(Guid charityID)
         {
             var users = await _userService.GetAll(charityID);
             return Ok(users);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult CreateUser([FromBody] CreateUserRequest createUserRequest)
         {
             try
@@ -63,7 +63,7 @@ namespace Aspen.Api.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult DeleteUser(DeleteUserRequest deleteUserRequest)
         {
             try
@@ -78,7 +78,7 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult UpdateUser(UpdateUserRequest updateUserRequest)
         {
             _userService.UpdateUser(updateUserRequest);
@@ -86,7 +86,7 @@ namespace Aspen.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult UpdateUserPassword(UpdateUserRequest updateUserRequest)
         {
             try 

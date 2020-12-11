@@ -1,5 +1,5 @@
 ### get charity by domain
-GET http://kubernetes.docker.internal:5000/Charity/Get?domain=kyler.aspen.com
+GET http://kubernetes.docker.internal:5000/Charity/Get?domain=localhost
 
 ### get charity by id
 GET http://kubernetes.docker.internal:5000/admin/charity/Get?charityid=

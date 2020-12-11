@@ -12,5 +12,7 @@ namespace Aspen.Core.Models
         public string Password { get; set; }
         [Required]
         public string Charity { get; set; }
+        [Required]
+        public string CharityId { get; set; }
     }
 }

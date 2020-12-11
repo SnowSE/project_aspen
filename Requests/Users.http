@@ -4,11 +4,12 @@ Content-Type: application/json
 mode: cors
 
 {
-    "FirstName":"Test",
-    "LastName":"TheRequest",
-    "Username":"Requests4Lyfe",
-    "Password":"request",
-    "CharityID": "010a8c62-a60e-4392-9b46-6dfd010dcc57"
+    "firstName":"Test",
+    "lastName":"TheRequest",
+    "username":"Requests4Lyfe",
+    "password":"request",
+    "charityID": "d33d0f76-2d06-470d-b0d0-cbcf04aec014",
+    "role": "Admin"
 }
 
 ### Update User
@@ -59,7 +60,7 @@ mode: cors
 
 
 ### Get All
-GET http://kubernetes.docker.internal:5000/Admin/User/GetAll
+GET http://kubernetes.docker.internal:5000/Admin/User/GetAll?charityid=
 
 ### Authenticate
 POST http://kubernetes.docker.internal:5000/Admin/User/Authenticate
@@ -69,5 +70,6 @@ mode: cors
 {
     "Username":"Requests4Lyfe",
     "Password":"request",
-    "Charity": "010a8c62-a60e-4392-9b46-6dfd010dcc57"
+    "Charity": "localhost",
+    "CharityId": "d33d0f76-2d06-470d-b0d0-cbcf04aec014"
 }

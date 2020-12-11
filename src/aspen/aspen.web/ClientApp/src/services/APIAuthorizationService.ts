@@ -9,14 +9,15 @@ export default class APIAuthorizationService implements IAPIAuthorizationService
     constructor(ILoggerService: ILoggerService) {
         this.iloggerservice = ILoggerService
     }
-    public async Login(username: string, password: string, charityId: string): Promise<Token | null> {
+    public async Login(username: string, password: string, charityID: string): Promise<Token | null> {
         try {
             let newurl = this.url + "/Admin/User/Authenticate";
             let body = JSON.stringify({
 
-                Username: username,
-                Password: password,
-                Charity: charityId
+                username: username,
+                password: password,
+                charity: "charity",
+                charityId: charityID
                 
             }
             );
