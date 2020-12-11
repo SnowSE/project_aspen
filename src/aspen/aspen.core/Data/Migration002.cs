@@ -4,7 +4,7 @@ using FluentMigrator;
 namespace aspen.core.Data
 {
     [Migration(002)]
-    public class SecondMigration : Migration
+    public class Migration002 : Migration
     {
         //tables and columns need to be lowercase to work with Dapper
         public override void Up()

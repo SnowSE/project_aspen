@@ -35,7 +35,7 @@ namespace Aspen.Core.Services
                         .ConfigureRunner(rb => rb
                             .AddPostgres()
                             .WithGlobalConnectionString(connString)
-                            .ScanIn(typeof(FirstMigration).Assembly).For.Migrations())
+                            .ScanIn(typeof(Migration001).Assembly).For.Migrations())
                         .AddLogging(lb => lb.AddFluentMigratorConsole())
                         .BuildServiceProvider(false);
                 var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
