@@ -12,7 +12,7 @@ namespace Aspen.Core.Services
 
     public class MigrationService : IMigrationService
     {
-        private readonly bool secure;
+        private readonly bool secure = false;
 
         private ConnectionString adminConnectionString { get; }
 

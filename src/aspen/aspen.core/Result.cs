@@ -42,36 +42,19 @@ namespace Aspen.Core
             return await func(state);
         }
 
-        public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func)
-        {
-            if (result.IsSucccess)
+        public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func) =>
+            result.IsSucccess switch
             {
-                return func(result.State);
-            }
-            else
-            {
-                return Result<U>.Failure(result.Error);
-            }
+                true => func(result.State),
+                false => Result<U>.Failure(result.Error)
+            };
 
-            //Once we can use C# 9 (on .net 5) 
-            // return result.IsSucccess switch
-            // {
-            //     true => func(result.State)
-            //     false => Result<U>.Failure(result.Error);
-            // }
-        }
-
-        public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
-        {
-            if (result.IsSucccess)
+        public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func) =>
+            result.IsSucccess switch
             {
-                return await func(result.State);
-            }
-            else
-            {
-                return Result<U>.Failure(result.Error);
-            }
-        }
+                true => await func(result.State),
+                false => Result<U>.Failure(result.Error)
+            };
 
         public static async Task<Result<U>> ApplyAsync<U, T>(this Task<Result<T>> task, Func<T, Task<Result<U>>> func)
         {
