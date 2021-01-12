@@ -9,27 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.api", "aspen.api\aspe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.tests", "aspen.tests\aspen.tests.csproj", "{508E7095-F36A-4DBA-A5ED-30E4435982C1}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspen.web", "aspen.web\", "{13147DAA-FAF8-4503-8689-8920065C6E33}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_52681"
-		Debug.AspNetCompiler.PhysicalPath = "aspen.web\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52681\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_52681"
-		Release.AspNetCompiler.PhysicalPath = "aspen.web\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52681\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "52681"
-		SlnRelativePath = "aspen.web\"
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E117319-8FCB-4711-AF2A-EB2A44D6A58E}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
@@ -55,10 +34,6 @@ Global
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{508E7095-F36A-4DBA-A5ED-30E4435982C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13147DAA-FAF8-4503-8689-8920065C6E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13147DAA-FAF8-4503-8689-8920065C6E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13147DAA-FAF8-4503-8689-8920065C6E33}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{13147DAA-FAF8-4503-8689-8920065C6E33}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
