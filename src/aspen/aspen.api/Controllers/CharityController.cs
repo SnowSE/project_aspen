@@ -52,8 +52,7 @@ namespace Aspen.Api.Controllers
 
         [HttpGet("gettheme")]
         public async Task<ApiResult> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
-            await charityId
-                .ValidateFunction(id => Result<Guid>.Success(id))
+            await new Result<Guid>(charityId)
                 .ApplyAsync(charityRepository.GetById)
                 .ApplyAsync(themeRepository.GetByCharity)
                 .ReturnApiResult();

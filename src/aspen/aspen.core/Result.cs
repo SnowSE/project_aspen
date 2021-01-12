@@ -7,6 +7,13 @@ namespace Aspen.Core
     //maybe rename to internalresult
     public struct Result<T>
     {
+        public Result(T state)
+        {
+            IsSucccess = true;
+            State = state;
+            Error = null;
+        }
+
         public bool IsFailure => !IsSucccess;
         public bool IsSucccess { get; }
         public T State { get; }
@@ -15,8 +22,8 @@ namespace Aspen.Core
         private Result(bool IsSucccess, T state, string error)
         {
             this.IsSucccess = IsSucccess;
-            this.State = state;
-            this.Error = error;
+            State = state;
+            Error = error;
         }
 
         public static Result<T> Success(T state) => new Result<T>(true, state, null);
@@ -45,6 +52,13 @@ namespace Aspen.Core
             {
                 return Result<U>.Failure(result.Error);
             }
+
+            //Once we can use C# 9 (on .net 5) 
+            // return result.IsSucccess switch
+            // {
+            //     true => func(result.State)
+            //     false => Result<U>.Failure(result.Error);
+            // }
         }
 
         public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
