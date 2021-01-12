@@ -95,13 +95,13 @@ namespace Aspen.Api.Services
                 );
             }
 
-            return _users;
+            return users;
         }
 
         public async Task CreateUser(CreateUserRequest userRequest)
         {
-
-            var charityDbConnection = await getDbConnection(userRequest.CharityId);
+            var charity = Guid.Parse(userRequest.CharityId);
+            var charityDbConnection = await getDbConnection(charity);
 
 
             var salt = generateSalt();
@@ -112,7 +112,7 @@ namespace Aspen.Api.Services
                                  userRequest.LastName,
                                  userRequest.Username,
                                  hash,
-                                 "User",
+                                 userRequest.Role,
                                  salt,
                                  null);
 
@@ -133,9 +133,9 @@ namespace Aspen.Api.Services
             {
                 throw new Exception("Error creating user: " + e.MessageText);
             }
-
+/*
             //ToDo: Add to database instead of list
-            _users.Add(user);
+            _users.Add(user);*/
 
         }
 

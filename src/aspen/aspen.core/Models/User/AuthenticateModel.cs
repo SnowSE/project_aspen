@@ -13,6 +13,6 @@ namespace Aspen.Core.Models
         [Required]
         public string Charity { get; set; }
         [Required]
-        public Guid CharityID { get; set; }
+        public string CharityId { get; set; }
     }
 }
