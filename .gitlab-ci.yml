@@ -26,7 +26,7 @@ before_script:
 
 api_unit_test:
   stage: test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+  image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
   script:
     - dotnet test src/aspen/aspen.tests/
 
@@ -39,7 +39,7 @@ api_integration_test:
     POSTGRES_USER: aspen
     POSTGRES_PASSWORD: super_secret_aspen_password
     INTEGRATION_TEST_CONNECTION: "Host=postgres; Port=5432; Database=$POSTGRES_DB; Username=$POSTGRES_USER; Password=$POSTGRES_PASSWORD;"
-  image: mcr.microsoft.com/dotnet/sdk:5.0-buster
+  image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
   script:
     - dotnet test src/aspen/aspen.integration/
 
