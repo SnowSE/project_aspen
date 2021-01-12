@@ -30,7 +30,7 @@ namespace Aspen.Core.Repositories
 
                     return Result<bool>.Success(true);
                 }
-                catch(Npgsql.PostgresException e)
+                catch(Npgsql.PostgresException)
                 {
                     return Result<bool>.Failure("User already exists in database");
                 }
@@ -52,7 +52,7 @@ namespace Aspen.Core.Repositories
                     );
                     return Result<User>.Success(user);
                 }
-                catch(System.InvalidOperationException e)
+                catch(System.InvalidOperationException)
                 {
                     return Result<User>.Failure("User does not exist in database");
                 }

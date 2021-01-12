@@ -7,6 +7,13 @@ namespace Aspen.Core
     //maybe rename to internalresult
     public struct Result<T>
     {
+        public Result(T state)
+        {
+            IsSucccess = true;
+            State = state;
+            Error = null;
+        }
+
         public bool IsFailure => !IsSucccess;
         public bool IsSucccess { get; }
         public T State { get; }
@@ -15,8 +22,8 @@ namespace Aspen.Core
         private Result(bool IsSucccess, T state, string error)
         {
             this.IsSucccess = IsSucccess;
-            this.State = state;
-            this.Error = error;
+            State = state;
+            Error = error;
         }
 
         public static Result<T> Success(T state) => new Result<T>(true, state, null);
@@ -35,29 +42,19 @@ namespace Aspen.Core
             return await func(state);
         }
 
-        public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func)
-        {
-            if (result.IsSucccess)
+        public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func) =>
+            result.IsSucccess switch
             {
-                return func(result.State);
-            }
-            else
-            {
-                return Result<U>.Failure(result.Error);
-            }
-        }
+                true => func(result.State),
+                false => Result<U>.Failure(result.Error)
+            };
 
-        public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
-        {
-            if (result.IsSucccess)
+        public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func) =>
+            result.IsSucccess switch
             {
-                return await func(result.State);
-            }
-            else
-            {
-                return Result<U>.Failure(result.Error);
-            }
-        }
+                true => await func(result.State),
+                false => Result<U>.Failure(result.Error)
+            };
 
         public static async Task<Result<U>> ApplyAsync<U, T>(this Task<Result<T>> task, Func<T, Task<Result<U>>> func)
         {

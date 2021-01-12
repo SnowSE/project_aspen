@@ -52,8 +52,7 @@ namespace Aspen.Api.Controllers
 
         [HttpGet("gettheme")]
         public async Task<ApiResult> GetTheme([FromQuery(Name = "charityId")] Guid charityId) =>
-            await charityId
-                .ValidateFunction(id => Result<Guid>.Success(id))
+            await new Result<Guid>(charityId)
                 .ApplyAsync(charityRepository.GetById)
                 .ApplyAsync(themeRepository.GetByCharity)
                 .ReturnApiResult();
@@ -61,7 +60,7 @@ namespace Aspen.Api.Controllers
         private Result<Guid> validateCharityId(Guid id) => Result<Guid>.Success(id);
 
         [HttpGet("gethomepage")]
-        public async Task<ApiResult> GetHomePage([FromQuery(Name = "charityId")] Guid charityId)
+        public ApiResult GetHomePage([FromQuery(Name = "charityId")] Guid charityId)
         {
             const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
             return ApiResult.Success(new HomePage(loremIpsum));

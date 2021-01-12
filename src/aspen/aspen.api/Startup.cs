@@ -24,7 +24,6 @@ namespace Aspen.Api
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         private ConnectionString connectionString;
 
         public IConfiguration Configuration { get; }
