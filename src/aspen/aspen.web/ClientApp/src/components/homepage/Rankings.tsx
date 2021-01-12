@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -14,6 +15,8 @@ import { APIService } from "../../services/APIService";
 import { DomainService } from "../../services/DomainService";
 import { Team } from "../../models/TeamModel";
 import { Theme } from "../../models/Theme";
+import {CREATE_TEAM_ROUTE} from '../../constants/RouteConstants'
+import { create } from "domain";
 
 interface RankingsProps{
   theme: Theme
@@ -83,10 +86,13 @@ const getteams = async() =>{
               </List>
             ))
           : "Loading..."}
-      </Card>
-      <Button style={classes.button} variant="outlined">
-        Create a team
-      </Button>
+          </Card>
+     
+        <Link to={CREATE_TEAM_ROUTE}>
+          <Button style={classes.button} variant="outlined">
+            Create a team
+          </Button>
+        </Link >
       <Button style={classes.button} variant="outlined">
         Join a team
       </Button>
