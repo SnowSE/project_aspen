@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using aspen.core.Models;
 using Aspen.Core.Models;
 
-namespace Aspen.Api.Services
+namespace Aspen.CharityApi.Services
 {
     public interface IUserService
     {

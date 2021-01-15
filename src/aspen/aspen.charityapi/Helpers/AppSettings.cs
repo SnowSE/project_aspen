@@ -1,4 +1,4 @@
-namespace Aspen.Api.Helpers
+namespace Aspen.CharityApi.Helpers
 {
     public class AppSettings
     {

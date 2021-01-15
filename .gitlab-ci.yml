@@ -46,7 +46,7 @@ api_integration_test:
 build_api:
   stage: build
   script:
-    - docker build -t $API_IMAGE -f src/aspen/aspen.api/Dockerfile src/aspen/
+    - docker build -t $API_IMAGE -f src/aspen/aspen.charityapi/Dockerfile src/aspen/
     - docker push $API_IMAGE
 
 build_web:

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Aspen.Core;
 using Aspen.Core.Models;
 
-namespace Aspen.Api.Controllers
+namespace Aspen.CharityApi.Controllers
 {
     [Route("admin/charity/")]
     public class AdminCharityController : ControllerBase

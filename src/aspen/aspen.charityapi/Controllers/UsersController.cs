@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Aspen.Core.Services;
 using Aspen.Core.Models;
-using Aspen.Api.Services;
+using Aspen.CharityApi.Services;
 using System.Threading.Tasks;
 using Aspen.Core;
 using Microsoft.Extensions.Logging;
 using aspen.core.Models;
 using System;
 
-namespace Aspen.Api.Controllers
+namespace Aspen.CharityApi.Controllers
 {
     [ApiController]
     [Route("admin/user/")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using Aspen.Core.Models;
 
-namespace Aspen.Api.Http
+namespace Aspen.CharityApi.Http
 {
     public class TeamRequest
     {

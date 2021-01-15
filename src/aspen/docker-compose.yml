@@ -19,7 +19,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: aspen.api/Dockerfile
+      dockerfile: aspen.charityapi/Dockerfile
     container_name: api
     depends_on:
       - database

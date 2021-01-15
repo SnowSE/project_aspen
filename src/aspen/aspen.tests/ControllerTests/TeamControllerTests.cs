@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Aspen.Api.Controllers;
-using Aspen.Api.Http;
+using Aspen.CharityApi.Controllers;
+using Aspen.CharityApi.Http;
 using Aspen.Core;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;

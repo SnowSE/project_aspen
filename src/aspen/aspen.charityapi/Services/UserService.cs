@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Aspen.Core.Models;
-using Aspen.Api.Helpers;
+using Aspen.CharityApi.Helpers;
 using aspen.core.Models;
 using FluentMigrator;
 using Aspen.Core.Services;
@@ -19,7 +19,7 @@ using System.Data.Common;
 using System.Data;
 
 
-namespace Aspen.Api.Services
+namespace Aspen.CharityApi.Services
 {
     public class UserService : IUserService
     {

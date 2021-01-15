@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "aspen.api": {
+    "aspen.charityapi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

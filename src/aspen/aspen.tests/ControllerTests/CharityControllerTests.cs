@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using Aspen.Core.Repositories;
-using Aspen.Api.Controllers;
+using Aspen.CharityApi.Controllers;
 using Moq;
 using NUnit.Framework;
 using Aspen.Core.Models;
 using System;
 using FluentAssertions;
 using Aspen.Core;
-using Aspen.Api.Http;
+using Aspen.CharityApi.Http;
 
 namespace Aspen.Tests.ControllerTests
 {

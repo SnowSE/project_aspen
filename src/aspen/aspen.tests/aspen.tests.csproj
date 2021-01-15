@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\aspen.core\aspen.core.csproj" />
-    <ProjectReference Include="..\aspen.api\aspen.api.csproj" />
+    <ProjectReference Include="..\aspen.charityapi\aspen.charityapi.csproj" />
   </ItemGroup>
 
 </Project>

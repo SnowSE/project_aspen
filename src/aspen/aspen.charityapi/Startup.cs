@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 using System.Linq;
 using Npgsql;
 using System.IO;
-using Aspen.Api.Helpers;
-using Aspen.Api.Services;
+using Aspen.CharityApi.Helpers;
+using Aspen.CharityApi.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Dapper;
 using System.Text.RegularExpressions;
 
-namespace Aspen.Api
+namespace Aspen.CharityApi
 {
     public class Startup
     {

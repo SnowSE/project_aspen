@@ -10,7 +10,7 @@ Run docker-compose up --build
 
 ### Running this stand-alone
 - Start the database
-  - `cd src/aspen/aspen.api`
+  - `cd src/aspen/aspen.charityapi`
   - If you're on windows: `./startDevDb.cmd` 
   - If not: `./startDvDb.sh`
 - Start the api

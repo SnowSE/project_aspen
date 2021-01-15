@@ -10,15 +10,15 @@ RUN chmod 700 /app/.postgresql
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 WORKDIR /src
-COPY ["aspen.api/aspen.api.csproj", "aspen.api/"]
+COPY ["aspen.charityapi/aspen.charityapi.csproj", "aspen.charityapi/"]
 COPY ["aspen.core/aspen.core.csproj", "aspen.core/"]
-RUN dotnet restore "aspen.api/aspen.api.csproj"
+RUN dotnet restore "aspen.charityapi/aspen.charityapi.csproj"
 COPY . .
-WORKDIR "/src/aspen.api"
-RUN dotnet build "aspen.api.csproj" -c Release -o /app/build
+WORKDIR "/src/aspen.charityapi"
+RUN dotnet build "aspen.charityapi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "aspen.api.csproj" -c Release -o /app/publish
+RUN dotnet publish "aspen.charityapi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
@@ -26,4 +26,4 @@ COPY --from=publish /app/publish .
 RUN chown -R app:app /app
 ENV ASPNETCORE_URLS=http://+:5000
 USER app
-ENTRYPOINT ["dotnet", "aspen.api.dll"]
+ENTRYPOINT ["dotnet", "aspen.charityapi.dll"]

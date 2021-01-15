@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.core", "aspen.core\aspen.core.csproj", "{988CD416-EAEC-4EE3-92A3-EA0027A2EF45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.api", "aspen.api\aspen.api.csproj", "{CCD53E97-DBA4-468B-ABFC-2169B4F89880}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.charityapi", "aspen.charityapi\aspen.charityapi.csproj", "{CCD53E97-DBA4-468B-ABFC-2169B4F89880}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aspen.tests", "aspen.tests\aspen.tests.csproj", "{508E7095-F36A-4DBA-A5ED-30E4435982C1}"
 EndProject

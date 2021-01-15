@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using Aspen.Api.Http;
+using Aspen.CharityApi.Http;
 using Aspen.Core;
 using Aspen.Core.Models;
 using Aspen.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Aspen.Api.Controllers
+namespace Aspen.CharityApi.Controllers
 {
     [ApiController]
     [Route("{controller}/")]
