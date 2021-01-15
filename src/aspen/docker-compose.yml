@@ -16,11 +16,11 @@ services:
     networks:
       internal:
 
-  api:
+  charityapi:
     build:
       context: .
       dockerfile: aspen.charityapi/Dockerfile
-    container_name: api
+    container_name: charityapi
     depends_on:
       - database
     environment:
@@ -33,18 +33,50 @@ services:
     networks:
       internal:
 
-  web:
+  globaladminapi:
     build:
-      context: aspen.web
-    container_name: web
+      context: .
+      dockerfile: aspen.globaladminapi/Dockerfile
+    container_name: globaladminapi
+    depends_on:
+      - database
+    environment:
+      - PGPASSFILE=/.pgpass
+    volumes:
+      - .pgpass:/.pgpass
+    ports:
+        - 5001:5000
+      #  - 443:443
+    networks:
+      internal:        
+
+  charityweb:
+    build:
+      context: aspen.charityweb
+    container_name: charityweb
     ports:
       - 3000:3000
     environment:
       - REACT_APP_GLOBAL_ADMIN_DOMAIN=aspen
-      - REACT_APP_API_URL=http://kubernetes.docker.internal:5000
+      - REACT_APP_CHARITYAPI_URL=http://kubernetes.docker.internal:5000
+      - REACT_APP_GLOBALADMINAPI_URL=http://kubernetes.docker.internal:5001
     networks:
       internal:
     stdin_open: true
+
+  globaladminweb:
+    build:
+      context: aspen.globaladminweb
+    container_name: globaladminweb
+    ports:
+      - 3001:3000
+    environment:
+      - REACT_APP_GLOBAL_ADMIN_DOMAIN=aspen
+      - REACT_APP_CHARITYAPI_URL=http://kubernetes.docker.internal:5000
+      - REACT_APP_GLOBALADMINAPI_URL=http://kubernetes.docker.internal:5001
+    networks:
+      internal:
+    stdin_open: true    
 
 networks:
   internal:
