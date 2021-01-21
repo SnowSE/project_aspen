@@ -1,0 +1,13 @@
+declare module "@material-ui/core";
+declare module "@material-ui/core/styles";
+declare module "@material-ui/core/Grid";
+declare module "@material-ui/core/Card";
+declare module "@material-ui/core/CardActionArea";
+declare module "@material-ui/core/CardActions";
+declare module "@material-ui/core/CardContent";
+declare module "@material-ui/core/CardMedia";
+declare module "@material-ui/core/Button";
+declare module "@material-ui/core/Typography";
+declare module "@material-ui/core/Typography";
+declare module "react-router-dom";
+declare module "react-confirm-alert";
