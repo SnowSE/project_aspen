@@ -1,6 +1,6 @@
-version: '3.4'
-
+version: '3'
 services:
+
   database:
     image: postgres
     container_name: database
@@ -16,8 +16,7 @@ services:
     networks:
       internal:
 
-  aspen.charityapi:
-    image: ${DOCKER_REGISTRY-}aspencharityapi
+  charityapi:
     build:
       context: .
       dockerfile: aspen.charityapi/Dockerfile
@@ -30,11 +29,11 @@ services:
       - .pgpass:/.pgpass
     ports:
        - 5000:5000
+      #  - 443:443
     networks:
       internal:
 
-  aspen.globaladminapi:
-    image: ${DOCKER_REGISTRY-}aspenglobaladminapi
+  globaladminapi:
     build:
       context: .
       dockerfile: aspen.globaladminapi/Dockerfile
@@ -46,10 +45,10 @@ services:
     volumes:
       - .pgpass:/.pgpass
     ports:
-       - 5001:5000
+        - 5001:5000
+      #  - 443:443
     networks:
-      internal:
-
+      internal:        
 
   charityweb:
     build:
@@ -77,7 +76,7 @@ services:
       - REACT_APP_GLOBALADMINAPI_URL=http://kubernetes.docker.internal:5001
     networks:
       internal:
-    stdin_open: true
+    stdin_open: true    
 
 networks:
   internal:
