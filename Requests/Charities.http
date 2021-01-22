@@ -8,7 +8,7 @@ GET http://kubernetes.docker.internal:5000/admin/charity/Get?charityid=
 GET http://kubernetes.docker.internal:5000/Charity/Gettheme?charityid=
 
 ### Create Charity
-POST http://kubernetes.docker.internal:5000/Admin/Charity/Create
+POST http://kubernetes.docker.internal:5001/Admin/Charity/Create
 Content-Type: application/json
 mode: cors
 
