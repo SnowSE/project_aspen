@@ -11,14 +11,13 @@ using System.Text.Json.Serialization;
 namespace dotnet.Controllers
 {
   [ApiController]
-  [Authorize]
-  [Route("/api/[controller]")]
-  public class UserController : ControllerBase
+  [Route("[controller]")]
+  public class HealthController : ControllerBase
   {
 
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public UserController(ILogger<WeatherForecastController> logger)
+    public HealthController(ILogger<WeatherForecastController> logger)
     {
       _logger = logger;
     }
@@ -26,8 +25,7 @@ namespace dotnet.Controllers
     [HttpGet]
     public String Get()
     {
-      // return JsonSerializer.Serialize(User);
-      return "here";
+      return "ur good";
     }
   }
 }

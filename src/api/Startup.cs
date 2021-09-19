@@ -39,13 +39,13 @@ namespace dotnet
         // o.Authority = Configuration["Jwt:Authority"];
         // o.Audience = Configuration["Jwt:Audience"];
 
-        o.Authority = "http://auth_web:8080/auth/realms/master";
-        o.Audience = "react-app";
+        o.Authority = "http://auth:8080/auth/realms/aspen";
+        o.Audience = "aspen-web";
 
 
         o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-          ValidAudiences = new string[] { "master-realm" },
+          ValidAudiences = new string[] { "aspen" },
           ValidateIssuer = false, //I think this would be true if we were using the same url to talk to keycloak
           // ValidateIssuerSigningKey = false,
           // ValidateAudience = false,
@@ -59,6 +59,7 @@ namespace dotnet
           {
             Console.WriteLine("Authentication failure");
             Console.WriteLine(c.Exception);
+            
             c.NoResult();
 
             c.Response.StatusCode = 500;

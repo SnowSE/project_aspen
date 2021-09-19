@@ -11,8 +11,8 @@ const reactAppUrl = process.env.REACT_APP_PUBLIC_URL;
 
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
-  authority: 'http://localhost:4000/auth/realms/master/.well-known/openid-configuration',
-  client_id: 'react-app',
+  authority: 'http://localhost/auth/realms/aspen/.well-known/openid-configuration',
+  client_id: 'aspen-web',
   redirect_uri: window.location.href + '?login=callback',
   silent_redirect_uri: window.location.origin + '?login=silentrenew',
   response_type: 'code',
