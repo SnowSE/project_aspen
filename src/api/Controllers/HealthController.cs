@@ -15,9 +15,9 @@ namespace dotnet.Controllers
   public class HealthController : ControllerBase
   {
 
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<HealthController> _logger;
 
-    public HealthController(ILogger<WeatherForecastController> logger)
+    public HealthController(ILogger<HealthController> logger)
     {
       _logger = logger;
     }

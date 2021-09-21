@@ -2016,6 +2016,7 @@ c8e1aee9-ef90-43c7-a336-dca650a6bd52	Allowed Client Scopes	aspen	allowed-client-
 d706712f-17ad-4332-806f-c6b36a0e9d33	hmac-generated	aspen	hmac-generated	org.keycloak.keys.KeyProvider	aspen	\N
 5cc93f0b-eb7b-4e9e-a8c9-6fc1cf54beb5	rsa-generated	aspen	rsa-generated	org.keycloak.keys.KeyProvider	aspen	\N
 f93806ce-3fd9-451f-80f7-aac3d58a43ee	rsa-enc-generated	aspen	rsa-generated	org.keycloak.keys.KeyProvider	aspen	\N
+29c088cb-c4a4-4224-9eb3-a1ca98156810	\N	aspen	declarative-user-profile	org.keycloak.userprofile.UserProfileProvider	aspen	\N
 \.
 
 
@@ -2180,6 +2181,7 @@ c50a1a92-a671-4588-acc3-0df447bab19e	bf06e6ae-ba31-4b21-b893-599ecea4eb26
 de07690a-efe2-4225-9e2a-3908474f19db	84b6eb25-5a4b-4c54-86c4-2653a36dfb19
 44df8fbc-26a0-4eb7-b595-a2d23afdf1ae	5f34cfef-8ce3-408c-9e90-fa50b5ac22d3
 c9b1fa63-17be-4b24-aa7c-775cebc84e29	9be77a31-d45b-49ed-9e97-dccd2d72b9b4
+a17543af-0992-4d18-93c8-4a82bb13578e	441bf022-0174-4473-b4d1-92e36ddbcb73
 \.
 
 
@@ -2190,6 +2192,7 @@ c9b1fa63-17be-4b24-aa7c-775cebc84e29	9be77a31-d45b-49ed-9e97-dccd2d72b9b4
 COPY public.credential (id, salt, type, user_id, created_date, user_label, secret_data, credential_data, priority) FROM stdin;
 26cdb7a3-413a-450e-8280-f3b6ea60d187	\N	password	06be471b-1c32-40ea-86ad-20b1914ec450	1632019951487	\N	{"value":"maoKrhi7H7NB6Gxeri/mCU2FUBktNUlSOJZ59Uu5gWarNjk3BcFuE+/9TiAteILyi1inPxoWbIu+90GWdo+oBw==","salt":"eTF+Vbeg90LnNYPku55jIQ==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
 00044d8d-fb50-4fc9-b2b3-408caf210cf7	\N	password	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de	1632020485879	\N	{"value":"To0R7HSfc28Hs2R2kg+EF+hNc+MK/4Ej7jz1ulP+OIM7EkrEjxOiaCgJyHuMJlAf67TzePfNDCDkNCAaoRIbaQ==","salt":"Pz37PHXNDo/dBbDJiQTb+w==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
+8322675c-5c9a-40a2-873e-2da5241a42e9	\N	password	3f64dbd3-a135-45eb-9d1c-afe9151082cd	1632198293032	\N	{"value":"6bSQLg6B7ScsdqpIEJcLpRSqZsm88tNf85XLQqdpna0Bw9l9kQadqVo+OtXImEG/iiKXsagv5qkGpjEPkEGsIw==","salt":"LCrH/rS1SH5SCg5AQUIXTA==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
 \.
 
 
@@ -2427,6 +2430,7 @@ COPY public.federated_user (id, storage_provider_id, realm_id) FROM stdin;
 --
 
 COPY public.group_attribute (id, name, value, group_id) FROM stdin;
+bb5e4bef-115b-4767-93fc-ba4afbccfc07	isInOtherGroup	maybe...	f1ee9d3b-a7dd-466a-9cf6-9c2b559d19ee
 \.
 
 
@@ -2477,6 +2481,7 @@ COPY public.idp_mapper_config (idp_mapper_id, value, name) FROM stdin;
 
 COPY public.keycloak_group (id, name, parent_group, realm_id) FROM stdin;
 1b609383-7203-47ff-b4eb-4a3e22d1e601	aspen-users	 	aspen
+f1ee9d3b-a7dd-466a-9cf6-9c2b559d19ee	other-group	 	aspen
 \.
 
 
@@ -2564,6 +2569,8 @@ de07690a-efe2-4225-9e2a-3908474f19db	7af7268b-2ed7-464c-b50d-70ebaff119e5	t	${ro
 44df8fbc-26a0-4eb7-b595-a2d23afdf1ae	7af7268b-2ed7-464c-b50d-70ebaff119e5	t	${role_manage-consent}	manage-consent	aspen	7af7268b-2ed7-464c-b50d-70ebaff119e5	\N
 00b72167-2ea2-47ba-a687-458a05e9696f	7af7268b-2ed7-464c-b50d-70ebaff119e5	t	${role_view-applications}	view-applications	aspen	7af7268b-2ed7-464c-b50d-70ebaff119e5	\N
 9be77a31-d45b-49ed-9e97-dccd2d72b9b4	b940652c-a9b6-483a-b212-945e3d5491d7	t	${role_impersonation}	impersonation	master	b940652c-a9b6-483a-b212-945e3d5491d7	\N
+441bf022-0174-4473-b4d1-92e36ddbcb73	aspen	f	Admin Aspen Users	aspen-admin	aspen	\N	\N
+a17543af-0992-4d18-93c8-4a82bb13578e	c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	t	\N	aspen-admin	aspen	c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	\N
 \.
 
 
@@ -2662,6 +2669,9 @@ c0341aed-9295-4bb7-b0e7-71f651287cfe	phone number	openid-connect	oidc-usermodel-
 add99e58-d86d-4d63-90dd-3ba2df7e5d99	audience resolve	openid-connect	oidc-audience-resolve-mapper	c7555935-08d9-4c93-8fea-401d7ee4ea49	\N
 4b5851bb-d567-448d-b887-c1b780fb771c	locale	openid-connect	oidc-usermodel-attribute-mapper	855cb299-7dc3-44de-b189-075aeaa4fc69	\N
 6020d184-957a-416e-9818-8091137e2054	aspen-api	openid-connect	oidc-audience-mapper	\N	26192d59-fb37-46e3-ad58-9e3660830db9
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	Group Mapper	openid-connect	oidc-group-membership-mapper	c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	\N
+4424a01d-cbe1-4085-b12d-0c475ef7d978	Role Mapper	openid-connect	oidc-role-name-mapper	c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	\N
+99c87403-3c46-4ad5-a10a-6e606874639f	realm roles	openid-connect	oidc-usermodel-realm-role-mapper	c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	\N
 \.
 
 
@@ -2964,6 +2974,20 @@ c0341aed-9295-4bb7-b0e7-71f651287cfe	String	jsonType.label
 6020d184-957a-416e-9818-8091137e2054	aspen-web	included.client.audience
 6020d184-957a-416e-9818-8091137e2054	true	id.token.claim
 6020d184-957a-416e-9818-8091137e2054	true	access.token.claim
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	false	full.path
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	true	id.token.claim
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	true	access.token.claim
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	groups	claim.name
+c5ef31f0-6b8e-4af1-89ee-e3b7ccbf55bd	true	userinfo.token.claim
+4424a01d-cbe1-4085-b12d-0c475ef7d978	aspen-admin	role
+4424a01d-cbe1-4085-b12d-0c475ef7d978	admin-aspen	new.role.name
+99c87403-3c46-4ad5-a10a-6e606874639f	foo	user.attribute
+99c87403-3c46-4ad5-a10a-6e606874639f	true	access.token.claim
+99c87403-3c46-4ad5-a10a-6e606874639f	String	jsonType.label
+99c87403-3c46-4ad5-a10a-6e606874639f	true	multivalued
+99c87403-3c46-4ad5-a10a-6e606874639f	true	userinfo.token.claim
+99c87403-3c46-4ad5-a10a-6e606874639f	true	id.token.claim
+99c87403-3c46-4ad5-a10a-6e606874639f	roles	claim.name
 \.
 
 
@@ -2973,7 +2997,7 @@ c0341aed-9295-4bb7-b0e7-71f651287cfe	String	jsonType.label
 
 COPY public.realm (id, access_code_lifespan, user_action_lifespan, access_token_lifespan, account_theme, admin_theme, email_theme, enabled, events_enabled, events_expiration, login_theme, name, not_before, password_policy, registration_allowed, remember_me, reset_password_allowed, social, ssl_required, sso_idle_timeout, sso_max_lifespan, update_profile_on_soc_login, verify_email, master_admin_client, login_lifespan, internationalization_enabled, default_locale, reg_email_as_username, admin_events_enabled, admin_events_details_enabled, edit_username_allowed, otp_policy_counter, otp_policy_window, otp_policy_period, otp_policy_digits, otp_policy_alg, otp_policy_type, browser_flow, registration_flow, direct_grant_flow, reset_credentials_flow, client_auth_flow, offline_session_idle_timeout, revoke_refresh_token, access_token_life_implicit, login_with_email_allowed, duplicate_emails_allowed, docker_auth_flow, refresh_token_max_reuse, allow_user_managed_access, sso_max_lifespan_remember_me, sso_idle_timeout_remember_me, default_role) FROM stdin;
 master	60	300	60	\N	\N	\N	t	f	0	\N	master	0	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	99a223f0-9821-4c16-8101-df120180f09f	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	24c21a84-eb0d-41e4-8b53-d18327307361	e20ff429-1dfd-4de5-9a9f-544a2ea1855e	713abcc2-95cb-4657-8b5b-56ca0304e9ff	5c743a3a-74d5-4a52-a285-15f047c52251	45984ddc-3a91-4bd0-8005-1bdc073d2447	2592000	f	900	t	f	365f3269-8973-44a8-847b-6ad19fdb4f3c	0	f	0	0	1ddd0d01-b06f-4731-ad0a-52abe01ab6b5
-aspen	60	300	300	\N	\N	\N	t	f	0	\N	aspen	0	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	b940652c-a9b6-483a-b212-945e3d5491d7	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	64d8710c-e9e4-41d8-ad78-10cd0f8eef7e	6ba886ac-9cbc-453a-996a-24d7c795d544	b0322382-1011-487b-8bb1-76b38414874c	67cbb552-f33a-4e12-a5e1-ec50b6c8ef12	414c1c11-b528-4ec6-bd38-8d7d06fe7866	2592000	f	900	t	f	4a7a0b2b-c0ca-4872-8fef-df7d2bf5fc3c	0	f	0	0	526ddcda-dc7d-4c47-9730-af8180cbada4
+aspen	60	300	300	keycloak.v2	base	\N	t	f	0	keycloak	aspen	0	\N	t	f	t	f	NONE	1800	36000	f	f	b940652c-a9b6-483a-b212-945e3d5491d7	1800	f	\N	f	f	f	t	0	1	30	6	HmacSHA1	totp	64d8710c-e9e4-41d8-ad78-10cd0f8eef7e	6ba886ac-9cbc-453a-996a-24d7c795d544	b0322382-1011-487b-8bb1-76b38414874c	67cbb552-f33a-4e12-a5e1-ec50b6c8ef12	414c1c11-b528-4ec6-bd38-8d7d06fe7866	2592000	f	900	t	f	4a7a0b2b-c0ca-4872-8fef-df7d2bf5fc3c	0	f	0	0	526ddcda-dc7d-4c47-9730-af8180cbada4
 \.
 
 
@@ -3002,13 +3026,17 @@ displayNameHtml	master	<div class="kc-logo-text"><span>Keycloak</span></div>
 defaultSignatureAlgorithm	master	RS256
 offlineSessionMaxLifespanEnabled	master	false
 offlineSessionMaxLifespan	master	5184000
-_browser_header.contentSecurityPolicyReportOnly	aspen	
-_browser_header.xContentTypeOptions	aspen	nosniff
-_browser_header.xRobotsTag	aspen	none
-_browser_header.xFrameOptions	aspen	SAMEORIGIN
-_browser_header.contentSecurityPolicy	aspen	frame-src 'self'; frame-ancestors 'self'; object-src 'none';
-_browser_header.xXSSProtection	aspen	1; mode=block
-_browser_header.strictTransportSecurity	aspen	max-age=31536000; includeSubDomains
+clientSessionIdleTimeout	aspen	0
+clientSessionMaxLifespan	aspen	0
+clientOfflineSessionIdleTimeout	aspen	0
+clientOfflineSessionMaxLifespan	aspen	0
+oauth2DeviceCodeLifespan	aspen	600
+oauth2DevicePollingInterval	aspen	5
+cibaBackchannelTokenDeliveryMode	aspen	poll
+cibaExpiresIn	aspen	120
+cibaInterval	aspen	5
+cibaAuthRequestedUserHint	aspen	login_hint
+parRequestUriLifespan	aspen	60
 bruteForceProtected	aspen	false
 permanentLockout	aspen	false
 maxFailureWaitSeconds	aspen	900
@@ -3017,17 +3045,11 @@ waitIncrementSeconds	aspen	60
 quickLoginCheckMilliSeconds	aspen	1000
 maxDeltaTimeSeconds	aspen	43200
 failureFactor	aspen	30
+actionTokenGeneratedByAdminLifespan	aspen	43200
+actionTokenGeneratedByUserLifespan	aspen	300
 defaultSignatureAlgorithm	aspen	RS256
 offlineSessionMaxLifespanEnabled	aspen	false
 offlineSessionMaxLifespan	aspen	5184000
-clientSessionIdleTimeout	aspen	0
-clientSessionMaxLifespan	aspen	0
-clientOfflineSessionIdleTimeout	aspen	0
-clientOfflineSessionMaxLifespan	aspen	0
-actionTokenGeneratedByAdminLifespan	aspen	43200
-actionTokenGeneratedByUserLifespan	aspen	300
-oauth2DeviceCodeLifespan	aspen	600
-oauth2DevicePollingInterval	aspen	5
 webAuthnPolicyRpEntityName	aspen	keycloak
 webAuthnPolicySignatureAlgorithms	aspen	ES256
 webAuthnPolicyRpId	aspen	
@@ -3046,13 +3068,15 @@ webAuthnPolicyRequireResidentKeyPasswordless	aspen	not specified
 webAuthnPolicyUserVerificationRequirementPasswordless	aspen	not specified
 webAuthnPolicyCreateTimeoutPasswordless	aspen	0
 webAuthnPolicyAvoidSameAuthenticatorRegisterPasswordless	aspen	false
-cibaBackchannelTokenDeliveryMode	aspen	poll
-cibaExpiresIn	aspen	120
-cibaInterval	aspen	5
-cibaAuthRequestedUserHint	aspen	login_hint
-parRequestUriLifespan	aspen	60
 client-policies.profiles	aspen	{"profiles":[]}
 client-policies.policies	aspen	{"policies":[]}
+_browser_header.contentSecurityPolicyReportOnly	aspen	
+_browser_header.xContentTypeOptions	aspen	nosniff
+_browser_header.xRobotsTag	aspen	none
+_browser_header.xFrameOptions	aspen	SAMEORIGIN
+_browser_header.contentSecurityPolicy	aspen	frame-src 'self'; frame-ancestors 'self'; object-src 'none';
+_browser_header.xXSSProtection	aspen	1; mode=block
+_browser_header.strictTransportSecurity	aspen	max-age=31536000; includeSubDomains
 \.
 
 
@@ -3113,6 +3137,7 @@ COPY public.realm_smtp_config (realm_id, value, name) FROM stdin;
 --
 
 COPY public.realm_supported_locales (realm_id, value) FROM stdin;
+aspen	
 \.
 
 
@@ -3238,6 +3263,7 @@ COPY public.resource_uris (resource_id, value) FROM stdin;
 --
 
 COPY public.role_attribute (id, role_id, name, value) FROM stdin;
+4aa44790-a2b8-4ac4-a583-0e5fa1b7a460	441bf022-0174-4473-b4d1-92e36ddbcb73	AspenAdmin	true
 \.
 
 
@@ -3290,6 +3316,7 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
 06be471b-1c32-40ea-86ad-20b1914ec450	\N	e9d56013-0a76-486b-a167-28d34bb16db8	f	t	\N	\N	\N	master	admin	1632019951425	\N	0
 9f3ef3d5-7c23-4ba1-8138-37f7693cd5de	user@toteslegit.website	user@toteslegit.website	t	t	\N	User	Name	aspen	user	1632020474047	\N	0
+3f64dbd3-a135-45eb-9d1c-afe9151082cd	admin@projectaspen.org	admin@projectaspen.org	t	t	\N	aspen	admin	aspen	aspenadmin	1632198221032	\N	0
 \.
 
 
@@ -3331,6 +3358,8 @@ COPY public.user_federation_provider (id, changed_sync_period, display_name, ful
 
 COPY public.user_group_membership (group_id, user_id) FROM stdin;
 1b609383-7203-47ff-b4eb-4a3e22d1e601	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de
+f1ee9d3b-a7dd-466a-9cf6-9c2b559d19ee	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de
+1b609383-7203-47ff-b4eb-4a3e22d1e601	3f64dbd3-a135-45eb-9d1c-afe9151082cd
 \.
 
 
@@ -3350,6 +3379,8 @@ COPY public.user_role_mapping (role_id, user_id) FROM stdin;
 1ddd0d01-b06f-4731-ad0a-52abe01ab6b5	06be471b-1c32-40ea-86ad-20b1914ec450
 c9b1fa63-17be-4b24-aa7c-775cebc84e29	06be471b-1c32-40ea-86ad-20b1914ec450
 526ddcda-dc7d-4c47-9730-af8180cbada4	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de
+526ddcda-dc7d-4c47-9730-af8180cbada4	3f64dbd3-a135-45eb-9d1c-afe9151082cd
+441bf022-0174-4473-b4d1-92e36ddbcb73	3f64dbd3-a135-45eb-9d1c-afe9151082cd
 \.
 
 

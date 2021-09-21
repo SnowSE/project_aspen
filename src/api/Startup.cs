@@ -1,18 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 
@@ -46,10 +39,9 @@ namespace dotnet
         o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
           ValidAudiences = new string[] { "aspen" },
-          ValidateIssuer = false, //I think this would be true if we were using the same url to talk to keycloak
-          // ValidateIssuerSigningKey = false,
-          // ValidateAudience = false,
-
+          ValidateIssuerSigningKey = true,
+          ValidateIssuer = true,
+          ValidIssuer = "http://localhost/auth/realms/aspen",
         };
 
         o.RequireHttpsMetadata = false;
@@ -59,7 +51,7 @@ namespace dotnet
           {
             Console.WriteLine("Authentication failure");
             Console.WriteLine(c.Exception);
-            
+
             c.NoResult();
 
             c.Response.StatusCode = 500;
