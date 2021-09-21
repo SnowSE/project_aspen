@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Security.Claims;
 
 namespace dotnet.Controllers
 {
@@ -16,9 +17,9 @@ namespace dotnet.Controllers
   public class UserController : ControllerBase
   {
 
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(ILogger<WeatherForecastController> logger)
+    public UserController(ILogger<UserController> logger)
     {
       _logger = logger;
     }
@@ -26,7 +27,16 @@ namespace dotnet.Controllers
     [HttpGet]
     public String Get()
     {
-      // return JsonSerializer.Serialize(User);
+
+      foreach (var claim in User.Claims)
+      {
+        Console.WriteLine(claim.Type + " - " + claim.Value + " - " + claim.ToString());
+      }
+      Console.WriteLine("");
+      Console.WriteLine("");
+      Console.WriteLine("");
+      Console.WriteLine("");
+      // User.Claims
       return "here";
     }
   }

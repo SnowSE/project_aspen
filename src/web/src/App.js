@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { AdminApiButton } from './components/AdminApiButton';
 import { ApiButton } from './components/ApiButton';
 import { NavBar } from './components/NavBar';
 import { AuthContext } from './store/AuthContext';
@@ -29,6 +30,8 @@ function App() {
         {JSON.stringify(user.profile)}
         <br />
         <ApiButton />
+        <hr />
+        <AdminApiButton />
       </div>}
     </div>
   );
