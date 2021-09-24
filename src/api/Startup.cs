@@ -96,7 +96,7 @@ namespace dotnet
 
 
 
-            return $"host={host}; port={port}; database={database}; username={user}; password={password}; SSL Mode=Require; Trust Server Certificate=true";
+            return $"host={host}; port={port}; database={database}; username={user}; password={password};";
         }
 
 
