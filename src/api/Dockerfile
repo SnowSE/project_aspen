@@ -13,4 +13,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
 RUN apk add curl
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "dotnet.dll"]
+ENTRYPOINT ["dotnet", "aspen_api.dll"]
