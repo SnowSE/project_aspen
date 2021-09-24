@@ -8,6 +8,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using dotnet.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace dotnet
 {
@@ -23,7 +26,9 @@ namespace dotnet
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddAuthentication(options =>
+        services.AddDbContext<ApiDBContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
+            services.AddScoped<IDataRepository, DataRepository>();
+            services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,9 +79,29 @@ namespace dotnet
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
       });
     }
+        private string convertUrlConnectionString(string url)
+        {
+            if (!url.Contains("//"))
+                return url;
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+
+            var uri = new Uri(url);
+            var host = uri.Host;
+            var port = uri.Port;
+            var database = uri.Segments.Last();
+            var parts = uri.AbsoluteUri.Split(':', '/', '@');
+            var user = parts[3];
+            var password = parts[4];
+
+
+
+            return $"host={host}; port={port}; database={database}; username={user}; password={password}; SSL Mode=Require; Trust Server Certificate=true";
+        }
+
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
