@@ -34,7 +34,7 @@ services:
     container_name: api_db
     volumes:
       - api_db:/var/lib/postgresql/data
-      - ../dev-resources/auth_db/auth_db.sql:/docker-entrypoint-initdb.d/auth_db.sql
+      - ../dev-resources/api_db/api_db.sql:/docker-entrypoint-initdb.d/api_db.sql
     environment:
       POSTGRES_DB: aspen
       POSTGRES_USER: aspen
