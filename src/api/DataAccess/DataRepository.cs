@@ -11,35 +11,35 @@ namespace dotnet.DataAccess
 {
     public class DataRepository : IDataRepository
     {
-        private readonly ApiDBContext _context;
+        private readonly AspenContext _context;
 
-        public DataRepository(ApiDBContext context)
+        public DataRepository(AspenContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        //Workout*******************************
-        public bool WorkoutExists(string workoutID)
+        //Event*******************************
+        public bool EventExists(string eventID)
         {
-            return _context.Workouts.Any(e => e.WorkoutID == workoutID);
+            return _context.Events.Any(e => e.eventID == eventID);
         }
 
-        public async Task<IEnumerable<Workout>> GetWorkoutListAsync()
+        public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Workouts);
+            return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Events);
 
         }
 
-        public async Task AddWorkoutAsync(Workout workout)
+        public async Task AddEventAsync(Event event)
         {
-            if (!WorkoutExists(workout.WorkoutID))
+            if (!EventExists(event.ID))
             {
-                _context.Workouts.Add(workout);
+                _context.Events.Add(event);
                 await _context.SaveChangesAsync();
             }
             else
             {
-                throw new InvalidOperationException("Workout already exists!");
+                throw new InvalidOperationException("Event already exists!");
             }
 
         }
