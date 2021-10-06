@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Aspen.Api.DatabaseModels
+namespace Api.DatabaseModels
 {
     public class PageData
     {

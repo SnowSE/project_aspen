@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Security.Claims;
 
-namespace dotnet.Controllers
+namespace Api.Controllers
 {
   [ApiController]
   [Authorize]

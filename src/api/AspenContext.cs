@@ -1,4 +1,4 @@
-using Aspen.Api.DatabaseModels;
+using Api.DatabaseModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aspen.Api
