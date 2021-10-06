@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.Controller
 {
   public class AdminControllerTest
   {
