@@ -1,6 +1,5 @@
 ﻿using Aspen.Api;
 using Aspen.Api.DatabaseModels;
-using dotnet.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnet.DataAccess
+namespace Aspen.Api.DataAccess
 {
     public class DataRepository
     {
@@ -28,40 +27,40 @@ namespace dotnet.DataAccess
         //Get all events
         public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Events.include(e=> e.Teams));
+            return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Events.Include(e=> e.Teams));
         }
 
         //Get event
         public async Task<Event> GetEventAsync(string eventID)
         {
-            return await Task.Run(() => _context.Events
-                .First(r => r.ID == eventID))
-                .ThenInclude(e => e.Teams);
+            return await _context.Events
+                .Include(e => e.Teams)
+                .FirstAsync(r => r.ID == eventID);
         }
 
         //Add event
 
-        public async Task AddEventAsync(Event event)
+        public async Task AddEventAsync(Event e)
         {
-            if (!EventExists(event.ID)){
-                 _context.Events.Add(event);
+            if (!EventExists(e.ID)){
+                 _context.Events.Add(e);
                 await _context.SaveChangesAsync();
             }
         }
 
         //edit event
-        public async Task EditEventAsync(Event event)
+        public async Task EditEventAsync(Event e)
         {
-            _context.Update(event);
+            _context.Update(e);
             await _context.SaveChangesAsync();
         }
 
         //delete event
         public async Task DeleteEventAsync(string eventID)
         {
-            var event = await _context.Events.FindAsync(eventID);
+            var e = await _context.Events.FindAsync(eventID);
 
-            _context.Events.Remove(event);
+            _context.Events.Remove(e);
             await _context.SaveChangesAsync();
         }
 
@@ -73,7 +72,7 @@ namespace dotnet.DataAccess
         }
 
         //Get all teams
-        public async Task<IEnumerable<Team>> GetEventsAsync()
+        public async Task<IEnumerable<Team>> GetTeamsAsync()
         {
             return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Teams);
 
@@ -82,8 +81,9 @@ namespace dotnet.DataAccess
         //Get team
         public async Task<Team> GetTeamAsync(string teamID)
         {
-            return await Task.Run(() => _context.Teams
-                .First(r => r.ID == teamID));
+            return await _context.Teams
+                .Include(e => e.Registrations)
+                .FirstAsync(r => r.ID == teamID);
         }
 
         //Add team
