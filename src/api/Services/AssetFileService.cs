@@ -1,20 +1,37 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
 namespace Api.Services
 {
-  using Microsoft.AspNetCore.Http;
-  using Microsoft.Extensions.Logging;
 
   public class AssetFileService : IAssetFileService
   {
     public ILogger<AssetFileService> logger { get; }
+    public string assetsDirectory { get; }
+    public IConfiguration config { get; }
 
-    public AssetFileService(ILogger<AssetFileService> logger)
+    public AssetFileService(ILogger<AssetFileService> logger, IConfiguration config)
     {
       this.logger = logger;
+      this.config = config;
+      this.assetsDirectory = config.GetSection("AssetsDirectory").Value;
+      if (this.assetsDirectory.Length == 0)
+      {
+        throw new Exception("AssetsDirectory configuration is empty");
+      }
     }
 
-    public void storeAsset(IFormFile image) 
+    public async Task storeAsset(IFormFile image)
     {
-
+      string filePath = Path.Combine(assetsDirectory, image.FileName);
+      using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+      {
+        await image.CopyToAsync(fileStream);
+      }
     }
   }
 }

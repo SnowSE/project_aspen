@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,9 +40,9 @@ namespace Api.Controller
 
 
     [HttpPost]
-    public IResponse<string> Post([FromBody] IFormFile image)
+    public async Task<IResponse<string>> Post([FromBody] IFormFile image)
     {
-      assetsFileService.storeAsset(image);
+      await assetsFileService.storeAsset(image);
 
       return new Response<string>("success", "success");
     }
