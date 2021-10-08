@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnet.Models
+namespace Aspen.Api.DatabaseModels
 {
     public class Person
     {
@@ -17,6 +17,6 @@ namespace dotnet.Models
 
         public string Bio { get; set; }
 
-        public virtual ICollection<PersonRegistration> PersonRegistration { get; set; }
+        public virtual ICollection<PersonRegistration> PersonRegistrations { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspen.Api;
 using dotnet.DataAccess;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace dotnet
 
             using (var scope = host.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<ApiDBContext>();
+                var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
                 //db.Database.EnsureCreated();
                 db.Database.Migrate();
             }

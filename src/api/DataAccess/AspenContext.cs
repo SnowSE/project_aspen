@@ -19,16 +19,6 @@ namespace Aspen.Api
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<PersonRegistration>()
-                .HasOne(r => r.Registration)
-                .WithMany(pr => pr.PersonRegistration)
-                .HasForeignKey(r => r.RegistrationID);
-
-            modelBuilder.Entity<PersonRegistration>()
-                .HasOne(p => p.Person)
-                .WithMany(pr => pr.PersonRegistration)
-                .HasForeignKey(p => p.PersonID);
         }
     }
 }

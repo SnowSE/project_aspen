@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnet.Models
+namespace Aspen.Api.DatabaseModels
 {
     public class Team
     {
@@ -21,6 +21,6 @@ namespace dotnet.Models
         public string EventID { get; set; }
         public Event Event {get; set;}
 
-        public virtual ICollection<Registration> Registration { get; set; }
+        public virtual ICollection<Registration> Registrations { get; set; }
     }
 }

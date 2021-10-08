@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnet.Models
+namespace Aspen.Api.DatabaseModels
 {
     public class Event
     {
         [Key]
         public string ID { get; set; }
 
-        public DateTime Date { get; set; };
+        public DateTime Date { get; set; }
 
         public string Location { get; set; }
         public string Description { get; set; }
@@ -19,6 +19,6 @@ namespace dotnet.Models
 
         public string PrimaryImageUrl { get; set; }
 
-        public virtual ICollection<Team> Team { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }

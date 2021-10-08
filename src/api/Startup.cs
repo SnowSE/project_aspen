@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using dotnet.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Aspen.Api;
 
 namespace dotnet
 {
@@ -26,7 +27,7 @@ namespace dotnet
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<ApiDBContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
+        services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddAuthentication(options =>
       {
