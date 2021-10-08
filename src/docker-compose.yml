@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   web:
@@ -22,6 +22,8 @@ services:
       interval: 5s
       timeout: 1s
       retries: 5
+    volumes:
+      - assets:/assets
     networks:
       shared:
       api:
@@ -45,7 +47,7 @@ services:
       timeout: 1s
       retries: 5
     networks:
-      api:    
+      api:
 
   auth:
     build:
@@ -101,8 +103,9 @@ services:
     build:
       context: ../dev-resources/reverse-proxy
     container_name: reverse_proxy
-    volumes: 
+    volumes:
       - ../dev-resources/reverse-proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - assets:/assets
     ports:
       - 80:80
     healthcheck:
@@ -123,6 +126,7 @@ services:
 volumes:
   auth_db:
   api_db:
+  assets:
 
 networks:
   shared:
