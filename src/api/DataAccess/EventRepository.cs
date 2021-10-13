@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace dotnet.DataAccess
 {
-    public class EventRepository
+    public class EventRepository : IEventRepository
     {
         private readonly AspenContext _context;
 
@@ -20,7 +20,7 @@ namespace dotnet.DataAccess
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        private bool EventExists(string eventID)
+        public bool EventExists(string eventID)
         {
             return _context.Events.Any(e => e.ID == eventID);
         }
@@ -41,8 +41,9 @@ namespace dotnet.DataAccess
         //Add event
         public async Task AddEventAsync(DbEvent e)
         {
-            if (!EventExists(e.ID)){
-                 _context.Events.Add(e);
+            if (!EventExists(e.ID))
+            {
+                _context.Events.Add(e);
                 await _context.SaveChangesAsync();
             }
         }
