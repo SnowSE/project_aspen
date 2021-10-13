@@ -1,4 +1,4 @@
-using Aspen.Api.DatabaseModels;
+using Aspen.Api.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aspen.Api
@@ -9,13 +9,13 @@ namespace Aspen.Api
         {            
         }
 
-        public DbSet<PageData> PageData{get;set;}
+        public DbSet<DbPageData> PageData{get;set;}
 
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<Registration> Registrations { get; set; }
-        public DbSet<PersonRegistration> PersonRegistrations { get; set; }
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<DbEvent> Events { get; set; }
+        public DbSet<DbTeam> Teams { get; set; }
+        public DbSet<DbRegistration> Registrations { get; set; }
+        public DbSet<DbPersonRegistration> PersonRegistrations { get; set; }
+        public DbSet<DbPerson> Persons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

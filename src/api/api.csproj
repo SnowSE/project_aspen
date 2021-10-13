@@ -29,4 +29,8 @@
     <PackageReference Include="SwashBuckle.AspNetCore.MicrosoftExtensions" Version="0.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MainModels\" />
+  </ItemGroup>
+
 </Project>

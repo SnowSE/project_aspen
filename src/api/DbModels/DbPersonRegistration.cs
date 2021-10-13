@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aspen.Api.DatabaseModels
+namespace Aspen.Api.DbModels
 {
-    public class PersonRegistration
+    public class DbPersonRegistration
     {
         [Key]
         public string ID { get; set; }
 
         public string PersonID { get; set; }
-        public Person Person { get; set; }
+        public DbPerson Person { get; set; }
 
         public string RegistrationID { get; set; }
-        public Registration Registration { get; set; }
+        public DbRegistration Registration { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

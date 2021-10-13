@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aspen.Api.DatabaseModels
+namespace Aspen.Api.DbModels
 {
-    public class Team
+    public class DbTeam
     {
         [Key]
         public string ID { get; set; }
@@ -19,8 +19,8 @@ namespace Aspen.Api.DatabaseModels
         public string OwnerID { get; set; }
 
         public string EventID { get; set; }
-        public Event Event {get; set;}
+        public DbEvent Event {get; set;}
 
-        public virtual ICollection<Registration> Registrations { get; set; }
+        public virtual ICollection<DbRegistration> Registrations { get; set; }
     }
 }

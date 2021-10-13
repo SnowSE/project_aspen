@@ -28,7 +28,7 @@ namespace dotnet
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
-            services.AddScoped<IDataRepository, DataRepository>();
+            services.AddScoped<IDataRepository, EventRepository>();
             services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
