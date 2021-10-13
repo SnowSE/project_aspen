@@ -13,6 +13,7 @@ namespace Aspen.Api.Mappers
         public EventMapper()
         {
             CreateMap<DbEvent, DtoEvent>();
+            CreateMap<DtoEvent, DbEvent>();
         }
     }
 }
