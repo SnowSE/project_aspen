@@ -12,7 +12,7 @@ namespace Tests.Controller
   {
     private AdminController adminController;
     private ClaimsPrincipal adminUser;
-    
+
     [SetUp]
     public void Setup()
     {

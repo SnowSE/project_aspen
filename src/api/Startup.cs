@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Aspen.Api;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet
 {
@@ -73,6 +75,8 @@ namespace dotnet
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
       });
+
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration["DATABASE_URL"]));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

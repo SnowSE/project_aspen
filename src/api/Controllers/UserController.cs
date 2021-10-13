@@ -17,15 +17,15 @@ namespace Api.Controllers
   public class UserController : ControllerBase
   {
 
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UserController> logger;
 
     public UserController(ILogger<UserController> logger)
     {
-      _logger = logger;
+      this.logger = logger;
     }
 
     [HttpGet]
-    public String Get()
+    public string Get()
     {
 
       foreach (var claim in User.Claims)

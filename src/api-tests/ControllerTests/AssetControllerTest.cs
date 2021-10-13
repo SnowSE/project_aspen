@@ -46,12 +46,12 @@ namespace Tests.Controller
     }
 
     [Test]
-    public async Task CanUploadPhotoAsset()
+    public async Task CanUploadPhotoAssetAsync()
     {
 
-      Mock<IFormFile> fileMock = SetUpMockFile();
+      var fileMock = SetUpMockFile();
 
-      var response = await assetController.Post(fileMock.Object);
+      var response = await assetController.PostAsync(fileMock.Object);
 
       var actualFileText = File.ReadAllText("assets/" + fileMock.Object.FileName);
       response.status.Should().Be("success");
@@ -68,7 +68,7 @@ namespace Tests.Controller
       var fileName = "test" + RandomString(4);
       var ms = new MemoryStream(Encoding.ASCII.GetBytes(content));
       // var writer = new StreamWriter(ms);
-      // writer.Write(content); 
+      // writer.Write(content);
       // writer.Flush();
       ms.Position = 0;
       fileMock.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None))

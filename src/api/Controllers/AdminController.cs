@@ -17,11 +17,11 @@ namespace Api.Controllers
   public class AdminController : ControllerBase
   {
 
-    private readonly ILogger<AdminController> _logger;
+    private readonly ILogger<AdminController> logger;
 
     public AdminController(ILogger<AdminController> logger)
     {
-      _logger = logger;
+      this.logger = logger;
     }
 
     [HttpGet]

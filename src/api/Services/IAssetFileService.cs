@@ -5,6 +5,6 @@ namespace Api.Services
 {
   public interface IAssetFileService
   {
-    Task storeAsset(IFormFile image);
+    Task StoreAsset(IFormFile image);
   }
 }

@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api", "api\api.csproj", "{A
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "web", "web\web.njsproj", "{0C4EB7FB-8B33-4BE6-A334-E6933C349286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-tests", "api-tests\api-tests.csproj", "{C267E97B-5DB2-4E07-8664-28C5470A46DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api-tests", "api-tests\api-tests.csproj", "{C267E97B-5DB2-4E07-8664-28C5470A46DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFC16E7B-A9D7-4158-B558-43E0479C5151}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

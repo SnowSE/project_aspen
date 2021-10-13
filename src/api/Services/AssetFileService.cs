@@ -18,14 +18,14 @@ namespace Api.Services
     {
       this.logger = logger;
       this.config = config;
-      this.assetsDirectory = config.GetSection("AssetsDirectory").Value;
-      if (this.assetsDirectory.Length == 0)
+      assetsDirectory = config.GetSection("AssetsDirectory").Value;
+      if (assetsDirectory.Length == 0)
       {
         throw new Exception("AssetsDirectory configuration is empty");
       }
     }
 
-    public async Task storeAsset(IFormFile image)
+    public async Task StoreAsset(IFormFile image)
     {
       string filePath = Path.Combine(assetsDirectory, image.FileName);
       using (Stream fileStream = new FileStream(filePath, FileMode.Create))

@@ -40,9 +40,9 @@ namespace Api.Controller
 
 
     [HttpPost]
-    public async Task<IResponse<string>> Post([FromBody] IFormFile image)
+    public async Task<IResponse<string>> PostAsync([FromBody] IFormFile image)
     {
-      await assetsFileService.storeAsset(image);
+      await assetsFileService.StoreAsset(image);
 
       return new Response<string>("success", "success");
     }
