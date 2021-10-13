@@ -19,6 +19,7 @@ namespace dotnet
     }
 
     public IConfiguration Configuration { get; }
+    public IWebHostEnvironment CurrentEnvironment { get; set; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -56,9 +57,8 @@ namespace dotnet
 
             c.Response.StatusCode = 500;
             c.Response.ContentType = "text/plain";
-            bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
-            if (isDevelopment)
+            if (CurrentEnvironment.IsDevelopment())
             {
               return c.Response.WriteAsync(c.Exception.ToString());
             }
@@ -78,6 +78,8 @@ namespace dotnet
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      CurrentEnvironment = env;
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -92,6 +94,7 @@ namespace dotnet
 
       app.UseEndpoints(endpoints =>
       {
+        endpoints.MapGet("/health", c => c.Response.WriteAsync("ur good"));
         endpoints.MapControllers();
       });
     }
