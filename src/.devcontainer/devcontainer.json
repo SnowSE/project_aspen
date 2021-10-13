@@ -1,0 +1,11 @@
+{
+    "name": "aspen dev environment",
+    "dockerComposeFile": "./docker-compose.yml",
+    "service": "api",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/src",
+    "remoteEnv": {
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+    },
+    "remoteUser": "developer"
+}

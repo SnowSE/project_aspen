@@ -4,7 +4,7 @@ services:
   web:
     container_name: web
     build:
-      context: web/
+      context: ../web/
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 5s
@@ -16,14 +16,16 @@ services:
   api:
     container_name: api
     build:
-      context: api/
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
-      interval: 5s
-      timeout: 1s
-      retries: 5
+      dockerfile: ../api/Dev.Dockerfile
+      context: ../api/
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost/health"]
+    #   interval: 5s
+    #   timeout: 1s
+    #   retries: 5
     volumes:
       - assets:/assets
+      - ../:/src
     networks:
       shared:
       api:
@@ -36,7 +38,7 @@ services:
     container_name: api_db
     volumes:
       - api_db:/var/lib/postgresql/data
-      - ../dev-resources/api_db/api_db.sql:/docker-entrypoint-initdb.d/api_db.sql
+      - ../../dev-resources/api_db/api_db.sql:/docker-entrypoint-initdb.d/api_db.sql
     environment:
       POSTGRES_DB: aspen
       POSTGRES_USER: aspen
@@ -51,7 +53,7 @@ services:
 
   auth:
     build:
-      context: ../dev-resources/keycloak
+      context: ../../dev-resources/keycloak
     container_name: auth
     environment:
       - DB_VENDOR=POSTGRES
@@ -86,7 +88,7 @@ services:
     container_name: auth_db
     volumes:
       - auth_db:/var/lib/postgresql/data
-      - ../dev-resources/keycloak/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+      - ../../dev-resources/keycloak/backup.sql:/docker-entrypoint-initdb.d/backup.sql
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -101,10 +103,10 @@ services:
 
   reverse_proxy:
     build:
-      context: ../dev-resources/reverse-proxy
+      context: ../../dev-resources/reverse-proxy
     container_name: reverse_proxy
     volumes:
-      - ../dev-resources/reverse-proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - ../../dev-resources/reverse-proxy/default.conf:/etc/nginx/conf.d/default.conf
       - assets:/assets
     ports:
       - 80:80
@@ -118,8 +120,8 @@ services:
     depends_on:
       auth:
         condition: service_healthy
-      api:
-        condition: service_healthy
+      # api:
+      #   condition: service_healthy
       web:
         condition: service_healthy
 
