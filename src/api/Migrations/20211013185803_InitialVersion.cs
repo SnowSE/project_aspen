@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Aspen.Api.Migrations
+namespace Api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialVersion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,12 +28,14 @@ namespace Aspen.Api.Migrations
                 name: "PageData",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Key = table.Column<string>(type: "text", nullable: true),
                     Data = table.Column<JsonDocument>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PageData", x => x.Key);
+                    table.PrimaryKey("PK_PageData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

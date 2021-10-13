@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Aspen.Api.Migrations
+namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20211013054117_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211013185803_InitialVersion")]
+    partial class InitialVersion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Aspen.Api.DbModels.DbEvent", b =>
@@ -46,13 +46,18 @@ namespace Aspen.Api.Migrations
 
             modelBuilder.Entity("Aspen.Api.DbModels.DbPageData", b =>
                 {
-                    b.Property<string>("Key")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<JsonDocument>("Data")
                         .HasColumnType("jsonb");
 
-                    b.HasKey("Key");
+                    b.Property<string>("Key")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
 
                     b.ToTable("PageData");
                 });

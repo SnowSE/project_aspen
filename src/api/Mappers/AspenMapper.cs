@@ -8,12 +8,14 @@ using AutoMapper;
 
 namespace Aspen.Api.Mappers
 {
-    public class EventMapper : Profile
+    public class AspenMapper : Profile
     {
-        public EventMapper()
+        public AspenMapper()
         {
             CreateMap<DbEvent, DtoEvent>();
             CreateMap<DtoEvent, DbEvent>();
+            CreateMap<DbPageData, DtoPageData>();
+            CreateMap<DtoPageData, DbPageData>();
         }
     }
 }
