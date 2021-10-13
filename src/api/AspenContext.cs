@@ -9,6 +9,6 @@ namespace Aspen.Api
         {
         }
 
-        public DbSet<PageData> PageData{get;set;}
+        public DbSet<PageData> PageData { get; set; }
     }
 }

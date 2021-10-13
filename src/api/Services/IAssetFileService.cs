@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 namespace Api.Services
 {
-  public interface IAssetFileService
-  {
-    Task StoreAsset(IFormFile image);
-  }
+    public interface IAssetFileService
+    {
+        Task StoreAsset(IFormFile image);
+    }
 }

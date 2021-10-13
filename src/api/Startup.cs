@@ -13,94 +13,94 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnet
 {
-  public class Startup
-  {
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-      Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-    public IWebHostEnvironment CurrentEnvironment { get; set; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddAuthentication(options =>
-      {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-      }).AddJwtBearer(o =>
-      {
-        // o.Authority = Configuration["Jwt:Authority"];
-        // o.Audience = Configuration["Jwt:Audience"];
-
-        o.Authority = "http://auth:8080/auth/realms/aspen";
-        o.Audience = "aspen-web";
-
-
-        o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        public Startup(IConfiguration configuration)
         {
-          ValidAudiences = new string[] { "aspen" },
-          ValidateIssuerSigningKey = true,
-          ValidateIssuer = true,
-          ValidIssuer = "http://localhost/auth/realms/aspen",
-        };
+            Configuration = configuration;
+        }
 
-        o.RequireHttpsMetadata = false;
-        o.Events = new JwtBearerEvents()
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment CurrentEnvironment { get; set; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
         {
-          OnAuthenticationFailed = c =>
-          {
-            Console.WriteLine("Authentication failure");
-            Console.WriteLine(c.Exception);
-
-            c.NoResult();
-
-            c.Response.StatusCode = 500;
-            c.Response.ContentType = "text/plain";
-
-            if (CurrentEnvironment.IsDevelopment())
+            services.AddAuthentication(options =>
             {
-              return c.Response.WriteAsync(c.Exception.ToString());
-            }
-            return c.Response.WriteAsync("An error occured processing your authentication.");
-          }
-        };
-      });
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+          // o.Authority = Configuration["Jwt:Authority"];
+          // o.Audience = Configuration["Jwt:Audience"];
+
+          o.Authority = "http://auth:8080/auth/realms/aspen";
+                o.Audience = "aspen-web";
 
 
-      services.AddControllers();
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
-      });
+                o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidAudiences = new string[] { "aspen" },
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidIssuer = "http://localhost/auth/realms/aspen",
+                };
+
+                o.RequireHttpsMetadata = false;
+                o.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = c =>
+              {
+                    Console.WriteLine("Authentication failure");
+                    Console.WriteLine(c.Exception);
+
+                    c.NoResult();
+
+                    c.Response.StatusCode = 500;
+                    c.Response.ContentType = "text/plain";
+
+                    if (CurrentEnvironment.IsDevelopment())
+                    {
+                        return c.Response.WriteAsync(c.Exception.ToString());
+                    }
+                    return c.Response.WriteAsync("An error occured processing your authentication.");
+                }
+                };
+            });
+
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
+            });
 
             services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration["DATABASE_URL"]));
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            CurrentEnvironment = env;
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
+            }
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/health", c => c.Response.WriteAsync("ur good"));
+                endpoints.MapControllers();
+            });
+        }
     }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      CurrentEnvironment = env;
-
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
-      }
-
-      app.UseRouting();
-
-      app.UseAuthentication();
-      app.UseAuthorization();
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapGet("/health", c => c.Response.WriteAsync("ur good"));
-        endpoints.MapControllers();
-      });
-    }
-  }
 }

@@ -7,44 +7,45 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controller
 {
-  public interface IResponse<T>
-  {
-    string status { get; }
-    T data { get; }
-  }
-  public class Response<T> : IResponse<T>
-  {
-    public Response(string status, T data)
+    public interface IResponse<T>
     {
-      this.status = status;
-      this.data = data;
+        string status { get; }
+        T data { get; }
     }
-    public string status { get; }
-    public T data { get; }
-  }
 
-
-  [ApiController]
-  [Authorize]
-  [Route("/api/[controller]")]
-  public class AssetController : ControllerBase
-  {
-    public ILogger<AssetController> logger { get; }
-    public IAssetFileService assetsFileService { get; }
-
-    public AssetController(ILogger<AssetController> logger, IAssetFileService assetsFileService)
+    public class Response<T> : IResponse<T>
     {
-      this.logger = logger;
-      this.assetsFileService = assetsFileService;
+        public Response(string status, T data)
+        {
+            this.status = status;
+            this.data = data;
+        }
+        public string status { get; }
+        public T data { get; }
     }
 
 
-    [HttpPost]
-    public async Task<IResponse<string>> PostAsync([FromBody] IFormFile image)
+    [ApiController]
+    [Authorize]
+    [Route("/api/[controller]")]
+    public class AssetController : ControllerBase
     {
-      await assetsFileService.StoreAsset(image);
+        public ILogger<AssetController> logger { get; }
+        public IAssetFileService assetsFileService { get; }
 
-      return new Response<string>("success", "success");
+        public AssetController(ILogger<AssetController> logger, IAssetFileService assetsFileService)
+        {
+            this.logger = logger;
+            this.assetsFileService = assetsFileService;
+        }
+
+
+        [HttpPost]
+        public async Task<IResponse<string>> PostAsync([FromBody] IFormFile image)
+        {
+            await assetsFileService.StoreAsset(image);
+
+            return new Response<string>("success", "success");
+        }
     }
-  }
 }
