@@ -11,7 +11,7 @@ namespace Aspen.Api.DbModels
         [Key]
         public string ID { get; set; }
 
-        public DateTime CreationDate { get; set; };
+        public DateTime CreationDate { get; set; }
 
         public bool IsPublic { get; set; }
 

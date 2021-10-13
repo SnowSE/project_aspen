@@ -11,75 +11,77 @@ using Microsoft.AspNetCore.Http;
 using dotnet.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using Aspen.Api;
+using Aspen.Api.DataAccess;
+using Aspen.Api.Mappers;
 
 namespace dotnet
 {
-  public class Startup
-  {
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-      Configuration = configuration;
-    }
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-    public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
-            services.AddScoped<IDataRepository, EventRepository>();
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(EventMapper));
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddAuthentication(options =>
       {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
       }).AddJwtBearer(o =>
       {
-        // o.Authority = Configuration["Jwt:Authority"];
-        // o.Audience = Configuration["Jwt:Audience"];
+          // o.Authority = Configuration["Jwt:Authority"];
+          // o.Audience = Configuration["Jwt:Audience"];
 
-        o.Authority = "http://auth:8080/auth/realms/aspen";
-        o.Audience = "aspen-web";
+          o.Authority = "http://auth:8080/auth/realms/aspen";
+          o.Audience = "aspen-web";
 
 
-        o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-          ValidAudiences = new string[] { "aspen" },
-          ValidateIssuerSigningKey = true,
-          ValidateIssuer = true,
-          ValidIssuer = "http://localhost/auth/realms/aspen",
-        };
-
-        o.RequireHttpsMetadata = false;
-        o.Events = new JwtBearerEvents()
-        {
-          OnAuthenticationFailed = c =>
+          o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
           {
-            Console.WriteLine("Authentication failure");
-            Console.WriteLine(c.Exception);
+              ValidAudiences = new string[] { "aspen" },
+              ValidateIssuerSigningKey = true,
+              ValidateIssuer = true,
+              ValidIssuer = "http://localhost/auth/realms/aspen",
+          };
 
-            c.NoResult();
+          o.RequireHttpsMetadata = false;
+          o.Events = new JwtBearerEvents()
+          {
+              OnAuthenticationFailed = c =>
+              {
+                  Console.WriteLine("Authentication failure");
+                  Console.WriteLine(c.Exception);
 
-            c.Response.StatusCode = 500;
-            c.Response.ContentType = "text/plain";
-            bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+                  c.NoResult();
 
-            if (isDevelopment)
+                  c.Response.StatusCode = 500;
+                  c.Response.ContentType = "text/plain";
+                  bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
+                  if (isDevelopment)
+                  {
+                      return c.Response.WriteAsync(c.Exception.ToString());
+                  }
+                  return c.Response.WriteAsync("An error occured processing your authentication.");
+              }
+          };
+      });
+
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
             {
-              return c.Response.WriteAsync(c.Exception.ToString());
-            }
-            return c.Response.WriteAsync("An error occured processing your authentication.");
-          }
-        };
-      });
-
-
-      services.AddControllers();
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
-      });
-    }
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
+            });
+        }
         private string convertUrlConnectionString(string url)
         {
             if (!url.Contains("//"))
@@ -103,23 +105,23 @@ namespace dotnet
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
-      }
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
+            }
 
-      app.UseRouting();
+            app.UseRouting();
 
-      app.UseAuthentication();
-      app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllers();
-      });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
     }
-  }
 }
