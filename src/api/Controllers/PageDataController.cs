@@ -31,7 +31,7 @@ namespace Api.Controllers
         }
 
         // GET: api/PageData/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<PageData>> GetPageData(int id)
         {
             var pageData = await context.PageData.FindAsync(id);
@@ -41,6 +41,15 @@ namespace Api.Controllers
                 return NotFound();
             }
 
+            return pageData;
+        }
+
+        [HttpGet("{key:alpha}")]
+        public async Task<ActionResult<PageData>> GetPageData(string key)
+        {
+            var pageData = await context.PageData.FirstOrDefaultAsync(p => p.Key == key);
+            if (pageData == null)
+                return NotFound();
             return pageData;
         }
 
