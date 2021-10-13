@@ -16,8 +16,7 @@ namespace Tests.Controller
         [SetUp]
         public void Setup()
         {
-            var nullLogger = new NullLogger<AdminController>();
-            adminController = new AdminController(nullLogger);
+            adminController = new AdminController();
             var userClaims = new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, "testAdmin"),
                 new Claim(ClaimTypes.Role, "admin-aspen")
