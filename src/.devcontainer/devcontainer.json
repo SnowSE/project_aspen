@@ -7,5 +7,5 @@
     "remoteEnv": {
         "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
     },
-    "remoteUser": "developer"
+    "remoteUser": "root"
 }
