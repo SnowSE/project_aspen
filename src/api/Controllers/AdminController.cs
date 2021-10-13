@@ -16,38 +16,10 @@ namespace Api.Controllers
     [Route("/api/[controller]")]
     public class AdminController : ControllerBase
     {
-        private readonly ILogger<AdminController> logger;
-
-        public AdminController(ILogger<AdminController> logger)
-        {
-            this.logger = logger;
-        }
-
         [HttpGet]
         [Authorize(Roles = "admin-aspen")]
-        public IEnumerable<IUserClaim> Get()
-        {
-            var userClaims = User.Claims.Select(c =>
-            {
-                IUserClaim claim = new UserClaim
-                {
-                    claim = c.Type.ToString(),
-                    value = c.Value.ToString()
-                };
-                return claim;
-            });
-            return userClaims;
-        }
+        public IEnumerable<UserClaim> Get() => User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
     }
 
-    public interface IUserClaim
-    {
-        public string claim { get; }
-        public string value { get; }
-    }
-    public class UserClaim : IUserClaim
-    {
-        public string claim { get; set; }
-        public string value { get; set; }
-    }
+    public record UserClaim(string claim, string value);
 }

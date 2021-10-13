@@ -7,23 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controller
 {
-    public interface IResponse<T>
-    {
-        string status { get; }
-        T data { get; }
-    }
-
-    public class Response<T> : IResponse<T>
-    {
-        public Response(string status, T data)
-        {
-            this.status = status;
-            this.data = data;
-        }
-        public string status { get; }
-        public T data { get; }
-    }
-
+    public record Response<T>(string status, T data);
 
     [ApiController]
     [Authorize]
@@ -39,9 +23,8 @@ namespace Api.Controller
             this.assetsFileService = assetsFileService;
         }
 
-
         [HttpPost]
-        public async Task<IResponse<string>> PostAsync([FromBody] IFormFile image)
+        public async Task<Response<string>> PostAsync([FromBody] IFormFile image)
         {
             await assetsFileService.StoreAsset(image);
 
