@@ -43,9 +43,9 @@ namespace Api.DataAccess{
 
         public async Task<Person> GetByID(string ID)
         {
-            var returnedPerson = await _context.Persons.Where(p=>p.ID==ID).FirstAsync();
-            Console.WriteLine(returnedPerson);
-            return new Person("","");
+            var allPeople =  await EntityFrameworkQueryableExtensions.ToListAsync(_context.Persons);
+            var firstPerson = allPeople.Find(p=>p.ID == ID);
+            return new Person(firstPerson.ID,firstPerson.Name);
         }
     }
 }
