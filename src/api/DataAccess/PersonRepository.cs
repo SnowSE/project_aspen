@@ -1,6 +1,7 @@
 using Api.DbModels;
 using Api.DtoModels;
 using Api.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,12 +23,12 @@ namespace Api.DataAccess{
         public async Task<Person> Add(DtoPerson dtoPerson)
         {
             var dbPerson = new DbPerson(){
-                ID = Guid.NewGuid(),
+                ID = Guid.NewGuid().ToString(),
                 Name = dtoPerson.Name,
                 Bio = dtoPerson.Bio
             };
             var returnedValue = await _context.Persons.AddAsync(dbPerson);
-            return new Person(dbPerson.ID.ToString(), dbPerson.Name);
+            return new Person(dbPerson.ID, dbPerson.Name);
         }
 
         public Task Delete(string ID)
@@ -42,7 +43,9 @@ namespace Api.DataAccess{
 
         public async Task<Person> GetByID(string ID)
         {
-            return new Person("1", "George");
+            var returnedPerson = await _context.Persons.Where(p=>p.ID==ID).FirstAsync();
+            Console.WriteLine(returnedPerson);
+            return new Person("","");
         }
     }
 }

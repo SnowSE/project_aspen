@@ -9,7 +9,7 @@ namespace Api.DbModels
     public class DbPerson
     {
         [Key]
-        public Guid ID { get; set; }
+        public string ID { get; set; }
 
         public string AuthID { get; set; }
 

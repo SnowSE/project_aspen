@@ -8,6 +8,7 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
@@ -21,8 +22,11 @@ namespace Tests.Controller
         [SetUp]
         public void Setup()
         {
-            var context = new AspenContext(options => options.UseNpgsql("Server=api_db;Database=aspen;User Id=aspen;Password=password;"));
-            var personRepository = new PersonRepository();
+            var optionsBuilder = new DbContextOptionsBuilder<AspenContext>();
+            optionsBuilder.UseNpgsql("Server=api_db;Database=aspen;User Id=aspen;Password=password;");
+            var context = new AspenContext(optionsBuilder.Options);
+            
+            var personRepository = new PersonRepository(context);
             var mapperMock = new Mock<IMapper>();
             personController = new PersonController(personRepository, mapperMock.Object);
 
