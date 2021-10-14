@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Aspen.Api.DbModels;
+using Api.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Aspen.Api.DataAccess
+namespace Api.DataAccess
 {
     public class TeamRepository
     {

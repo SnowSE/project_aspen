@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aspen.Api.DtoModels
+namespace Api.DtoModels
 {
     public class DtoTeam
     {

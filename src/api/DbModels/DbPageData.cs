@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
-namespace Aspen.Api.DbModels
+namespace Api.DbModels
 {
     public class DbPageData
     {

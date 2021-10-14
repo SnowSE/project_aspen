@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aspen.Api.DtoModels
+namespace Api.DtoModels
 {
     public class DtoRegistration
     {

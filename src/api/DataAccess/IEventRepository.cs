@@ -1,8 +1,8 @@
-﻿using Aspen.Api.DbModels;
+﻿using Api.DbModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dotnet.DataAccess
+namespace Api.DataAccess
 {
     public interface IEventRepository
     {

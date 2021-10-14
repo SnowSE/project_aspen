@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Aspen.Api.DtoModels
+namespace Api.DtoModels
 {
     public class DtoPageData
     {

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Aspen.Api;
+using Api;
 using Microsoft.AspNetCore.Authorization;
-using Aspen.Api.DataAccess;
-using Aspen.Api.DbModels;
-using Aspen.Api.DtoModels;
+using Api.DataAccess;
+using Api.DtoModels;
 using AutoMapper;
+using Api.DbModels;
 
 namespace Api.Controllers
 {

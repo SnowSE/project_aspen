@@ -1,7 +1,6 @@
-﻿using Aspen.Api;
-using Aspen.Api.DataAccess;
-using Aspen.Api.DbModels;
-using dotnet.DataAccess;
+﻿using Api;
+using Api.DataAccess;
+using Api.DbModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnet.DataAccess
+namespace Api.DataAccess
 {
     public class EventRepository : IEventRepository
     {

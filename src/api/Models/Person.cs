@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.DtoModels
+namespace Api.Models
 {
     #nullable enable
-    public record DtoPerson
+    public class Person
     {
-        public DtoPerson(string Name){
+        public Person(string ID, string Name){
+            this.ID = ID;
             this.Name = Name;
         }
-        public string ? ID { get; init;}
+        public string ID { get; init;}
 
         public string ? AuthID { get; init;}
 

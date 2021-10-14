@@ -8,13 +8,12 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using dotnet.DataAccess;
+using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using Aspen.Api.DataAccess;
-using Aspen.Api.Mappers;
+using Api.Mappers;
 
-namespace dotnet
+namespace Api
 {
     public class Startup
     {

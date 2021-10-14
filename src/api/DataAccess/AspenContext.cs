@@ -1,7 +1,8 @@
-using Aspen.Api.DbModels;
+
+using Api.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Aspen.Api.DataAccess
+namespace Api.DataAccess
 {
     public class AspenContext : DbContext
     {

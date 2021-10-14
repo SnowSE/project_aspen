@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Aspen.Api.DbModels;
-using Aspen.Api.DtoModels;
+using Api.DtoModels;
 using AutoMapper;
-using dotnet.DataAccess;
+using Api.DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Api.DbModels;
 
-
-namespace dotnet.Controllers
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
