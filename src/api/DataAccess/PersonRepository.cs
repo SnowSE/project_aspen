@@ -1,6 +1,7 @@
 using Api.DbModels;
 using Api.DtoModels;
 using Api.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace Api.DataAccess{
     public class PersonRepository : IPersonRepository
     {
         private readonly AspenContext _context;
+        private readonly IMapper mapper;
 
-        public PersonRepository(AspenContext context)
+        public PersonRepository(AspenContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.mapper = mapper;
         }
 
         // public bool PersonExists(string ID)
@@ -28,7 +31,7 @@ namespace Api.DataAccess{
                 Bio = dtoPerson.Bio
             };
             var returnedValue = await _context.Persons.AddAsync(dbPerson);
-            return new Person(dbPerson.ID, dbPerson.Name);
+            return mapper.Map<Person>(dbPerson);
         }
 
         public Task Delete(string ID)
@@ -43,9 +46,12 @@ namespace Api.DataAccess{
 
         public async Task<Person> GetByID(string ID)
         {
-            var allPeople =  await EntityFrameworkQueryableExtensions.ToListAsync(_context.Persons);
-            var firstPerson = allPeople.Find(p=>p.ID == ID);
-            return new Person(firstPerson.ID,firstPerson.Name);
+            var dbPerson = await _context.Persons.FindAsync(ID);
+            if(dbPerson == null)
+            {
+                throw new PersonNotFoundException();
+            }
+            return mapper.Map<Person>(dbPerson);
         }
     }
 }

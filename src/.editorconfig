@@ -176,6 +176,8 @@ dotnet_naming_style.async_methods_style.required_suffix = Async
 #don't require Async suffix for controller actions
 [**/**Controller.cs]
 dotnet_naming_rule.async_methods_should_end_in_async.severity = suggestion
+[**/**Test**.cs]
+dotnet_naming_rule.async_methods_should_end_in_async.severity = silent
 
 
 #private fields are camelCase

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Controllers;
 using Api.DataAccess;
 using Api.DtoModels;
+using Api.Mappers;
 using Api.Models;
 using AutoMapper;
 using FluentAssertions;
@@ -18,6 +19,7 @@ namespace Tests.Controller
     public class PersonControllerTest
     {
         private PersonController personController;
+        private IMapper aspenMapper = new Mapper(new MapperConfiguration(c => c.AddProfile<AspenMapperProfile>()));
 
         [SetUp]
         public void Setup()
@@ -25,11 +27,8 @@ namespace Tests.Controller
             var optionsBuilder = new DbContextOptionsBuilder<AspenContext>();
             optionsBuilder.UseNpgsql("Server=api_db;Database=aspen;User Id=aspen;Password=password;");
             var context = new AspenContext(optionsBuilder.Options);
-            
-            var personRepository = new PersonRepository(context);
-            var mapperMock = new Mock<IMapper>();
-            personController = new PersonController(personRepository, mapperMock.Object);
-
+            var personRepository = new PersonRepository(context, aspenMapper);            
+            personController = new PersonController(personRepository, aspenMapper);
         }
 
         [Test]
