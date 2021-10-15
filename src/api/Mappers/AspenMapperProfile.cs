@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Api.DbModels;
 using Api.DtoModels;
 using Api.Models;
+using Api.Models.Entities;
 using AutoMapper;
 
 namespace Api.Mappers
@@ -24,6 +25,9 @@ namespace Api.Mappers
                 .ReverseMap();
 
             CreateMap<DbPerson, Person>()
+                .ReverseMap();
+
+            CreateMap<Person, DtoPerson>()
                 .ReverseMap();
 
             CreateMap<DbTeam, DtoTeam>()

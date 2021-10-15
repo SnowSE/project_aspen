@@ -5,6 +5,7 @@ using Api.DataAccess;
 using Api.DtoModels;
 using Api.Mappers;
 using Api.Models;
+using Api.Models.Entities;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

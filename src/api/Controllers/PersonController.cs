@@ -32,10 +32,10 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Person>> Add([FromBody] DtoPerson dtoPerson)
+        public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
             var person = await personRepository.Add(dtoPerson); 
-            return Ok(person);
+            return Ok(mapper.Map<DtoPerson>(person));
         }
 
         // [HttpPut]

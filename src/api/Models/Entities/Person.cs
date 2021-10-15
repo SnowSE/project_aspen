@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.Models
+namespace Api.Models.Entities
 {
     #nullable enable
     public class Person
