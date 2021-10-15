@@ -26,16 +26,17 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<DtoEvent>> GetByID(string id)
-        {  
-           return Ok(await personRepository.GetByID(id));
+        public async Task<ActionResult<DtoPerson>> GetByID(string id)
+        {
+            var person = await personRepository.GetByID(id);
+            return mapper.Map<DtoPerson>(person);
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
             var person = await personRepository.Add(dtoPerson); 
-            return Ok(mapper.Map<DtoPerson>(person));
+            return mapper.Map<DtoPerson>(person);
         }
 
         // [HttpPut]

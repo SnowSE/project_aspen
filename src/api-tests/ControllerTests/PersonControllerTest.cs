@@ -26,8 +26,10 @@ namespace Tests.Controller
         public void Setup()
         {
             var optionsBuilder = new DbContextOptionsBuilder<AspenContext>();
-            optionsBuilder.UseNpgsql("Server=api_db;Database=aspen;User Id=aspen;Password=password;");
+            optionsBuilder.UseNpgsql("Server=localhost;Database=aspen;User Id=aspen;Password=password;");
             var context = new AspenContext(optionsBuilder.Options);
+            context.Database.Migrate();
+
             var personRepository = new PersonRepository(context, aspenMapper);            
             personController = new PersonController(personRepository, aspenMapper);
         }
@@ -36,31 +38,27 @@ namespace Tests.Controller
         public async Task CanCreatePerson()
         {
             var newPerson = new DtoPerson("George");
-            var ret = await personController.Add(newPerson);
-            var returnedPerson = (ret.Result as OkObjectResult).Value as Person;
-            returnedPerson.ID.Should().NotBe("");
-            returnedPerson.Name.Should().Be("George");
+            var dtoPerson = (await personController.Add(newPerson)).Value;
+            dtoPerson.ID.Should().NotBe("");
+            dtoPerson.Name.Should().Be("George");
         }
+
         [Test]
         public async Task CanGetCreatedPerson() //eventually
         {
             var newPerson = new DtoPerson("George");
-            var createdResult = await personController.Add(newPerson);
-            var createdPerson = (createdResult.Result as OkObjectResult).Value as Person;
-            var gottedResult = await personController.GetByID(createdPerson.ID);
-            var JONATHAN_Y_U_DO_DIS = (gottedResult.Result as OkObjectResult).Value as Person;
-            JONATHAN_Y_U_DO_DIS.Name.Should().Be("George");
+            var createdPerson = (await personController.Add(newPerson)).Value;
+            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            returnedPerson.Name.Should().Be("George");
         }
+
         [Test]
         public async Task CanGetDifferentPerson() //eventually
         {
             var newPerson = new DtoPerson("Ben");
-            var createdResult = await personController.Add(newPerson);
-            var createdPerson = (createdResult.Result as OkObjectResult).Value as Person;
-            var gottedResult = await personController.GetByID(createdPerson.ID);
-            var JONATHAN_Y_U_DO_DIS = (gottedResult.Result as OkObjectResult).Value as Person;
-            JONATHAN_Y_U_DO_DIS.Name.Should().Be("Ben");
-        }
-        
+            var createdPerson = (await personController.Add(newPerson)).Value;
+            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            returnedPerson.Name.Should().Be("Ben");
+        }        
     }
 }
