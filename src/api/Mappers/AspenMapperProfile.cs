@@ -19,6 +19,9 @@ namespace Api.Mappers
             CreateMap<DtoPageData, DbPageData>();
             CreateMap<DbPerson, Person>();
             CreateMap<Person, DbPerson>();
+            CreateMap<DbTeam, DtoTeam>();
+            CreateMap<DtoTeam, DbTeam>();
+
         }
     }
 }

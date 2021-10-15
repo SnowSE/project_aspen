@@ -12,5 +12,7 @@ namespace Api.DataAccess
         bool EventExists(string eventID);
         Task<DbEvent> GetEventAsync(string eventID);
         Task<IEnumerable<DbEvent>> GetEventsAsync();
+        Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID);
+        Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID);
     }
 }

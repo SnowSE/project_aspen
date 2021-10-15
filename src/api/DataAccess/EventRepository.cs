@@ -12,28 +12,28 @@ namespace Api.DataAccess
 {
     public class EventRepository : IEventRepository
     {
-        private readonly AspenContext _context;
+        private readonly AspenContext context;
 
         public EventRepository(AspenContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public bool EventExists(string eventID)
         {
-            return _context.Events.Any(e => e.ID == eventID);
+            return context.Events.Any(e => e.ID == eventID);
         }
 
         //Get all events
         public async Task<IEnumerable<DbEvent>> GetEventsAsync()
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(_context.Events);
+            return await EntityFrameworkQueryableExtensions.ToListAsync(context.Events);
         }
 
         //Get event
         public async Task<DbEvent> GetEventAsync(string eventID)
         {
-            return await _context.Events
+            return await context.Events
                 .FirstAsync(r => r.ID == eventID);
         }
 
@@ -42,26 +42,44 @@ namespace Api.DataAccess
         {
             if (!EventExists(e.ID))
             {
-                _context.Events.Add(e);
-                await _context.SaveChangesAsync();
+                context.Events.Add(e);
+                await context.SaveChangesAsync();
             }
         }
 
         //edit event
         public async Task EditEventAsync(DbEvent e)
         {
-            _context.Update(e);
-            await _context.SaveChangesAsync();
+            context.Update(e);
+            await context.SaveChangesAsync();
         }
 
         //delete event
         public async Task DeleteEventAsync(string eventID)
         {
-            var e = await _context.Events.FindAsync(eventID);
+            var e = await context.Events.FindAsync(eventID);
 
-            _context.Events.Remove(e);
-            await _context.SaveChangesAsync();
+            context.Events.Remove(e);
+            await context.SaveChangesAsync();
         }
+
+        //Get Event team
+        public async Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID)
+        {
+            var eventTeams = await context.Events.FirstAsync(e => e.ID == eventID);
+            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamID);
+            return eventTeam;
+        }
+
+
+        //Get event teams
+        public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
+        {
+            var eventTeams = await context.Events.FirstOrDefaultAsync(e => e.ID == eventID);
+            /*var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);*/
+            return eventTeams.Teams;
+        }
+
 
     }
 }

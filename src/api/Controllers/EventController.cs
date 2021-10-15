@@ -25,11 +25,12 @@ namespace Api.Controllers
             this.eventRepository = eventRepository;
         }
 
-        /*[HttpGet("getall")]
+        [HttpGet("all")]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
-            return await _eventRepository.GetEventsAsync();
-        }*/
+            var Events = await eventRepository.GetEventsAsync();
+            return mapper.Map<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>(Events);
+        }
 
         [HttpGet]
         public async Task<ActionResult<DtoEvent>> GetEventByID(string eventID)
@@ -54,7 +55,8 @@ namespace Api.Controllers
             if (ModelState.IsValid)
             {
                 if (!eventRepository.EventExists(e.ID))
-                {   var dbEvent = mapper.Map<DbEvent>(e);
+                {
+                    var dbEvent = mapper.Map<DbEvent>(e);
                     await eventRepository.AddEventAsync(dbEvent);
                     return Ok("Event added successfully");
                 }
@@ -67,7 +69,7 @@ namespace Api.Controllers
         }
 
         [HttpPut]
-        public  async Task<IActionResult> EditEvent([FromBody] DtoEvent e)
+        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e)
         {
             if (ModelState.IsValid)
             {
@@ -84,15 +86,37 @@ namespace Api.Controllers
         {
             if (eventRepository.EventExists(eventID))
             {
-                 await eventRepository.DeleteEventAsync(eventID);
+                await eventRepository.DeleteEventAsync(eventID);
                 return Ok("Delete event was successful");
             }
             else
             {
                 return BadRequest("Event id does not exist");
             }
-            
+
         }
 
+        [HttpGet("team")]
+        public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string teamID, string eventID)
+        {
+
+            if (eventRepository.EventExists(eventID))
+            {
+                var dbEventTeam = await eventRepository.GetEventTeamByIdAsync(teamID, eventID);
+
+                return mapper.Map<DtoTeam>(dbEventTeam);
+            }
+            else
+            {
+                return BadRequest("Event id does not exist");
+            }
+        }
+
+        [HttpGet("teams")]
+        public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
+        {
+            var dbEventTeams = await eventRepository.GetEventTeamsAsync(eventID);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(dbEventTeams);
+        }
     }
 }

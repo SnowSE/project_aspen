@@ -6,7 +6,7 @@ namespace Api.DataAccess
 {
     public interface ITeamRepository
     {
-        Task AddTeamAsync(DbTeam team);
+        Task AddTeamAsync(DbTeam team, string EventID);
         Task DeleteTeamAsync(string teamID);
         Task EditTeamAsync(DbTeam team);
         Task<DbTeam> GetTeamAsync(string teamID);
