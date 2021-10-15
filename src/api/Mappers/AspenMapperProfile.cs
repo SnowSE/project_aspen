@@ -13,12 +13,14 @@ namespace Api.Mappers
     {
         public AspenMapperProfile()
         {
-            CreateMap<DbEvent, DtoEvent>();
-            CreateMap<DtoEvent, DbEvent>();
-            CreateMap<DbPageData, DtoPageData>();
-            CreateMap<DtoPageData, DbPageData>();
-            CreateMap<DbPerson, Person>();
-            CreateMap<Person, DbPerson>();
+            CreateMap<DbEvent, DtoEvent>()
+                .ReverseMap();
+
+            CreateMap<DbPageData, DtoPageData>()
+                .ReverseMap();
+
+            CreateMap<DbPerson, Person>()
+                .ReverseMap();
         }
     }
 }
