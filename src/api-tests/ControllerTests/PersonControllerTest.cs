@@ -6,6 +6,7 @@ using Api.DtoModels;
 using Api.Mappers;
 using Api.Models;
 using Api.Models.Entities;
+using api_tests;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -20,18 +21,15 @@ namespace Tests.Controller
     public class PersonControllerTest
     {
         private PersonController personController;
-        private IMapper aspenMapper = new Mapper(new MapperConfiguration(c => c.AddProfile<AspenMapperProfile>()));
 
         [SetUp]
         public void Setup()
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<AspenContext>();
-            optionsBuilder.UseNpgsql("Server=localhost;Database=aspen;User Id=aspen;Password=password;");
-            var context = new AspenContext(optionsBuilder.Options);
+        {            
+            var context = TestHelpers.CreateContext();
             context.Database.Migrate();
 
-            var personRepository = new PersonRepository(context, aspenMapper);            
-            personController = new PersonController(personRepository, aspenMapper);
+            var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);            
+            personController = new PersonController(personRepository, TestHelpers.AspenMapper);
         }
 
         [Test]

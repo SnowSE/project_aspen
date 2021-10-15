@@ -20,10 +20,6 @@ namespace Api.DataAccess{
             this.mapper = mapper;
         }
 
-        // public bool PersonExists(string ID)
-        // {
-        //     return _context.Persons.Any(e => e.ID == ID);
-        // }
         public async Task<Person> Add(DtoPerson dtoPerson)
         {
             var dbPerson = new DbPerson(){
@@ -37,12 +33,12 @@ namespace Api.DataAccess{
 
         public Task Delete(string ID)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<Person> Edit(DtoPerson e)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<Person> GetByID(string ID)
