@@ -11,6 +11,10 @@ namespace Api.Mappers
 {
     public class AspenMapperProfile : Profile
     {
+        /// <summary>
+        /// Rules to go to and frome different object types
+        /// </summary>
+        /// <seealso cref="https://codewithmukesh.com/blog/automapper-in-aspnet-core/"/>
         public AspenMapperProfile()
         {
             CreateMap<DbEvent, DtoEvent>()
