@@ -56,7 +56,7 @@ namespace Api.Controllers
                 if (!eventRepository.EventExists(e.ID))
                 {   var dbEvent = mapper.Map<DbEvent>(e);
                     await eventRepository.AddEventAsync(dbEvent);
-                    return Ok();
+                    return Ok("Event added successfully");
                 }
                 else
                 {
@@ -73,9 +73,9 @@ namespace Api.Controllers
             {
                 var dbEvent = mapper.Map<DbEvent>(e);
                 await eventRepository.EditEventAsync(dbEvent);
-                return Ok();
+                return Ok("Event edit was successful");
             }
-            return BadRequest();
+            return BadRequest("THere was error editing the event");
         }
 
 
@@ -85,7 +85,7 @@ namespace Api.Controllers
             if (eventRepository.EventExists(eventID))
             {
                  await eventRepository.DeleteEventAsync(eventID);
-                return Ok();
+                return Ok("Delete event was successful");
             }
             else
             {

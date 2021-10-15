@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.DataAccess
 {
-    public class TeamRepository
+    public class TeamRepository : ITeamRepository
     {
 
         private readonly AspenContext _context;
@@ -16,7 +16,7 @@ namespace Api.DataAccess
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        private bool TeamExists(string teamID)
+        public bool TeamExists(string teamID)
         {
             return _context.Teams.Any(e => e.ID == teamID);
         }
@@ -53,7 +53,7 @@ namespace Api.DataAccess
         }
 
         //delete team
-        public async Task DeleteEventAsync(string teamID)
+        public async Task DeleteTeamAsync(string teamID)
         {
             var team = await _context.Teams.FindAsync(teamID);
 

@@ -8,9 +8,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Api.DataAccess;
 using Api.Mappers;
 
 namespace Api
@@ -28,8 +27,9 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddAutoMapper(typeof(AspenMapperProfile));
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -80,7 +80,7 @@ namespace Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
 
-            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration.GetConnectionString("docker")));
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration["DATABASE_URL"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
