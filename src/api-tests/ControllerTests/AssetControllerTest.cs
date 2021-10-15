@@ -9,6 +9,7 @@ using Api.Controller;
 using Api.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -53,8 +54,12 @@ namespace Tests.Controller
 
             var response = await assetController.PostAsync(fileMock.Object);
 
-            var actualFileText = File.ReadAllText("assets/" + fileMock.Object.FileName);
-            response.status.Should().Be("success");
+            var newFileName = (response.Result as OkObjectResult).Value as Response<string>;
+            var actualFileText = File.ReadAllText("assets/" + newFileName.data);
+            
+            (response.Result as OkObjectResult).StatusCode.Should().Be(200);
+            newFileName.data.Should().NotBeEmpty();
+            
             actualFileText.Should().Be("fake image");
         }
 
@@ -64,7 +69,7 @@ namespace Tests.Controller
             var fileMock = new Mock<IFormFile>();
             //Setup mock file using a memory stream
             var content = "fake image";
-            var fileName = "test" + RandomString(4);
+            var fileName = "test" + RandomString(4) + ".txt";
             var ms = new MemoryStream(Encoding.ASCII.GetBytes(content));
             // var writer = new StreamWriter(ms);
             // writer.Write(content);

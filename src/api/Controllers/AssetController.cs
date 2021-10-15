@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controller
 {
-    public record Response<T>(string status, T data);
+    public record Response<T>(T data);
 
     [ApiController]
     [Authorize]
@@ -24,11 +24,11 @@ namespace Api.Controller
         }
 
         [HttpPost]
-        public async Task<Response<string>> PostAsync([FromBody] IFormFile image)
+        public async Task<ActionResult<Response<string>>> PostAsync([FromBody] IFormFile image)
         {
-            await assetsFileService.StoreAsset(image);
+            var newId = await assetsFileService.StoreAsset(image);
 
-            return new Response<string>("success", "success");
+            return Ok(new Response<string>(newId));
         }
     }
 }

@@ -9,6 +9,7 @@
     },
 	"remoteUser": "root",
 	"extensions": [
-		"ms-dotnettools.csharp"
+		"ms-dotnettools.csharp",
+		"formulahendry.dotnet-test-explorer"
 	]
 }
