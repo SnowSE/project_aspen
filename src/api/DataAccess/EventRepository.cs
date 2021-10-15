@@ -66,7 +66,7 @@ namespace Api.DataAccess
         //Get Event team
         public async Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID)
         {
-            var eventTeams = await context.Events.FirstAsync(e => e.ID == eventID);
+            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
             var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamID);
             return eventTeam;
         }
@@ -75,8 +75,7 @@ namespace Api.DataAccess
         //Get event teams
         public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
         {
-            var eventTeams = await context.Events.FirstOrDefaultAsync(e => e.ID == eventID);
-            /*var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);*/
+            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
             return eventTeams.Teams;
         }
 
