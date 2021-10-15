@@ -11,17 +11,23 @@ namespace Api.Mappers
 {
     public class AspenMapperProfile : Profile
     {
+        /// <summary>
+        /// Rules to go to and frome different object types
+        /// </summary>
+        /// <seealso cref="https://codewithmukesh.com/blog/automapper-in-aspnet-core/"/>
         public AspenMapperProfile()
         {
-            CreateMap<DbEvent, DtoEvent>();
-            CreateMap<DtoEvent, DbEvent>();
-            CreateMap<DbPageData, DtoPageData>();
-            CreateMap<DtoPageData, DbPageData>();
-            CreateMap<DbPerson, Person>();
-            CreateMap<Person, DbPerson>();
-            CreateMap<DbTeam, DtoTeam>();
-            CreateMap<DtoTeam, DbTeam>();
+            CreateMap<DbEvent, DtoEvent>()
+                .ReverseMap();
 
+            CreateMap<DbPageData, DtoPageData>()
+                .ReverseMap();
+
+            CreateMap<DbPerson, Person>()
+                .ReverseMap();
+
+            CreateMap<DbTeam, DtoTeam>()
+                .ReverseMap();
         }
     }
 }
