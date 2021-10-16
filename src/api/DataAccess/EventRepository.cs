@@ -63,22 +63,5 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        //Get Event team
-        public async Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID)
-        {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamID);
-            return eventTeam;
-        }
-
-
-        //Get event teams
-        public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
-        {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            return eventTeams.Teams;
-        }
-
-
     }
 }

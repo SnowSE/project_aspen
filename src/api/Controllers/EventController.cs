@@ -96,27 +96,6 @@ namespace Api.Controllers
 
         }
 
-        [HttpGet("team")]
-        public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string teamID, string eventID)
-        {
-
-            if (eventRepository.EventExists(eventID))
-            {
-                var dbEventTeam = await eventRepository.GetEventTeamByIdAsync(teamID, eventID);
-
-                return mapper.Map<DtoTeam>(dbEventTeam);
-            }
-            else
-            {
-                return BadRequest("Event id does not exist");
-            }
-        }
-
-        [HttpGet("teams")]
-        public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
-        {
-            var dbEventTeams = await eventRepository.GetEventTeamsAsync(eventID);
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(dbEventTeams);
-        }
+       
     }
 }

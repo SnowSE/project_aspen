@@ -93,5 +93,22 @@ namespace Aspen.Api.Controllers
             }
 
         }
+
+        [HttpGet("eventteam")]
+        public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string teamID, string eventID)
+        {
+            var dbEventTeam = await teamRepository.GetEventTeamByIdAsync(teamID, eventID);
+
+            return mapper.Map<DtoTeam>(dbEventTeam);
+            
+    
+        }
+
+        [HttpGet("eventteams")]
+        public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
+        {
+            var dbEventTeams = await teamRepository.GetEventTeamsAsync(eventID);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(dbEventTeams);
+        }
     }
 }
