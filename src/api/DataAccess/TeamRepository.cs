@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.DbModels;
+using Api.DtoModels;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.DataAccess
@@ -11,50 +13,58 @@ namespace Api.DataAccess
     {
 
         private readonly AspenContext context;
+        private readonly IMapper mapper;
 
-        public TeamRepository(AspenContext context)
+        public TeamRepository(AspenContext context, IMapper mapper)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.mapper = mapper;
         }
         public bool TeamExists(string id)
         {
             return context.Teams.Any(e => e.ID == id);
         }
 
-        public async Task<IEnumerable<DbTeam>> GetTeamsAsync()
+        public async Task<IEnumerable<DtoTeam>> GetTeamsAsync()
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
+            var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
         }
 
-        public async Task<DbTeam> GetTeamByIdAsync(string id)
+        public async Task<DtoTeam> GetTeamByIdAsync(string id)
         {
-            return await context.Teams
+            var team = await context.Teams
                 .FirstAsync(r => r.ID == id);
+
+            return mapper.Map<DtoTeam>(team);
         }
 
-        public async Task AddTeamAsync(DbTeam team, string eventID)
+        public async Task AddTeamAsync(DtoTeam dtoTeam, string eventID)
         {
             var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
-            if (!TeamExists(team.ID))
+            if (!TeamExists(dtoTeam.ID))
             {
-                team.Event = existingEvent;
-                team.EventID = existingEvent.ID;
+                var dbTeam = mapper.Map<DbTeam>(dtoTeam);
 
-                context.Teams.Add(team);
-                existingEvent.Teams.Add(team);
+                dbTeam.Event = existingEvent;
+                dbTeam.EventID = existingEvent.ID;
+
+                await context.Teams.AddAsync(dbTeam);
+                existingEvent.Teams.Add(dbTeam);
 
                 context.Update(existingEvent);
-
-                existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task EditTeamAsync(DbTeam team)
+        public async Task EditTeamAsync(DtoTeam team)
         {
-            context.Update(team);
+            //This needs a fix
+
+            var dbTeam = mapper.Map<DbTeam>(team);
+            context.Update(dbTeam);
             await context.SaveChangesAsync();
         }
 
@@ -66,18 +76,20 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public async Task<DbTeam> GetEventTeamByIdAsync(string teamId, string eventID)
+        public async Task<DtoTeam> GetEventTeamByIdAsync(string teamId, string eventID)
         {
             var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
             var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamId);
-            return eventTeam;
+
+            return mapper.Map<DtoTeam>(eventTeam);
         }
 
 
-        public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
+        public async Task<IEnumerable<DtoTeam>> GetEventTeamsAsync(string eventID)
         {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            return eventTeams.Teams;
+            var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
+
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(existingEvent.Teams);
         }
 
     }

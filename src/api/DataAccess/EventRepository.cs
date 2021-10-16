@@ -50,6 +50,7 @@ namespace Api.DataAccess
         //edit event
         public async Task EditEventAsync(DbEvent e)
         {
+            //This needs a fix
             context.Update(e);
             await context.SaveChangesAsync();
         }

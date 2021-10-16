@@ -15,19 +15,17 @@ namespace Aspen.Api.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository teamRepository;
-        private readonly IMapper mapper;
 
-        public TeamController(ITeamRepository TeamRepository, IMapper mapper)
+        public TeamController(ITeamRepository teamRepository)
         {
-            this.mapper = mapper;
-            teamRepository = TeamRepository;
+            this.teamRepository = teamRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<DtoTeam>> GetAllTeams()
         {
-            var teams = await teamRepository.GetTeamsAsync();
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
+            return await teamRepository.GetTeamsAsync();
+
         }
 
         [HttpGet("{id}")]
@@ -36,9 +34,7 @@ namespace Aspen.Api.Controllers
 
             if (teamRepository.TeamExists(id))
             {
-                var dbTeam = await teamRepository.GetTeamByIdAsync(id);
-
-                return mapper.Map<DtoTeam>(dbTeam);
+                return await teamRepository.GetTeamByIdAsync(id);
             }
             else
             {
@@ -47,15 +43,14 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeam([FromBody] DtoTeam e, string eventID)
+        public async Task<IActionResult> AddTeam([FromBody] DtoTeam team, string eventID)
         {
 
             if (ModelState.IsValid)
             {
-                if (!teamRepository.TeamExists(e.ID))
+                if (!teamRepository.TeamExists(team.ID))
                 {
-                    var dbTeam = mapper.Map<DbTeam>(e);
-                    await teamRepository.AddTeamAsync(dbTeam, eventID);
+                    await teamRepository.AddTeamAsync(team, eventID);
                     return Ok("Team added successfully");
                 }
                 else
@@ -67,12 +62,11 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTeam([FromBody] DtoTeam e, string id)
+        public async Task<IActionResult> EditTeam([FromBody] DtoTeam team, string id)
         {
             if (ModelState.IsValid)
             {
-                var dbTeam = mapper.Map<DbTeam>(e);
-                await teamRepository.EditTeamAsync(dbTeam);
+                await teamRepository.EditTeamAsync(team);
                 return Ok("Team edit was successful");
             }
             return BadRequest();
@@ -97,18 +91,13 @@ namespace Aspen.Api.Controllers
         [HttpGet("getteam")]
         public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string id, string eventID)
         {
-            var dbEventTeam = await teamRepository.GetEventTeamByIdAsync(id, eventID);
-
-            return mapper.Map<DtoTeam>(dbEventTeam);
-            
-    
+            return await teamRepository.GetEventTeamByIdAsync(id, eventID);
         }
 
         [HttpGet("getteams")]
         public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
         {
-            var dbEventTeams = await teamRepository.GetEventTeamsAsync(eventID);
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(dbEventTeams);
+            return await teamRepository.GetEventTeamsAsync(eventID);
         }
     }
 }
