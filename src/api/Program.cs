@@ -20,7 +20,7 @@ namespace Api
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
-                db.Database.Migrate();
+                /*db.Database.Migrate();*/  //Whenever I try to run this against the already existing db, it gives error, but we need this line for testing
             }
             host.Run();
         }
