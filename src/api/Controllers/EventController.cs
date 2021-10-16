@@ -12,7 +12,7 @@ using Api.DbModels;
 
 namespace Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/events")]
     [ApiController]
     public class EventController : ControllerBase
     {
@@ -25,20 +25,20 @@ namespace Api.Controllers
             this.eventRepository = eventRepository;
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
             var Events = await eventRepository.GetEventsAsync();
             return mapper.Map<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>(Events);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<DtoEvent>> GetEventByID(string eventID)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DtoEvent>> GetEventByID(string id)
         {
 
-            if (eventRepository.EventExists(eventID))
+            if (eventRepository.EventExists(id))
             {
-                var dbEvent = await eventRepository.GetEventAsync(eventID);
+                var dbEvent = await eventRepository.GetEventByIdAsync(id);
 
                 return mapper.Map<DtoEvent>(dbEvent);
             }
@@ -68,8 +68,8 @@ namespace Api.Controllers
             return BadRequest("Event object is not valid");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e, string id)
         {
             if (ModelState.IsValid)
             {
@@ -81,12 +81,12 @@ namespace Api.Controllers
         }
 
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteEvent(string eventID)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEvent(string id)
         {
-            if (eventRepository.EventExists(eventID))
+            if (eventRepository.EventExists(id))
             {
-                await eventRepository.DeleteEventAsync(eventID);
+                await eventRepository.DeleteEventAsync(id);
                 return Ok("Delete event was successful");
             }
             else

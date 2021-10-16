@@ -16,28 +16,25 @@ namespace Api.DataAccess
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public bool TeamExists(string teamID)
+        public bool TeamExists(string id)
         {
-            return context.Teams.Any(e => e.ID == teamID);
+            return context.Teams.Any(e => e.ID == id);
         }
 
-        //Get all teams
         public async Task<IEnumerable<DbTeam>> GetTeamsAsync()
         {
             return await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
         }
 
-        //Get team
-        public async Task<DbTeam> GetTeamAsync(string teamID)
+        public async Task<DbTeam> GetTeamByIdAsync(string id)
         {
             return await context.Teams
-                .FirstAsync(r => r.ID == teamID);
+                .FirstAsync(r => r.ID == id);
         }
 
-        //Add team
-        public async Task AddTeamAsync(DbTeam team, string EventID)
+        public async Task AddTeamAsync(DbTeam team, string eventID)
         {
-            var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == EventID);
+            var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
             if (!TeamExists(team.ID))
             {
@@ -49,38 +46,34 @@ namespace Api.DataAccess
 
                 context.Update(existingEvent);
 
-                existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == EventID);
+                existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
                 await context.SaveChangesAsync();
             }
         }
 
-        //edit
         public async Task EditTeamAsync(DbTeam team)
         {
             context.Update(team);
             await context.SaveChangesAsync();
         }
 
-        //delete team
-        public async Task DeleteTeamAsync(string teamID)
+        public async Task DeleteTeamAsync(string id)
         {
-            var team = await context.Teams.FindAsync(teamID);
+            var team = await context.Teams.FindAsync(id);
 
             context.Teams.Remove(team);
             await context.SaveChangesAsync();
         }
 
-        //Get Event team
-        public async Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID)
+        public async Task<DbTeam> GetEventTeamByIdAsync(string teamId, string eventID)
         {
             var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamID);
+            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamId);
             return eventTeam;
         }
 
 
-        //Get event teams
         public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
         {
             var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);

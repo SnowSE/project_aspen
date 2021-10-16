@@ -19,9 +19,9 @@ namespace Api.DataAccess
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public bool EventExists(string eventID)
+        public bool EventExists(string id)
         {
-            return context.Events.Any(e => e.ID == eventID);
+            return context.Events.Any(e => e.ID == id);
         }
 
         //Get all events
@@ -31,10 +31,10 @@ namespace Api.DataAccess
         }
 
         //Get event
-        public async Task<DbEvent> GetEventAsync(string eventID)
+        public async Task<DbEvent> GetEventByIdAsync(string id)
         {
             return await context.Events
-                .FirstAsync(r => r.ID == eventID);
+                .FirstAsync(r => r.ID == id);
         }
 
         //Add event
@@ -55,9 +55,9 @@ namespace Api.DataAccess
         }
 
         //delete event
-        public async Task DeleteEventAsync(string eventID)
+        public async Task DeleteEventAsync(string id)
         {
-            var e = await context.Events.FindAsync(eventID);
+            var e = await context.Events.FindAsync(id);
 
             context.Events.Remove(e);
             await context.SaveChangesAsync();

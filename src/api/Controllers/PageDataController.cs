@@ -73,6 +73,7 @@ namespace Api.Controllers
         }
 
         // DELETE: api/PageData/5
+        // DELETE: api/PageData?key={key}
         [HttpDelete("{key}")]
         /*[Authorize(Roles = "admin-aspen")]*/
         public async Task<IActionResult> DeletePageData(string key)
