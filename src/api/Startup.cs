@@ -30,6 +30,8 @@ namespace Api
             services.AddAutoMapper(typeof(AspenMapperProfile));
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<IPageDataRepository, PageDataRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
