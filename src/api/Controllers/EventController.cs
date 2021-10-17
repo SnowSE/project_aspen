@@ -17,19 +17,16 @@ namespace Api.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository eventRepository;
-        private readonly IMapper mapper;
 
-        public EventController(IEventRepository eventRepository, IMapper mapper)
+        public EventController(IEventRepository eventRepository)
         {
-            this.mapper = mapper;
             this.eventRepository = eventRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
-            var Events = await eventRepository.GetEventsAsync();
-            return mapper.Map<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>(Events);
+            return await eventRepository.GetEventsAsync();
         }
 
         [HttpGet("{id}")]
@@ -38,9 +35,7 @@ namespace Api.Controllers
 
             if (eventRepository.EventExists(id))
             {
-                var dbEvent = await eventRepository.GetEventByIdAsync(id);
-
-                return mapper.Map<DtoEvent>(dbEvent);
+                return await eventRepository.GetEventByIdAsync(id);
             }
             else
             {
@@ -56,8 +51,7 @@ namespace Api.Controllers
             {
                 if (!eventRepository.EventExists(e.ID))
                 {
-                    var dbEvent = mapper.Map<DbEvent>(e);
-                    await eventRepository.AddEventAsync(dbEvent);
+                    await eventRepository.AddEventAsync(e);
                     return Ok("Event added successfully");
                 }
                 else
@@ -73,11 +67,10 @@ namespace Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbEvent = mapper.Map<DbEvent>(e);
-                await eventRepository.EditEventAsync(dbEvent);
+                await eventRepository.EditEventAsync(e);
                 return Ok("Event edit was successful");
             }
-            return BadRequest("THere was error editing the event");
+            return BadRequest("There was error editing the event");
         }
 
 
@@ -93,9 +86,6 @@ namespace Api.Controllers
             {
                 return BadRequest("Event id does not exist");
             }
-
         }
-
-       
     }
 }

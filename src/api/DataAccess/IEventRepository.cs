@@ -1,4 +1,5 @@
 ﻿using Api.DbModels;
+using Api.DtoModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,12 +7,12 @@ namespace Api.DataAccess
 {
     public interface IEventRepository
     {
-        Task AddEventAsync(DbEvent e);
+        Task AddEventAsync(DtoEvent e);
         Task DeleteEventAsync(string id);
-        Task EditEventAsync(DbEvent e);
+        Task EditEventAsync(DtoEvent e);
         bool EventExists(string id);
-        Task<DbEvent> GetEventByIdAsync(string id);
-        Task<IEnumerable<DbEvent>> GetEventsAsync();
+        Task<DtoEvent> GetEventByIdAsync(string id);
+        Task<IEnumerable<DtoEvent>> GetEventsAsync();
 
     }
 }
