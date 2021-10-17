@@ -44,15 +44,14 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEvent([FromBody] DtoEvent e)
+        public async Task<ActionResult<DtoEvent>> AddEvent([FromBody] DtoEvent e)
         {
 
             if (ModelState.IsValid)
             {
                 if (!eventRepository.EventExists(e.ID))
                 {
-                    await eventRepository.AddEventAsync(e);
-                    return Ok("Event added successfully");
+                    return await eventRepository.AddEventAsync(e);
                 }
                 else
                 {

@@ -7,7 +7,7 @@ namespace Api.DataAccess
 {
     public interface IEventRepository
     {
-        Task AddEventAsync(DtoEvent e);
+        Task<DtoEvent> AddEventAsync(DtoEvent e);
         Task DeleteEventAsync(string id);
         Task EditEventAsync(DtoEvent e);
         bool EventExists(string id);

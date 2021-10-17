@@ -44,11 +44,13 @@ namespace Api.DataAccess
         }
 
         //Add event
-        public async Task AddEventAsync(DtoEvent e)
+        public async Task<DtoEvent> AddEventAsync(DtoEvent e)
         {
             var newEvent = mapper.Map<DbEvent>(e);
             context.Events.Add(newEvent);
             await context.SaveChangesAsync();
+
+            return mapper.Map<DtoEvent>(newEvent);
         }
 
         //edit event
