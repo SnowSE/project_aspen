@@ -82,7 +82,7 @@ namespace Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
 
-            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration.GetConnectionString("localMaksad")));
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration.GetConnectionString("local")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
