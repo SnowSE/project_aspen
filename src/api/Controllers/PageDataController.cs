@@ -15,79 +15,47 @@ using Api.DbModels;
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    /*[Authorize]*/
     [ApiController]
     public class PageDataController : ControllerBase
     {
-        private readonly AspenContext context;
-        private readonly IMapper mapper;
+        private readonly IPageDataRepository pageDataRepository;
 
-        public PageDataController(AspenContext context, IMapper mapper)
+        public PageDataController(IPageDataRepository pageDataRepository)
         {
-            this.context = context;
-            this.mapper = mapper;
+            this.pageDataRepository = pageDataRepository;
         }
 
         // GET: api/PageData
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DbPageData>>> GetPageData()
+        public async Task<IEnumerable<DtoPageData>> GetPageData()
         {
-            return await context.PageData.ToListAsync();
+            return await pageDataRepository.GetAllPageDataAsync();
         }
 
-        // GET: api/PageData/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<DtoPageData>> GetPageData(int id)
-        {
-            var pageData = await context.PageData.FindAsync(id);
-
-            if (pageData == null)
-            {
-                return NotFound();
-            }
-
-            return mapper.Map<DtoPageData>(pageData);
-        }
-
-        [HttpGet("{key:alpha}")]
+        [HttpGet("{key}")]
         public async Task<ActionResult<DtoPageData>> GetPageData(string key)
         {
-            var pageData = await context.PageData.FirstOrDefaultAsync(p => p.Key == key);
+            var pageData = await pageDataRepository.GetPageDataAsync(key);
             if (pageData == null)
                 return NotFound();
-
-            return mapper.Map<DtoPageData>(pageData);
+            return pageData;
         }
 
         // PUT: api/PageData/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        [Authorize(Roles = "admin-aspen")]
-        public async Task<IActionResult> PutPageData(int id, DtoPageData pageData)
+        [HttpPut("{key}")]
+        /*[Authorize(Roles = "admin-aspen")]*/
+        public async Task<IActionResult> EditPageData(string key, DtoPageData pageData)
         {
-            var dbPageData = mapper.Map<DbPageData>(pageData);
-            var existingPageData = await context.PageData.FirstOrDefaultAsync(p => p.Key == pageData.Key);
-
-            if (existingPageData == null)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                existingPageData.Data = pageData.Data;
-                await context.SaveChangesAsync();
+                await pageDataRepository.EditPageDataAsync(key, pageData);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PageDataExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
+
             }
 
             return NoContent();
@@ -96,36 +64,24 @@ namespace Api.Controllers
         // POST: api/PageData
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "admin-aspen")]
+        /*[Authorize(Roles = "admin-aspen")]*/
         public async Task<ActionResult<DtoPageData>> PostPageData(DtoPageData pageData)
         {
-            var dbPageData = mapper.Map<DbPageData>(pageData);
-            context.PageData.Add(dbPageData);
-            await context.SaveChangesAsync();
+            var pgData = await pageDataRepository.AddPageDataAsync(pageData);
 
-            return CreatedAtAction("GetPageData", new { id = dbPageData.Id }, pageData);
+            return CreatedAtAction("GetPageData", pgData);
         }
 
         // DELETE: api/PageData/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "admin-aspen")]
-        public async Task<IActionResult> DeletePageData(int id)
+        // DELETE: api/PageData?key={key}
+        [HttpDelete("{key}")]
+        /*[Authorize(Roles = "admin-aspen")]*/
+        public async Task<IActionResult> DeletePageData(string key)
         {
-            var pageData = await context.PageData.FindAsync(id);
-            if (pageData == null)
-            {
-                return NotFound();
-            }
 
-            context.PageData.Remove(pageData);
-            await context.SaveChangesAsync();
+            await pageDataRepository.DeletePageDataAsync(key);
 
             return NoContent();
-        }
-
-        private bool PageDataExists(int id)
-        {
-            return context.PageData.Any(e => e.Id == id);
         }
     }
 }

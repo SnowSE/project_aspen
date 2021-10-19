@@ -10,35 +10,31 @@ using System.Threading.Tasks;
 
 namespace Aspen.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/teams")]
     [ApiController]
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository teamRepository;
-        private readonly IMapper mapper;
 
-        public TeamController(ITeamRepository TeamRepository, IMapper mapper)
+        public TeamController(ITeamRepository teamRepository)
         {
-            this.mapper = mapper;
-            teamRepository = TeamRepository;
-        }
-
-        [HttpGet("all")]
-        public async Task<IEnumerable<DtoTeam>> GetAllTeams()
-        {
-            var Teams = await teamRepository.GetTeamsAsync();
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(Teams);
+            this.teamRepository = teamRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<DtoTeam>> GetTeamByID(string TeamID)
+        public async Task<IEnumerable<DtoTeam>> GetAllTeams()
+        {
+            return await teamRepository.GetTeamsAsync();
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DtoTeam>> GetTeamByID(string id)
         {
 
-            if (teamRepository.TeamExists(TeamID))
+            if (teamRepository.TeamExists(id))
             {
-                var dbTeam = await teamRepository.GetTeamAsync(TeamID);
-
-                return mapper.Map<DtoTeam>(dbTeam);
+                return await teamRepository.GetTeamByIdAsync(id);
             }
             else
             {
@@ -47,15 +43,14 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeam([FromBody] DtoTeam e, string EventID)
+        public async Task<IActionResult> AddTeam([FromBody] DtoTeam team, string eventID)
         {
 
             if (ModelState.IsValid)
             {
-                if (!teamRepository.TeamExists(e.ID))
+                if (!teamRepository.TeamExists(team.ID))
                 {
-                    var dbTeam = mapper.Map<DbTeam>(e);
-                    await teamRepository.AddTeamAsync(dbTeam, EventID);
+                    await teamRepository.AddTeamAsync(team, eventID);
                     return Ok("Team added successfully");
                 }
                 else
@@ -66,25 +61,24 @@ namespace Aspen.Api.Controllers
             return BadRequest("Team object is not valid");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditTeam([FromBody] DtoTeam e)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditTeam([FromBody] DtoTeam team, string id)
         {
             if (ModelState.IsValid)
             {
-                var dbTeam = mapper.Map<DbTeam>(e);
-                await teamRepository.EditTeamAsync(dbTeam);
+                await teamRepository.EditTeamAsync(team);
                 return Ok("Team edit was successful");
             }
             return BadRequest();
         }
 
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTeam(string TeamID)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTeam(string id)
         {
-            if (teamRepository.TeamExists(TeamID))
+            if (teamRepository.TeamExists(id))
             {
-                await teamRepository.DeleteTeamAsync(TeamID);
+                await teamRepository.DeleteTeamAsync(id);
                 return Ok("Delete Team was successful");
             }
             else
@@ -92,6 +86,18 @@ namespace Aspen.Api.Controllers
                 return BadRequest("Team id does not exist");
             }
 
+        }
+
+        [HttpGet("getteam")]
+        public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string id, string eventID)
+        {
+            return await teamRepository.GetEventTeamByIdAsync(id, eventID);
+        }
+
+        [HttpGet("getteams")]
+        public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
+        {
+            return await teamRepository.GetEventTeamsAsync(eventID);
         }
     }
 }

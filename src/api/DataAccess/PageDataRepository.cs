@@ -6,12 +6,13 @@ using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.DataAccess{
     public interface IPageDataRepository
-    {
+{
         Task<PageData> Add(DtoPageData dtoPageData);
         Task Delete(string ID);
         Task<PageData> Edit(DtoPageData e);
@@ -50,9 +51,9 @@ namespace Api.DataAccess{
         {
             var dbPageData = await _context.PageData.FindAsync(ID);
             if (dbPageData == null)
-            {
+        {
                 throw new PageDataNotFoundException();
-            }
+        }
             return mapper.Map<PageData>(dbPageData);
         }
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.DbModels;
+using Api.DtoModels;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.DataAccess
@@ -11,64 +13,83 @@ namespace Api.DataAccess
     {
 
         private readonly AspenContext context;
+        private readonly IMapper mapper;
 
-        public TeamRepository(AspenContext context)
+        public TeamRepository(AspenContext context, IMapper mapper)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.mapper = mapper;
         }
-        public bool TeamExists(string teamID)
+        public bool TeamExists(string id)
         {
-            return context.Teams.Any(e => e.ID == teamID);
-        }
-
-        //Get all teams
-        public async Task<IEnumerable<DbTeam>> GetTeamsAsync()
-        {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
+            return context.Teams.Any(e => e.ID == id);
         }
 
-        //Get team
-        public async Task<DbTeam> GetTeamAsync(string teamID)
+        public async Task<IEnumerable<DtoTeam>> GetTeamsAsync()
         {
-            return await context.Teams
-                .FirstAsync(r => r.ID == teamID);
+            var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
         }
 
-        //Add team
-        public async Task AddTeamAsync(DbTeam team, string EventID)
+        public async Task<DtoTeam> GetTeamByIdAsync(string id)
         {
-            var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == EventID);
+            var team = await context.Teams
+                .FirstAsync(r => r.ID == id);
 
-            if (!TeamExists(team.ID))
+            return mapper.Map<DtoTeam>(team);
+        }
+
+        public async Task AddTeamAsync(DtoTeam dtoTeam, string eventID)
+        {
+            var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
+
+            if (!TeamExists(dtoTeam.ID))
             {
-                team.Event = existingEvent;
-                team.EventID = existingEvent.ID;
+                var dbTeam = mapper.Map<DbTeam>(dtoTeam);
 
-                context.Teams.Add(team);
-                existingEvent.Teams.Add(team);
+                dbTeam.Event = existingEvent;
+                dbTeam.EventID = existingEvent.ID;
+
+                await context.Teams.AddAsync(dbTeam);
+                existingEvent.Teams.Add(dbTeam);
 
                 context.Update(existingEvent);
-
-                existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == EventID);
 
                 await context.SaveChangesAsync();
             }
         }
 
-        //edit
-        public async Task EditTeamAsync(DbTeam team)
+        public async Task EditTeamAsync(DtoTeam team)
         {
-            context.Update(team);
+            //This needs a fix
+
+            var dbTeam = mapper.Map<DbTeam>(team);
+            context.Update(dbTeam);
             await context.SaveChangesAsync();
         }
 
-        //delete team
-        public async Task DeleteTeamAsync(string teamID)
+        public async Task DeleteTeamAsync(string id)
         {
-            var team = await context.Teams.FindAsync(teamID);
+            var team = await context.Teams.FindAsync(id);
 
             context.Teams.Remove(team);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<DtoTeam> GetEventTeamByIdAsync(string teamId, string eventID)
+        {
+            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
+            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamId);
+
+            return mapper.Map<DtoTeam>(eventTeam);
+        }
+
+
+        public async Task<IEnumerable<DtoTeam>> GetEventTeamsAsync(string eventID)
+        {
+            var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
+
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(existingEvent.Teams);
         }
 
     }

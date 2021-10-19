@@ -1,6 +1,8 @@
 ﻿using Api;
 using Api.DataAccess;
 using Api.DbModels;
+using Api.DtoModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,72 +15,61 @@ namespace Api.DataAccess
     public class EventRepository : IEventRepository
     {
         private readonly AspenContext context;
+        private readonly IMapper mapper;
 
-        public EventRepository(AspenContext context)
+        public EventRepository(AspenContext context, IMapper mapper)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.mapper = mapper;
         }
 
-        public bool EventExists(string eventID)
+        public bool EventExists(string id)
         {
-            return context.Events.Any(e => e.ID == eventID);
+            return context.Events.Any(e => e.ID == id);
         }
 
         //Get all events
-        public async Task<IEnumerable<DbEvent>> GetEventsAsync()
+        public async Task<IEnumerable<DtoEvent>> GetEventsAsync()
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync(context.Events);
+            var eventList = await EntityFrameworkQueryableExtensions.ToListAsync(context.Events);
+            return mapper.Map<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>(eventList);
         }
 
         //Get event
-        public async Task<DbEvent> GetEventAsync(string eventID)
+        public async Task<DtoEvent> GetEventByIdAsync(string id)
         {
-            return await context.Events
-                .FirstAsync(r => r.ID == eventID);
+            var e = await context.Events.FindAsync(id);
+
+            return mapper.Map<DtoEvent>(e);
         }
 
         //Add event
-        public async Task AddEventAsync(DbEvent e)
+        public async Task<DtoEvent> AddEventAsync(DtoEvent e)
         {
-            if (!EventExists(e.ID))
-            {
-                context.Events.Add(e);
-                await context.SaveChangesAsync();
-            }
+            var newEvent = mapper.Map<DbEvent>(e);
+            context.Events.Add(newEvent);
+            await context.SaveChangesAsync();
+
+            return mapper.Map<DtoEvent>(newEvent);
         }
 
         //edit event
-        public async Task EditEventAsync(DbEvent e)
+        public async Task EditEventAsync(DtoEvent e)
         {
-            context.Update(e);
+            //This needs a fix to check for id if the even does not exist
+            var dbEvent = mapper.Map<DbEvent>(e);
+            context.Update(dbEvent);
             await context.SaveChangesAsync();
         }
 
         //delete event
-        public async Task DeleteEventAsync(string eventID)
+        public async Task DeleteEventAsync(string id)
         {
-            var e = await context.Events.FindAsync(eventID);
+            var e = await context.Events.FindAsync(id);
 
             context.Events.Remove(e);
             await context.SaveChangesAsync();
         }
-
-        //Get Event team
-        public async Task<DbTeam> GetEventTeamByIdAsync(string teamID, string eventID)
-        {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamID);
-            return eventTeam;
-        }
-
-
-        //Get event teams
-        public async Task<IEnumerable<DbTeam>> GetEventTeamsAsync(string eventID)
-        {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            return eventTeams.Teams;
-        }
-
 
     }
 }
