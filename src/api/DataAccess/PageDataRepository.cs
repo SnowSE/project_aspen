@@ -1,8 +1,5 @@
 using Api.DbModels;
 using Api.DtoModels;
-using Api.Exceptions;
-using Api.Models;
-using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,51 +7,62 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.DataAccess{
-    public interface IPageDataRepository
+namespace Api.DataAccess
 {
-        Task<PageData> Add(DtoPageData dtoPageData);
-        Task Delete(string ID);
-        Task<PageData> Edit(DtoPageData e);
-        Task<PageData> GetByID(string ID);
-    }
-
     public class PageDataRepository : IPageDataRepository
     {
-        private readonly AspenContext _context;
+        private readonly AspenContext context;
         private readonly IMapper mapper;
 
         public PageDataRepository(AspenContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.mapper = mapper;
         }
 
-        public async Task<PageData> Add(DtoPageData dtoPageData)
+        public bool PageDataExists(string pageDataKey)
         {
-            var dbPageData = mapper.Map<DbPageData>(dtoPageData);
-            var returnedValue = await _context.PageData.AddAsync(dbPageData);
-            return mapper.Map<PageData>(dbPageData);
+            return context.PageData.Any(e => e.Key == pageDataKey);
         }
 
-        public Task Delete(string ID)
+        public async Task<IEnumerable<DtoPageData>> GetAllPageDataAsync()
         {
-            throw new NotImplementedException();
+            var AllPageData = await EntityFrameworkQueryableExtensions.ToListAsync(context.PageData);
+            return mapper.Map<IEnumerable<DbPageData>, IEnumerable<DtoPageData>>(AllPageData);
         }
 
-        public Task<PageData> Edit(DtoPageData e)
+        public async Task<DtoPageData> GetPageDataAsync(string pageDataKey)
         {
-            throw new NotImplementedException();
+            var dbPageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == pageDataKey);
+            return mapper.Map<DtoPageData>(dbPageData);
         }
 
-        public async Task<PageData> GetByID(string ID)
+        public async Task<DtoPageData> AddPageDataAsync(DtoPageData pageData)
         {
-            var dbPageData = await _context.PageData.FindAsync(ID);
-            if (dbPageData == null)
-        {
-                throw new PageDataNotFoundException();
+            var dbPageData = mapper.Map<DbPageData>(pageData);
+
+            await context.PageData.AddAsync(dbPageData);
+            await context.SaveChangesAsync();
+
+            return mapper.Map<DtoPageData>(dbPageData);
         }
-            return mapper.Map<PageData>(dbPageData);
+
+        public async Task EditPageDataAsync(string key, DtoPageData pageData)
+        {
+            var existingDbPageData = await context.PageData.AsNoTracking().FirstOrDefaultAsync(r => r.Key == key);
+            var mappedPageData = mapper.Map<DbPageData>(pageData);
+            mappedPageData.ID = existingDbPageData.ID;
+
+            context.Update(mappedPageData);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task DeletePageDataAsync(string pageDataKey)
+        {
+            var pageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == pageDataKey);
+
+            context.PageData.Remove(pageData);
+            await context.SaveChangesAsync();
         }
     }
 }

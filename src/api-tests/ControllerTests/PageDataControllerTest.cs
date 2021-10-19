@@ -28,8 +28,8 @@ namespace Tests.Controller
         {
             var context = TestHelpers.CreateContext();
             context.Database.Migrate();
-
-            pageDataController = new PageDataController(context, TestHelpers.AspenMapper);
+            var pageDataRepository = new PageDataRepository(context, TestHelpers.AspenMapper);
+            pageDataController = new PageDataController(pageDataRepository);
         }
 
         [Test]
