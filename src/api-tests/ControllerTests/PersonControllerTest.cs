@@ -24,11 +24,11 @@ namespace Tests.Controller
 
         [SetUp]
         public void Setup()
-        {            
+        {
             var context = TestHelpers.CreateContext();
             context.Database.Migrate();
 
-            var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);            
+            var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
             personController = new PersonController(personRepository, TestHelpers.AspenMapper);
         }
 
@@ -57,6 +57,6 @@ namespace Tests.Controller
             var createdPerson = (await personController.Add(newPerson)).Value;
             var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("Ben");
-        }        
+        }
     }
 }

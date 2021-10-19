@@ -1,5 +1,6 @@
 using Api.DbModels;
 using Api.DtoModels;
+using Api.Exceptions;
 using Api.Models;
 using Api.Models.Entities;
 using AutoMapper;
