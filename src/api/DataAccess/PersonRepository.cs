@@ -36,10 +36,8 @@ namespace Api.DataAccess
                 Name = name,
                 Bio = bio
             };
-            var returnedValue = await context.Persons.AddAsync(dbPerson);
+            await context.Persons.AddAsync(dbPerson);
             await context.SaveChangesAsync();
-            // detach person after adding to disable caching for edits to work in test
-            context.Entry(dbPerson).State = EntityState.Detached;
             return mapper.Map<Person>(dbPerson);
         }
 

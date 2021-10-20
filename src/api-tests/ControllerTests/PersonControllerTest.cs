@@ -20,22 +20,18 @@ namespace Tests.Controller
 {
     public class PersonControllerTest
     {
-        private PersonController personController;
-
-        [SetUp]
-        public void Setup()
+        public PersonController GetPersonController()
         {
             var context = TestHelpers.CreateContext();
-
             var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
-            personController = new PersonController(personRepository, TestHelpers.AspenMapper);
+            return new PersonController(personRepository, TestHelpers.AspenMapper);
         }
 
         [Test]
         public async Task CanCreatePerson()
         {
             var newPerson = new DtoPerson("George");
-            var dtoPerson = (await personController.Add(newPerson)).Value;
+            var dtoPerson = (await GetPersonController().Add(newPerson)).Value;
             dtoPerson.ID.Should().NotBe("");
             dtoPerson.Name.Should().Be("George");
         }
@@ -44,8 +40,8 @@ namespace Tests.Controller
         public async Task CanGetCreatedPerson() //eventually
         {
             var newPerson = new DtoPerson("George");
-            var createdPerson = (await personController.Add(newPerson)).Value;
-            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("George");
         }
 
@@ -53,8 +49,8 @@ namespace Tests.Controller
         public async Task CanGetDifferentPerson() //eventually
         {
             var newPerson = new DtoPerson("Ben");
-            var createdPerson = (await personController.Add(newPerson)).Value;
-            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("Ben");
         }
 
@@ -62,9 +58,9 @@ namespace Tests.Controller
         public async Task CanDeletePerson()
         {
             var newPerson = new DtoPerson("Ben");
-            var createdPerson = (await personController.Add(newPerson)).Value;
-            await personController.Delete(createdPerson.ID);
-            var badPersonRequests = await personController.GetByID(createdPerson.ID);
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            await GetPersonController().Delete(createdPerson.ID);
+            var badPersonRequests = await GetPersonController().GetByID(createdPerson.ID);
 
             var actual = badPersonRequests.Result as NotFoundObjectResult;
             actual.StatusCode.Should().Be(404);
@@ -74,13 +70,13 @@ namespace Tests.Controller
         public async Task CanEditPerson()
         {
             var newPerson = new DtoPerson("Ben");
-            var createdPerson = (await personController.Add(newPerson)).Value;
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
 
             var person = TestHelpers.AspenMapper.Map<Person>(createdPerson);
             var editedPerson = person.WithName("notBen").WithBio("new bio");
-            await personController.Edit(TestHelpers.AspenMapper.Map<DtoPerson>(editedPerson));
+            await GetPersonController().Edit(TestHelpers.AspenMapper.Map<DtoPerson>(editedPerson));
 
-            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be(editedPerson.Name);
         }
     }
