@@ -9,14 +9,14 @@ namespace Api.DtoModels
 {
     public class DtoTeam
     {
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public string Description { get; set; }
 
         public string MainImage {get; set; }
 
-        public string OwnerID { get; set; }
+        public long OwnerID { get; set; }
 
-        public string EventID { get; set; }
+        public long EventID { get; set; }
     }
 }

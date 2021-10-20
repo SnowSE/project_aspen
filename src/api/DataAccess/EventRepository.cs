@@ -15,10 +15,10 @@ namespace Api.DataAccess
     public interface IEventRepository
     {
         Task<DtoEvent> AddEventAsync(DtoEvent e);
-        Task DeleteEventAsync(string id);
+        Task DeleteEventAsync(long id);
         Task EditEventAsync(DtoEvent e);
-        bool EventExists(string id);
-        Task<DtoEvent> GetEventByIdAsync(string id);
+        bool EventExists(long id);
+        Task<DtoEvent> GetEventByIdAsync(long id);
         Task<IEnumerable<DtoEvent>> GetEventsAsync();
     }
 
@@ -33,7 +33,7 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool EventExists(string id)
+        public bool EventExists(long id)
         {
             return context.Events.Any(e => e.ID == id);
         }
@@ -46,7 +46,7 @@ namespace Api.DataAccess
         }
 
         //Get event
-        public async Task<DtoEvent> GetEventByIdAsync(string id)
+        public async Task<DtoEvent> GetEventByIdAsync(long id)
         {
             var e = await context.Events.FindAsync(id);
 
@@ -73,7 +73,7 @@ namespace Api.DataAccess
         }
 
         //delete event
-        public async Task DeleteEventAsync(string id)
+        public async Task DeleteEventAsync(long id)
         {
             var e = await context.Events.FindAsync(id);
 

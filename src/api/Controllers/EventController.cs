@@ -30,7 +30,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoEvent>> GetEventByID(string id)
+        public async Task<ActionResult<DtoEvent>> GetEventByID(long id)
         {
 
             if (eventRepository.EventExists(id))
@@ -54,7 +54,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e, string id)
+        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e, long id)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace Api.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(string id)
+        public async Task<IActionResult> DeleteEvent(long id)
         {
             if (eventRepository.EventExists(id))
             {

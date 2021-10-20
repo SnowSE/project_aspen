@@ -25,7 +25,6 @@ namespace api_tests.ControllerTests
         public async Task CanCreateEvent()
         {
             var newEvent = new DtoEvent(){
-                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon1",
                 Location = "Snow"
             };
@@ -33,7 +32,7 @@ namespace api_tests.ControllerTests
             var eventController = GetEventController();
             var dtoEvent = (await eventController.AddEvent(newEvent)).Value;
 
-            dtoEvent.ID.Should().Be(newEvent.ID);
+            dtoEvent.ID.Should().NotBe(0);
             dtoEvent.Description.Should().Be("Marathon1");
         }
 
@@ -42,7 +41,6 @@ namespace api_tests.ControllerTests
         {
             var newEvent = new DtoEvent()
             {
-                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon2",
                 Location = "Snow"
             };
@@ -51,7 +49,7 @@ namespace api_tests.ControllerTests
             var createdEvent = (await eventController.AddEvent(newEvent)).Value;
             var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
 
-            returnedEvent.ID.Should().Be(newEvent.ID);
+            returnedEvent.ID.Should().NotBe(0);
             returnedEvent.Description.Should().Be("Marathon2");
         }
 
@@ -60,15 +58,14 @@ namespace api_tests.ControllerTests
         {
             var newEvent = new DtoEvent()
             {
-                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon2",
                 Location = "Snow"
             };
 
             var createdEvent = (await GetEventController().AddEvent(newEvent)).Value;
 
-            newEvent.Description = "This is changed";
-            await GetEventController().EditEvent(newEvent, newEvent.ID);
+            createdEvent.Description = "This is changed";
+            await GetEventController().EditEvent(createdEvent, createdEvent.ID);
 
             var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");

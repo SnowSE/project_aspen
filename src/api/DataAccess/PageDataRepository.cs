@@ -12,11 +12,11 @@ namespace Api.DataAccess
     public interface IPageDataRepository
     {
         Task<DtoPageData> AddPageDataAsync(DtoPageData pageData);
-        Task DeletePageDataAsync(string pageDataID);
+        Task DeletePageDataAsync(string key);
         Task EditPageDataAsync(string key, DtoPageData pageData);
         Task<IEnumerable<DtoPageData>> GetAllPageDataAsync();
-        Task<DtoPageData> GetPageDataAsync(string pageDataKey);
-        bool PageDataExists(string pageDataKey);
+        Task<DtoPageData> GetPageDataAsync(string key);
+        bool PageDataExists(string key);
     }
 
     public class PageDataRepository : IPageDataRepository
@@ -30,9 +30,9 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool PageDataExists(string pageDataKey)
+        public bool PageDataExists(string key)
         {
-            return context.PageData.Any(e => e.Key == pageDataKey);
+            return context.PageData.Any(e => e.Key == key);
         }
 
         public async Task<IEnumerable<DtoPageData>> GetAllPageDataAsync()
@@ -41,9 +41,9 @@ namespace Api.DataAccess
             return mapper.Map<IEnumerable<DbPageData>, IEnumerable<DtoPageData>>(AllPageData);
         }
 
-        public async Task<DtoPageData> GetPageDataAsync(string pageDataKey)
+        public async Task<DtoPageData> GetPageDataAsync(string key)
         {
-            var dbPageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == pageDataKey);
+            var dbPageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == key);
             return mapper.Map<DtoPageData>(dbPageData);
         }
 
@@ -67,9 +67,9 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public async Task DeletePageDataAsync(string pageDataKey)
+        public async Task DeletePageDataAsync(string key)
         {
-            var pageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == pageDataKey);
+            var pageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == key);
 
             context.PageData.Remove(pageData);
             await context.SaveChangesAsync();

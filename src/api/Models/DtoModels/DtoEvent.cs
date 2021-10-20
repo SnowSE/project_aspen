@@ -8,7 +8,7 @@ namespace Api.DtoModels
 {
     public class DtoEvent
     {
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public DateTime Date { get; set; }
 

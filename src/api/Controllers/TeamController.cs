@@ -22,15 +22,15 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet("{eventId?}")]
-        public async Task<IEnumerable<DtoTeam>> GetAllTeams(string eventId)
+        public async Task<IEnumerable<DtoTeam>> GetAllTeams(long? eventId)
         {
             if(eventId == null)
                 return await teamRepository.GetTeamsAsync();
-            return await teamRepository.GetTeamsByEventIdAsync(eventId);
+            return await teamRepository.GetTeamsByEventIdAsync(eventId.Value);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoTeam>> GetTeamByID(string id)
+        public async Task<ActionResult<DtoTeam>> GetTeamByID(long id)
         {
 
             if (teamRepository.TeamExists(id))
@@ -44,7 +44,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeam([FromBody] DtoTeam team, string eventID)
+        public async Task<IActionResult> AddTeam([FromBody] DtoTeam team, long eventID)
         {
 
             if (ModelState.IsValid)
@@ -63,7 +63,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTeam([FromBody] DtoTeam team, string id)
+        public async Task<IActionResult> EditTeam([FromBody] DtoTeam team, long id)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeam(string id)
+        public async Task<IActionResult> DeleteTeam(long id)
         {
             if (teamRepository.TeamExists(id))
             {

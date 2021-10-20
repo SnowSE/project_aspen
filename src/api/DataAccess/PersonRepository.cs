@@ -13,9 +13,9 @@ namespace Api.DataAccess
     public interface IPersonRepository
     {
         Task<Person> AddAsync(string name, string bio);
-        Task DeleteAsync(string ID);
+        Task DeleteAsync(long ID);
         Task<Person> EditAsync(Person e);
-        Task<Person> GetByIDAsync(string ID);
+        Task<Person> GetByIDAsync(long ID);
     }
 
     public class PersonRepository : IPersonRepository
@@ -32,7 +32,6 @@ namespace Api.DataAccess
         public async Task<Person> AddAsync(string name, string bio)
         {
             var dbPerson = new DbPerson(){
-                ID = Guid.NewGuid().ToString(),
                 Name = name,
                 Bio = bio
             };
@@ -41,7 +40,7 @@ namespace Api.DataAccess
             return mapper.Map<Person>(dbPerson);
         }
 
-        public async Task DeleteAsync(string ID)
+        public async Task DeleteAsync(long ID)
         {
             var person = await context.Persons.FindAsync(ID);
             context.Persons.Remove(person);
@@ -56,7 +55,7 @@ namespace Api.DataAccess
             return person;
         }
 
-        public async Task<Person> GetByIDAsync(string ID)
+        public async Task<Person> GetByIDAsync(long ID)
         {
             var dbPerson = await context.Persons.FindAsync(ID);
             if(dbPerson == null)

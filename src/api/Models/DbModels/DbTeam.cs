@@ -9,16 +9,16 @@ namespace Api.DbModels
 {
     public class DbTeam
     {
-        [Key]
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public string Description { get; set; }
 
         public string MainImage {get; set; }
 
-        public string OwnerID { get; set; }
+        public long OwnerID { get; set; }
+        public DbPerson Owner{ get; set; }
 
-        public string EventID { get; set; }
+        public long EventID { get; set; }
         public DbEvent Event {get; set;}
 
         public virtual ICollection<DbRegistration> Registrations { get; set; }

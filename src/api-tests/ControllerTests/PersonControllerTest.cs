@@ -32,7 +32,7 @@ namespace Tests.Controller
         {
             var newPerson = new DtoPerson("George");
             var dtoPerson = (await GetPersonController().Add(newPerson)).Value;
-            dtoPerson.ID.Should().NotBe("");
+            dtoPerson.ID.Should().NotBe(0);
             dtoPerson.Name.Should().Be("George");
         }
 

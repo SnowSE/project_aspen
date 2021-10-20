@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20211016164954_addedAutoIdPageData")]
-    partial class addedAutoIdPageData
+    [Migration("20211020223752_InitialVersion_WithLongIDs")]
+    partial class InitialVersion_WithLongIDs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,8 +24,10 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbEvent", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("text");
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
@@ -64,8 +66,10 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbPerson", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("text");
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AuthID")
                         .HasColumnType("text");
@@ -83,17 +87,19 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbPersonRegistration", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("text");
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("PersonID")
-                        .HasColumnType("text");
+                    b.Property<long>("PersonID")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("RegistrationID")
-                        .HasColumnType("text");
+                    b.Property<long>("RegistrationID")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ID");
 
@@ -106,8 +112,10 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbRegistration", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("text");
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp without time zone");
@@ -118,13 +126,15 @@ namespace Api.Migrations
                     b.Property<string>("Nickname")
                         .HasColumnType("text");
 
-                    b.Property<string>("OwnerID")
-                        .HasColumnType("text");
+                    b.Property<long>("OwnerID")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("TeamID")
-                        .HasColumnType("text");
+                    b.Property<long>("TeamID")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("OwnerID");
 
                     b.HasIndex("TeamID");
 
@@ -133,24 +143,28 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbTeam", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("text");
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("EventID")
-                        .HasColumnType("text");
+                    b.Property<long>("EventID")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("MainImage")
                         .HasColumnType("text");
 
-                    b.Property<string>("OwnerID")
-                        .HasColumnType("text");
+                    b.Property<long>("OwnerID")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ID");
 
                     b.HasIndex("EventID");
+
+                    b.HasIndex("OwnerID");
 
                     b.ToTable("Teams");
                 });
@@ -159,11 +173,15 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.DbModels.DbPerson", "Person")
                         .WithMany("PersonRegistrations")
-                        .HasForeignKey("PersonID");
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.DbModels.DbRegistration", "Registration")
                         .WithMany("PersonRegistrations")
-                        .HasForeignKey("RegistrationID");
+                        .HasForeignKey("RegistrationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
 
@@ -172,9 +190,19 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.DbModels.DbRegistration", b =>
                 {
+                    b.HasOne("Api.DbModels.DbPerson", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Api.DbModels.DbTeam", "Team")
                         .WithMany("Registrations")
-                        .HasForeignKey("TeamID");
+                        .HasForeignKey("TeamID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
 
                     b.Navigation("Team");
                 });
@@ -183,9 +211,19 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.DbModels.DbEvent", "Event")
                         .WithMany("Teams")
-                        .HasForeignKey("EventID");
+                        .HasForeignKey("EventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbPerson", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Event");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbEvent", b =>

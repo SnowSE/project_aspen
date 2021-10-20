@@ -12,12 +12,12 @@ namespace Api.DtoModels
         public DtoPerson(string Name){
             this.Name = Name;
         }
-        public string ? ID { get; init;}
+        public long ID { get; init;}
 
-        public string ? AuthID { get; init;}
+        public string? AuthID { get; init;}
 
         public string Name { get; init;}
 
-        public string ? Bio { get; init;}
+        public string? Bio { get; init;}
     }
 }

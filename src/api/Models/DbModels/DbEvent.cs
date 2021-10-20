@@ -8,8 +8,7 @@ namespace Api.DbModels
 {
     public class DbEvent
     {
-        [Key]
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public DateTime Date { get; set; }
 

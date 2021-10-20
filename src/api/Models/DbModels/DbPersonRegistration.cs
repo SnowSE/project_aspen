@@ -8,13 +8,12 @@ namespace Api.DbModels
 {
     public class DbPersonRegistration
     {
-        [Key]
-        public string ID { get; set; }
+        public long ID { get; set; }
 
-        public string PersonID { get; set; }
+        public long PersonID { get; set; }
         public DbPerson Person { get; set; }
 
-        public string RegistrationID { get; set; }
+        public long RegistrationID { get; set; }
         public DbRegistration Registration { get; set; }
 
         public DateTime CreatedDate { get; set; }

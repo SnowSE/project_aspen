@@ -28,7 +28,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<DtoPerson>> GetByID(string id)
+        public async Task<ActionResult<DtoPerson>> GetByID(long id)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.ID);
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
             return mapper.Map<DtoPerson>(person);
         }
 
@@ -58,7 +58,7 @@ namespace Api.Controllers
 
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string ID)
+        public async Task<IActionResult> Delete(long ID)
         {
             await personRepository.DeleteAsync(ID);
             return Ok();

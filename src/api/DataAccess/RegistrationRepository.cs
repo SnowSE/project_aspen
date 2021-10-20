@@ -16,7 +16,7 @@ namespace Api.DataAccess
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        private bool RegistrationExists(string registrationID)
+        private bool RegistrationExists(long registrationID)
         {
             return _context.Registrations.Any(e => e.ID == registrationID);
         }

@@ -8,8 +8,7 @@ namespace Api.DbModels
 {
     public class DbRegistration
     {
-        [Key]
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -17,9 +16,10 @@ namespace Api.DbModels
 
         public string  Nickname { get; set; }
 
-        public string OwnerID { get; set; }
+        public long OwnerID { get; set; }
+        public DbPerson Owner { get; set; }
 
-        public string TeamID { get; set; }
+        public long TeamID { get; set; }
         public DbTeam Team {get; set;}
 
         public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; set; }

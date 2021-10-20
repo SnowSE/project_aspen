@@ -7,8 +7,6 @@ namespace Api.DbModels
 {
     public class DbPageData
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public string Key{get;set;}
         public JsonDocument Data{get;set;}

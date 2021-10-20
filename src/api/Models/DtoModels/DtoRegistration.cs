@@ -8,7 +8,7 @@ namespace Api.DtoModels
 {
     public class DtoRegistration
     {
-        public string ID { get; set; }
+        public long ID { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -16,8 +16,8 @@ namespace Api.DtoModels
 
         public string  Nickname { get; set; }
 
-        public string OwnerID { get; set; }
+        public long OwnerID { get; set; }
 
-        public string TeamID { get; set; }
+        public long TeamID { get; set; }
     }
 }

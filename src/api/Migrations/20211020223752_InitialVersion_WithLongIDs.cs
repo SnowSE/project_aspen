@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Api.Migrations
 {
-    public partial class InitialVersion : Migration
+    public partial class InitialVersion_WithLongIDs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace Api.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
@@ -28,21 +29,22 @@ namespace Api.Migrations
                 name: "PageData",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Key = table.Column<string>(type: "text", nullable: true),
                     Data = table.Column<JsonDocument>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PageData", x => x.Id);
+                    table.PrimaryKey("PK_PageData", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Persons",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AuthID = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Bio = table.Column<string>(type: "text", nullable: true)
@@ -56,11 +58,12 @@ namespace Api.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "text", nullable: true),
                     MainImage = table.Column<string>(type: "text", nullable: true),
-                    OwnerID = table.Column<string>(type: "text", nullable: true),
-                    EventID = table.Column<string>(type: "text", nullable: true)
+                    OwnerID = table.Column<long>(type: "bigint", nullable: false),
+                    EventID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,38 +73,52 @@ namespace Api.Migrations
                         column: x => x.EventID,
                         principalTable: "Events",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Teams_Persons_OwnerID",
+                        column: x => x.OwnerID,
+                        principalTable: "Persons",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Registrations",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false),
                     Nickname = table.Column<string>(type: "text", nullable: true),
-                    OwnerID = table.Column<string>(type: "text", nullable: true),
-                    TeamID = table.Column<string>(type: "text", nullable: true)
+                    OwnerID = table.Column<long>(type: "bigint", nullable: false),
+                    TeamID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Registrations", x => x.ID);
                     table.ForeignKey(
+                        name: "FK_Registrations_Persons_OwnerID",
+                        column: x => x.OwnerID,
+                        principalTable: "Persons",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Registrations_Teams_TeamID",
                         column: x => x.TeamID,
                         principalTable: "Teams",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PersonRegistrations",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
-                    PersonID = table.Column<string>(type: "text", nullable: true),
-                    RegistrationID = table.Column<string>(type: "text", nullable: true),
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PersonID = table.Column<long>(type: "bigint", nullable: false),
+                    RegistrationID = table.Column<long>(type: "bigint", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
@@ -112,13 +129,13 @@ namespace Api.Migrations
                         column: x => x.PersonID,
                         principalTable: "Persons",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PersonRegistrations_Registrations_RegistrationID",
                         column: x => x.RegistrationID,
                         principalTable: "Registrations",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -132,6 +149,11 @@ namespace Api.Migrations
                 column: "RegistrationID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Registrations_OwnerID",
+                table: "Registrations",
+                column: "OwnerID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Registrations_TeamID",
                 table: "Registrations",
                 column: "TeamID");
@@ -140,6 +162,11 @@ namespace Api.Migrations
                 name: "IX_Teams_EventID",
                 table: "Teams",
                 column: "EventID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_OwnerID",
+                table: "Teams",
+                column: "OwnerID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -151,9 +178,6 @@ namespace Api.Migrations
                 name: "PersonRegistrations");
 
             migrationBuilder.DropTable(
-                name: "Persons");
-
-            migrationBuilder.DropTable(
                 name: "Registrations");
 
             migrationBuilder.DropTable(
@@ -161,6 +185,9 @@ namespace Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
         }
     }
 }
