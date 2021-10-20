@@ -21,11 +21,12 @@ namespace Aspen.Api.Controllers
             this.teamRepository = teamRepository;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<DtoTeam>> GetAllTeams()
+        [HttpGet("{eventId?}")]
+        public async Task<IEnumerable<DtoTeam>> GetAllTeams(string eventId)
         {
-            return await teamRepository.GetTeamsAsync();
-
+            if(eventId == null)
+                return await teamRepository.GetTeamsAsync();
+            return await teamRepository.GetTeamsByEventIdAsync(eventId);
         }
 
         [HttpGet("{id}")]
@@ -72,7 +73,6 @@ namespace Aspen.Api.Controllers
             return BadRequest();
         }
 
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeam(string id)
         {
@@ -85,19 +85,6 @@ namespace Aspen.Api.Controllers
             {
                 return BadRequest("Team id does not exist");
             }
-
-        }
-
-        [HttpGet("getteam")]
-        public async Task<ActionResult<DtoTeam>> GetEventTeamByID(string id, string eventID)
-        {
-            return await teamRepository.GetEventTeamByIdAsync(id, eventID);
-        }
-
-        [HttpGet("getteams")]
-        public async Task<IEnumerable<DtoTeam>> GetEventTeams(string eventID)
-        {
-            return await teamRepository.GetEventTeamsAsync(eventID);
         }
     }
 }

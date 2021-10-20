@@ -35,7 +35,7 @@ namespace Api.Controllers
                 var person = await personRepository.GetByIDAsync(id);
                 return mapper.Map<DtoPerson>(person);
             }
-            catch (PersonNotFoundException e)
+            catch (NotFoundException<Person> e)
             {
                 return NotFound(e.Message);
             }

@@ -54,7 +54,7 @@ namespace Api.DataAccess{
             var dbPerson = await context.Persons.FindAsync(ID);
             if(dbPerson == null)
             {
-                throw new PersonNotFoundException($"Person ID: {ID} not found");
+                throw new NotFoundException<Person>($"Person ID: {ID} not found");
             }
             return mapper.Map<Person>(dbPerson);
         }

@@ -76,17 +76,8 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public async Task<DtoTeam> GetEventTeamByIdAsync(string teamId, string eventID)
-        {
-            var eventTeams = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
-            var eventTeam = eventTeams.Teams.FirstOrDefault(t => t.ID == teamId);
-
-            return mapper.Map<DtoTeam>(eventTeam);
-        }
-
-
-        public async Task<IEnumerable<DtoTeam>> GetEventTeamsAsync(string eventID)
-        {
+        public async Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(string eventID)
+        {         
             var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
 
             return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(existingEvent.Teams);

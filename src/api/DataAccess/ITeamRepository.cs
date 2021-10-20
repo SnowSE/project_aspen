@@ -12,8 +12,7 @@ namespace Api.DataAccess
         Task EditTeamAsync(DtoTeam team);
         Task<DtoTeam> GetTeamByIdAsync(string id);
         Task<IEnumerable<DtoTeam>> GetTeamsAsync();
-        Task<DtoTeam> GetEventTeamByIdAsync(string id, string eventID);
-        Task<IEnumerable<DtoTeam>> GetEventTeamsAsync(string eventID);
+        Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(string eventID);
         bool TeamExists(string id);
     }
 }

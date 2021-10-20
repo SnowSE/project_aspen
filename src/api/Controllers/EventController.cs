@@ -46,17 +46,9 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DtoEvent>> AddEvent([FromBody] DtoEvent e)
         {
-
             if (ModelState.IsValid)
             {
-                if (!eventRepository.EventExists(e.ID))
-                {
-                    return await eventRepository.AddEventAsync(e);
-                }
-                else
-                {
-                    return BadRequest("Event already exists");
-                }
+                return await eventRepository.AddEventAsync(e);
             }
             return BadRequest("Event object is not valid");
         }
