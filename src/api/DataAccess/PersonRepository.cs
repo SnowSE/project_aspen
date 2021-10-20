@@ -8,7 +8,16 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.DataAccess{
+namespace Api.DataAccess
+{
+    public interface IPersonRepository
+    {
+        Task<Person> AddAsync(string name, string bio);
+        Task DeleteAsync(string ID);
+        Task<Person> EditAsync(Person e);
+        Task<Person> GetByIDAsync(string ID);
+    }
+
     public class PersonRepository : IPersonRepository
     {
         private readonly AspenContext context;
