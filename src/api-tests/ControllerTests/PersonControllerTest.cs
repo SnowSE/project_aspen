@@ -26,7 +26,6 @@ namespace Tests.Controller
         public void Setup()
         {
             var context = TestHelpers.CreateContext();
-            context.Database.Migrate();
 
             var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
             personController = new PersonController(personRepository, TestHelpers.AspenMapper);

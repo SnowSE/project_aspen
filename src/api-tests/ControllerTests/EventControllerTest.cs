@@ -2,10 +2,10 @@
 using Api.DataAccess;
 using Api.DtoModels;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +14,11 @@ namespace api_tests.ControllerTests
 {
     public class EventControllerTest
     {
-        private EventController eventController;
-
-        [SetUp]
-        public void Setup()
+        private EventController GetEventController()
         {
             var context = TestHelpers.CreateContext();
-            context.Database.Migrate();
-
             var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
-            eventController = new EventController(eventRepository);
+            return new EventController(eventRepository);
         }
 
         [Test]
@@ -35,6 +30,7 @@ namespace api_tests.ControllerTests
                 Location = "Snow"
             };
 
+            var eventController = GetEventController();
             var dtoEvent = (await eventController.AddEvent(newEvent)).Value;
 
             dtoEvent.ID.Should().Be(newEvent.ID);
@@ -51,6 +47,7 @@ namespace api_tests.ControllerTests
                 Location = "Snow"
             };
 
+            var eventController = GetEventController();
             var createdEvent = (await eventController.AddEvent(newEvent)).Value;
             var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
 
@@ -68,14 +65,12 @@ namespace api_tests.ControllerTests
                 Location = "Snow"
             };
 
-            var createdEvent = (await eventController.AddEvent(newEvent)).Value;
+            var createdEvent = (await GetEventController().AddEvent(newEvent)).Value;
 
             newEvent.Description = "This is changed";
+            await GetEventController().EditEvent(newEvent, newEvent.ID);
 
-            await eventController.EditEvent(newEvent, newEvent.ID);
-
-            var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
-
+            var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
         }
     }
