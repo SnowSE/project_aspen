@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Models;
+using Api.Exceptions;
+using Api.Models.Entities;
 
 namespace Api.Controllers
 {
@@ -28,29 +30,39 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<DtoPerson>> GetByID(string id)
         {
-            var person = await personRepository.GetByID(id);
-            return mapper.Map<DtoPerson>(person);
+            try
+            {
+                var person = await personRepository.GetByIDAsync(id);
+                return mapper.Map<DtoPerson>(person);
+            }
+            catch (PersonNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
-            var person = await personRepository.Add(dtoPerson); 
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.ID);
             return mapper.Map<DtoPerson>(person);
         }
 
-        // [HttpPut]
-        // public  async Task<IActionResult> Edit([FromBody] DtoPerson e)
-        // {
-          
-        // }
+        [HttpPut]
+        public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
+        {
+            var person = mapper.Map<Person>(dtoPerson);
+            var updatedPerson = await personRepository.EditAsync(person);
+            return mapper.Map<DtoPerson>(updatedPerson);
+        }
 
 
-        // [HttpDelete]
-        // public async Task<IActionResult> Delete(string ID)
-        // {
-            
-        // }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string ID)
+        {
+            await personRepository.DeleteAsync(ID);
+            return Ok();
+        }
 
     }
 }

@@ -8,9 +8,9 @@ namespace Api.DataAccess
 {
     public interface IPersonRepository
     {
-        Task<Person> Add(DtoPerson e);
-        Task Delete(string ID);
-        Task<Person> Edit(DtoPerson e);
-        Task<Person> GetByID(string ID);
+        Task<Person> AddAsync(string name, string bio);
+        Task DeleteAsync(string ID);
+        Task<Person> EditAsync(Person e);
+        Task<Person> GetByIDAsync(string ID);
     }
 }

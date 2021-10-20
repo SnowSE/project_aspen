@@ -30,14 +30,14 @@ namespace api_tests.ControllerTests
         public async Task CanCreateEvent()
         {
             var newEvent = new DtoEvent(){
-                ID = "5",
+                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon1",
                 Location = "Snow"
             };
 
             var dtoEvent = (await eventController.AddEvent(newEvent)).Value;
 
-            dtoEvent.ID.Should().Be("5");
+            dtoEvent.ID.Should().Be(newEvent.ID);
             dtoEvent.Description.Should().Be("Marathon1");
         }
 
@@ -46,7 +46,7 @@ namespace api_tests.ControllerTests
         {
             var newEvent = new DtoEvent()
             {
-                ID = "6",
+                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon2",
                 Location = "Snow"
             };
@@ -54,7 +54,7 @@ namespace api_tests.ControllerTests
             var createdEvent = (await eventController.AddEvent(newEvent)).Value;
             var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
 
-            returnedEvent.ID.Should().Be("6");
+            returnedEvent.ID.Should().Be(newEvent.ID);
             returnedEvent.Description.Should().Be("Marathon2");
         }
 
@@ -63,7 +63,7 @@ namespace api_tests.ControllerTests
         {
             var newEvent = new DtoEvent()
             {
-                ID = "7",
+                ID = Guid.NewGuid().ToString(),
                 Description = "Marathon2",
                 Location = "Snow"
             };

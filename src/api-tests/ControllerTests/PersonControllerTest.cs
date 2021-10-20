@@ -58,5 +58,31 @@ namespace Tests.Controller
             var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("Ben");
         }
+
+        [Test]
+        public async Task CanDeletePerson()
+        {
+            var newPerson = new DtoPerson("Ben");
+            var createdPerson = (await personController.Add(newPerson)).Value;
+            await personController.Delete(createdPerson.ID);
+            var badPersonRequests = await personController.GetByID(createdPerson.ID);
+
+            var actual = badPersonRequests.Result as NotFoundObjectResult;
+            actual.StatusCode.Should().Be(404);
+        }
+
+        [Test]
+        public async Task CanEditPerson()
+        {
+            var newPerson = new DtoPerson("Ben");
+            var createdPerson = (await personController.Add(newPerson)).Value;
+
+            var person = TestHelpers.AspenMapper.Map<Person>(createdPerson);
+            var editedPerson = person.WithName("notBen").WithBio("new bio");
+            await personController.Edit(TestHelpers.AspenMapper.Map<DtoPerson>(editedPerson));
+
+            var returnedPerson = (await personController.GetByID(createdPerson.ID)).Value;
+            returnedPerson.Name.Should().Be(editedPerson.Name);
+        }
     }
 }

@@ -1,5 +1,4 @@
 using Api.DbModels;
-using Api.DtoModels;
 using Api.Exceptions;
 using Api.Models;
 using Api.Models.Entities;
@@ -12,42 +11,50 @@ using System.Threading.Tasks;
 namespace Api.DataAccess{
     public class PersonRepository : IPersonRepository
     {
-        private readonly AspenContext _context;
+        private readonly AspenContext context;
         private readonly IMapper mapper;
 
         public PersonRepository(AspenContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.mapper = mapper;
         }
 
-        public async Task<Person> Add(DtoPerson dtoPerson)
+        public async Task<Person> AddAsync(string name, string bio)
         {
             var dbPerson = new DbPerson(){
                 ID = Guid.NewGuid().ToString(),
-                Name = dtoPerson.Name,
-                Bio = dtoPerson.Bio
+                Name = name,
+                Bio = bio
             };
-            var returnedValue = await _context.Persons.AddAsync(dbPerson);
+            var returnedValue = await context.Persons.AddAsync(dbPerson);
+            await context.SaveChangesAsync();
+            // detach person after adding to disable caching for edits to work in test
+            context.Entry(dbPerson).State = EntityState.Detached;
             return mapper.Map<Person>(dbPerson);
         }
 
-        public Task Delete(string ID)
+        public async Task DeleteAsync(string ID)
         {
-            throw new NotImplementedException();
+            var person = await context.Persons.FindAsync(ID);
+            context.Persons.Remove(person);
+            await context.SaveChangesAsync();
         }
 
-        public Task<Person> Edit(DtoPerson e)
+        public async Task<Person> EditAsync(Person person)
         {
-            throw new NotImplementedException();
+            var dbPerson = mapper.Map<DbPerson>(person);
+            context.Update(dbPerson);
+            await context.SaveChangesAsync();
+            return person;
         }
 
-        public async Task<Person> GetByID(string ID)
+        public async Task<Person> GetByIDAsync(string ID)
         {
-            var dbPerson = await _context.Persons.FindAsync(ID);
+            var dbPerson = await context.Persons.FindAsync(ID);
             if(dbPerson == null)
             {
-                throw new PersonNotFoundException();
+                throw new PersonNotFoundException($"Person ID: {ID} not found");
             }
             return mapper.Map<Person>(dbPerson);
         }
