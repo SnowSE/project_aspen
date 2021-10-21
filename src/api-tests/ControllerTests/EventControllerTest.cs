@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api_tests.ControllerTests
+namespace Tests.Controller
 {
     public class EventControllerTest
     {
