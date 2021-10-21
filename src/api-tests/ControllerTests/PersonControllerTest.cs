@@ -6,7 +6,6 @@ using Api.DtoModels;
 using Api.Mappers;
 using Api.Models;
 using Api.Models.Entities;
-using api_tests;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

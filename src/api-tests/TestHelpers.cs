@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api_tests
+namespace Tests
 {
     public static class TestHelpers
     {

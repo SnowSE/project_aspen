@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Tests;
 
-namespace api_tests.ControllerTests
+namespace Tests
 {
     [SetUpFixture]
     public class TestSetup
