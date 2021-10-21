@@ -65,8 +65,8 @@ namespace Tests.Controller
 
             var createdEvent = (await getEventController().AddEvent(newEvent)).Value;
 
-            createdEvent.Description = "This is changed";
-            await getEventController().EditEvent(createdEvent, createdEvent.ID);
+            var changedEvent = createdEvent with { Description = "This is changed" };
+            await getEventController().EditEvent(changedEvent, changedEvent.ID);
 
             var returnedEvent = (await getEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");

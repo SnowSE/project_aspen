@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Api.Models.Entities
 {
+#nullable enable
     public class Event
     {
         public Event(long id, string description, DateTime date)

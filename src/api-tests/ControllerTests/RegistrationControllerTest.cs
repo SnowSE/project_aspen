@@ -48,12 +48,8 @@ namespace Tests.Controller
         public async Task CanCreateRegistration()
         {
             var owner = await GetPersonRepository().AddAsync("ben", null);
-            var dtoEvent = new DtoEvent
-            {
-                Description = "Marathon1",
-                Location = "Snow"
-            };
-            var newEvent = await GetEventRepository().AddEventAsync(dtoEvent);
+            var eventEntity = new Event(0, "Marathon1", new DateTime(2021,6,21));
+            var newEvent = await GetEventRepository().AddEventAsync(eventEntity);
             var dtoTeam = new DtoTeam
             {
                 OwnerID = owner.ID,
