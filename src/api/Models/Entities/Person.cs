@@ -9,18 +9,18 @@ namespace Api.Models.Entities
 #nullable enable
     public class Person
     {
-        public Person(string ID, string Name)
+        public Person(long ID, string Name)
         {
             this.ID = ID;
             this.Name = Name;
         }
-        public Person(string ID, string Name, string Bio)
+        public Person(long ID, string Name, string Bio)
         {
             this.ID = ID;
             this.Name = Name;
             this.Bio = Bio;
         }
-        public string ID { get; init; }
+        public long ID { get; init; }
 
         public string? AuthID { get; init; }
 
@@ -40,7 +40,7 @@ namespace Api.Models.Entities
         {
             return new Person(currentPerson.ID, currentPerson.Name, newBio);
         }
-        
+
         public static Person WithAuthId(this Person currentPerson, string newAuthID)
         {
             return new Person(currentPerson.ID, currentPerson.Name) { AuthID = newAuthID };

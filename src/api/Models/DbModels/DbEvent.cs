@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Api.DbModels
 {
-    public class DbEvent
+    public record DbEvent
     {
-        public long ID { get; set; }
+        public long ID { get; init; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; init; }
 
-        public string Location { get; set; }
-        public string Description { get; set; }
+        public string Location { get; init; }
+        public string Description { get; init; }
 
 
-        public string PrimaryImageUrl { get; set; }
+        public string PrimaryImageUrl { get; init; }
 
-        public virtual ICollection<DbTeam> Teams { get; set; }
+        public virtual ICollection<DbTeam> Teams { get; init; }
     }
 }

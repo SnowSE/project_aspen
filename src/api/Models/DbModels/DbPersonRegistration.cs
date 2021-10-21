@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Api.DbModels
 {
-    public class DbPersonRegistration
+    public record DbPersonRegistration
     {
-        public long ID { get; set; }
+        public long ID { get; init; }
 
-        public long PersonID { get; set; }
-        public DbPerson Person { get; set; }
+        public long PersonID { get; init; }
+        public DbPerson Person { get; init; }
 
-        public long RegistrationID { get; set; }
-        public DbRegistration Registration { get; set; }
+        public long RegistrationID { get; init; }
+        public DbRegistration Registration { get; init; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; init; }
     }
 }

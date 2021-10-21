@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.DbModels;
 using Api.DtoModels;
+using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ namespace Api.DataAccess
 {
     public interface ITeamRepository
     {
-        Task AddTeamAsync(DtoTeam team, long EventID);
+        Task<Team> AddTeamAsync(DtoTeam team, long EventID);
         Task DeleteTeamAsync(long id);
         Task EditTeamAsync(DtoTeam team);
         Task<DtoTeam> GetTeamByIdAsync(long id);
@@ -50,24 +51,19 @@ namespace Api.DataAccess
             return mapper.Map<DtoTeam>(team);
         }
 
-        public async Task AddTeamAsync(DtoTeam dtoTeam, long eventID)
+        public async Task<Team> AddTeamAsync(DtoTeam dtoTeam, long eventID)
         {
             var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
-            if (!TeamExists(dtoTeam.ID))
-            {
-                var dbTeam = mapper.Map<DbTeam>(dtoTeam);
+            var dbTeam = mapper.Map<DbTeam>(dtoTeam).WithEvent(existingEvent);
 
-                dbTeam.Event = existingEvent;
-                dbTeam.EventID = existingEvent.ID;
+            await context.Teams.AddAsync(dbTeam);
+            existingEvent.Teams.Add(dbTeam);
 
-                await context.Teams.AddAsync(dbTeam);
-                existingEvent.Teams.Add(dbTeam);
+            context.Update(existingEvent);
 
-                context.Update(existingEvent);
-
-                await context.SaveChangesAsync();
-            }
+            await context.SaveChangesAsync();
+            return mapper.Map<Team>(dbTeam);
         }
 
         public async Task EditTeamAsync(DtoTeam team)
@@ -88,7 +84,7 @@ namespace Api.DataAccess
         }
 
         public async Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(long eventID)
-        {         
+        {
             var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
 
             return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(existingEvent.Teams);

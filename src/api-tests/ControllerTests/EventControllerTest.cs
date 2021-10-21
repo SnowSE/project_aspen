@@ -24,7 +24,8 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreateEvent()
         {
-            var newEvent = new DtoEvent(){
+            var newEvent = new DtoEvent
+            {
                 Description = "Marathon1",
                 Location = "Snow"
             };
@@ -64,8 +65,8 @@ namespace Tests.Controller
 
             var createdEvent = (await GetEventController().AddEvent(newEvent)).Value;
 
-            createdEvent.Description = "This is changed";
-            await GetEventController().EditEvent(createdEvent, createdEvent.ID);
+            var alteredEvent = createdEvent.WithDescription("This is changed");
+            await GetEventController().EditEvent(alteredEvent, alteredEvent.ID);
 
             var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");

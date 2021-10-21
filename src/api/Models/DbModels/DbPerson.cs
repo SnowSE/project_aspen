@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Api.DbModels
 {
-    public class DbPerson
+    public record DbPerson
     {
-        public long ID { get; set; }
-        public string AuthID { get; set; }
-        public string Name { get; set; }
-        public string Bio { get; set; }
+        public long ID { get; init; }
+        public string AuthID { get; init; }
+        public string Name { get; init; }
+        public string Bio { get; init; }
 
-        public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; set; }
+        public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; init; }
     }
 }
