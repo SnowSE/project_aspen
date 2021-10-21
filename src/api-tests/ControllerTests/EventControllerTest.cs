@@ -24,7 +24,8 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreateEvent()
         {
-            var newEvent = new DtoEvent(){
+            var newEvent = new DtoEvent
+            {
                 Description = "Marathon1",
                 Location = "Snow"
             };

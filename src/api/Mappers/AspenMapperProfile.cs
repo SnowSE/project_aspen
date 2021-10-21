@@ -35,6 +35,24 @@ namespace Api.Mappers
 
             CreateMap<DbTeam, DtoTeam>()
                 .ReverseMap();
+
+            CreateMap<DtoTeam, Team>()
+                .ReverseMap();
+
+            CreateMap<DbTeam, Team>()
+                .ReverseMap();
+
+            CreateMap<DbEvent, Event>()
+                .ReverseMap();
+
+            CreateMap<DtoEvent, Event>()
+                .ReverseMap();
+
+            CreateMap<DtoRegistration, Registration>()
+                .ReverseMap();
+                
+            CreateMap<DbRegistration, Registration>()
+                .ReverseMap();
         }
     }
 }

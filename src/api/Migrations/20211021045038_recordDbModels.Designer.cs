@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20211020223752_InitialVersion_WithLongIDs")]
-    partial class InitialVersion_WithLongIDs
+    [Migration("20211021045038_recordDbModels")]
+    partial class recordDbModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

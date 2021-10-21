@@ -7,20 +7,36 @@ using System.Threading.Tasks;
 
 namespace Api.DbModels
 {
-    public class DbTeam
+    public record DbTeam
     {
-        public long ID { get; set; }
+        public long ID { get; init; }
 
-        public string Description { get; set; }
+        public string Description { get; init; }
 
-        public string MainImage {get; set; }
+        public string MainImage {get; init; }
 
-        public long OwnerID { get; set; }
-        public DbPerson Owner{ get; set; }
+        public long OwnerID { get; init; }
+        public DbPerson Owner{ get; init; }
 
-        public long EventID { get; set; }
-        public DbEvent Event {get; set;}
+        public long EventID { get; init; }
+        public DbEvent Event {get; init;}
 
-        public virtual ICollection<DbRegistration> Registrations { get; set; }
+        public virtual ICollection<DbRegistration> Registrations { get; init; }
+    }
+    public static class DbTeamHelper
+    {
+        public static DbTeam WithEvent(this DbTeam previousTeam, DbEvent newEvent)
+        {
+            return new DbTeam
+            {
+                ID = previousTeam.ID,
+                Description = previousTeam.Description,
+                MainImage = previousTeam.MainImage,
+                OwnerID = previousTeam.OwnerID,
+                Owner = previousTeam.Owner,
+                EventID = newEvent.ID,
+                Event = newEvent,
+            };
+        }
     }
 }
