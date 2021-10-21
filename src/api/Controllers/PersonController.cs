@@ -44,8 +44,27 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
-            return mapper.Map<DtoPerson>(person);
+            if (ModelState.IsValid)
+            {
+                if (String.IsNullOrEmpty(dtoPerson.AuthID))
+                {
+                    var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
+                    return mapper.Map<DtoPerson>(person);
+                }
+                else
+                {
+                    var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
+                    return mapper.Map<DtoPerson>(person);
+
+                }
+            }
+            else
+            {
+                var errorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(errorMessage);
+            }
         }
 
         [HttpPut]

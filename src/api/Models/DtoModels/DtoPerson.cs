@@ -6,18 +6,26 @@ using System.Threading.Tasks;
 
 namespace Api.DtoModels
 {
-    #nullable enable
     public record DtoPerson
     {
-        public DtoPerson(string Name){
-            this.Name = Name;
+        public long ID { get; init; }
+
+        public string AuthID { get; init; }
+
+        public string Name { get; init; }
+
+        public string Bio { get; init; }
+    }
+    public static class DtoPersonHelpers
+    {
+        public static DtoPerson WithAuthID(this DtoPerson currentPerson, string newAuthId)
+        {
+            return new DtoPerson {
+                Name = currentPerson.Name,
+                ID = currentPerson.ID,
+                Bio = currentPerson.Bio,
+                AuthID = newAuthId,
+            };
         }
-        public long ID { get; init;}
-
-        public string? AuthID { get; init;}
-
-        public string Name { get; init;}
-
-        public string? Bio { get; init;}
     }
 }

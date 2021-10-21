@@ -40,5 +40,10 @@ namespace Api.Models.Entities
         {
             return new Person(currentPerson.ID, currentPerson.Name, newBio);
         }
+        
+        public static Person WithAuthId(this Person currentPerson, string newAuthID)
+        {
+            return new Person(currentPerson.ID, currentPerson.Name) { AuthID = newAuthID };
+        }
     }
 }

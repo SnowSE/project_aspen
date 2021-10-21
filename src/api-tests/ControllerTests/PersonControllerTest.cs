@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Api.Controllers;
@@ -29,25 +30,25 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreatePerson()
         {
-            var newPerson = new DtoPerson("George");
+            var newPerson = new DtoPerson { Name = "George" };
             var dtoPerson = (await GetPersonController().Add(newPerson)).Value;
             dtoPerson.ID.Should().NotBe(0);
             dtoPerson.Name.Should().Be("George");
         }
 
         [Test]
-        public async Task CanGetCreatedPerson() //eventually
+        public async Task CanGetCreatedPerson()
         {
-            var newPerson = new DtoPerson("George");
+            var newPerson = new DtoPerson { Name = "George" };
             var createdPerson = (await GetPersonController().Add(newPerson)).Value;
             var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("George");
         }
 
         [Test]
-        public async Task CanGetDifferentPerson() //eventually
+        public async Task CanGetDifferentPerson()
         {
-            var newPerson = new DtoPerson("Ben");
+            var newPerson = new DtoPerson { Name = "Ben" };
             var createdPerson = (await GetPersonController().Add(newPerson)).Value;
             var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be("Ben");
@@ -56,7 +57,7 @@ namespace Tests.Controller
         [Test]
         public async Task CanDeletePerson()
         {
-            var newPerson = new DtoPerson("Ben");
+            var newPerson = new DtoPerson { Name = "Ben" };
             var createdPerson = (await GetPersonController().Add(newPerson)).Value;
             await GetPersonController().Delete(createdPerson.ID);
             var badPersonRequests = await GetPersonController().GetByID(createdPerson.ID);
@@ -68,7 +69,7 @@ namespace Tests.Controller
         [Test]
         public async Task CanEditPerson()
         {
-            var newPerson = new DtoPerson("Ben");
+            var newPerson = new DtoPerson { Name = "Ben" };
             var createdPerson = (await GetPersonController().Add(newPerson)).Value;
 
             var person = TestHelpers.AspenMapper.Map<Person>(createdPerson);
@@ -77,6 +78,31 @@ namespace Tests.Controller
 
             var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.Name.Should().Be(editedPerson.Name);
+        }
+
+        [Test]
+        public async Task PersonCanBeCreatedWithAuthId()
+        {
+            var newPerson = new DtoPerson
+            {
+                Name = "Bill",
+                AuthID = Guid.NewGuid().ToString()
+            };
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
+            returnedPerson.AuthID.Should().Be(newPerson.AuthID);
+        }
+
+        [Test]
+        public async Task CanAddAuthIdToPersonAfterCreation()
+        {
+            var newPerson = new DtoPerson { Name = "Mike" };
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            var authIdPerson = createdPerson.WithAuthID(Guid.NewGuid().ToString());
+            await GetPersonController().Edit(authIdPerson);
+
+            var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
+            returnedPerson.AuthID.Should().Be(authIdPerson.AuthID);
         }
     }
 }

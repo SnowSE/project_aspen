@@ -13,6 +13,7 @@ namespace Api.DataAccess
     public interface IPersonRepository
     {
         Task<Person> AddAsync(string name, string bio);
+        Task<Person> AddAsync(string name, string bio, string authID);
         Task DeleteAsync(long ID);
         Task<Person> EditAsync(Person e);
         Task<Person> GetByIDAsync(long ID);
@@ -31,10 +32,26 @@ namespace Api.DataAccess
 
         public async Task<Person> AddAsync(string name, string bio)
         {
-            var dbPerson = new DbPerson(){
+            var dbPerson = new DbPerson()
+            {
                 Name = name,
                 Bio = bio
             };
+            return await addDBPerson(dbPerson);
+        }
+
+        public async Task<Person> AddAsync(string name, string bio, string authID)
+        {
+            var dbPerson = new DbPerson()
+            {
+                Name = name,
+                Bio = bio,
+                AuthID = authID,
+            };
+            return await addDBPerson(dbPerson);
+        }
+        private async Task<Person> addDBPerson(DbPerson dbPerson)
+        {
             await context.Persons.AddAsync(dbPerson);
             await context.SaveChangesAsync();
             return mapper.Map<Person>(dbPerson);
@@ -58,7 +75,7 @@ namespace Api.DataAccess
         public async Task<Person> GetByIDAsync(long ID)
         {
             var dbPerson = await context.Persons.FindAsync(ID);
-            if(dbPerson == null)
+            if (dbPerson == null)
             {
                 throw new NotFoundException<Person>($"Person ID: {ID} not found");
             }
