@@ -46,7 +46,7 @@ namespace Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (String.IsNullOrEmpty(dtoPerson.AuthID))
+                if (string.IsNullOrEmpty(dtoPerson.AuthID))
                 {
                     var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
                     return mapper.Map<DtoPerson>(person);
@@ -77,9 +77,9 @@ namespace Api.Controllers
 
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(long ID)
+        public async Task<IActionResult> Delete(long id)
         {
-            await personRepository.DeleteAsync(ID);
+            await personRepository.DeleteAsync(id);
             return Ok();
         }
 

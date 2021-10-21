@@ -18,7 +18,10 @@ namespace Api.Mappers
         /// <seealso cref="https://codewithmukesh.com/blog/automapper-in-aspnet-core/"/>
         public AspenMapperProfile()
         {
-            CreateMap<DbEvent, DtoEvent>()
+            CreateMap<DbEvent, Event>()
+                .ReverseMap();
+
+            CreateMap<Event, DtoEvent>()
                 .ReverseMap();
 
             CreateMap<DbPageData, DtoPageData>()

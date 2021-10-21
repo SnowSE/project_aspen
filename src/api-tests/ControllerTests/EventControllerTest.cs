@@ -14,11 +14,11 @@ namespace Tests.Controller
 {
     public class EventControllerTest
     {
-        private EventController GetEventController()
+        private static EventController getEventController()
         {
             var context = TestHelpers.CreateContext();
             var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
-            return new EventController(eventRepository);
+            return new EventController(eventRepository, TestHelpers.AspenMapper);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var eventController = GetEventController();
+            var eventController = getEventController();
             var dtoEvent = (await eventController.AddEvent(newEvent)).Value;
 
             dtoEvent.ID.Should().NotBe(0);
@@ -45,7 +45,7 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var eventController = GetEventController();
+            var eventController = getEventController();
             var createdEvent = (await eventController.AddEvent(newEvent)).Value;
             var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
 
@@ -62,12 +62,12 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var createdEvent = (await GetEventController().AddEvent(newEvent)).Value;
+            var createdEvent = (await getEventController().AddEvent(newEvent)).Value;
 
             createdEvent.Description = "This is changed";
-            await GetEventController().EditEvent(createdEvent, createdEvent.ID);
+            await getEventController().EditEvent(createdEvent, createdEvent.ID);
 
-            var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
+            var returnedEvent = (await getEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
         }
     }

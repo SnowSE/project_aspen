@@ -14,9 +14,9 @@ namespace Api.DataAccess
     {
         Task<Person> AddAsync(string name, string bio);
         Task<Person> AddAsync(string name, string bio, string authID);
-        Task DeleteAsync(long ID);
+        Task DeleteAsync(long id);
         Task<Person> EditAsync(Person e);
-        Task<Person> GetByIDAsync(long ID);
+        Task<Person> GetByIDAsync(long id);
     }
 
     public class PersonRepository : IPersonRepository
@@ -37,7 +37,7 @@ namespace Api.DataAccess
                 Name = name,
                 Bio = bio
             };
-            return await addDBPerson(dbPerson);
+            return await addDBPersonAsync(dbPerson);
         }
 
         public async Task<Person> AddAsync(string name, string bio, string authID)
@@ -48,18 +48,19 @@ namespace Api.DataAccess
                 Bio = bio,
                 AuthID = authID,
             };
-            return await addDBPerson(dbPerson);
+            return await addDBPersonAsync(dbPerson);
         }
-        private async Task<Person> addDBPerson(DbPerson dbPerson)
+
+        private async Task<Person> addDBPersonAsync(DbPerson dbPerson)
         {
             await context.Persons.AddAsync(dbPerson);
             await context.SaveChangesAsync();
             return mapper.Map<Person>(dbPerson);
         }
 
-        public async Task DeleteAsync(long ID)
+        public async Task DeleteAsync(long id)
         {
-            var person = await context.Persons.FindAsync(ID);
+            var person = await context.Persons.FindAsync(id);
             context.Persons.Remove(person);
             await context.SaveChangesAsync();
         }
@@ -72,12 +73,12 @@ namespace Api.DataAccess
             return person;
         }
 
-        public async Task<Person> GetByIDAsync(long ID)
+        public async Task<Person> GetByIDAsync(long id)
         {
-            var dbPerson = await context.Persons.FindAsync(ID);
+            var dbPerson = await context.Persons.FindAsync(id);
             if (dbPerson == null)
             {
-                throw new NotFoundException<Person>($"Person ID: {ID} not found");
+                throw new NotFoundException<Person>($"Person ID: {id} not found");
             }
             return mapper.Map<Person>(dbPerson);
         }

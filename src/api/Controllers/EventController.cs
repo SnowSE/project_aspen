@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.DbModels;
+using Api.Models.Entities;
 
 namespace Api.Controllers
 {
@@ -17,16 +18,18 @@ namespace Api.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository eventRepository;
+        private readonly IMapper mapper;
 
-        public EventController(IEventRepository eventRepository)
+        public EventController(IEventRepository eventRepository, IMapper mapper)
         {
             this.eventRepository = eventRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
-            return await eventRepository.GetEventsAsync();
+            return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetEventsAsync());
         }
 
         [HttpGet("{id}")]
@@ -35,7 +38,7 @@ namespace Api.Controllers
 
             if (eventRepository.EventExists(id))
             {
-                return await eventRepository.GetEventByIdAsync(id);
+                return mapper.Map<DtoEvent>(await eventRepository.GetEventByIdAsync(id));
             }
             else
             {
@@ -44,20 +47,22 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoEvent>> AddEvent([FromBody] DtoEvent e)
+        public async Task<ActionResult<DtoEvent>> AddEvent([FromBody] DtoEvent dtoEvent)
         {
             if (ModelState.IsValid)
             {
-                return await eventRepository.AddEventAsync(e);
+                var e = mapper.Map<Event>(dtoEvent);
+                return mapper.Map<DtoEvent>(await eventRepository.AddEventAsync(e));
             }
             return BadRequest("Event object is not valid");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditEvent([FromBody] DtoEvent e, long id)
+        public async Task<IActionResult> EditEvent([FromBody] DtoEvent dtoEvent, long id)
         {
             if (ModelState.IsValid)
             {
+                var e = mapper.Map<Event>(dtoEvent);
                 await eventRepository.EditEventAsync(e);
                 return Ok("Event edit was successful");
             }

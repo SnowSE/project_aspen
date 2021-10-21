@@ -9,6 +9,8 @@ root = true
 #Formatting - indentation
 #use soft tabs (spaces) for indentation
 indent_style = space
+dotnet_style_allow_statement_immediately_after_block_experimental=true:suggestion
+dotnet_style_allow_multiple_blank_lines_experimental=true:suggestion
 
 [*.cs]
 
@@ -167,17 +169,12 @@ dotnet_naming_rule.async_methods_should_end_in_async.symbols = async_methods
 dotnet_naming_rule.async_methods_should_end_in_async.style = async_methods_style
 
 dotnet_naming_symbols.async_methods.applicable_kinds = method
-dotnet_naming_symbols.async_methods.applicable_accessibilities = *
+dotnet_naming_symbols.async_methods.applicable_accessibilities = public
 dotnet_naming_symbols.async_methods.required_modifiers = async
 
+dotnet_naming_style.async_methods_style.applicable_accessibilities = public
 dotnet_naming_style.async_methods_style.capitalization = pascal_case
 dotnet_naming_style.async_methods_style.required_suffix = Async
-
-#don't require Async suffix for controller actions
-[**/**Controller.cs]
-dotnet_naming_rule.async_methods_should_end_in_async.severity = suggestion
-[**/**Test**.cs]
-dotnet_naming_rule.async_methods_should_end_in_async.severity = silent
 
 
 #private fields are camelCase
@@ -197,8 +194,8 @@ dotnet_naming_rule.methods_should_be_pascal_case.symbols = methods
 dotnet_naming_rule.methods_should_be_pascal_case.style = methods_style
 
 dotnet_naming_symbols.methods.applicable_kinds = method
-dotnet_naming_symbols.methods.applicable_accessibilities = *
-
+dotnet_naming_symbols.methods.applicable_accessibilities = public
+dotnet_naming_style.methods_style.applicable_accessibilities = public
 dotnet_naming_style.methods_style.capitalization = pascal_case
 
 
@@ -209,7 +206,6 @@ dotnet_naming_rule.classes_should_be_pascal_case.style = classes_style
 
 dotnet_naming_symbols.classes.applicable_kinds = class
 dotnet_naming_symbols.classes.applicable_accessibilities = *
-
 dotnet_naming_style.classes_style.capitalization = pascal_case
 
 
@@ -240,3 +236,9 @@ dotnet_naming_style.interfaces_style.required_prefix = I
 [**/*.{Tests,IntegrationTests,FunctionalTests}/**.cs]
 dotnet_naming_rule.private_fields_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.async_methods_should_end_in_async.severity = suggestion
+
+#don't require Async suffix for controller actions
+[**/**Controller.cs]
+dotnet_naming_rule.async_methods_should_end_in_async.severity = suggestion
+[**/**Test**.cs]
+dotnet_naming_rule.async_methods_should_end_in_async.severity = silent
