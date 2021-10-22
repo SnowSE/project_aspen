@@ -12,6 +12,7 @@
 		"ms-dotnettools.csharp",
 		"formulahendry.dotnet-test-explorer",
         "editorconfig.editorconfig",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets"
 	]
 }
