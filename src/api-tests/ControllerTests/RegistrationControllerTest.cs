@@ -37,7 +37,7 @@ namespace Tests.Controller
             return new EventRepository(context, TestHelpers.AspenMapper);
         }
 
-        private RegistrationController GetRegistrationController()
+        public static RegistrationController GetRegistrationController()
         {
             var context = TestHelpers.CreateContext();
             var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);

@@ -35,9 +35,7 @@ namespace Api.Controllers
 
             if (ModelState.IsValid)
             {
-                var ownerId = dtoRegistration.OwnerID;
-                var teamId = dtoRegistration.TeamID;
-                var registration = await registrationRepository.AddRegistrationAsync(teamId, ownerId);
+                var registration = await registrationRepository.AddRegistrationAsync(dtoRegistration);
                 return mapper.Map<DtoRegistration>(registration);
             }
             else

@@ -17,13 +17,13 @@ namespace Tests.ControllerTests
         {
             var newEvent = await createEvent();
             var person = await createPerson();
-            var team = createTeam(person);
+            var team = await createTeam(person, newEvent.ID);
 
-            //var registration = createRegistration();
+            var allTeamsInEvent = await getTeams(newEvent.ID);
+            allTeamsInEvent.Count().Should().Be(1);
 
-            //var newPerson = createPerson();
-            //var newRegistration = createRegistration();
-
+            var registration = await createRegistration(person, team);
+            registration.Nickname.Should().Be("Reg1");
         }
 
         private async Task<DtoEvent> createEvent() =>
@@ -35,20 +35,13 @@ namespace Tests.ControllerTests
         private async Task<DtoPerson> createPerson() =>
             (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
 
-        private async Task<DtoTeam> createTeam(DtoPerson person)
-        {
-            //var teamController = TeamControllerTests.
-            throw new Exception();
-        }
+        private async Task<DtoTeam> createTeam(DtoPerson person, long eventId) =>
+            (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Description = "Team1", OwnerID = person.ID }, eventId)).Value;
 
-        private object getTeams()
-        {
-            throw new NotImplementedException();
-        }
+        private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
+            await TeamControllerTest.GetTeamController().GetAllTeams(eventId);
 
-        private object createRegistration()
-        {
-            throw new NotImplementedException();
-        }
+        private async Task<DtoRegistration> createRegistration(DtoPerson owner, DtoTeam team) =>
+            (await RegistrationControllerTest.GetRegistrationController().Add(new DtoRegistration { Nickname = "Reg1", OwnerID = owner.ID, TeamID = team.ID })).Value;
     }
 }

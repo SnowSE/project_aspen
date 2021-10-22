@@ -1,4 +1,5 @@
 ﻿using Api.DbModels;
+using Api.DtoModels;
 using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace Api.DataAccess
 {
     public interface IRegistrationRepository
     {
-        Task<Registration> AddRegistrationAsync(long teamId, long ownerId);
+        Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration);
         Task DeleteRegistrationAsync(long registrationID);
         Task<Registration> EditRegistrationAsync(Registration registration);
         Task<IEnumerable<Registration>> GetRegistrationsAsync();
@@ -41,13 +42,9 @@ namespace Api.DataAccess
 
         }
 
-        public async Task<Registration> AddRegistrationAsync(long teamId, long ownerId)
+        public async Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration)
         {
-            var dbRegistration = new DbRegistration
-            {
-                TeamID = teamId,
-                OwnerID = ownerId
-            };
+            var dbRegistration = mapper.Map<DbRegistration>(dtoRegistration);
             context.Registrations.Add(dbRegistration);
             await context.SaveChangesAsync();
             return mapper.Map<Registration>(dbRegistration);

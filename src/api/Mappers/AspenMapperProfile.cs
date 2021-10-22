@@ -13,7 +13,7 @@ namespace Api.Mappers
     public class AspenMapperProfile : Profile
     {
         /// <summary>
-        /// Rules to go to and frome different object types
+        /// Rules to go to and from different object types
         /// </summary>
         /// <seealso cref="https://codewithmukesh.com/blog/automapper-in-aspnet-core/"/>
         public AspenMapperProfile()
@@ -50,8 +50,11 @@ namespace Api.Mappers
 
             CreateMap<DtoRegistration, Registration>()
                 .ReverseMap();
-                
+
             CreateMap<DbRegistration, Registration>()
+                .ReverseMap();
+
+            CreateMap<DbRegistration, DtoRegistration>()
                 .ReverseMap();
         }
     }
