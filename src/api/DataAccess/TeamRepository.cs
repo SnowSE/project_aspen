@@ -12,7 +12,7 @@ namespace Api.DataAccess
 {
     public interface ITeamRepository
     {
-        Task<Team> AddAsync(DtoTeam team, long eventID);
+        Task<DtoTeam> AddAsync(DtoTeam team, long eventID);
         Task DeleteTeamAsync(long id);
         Task<DtoTeam> EditTeamAsync(DtoTeam team);
         Task<DtoTeam> GetTeamByIdAsync(long id);
@@ -23,7 +23,6 @@ namespace Api.DataAccess
 
     public class TeamRepository : ITeamRepository
     {
-
         private readonly AspenContext context;
         private readonly IMapper mapper;
 
@@ -52,7 +51,7 @@ namespace Api.DataAccess
             return mapper.Map<DtoTeam>(team);
         }
 
-        public async Task<Team> AddAsync(DtoTeam dtoTeam, long eventID)
+        public async Task<DtoTeam> AddAsync(DtoTeam dtoTeam, long eventID)
         {
             var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
@@ -64,7 +63,7 @@ namespace Api.DataAccess
             context.Update(existingEvent);
 
             await context.SaveChangesAsync();
-            return mapper.Map<Team>(dbTeam);
+            return mapper.Map<DtoTeam>(dbTeam);
         }
 
         public async Task<DtoTeam> EditTeamAsync(DtoTeam team)

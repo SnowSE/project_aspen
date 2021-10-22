@@ -11,6 +11,7 @@
 	"extensions": [
 		"ms-dotnettools.csharp",
 		"formulahendry.dotnet-test-explorer",
-        "editorconfig.editorconfig"
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode"
 	]
 }
