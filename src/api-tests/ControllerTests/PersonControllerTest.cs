@@ -19,7 +19,7 @@ namespace Tests.Controller
 {
     public class PersonControllerTest
     {
-        public PersonController GetPersonController()
+        public static PersonController GetPersonController()
         {
             var context = TestHelpers.CreateContext();
             var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);

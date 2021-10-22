@@ -15,10 +15,12 @@ namespace Aspen.Api.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository teamRepository;
+        private readonly IMapper mapper;
 
-        public TeamController(ITeamRepository teamRepository)
+        public TeamController(ITeamRepository teamRepository, IMapper mapper)
         {
             this.teamRepository = teamRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet("{eventId?}")]
@@ -30,7 +32,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoTeam>> GetTeamByID(long id)
+        public async Task<ActionResult<DtoTeam>> GetByID(long id)
         {
 
             if (teamRepository.TeamExists(id))
@@ -44,20 +46,12 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTeam([FromBody] DtoTeam team, long eventID)
+        public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam team, long eventId)
         {
-
             if (ModelState.IsValid)
             {
-                if (!teamRepository.TeamExists(team.ID))
-                {
-                    await teamRepository.AddTeamAsync(team, eventID);
-                    return Ok("Team added successfully");
-                }
-                else
-                {
-                    return BadRequest("Team already exists");
-                }
+                var newTeam = await teamRepository.AddAsync(team, eventId);
+                return mapper.Map<DtoTeam>(newTeam);
             }
             return BadRequest("Team object is not valid");
         }
@@ -74,7 +68,7 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeam(long id)
+        public async Task<IActionResult> Delete(long id)
         {
             if (teamRepository.TeamExists(id))
             {

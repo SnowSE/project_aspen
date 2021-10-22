@@ -56,7 +56,7 @@ namespace Tests.Controller
                 EventID = newEvent.ID
             };
 
-            var team = await GetTeamRepository().AddTeamAsync(dtoTeam, newEvent.ID);
+            var team = await GetTeamRepository().AddAsync(dtoTeam, newEvent.ID);
             var uncreatedDtoRegistration = new DtoRegistration
             {
                 OwnerID = owner.ID,

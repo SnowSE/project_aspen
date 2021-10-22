@@ -76,7 +76,7 @@ namespace Api.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             await personRepository.DeleteAsync(id);

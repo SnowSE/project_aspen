@@ -14,7 +14,7 @@ namespace Tests.Controller
 {
     public class EventControllerTest
     {
-        private static EventController getEventController()
+        public static EventController GetEventController()
         {
             var context = TestHelpers.CreateContext();
             var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
@@ -30,8 +30,8 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var eventController = getEventController();
-            var dtoEvent = (await eventController.AddEvent(newEvent)).Value;
+            var eventController = GetEventController();
+            var dtoEvent = (await eventController.Add(newEvent)).Value;
 
             dtoEvent.ID.Should().NotBe(0);
             dtoEvent.Description.Should().Be("Marathon1");
@@ -46,8 +46,8 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var eventController = getEventController();
-            var createdEvent = (await eventController.AddEvent(newEvent)).Value;
+            var eventController = GetEventController();
+            var createdEvent = (await eventController.Add(newEvent)).Value;
             var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
 
             returnedEvent.ID.Should().NotBe(0);
@@ -63,12 +63,12 @@ namespace Tests.Controller
                 Location = "Snow"
             };
 
-            var createdEvent = (await getEventController().AddEvent(newEvent)).Value;
+            var createdEvent = (await GetEventController().Add(newEvent)).Value;
 
             var changedEvent = createdEvent with { Description = "This is changed" };
-            await getEventController().EditEvent(changedEvent, changedEvent.ID);
+            await GetEventController().EditEvent(changedEvent, changedEvent.ID);
 
-            var returnedEvent = (await getEventController().GetEventByID(createdEvent.ID)).Value;
+            var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
         }
     }

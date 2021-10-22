@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using System.Threading.Tasks;
 using Tests;
 
 namespace Tests
@@ -8,7 +9,7 @@ namespace Tests
     public class TestSetup
     {
         [OneTimeSetUp]
-        public void MigrateDb()
+        public async Task MigrateDbAsync()
         {
             var context = TestHelpers.CreateContext();
             context.Database.Migrate();

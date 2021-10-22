@@ -47,7 +47,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoEvent>> AddEvent([FromBody] DtoEvent dtoEvent)
+        public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
         {
             if (ModelState.IsValid)
             {
