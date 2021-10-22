@@ -69,5 +69,19 @@ namespace Api.Controllers
             }
             return BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            if (registrationRepository.RegistrationExists(id))
+            {
+                await registrationRepository.DeleteRegistrationAsync(id);
+                return Ok("Delete Team was successful");
+            }
+            else
+            {
+                return BadRequest("Team id does not exist");
+            }
+        }
     }
 }

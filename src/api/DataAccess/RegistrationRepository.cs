@@ -1,5 +1,6 @@
 ﻿using Api.DbModels;
 using Api.DtoModels;
+using Api.Exceptions;
 using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace Api.DataAccess
         Task<Registration> EditRegistrationAsync(DtoRegistration registration);
         Task<IEnumerable<Registration>> GetRegistrationsAsync();
         Task<Registration> GetByIdAsync(long registrationID);
+        bool RegistrationExists(long registrationID);
     }
 
     public class RegistrationRepository : IRegistrationRepository
@@ -30,7 +32,7 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        private bool RegistrationExists(long registrationID)
+        public bool RegistrationExists(long registrationID)
         {
             return context.Registrations.Any(e => e.ID == registrationID);
         }
@@ -45,6 +47,8 @@ namespace Api.DataAccess
         public async Task<Registration> GetByIdAsync(long registrationID)
         {
             var dbRegistration = await context.Registrations.FindAsync(registrationID);
+            if (dbRegistration == null)
+                throw new NotFoundException<Registration>();
             return mapper.Map<Registration>(dbRegistration);
         }
 

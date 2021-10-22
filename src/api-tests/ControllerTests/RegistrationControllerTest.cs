@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Api.Controllers;
 using Api.DataAccess;
+using Api.DbModels;
 using Api.DtoModels;
 using Api.Mappers;
 using Api.Models;
@@ -92,6 +93,18 @@ namespace Tests.Controller
 
             var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
             anotherCopy.Should().BeEquivalentTo(returnedDto);
+        }
+
+        [Test]
+        public async Task CanDeleteRegistration()
+        {
+            var original = await createRegistration();
+            await GetRegistrationController().Delete(original.ID);
+
+            var badTeamRequests = await GetRegistrationController().GetByID(original.ID);
+
+            var actual = badTeamRequests.Result as NotFoundObjectResult;
+            actual.StatusCode.Should().Be(404);
         }
     }
 }
