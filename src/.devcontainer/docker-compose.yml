@@ -8,21 +8,23 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 5s
-      timeout: 1s
-      retries: 5
+      timeout: 30s
+      retries: 50
     networks:
       shared:
+    volumes:
+      - ../:/src
 
   api:
     container_name: api
     build:
       dockerfile: ../api/Dev.Dockerfile
       context: ../api/
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost/health"]
-    #   interval: 5s
-    #   timeout: 1s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
     volumes:
       - assets:/assets
       - home:/root
@@ -122,8 +124,8 @@ services:
     depends_on:
       auth:
         condition: service_healthy
-      # api:
-      #   condition: service_healthy
+      api:
+        condition: service_healthy
       web:
         condition: service_healthy
 

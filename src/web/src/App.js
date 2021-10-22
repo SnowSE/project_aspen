@@ -3,6 +3,7 @@ import { AdminApiButton } from './components/AdminApiButton';
 import { ApiButton } from './components/ApiButton';
 import { NavBar } from './components/NavBar';
 import { AuthContext } from './store/AuthContext';
+import { Header } from './components/Header.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -27,6 +28,7 @@ function App() {
       {!isLoggedIn && <div>Not Logged in</div>}
       {isLoggedIn && user && <div>
         <NavBar />
+        <Header />
         {JSON.stringify(user.profile)}
         <br />
         <ApiButton />

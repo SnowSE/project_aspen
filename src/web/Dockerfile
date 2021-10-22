@@ -1,10 +1,6 @@
 FROM node:alpine
 RUN apk add curl
 
-COPY package.json .
-COPY package-lock.json .
-RUN npm install
+WORKDIR /src/web
 
-COPY . .
-
-CMD npm start
+CMD npm install && npm start
