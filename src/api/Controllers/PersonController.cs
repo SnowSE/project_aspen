@@ -70,11 +70,18 @@ namespace Api.Controllers
         [HttpPut]
         public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
         {
-            var person = mapper.Map<Person>(dtoPerson);
-            var updatedPerson = await personRepository.EditAsync(person);
-            return mapper.Map<DtoPerson>(updatedPerson);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var person = mapper.Map<Person>(dtoPerson);
+                    var updatedPerson = await personRepository.EditAsync(person);
+                    return mapper.Map<DtoPerson>(updatedPerson);
+                }
+            }
+            catch { } //any exception will end in BadRequest
+            return BadRequest();
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)

@@ -12,9 +12,9 @@ namespace Api.DataAccess
 {
     public interface ITeamRepository
     {
-        Task<Team> AddAsync(DtoTeam team, long EventID);
+        Task<Team> AddAsync(DtoTeam team, long eventID);
         Task DeleteTeamAsync(long id);
-        Task EditTeamAsync(DtoTeam team);
+        Task<DtoTeam> EditTeamAsync(DtoTeam team);
         Task<DtoTeam> GetTeamByIdAsync(long id);
         Task<IEnumerable<DtoTeam>> GetTeamsAsync();
         Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(long eventID);
@@ -67,13 +67,12 @@ namespace Api.DataAccess
             return mapper.Map<Team>(dbTeam);
         }
 
-        public async Task EditTeamAsync(DtoTeam team)
+        public async Task<DtoTeam> EditTeamAsync(DtoTeam team)
         {
-            //This needs a fix
-
             var dbTeam = mapper.Map<DbTeam>(team);
             context.Update(dbTeam);
             await context.SaveChangesAsync();
+            return team;
         }
 
         public async Task DeleteTeamAsync(long id)

@@ -56,8 +56,8 @@ namespace Aspen.Api.Controllers
             return BadRequest("Team object is not valid");
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditTeam([FromBody] DtoTeam team, long id)
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] DtoTeam team)
         {
             if (ModelState.IsValid)
             {

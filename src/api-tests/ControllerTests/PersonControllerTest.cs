@@ -80,6 +80,13 @@ namespace Tests.Controller
         }
 
         [Test]
+        public async Task BadEditRequestReturnsBadRequestResult()
+        {
+            var result = await GetPersonController().Edit(new DtoPerson { ID = -1 });
+            (result.Result as BadRequestResult).Should().NotBeNull();
+        }
+
+        [Test]
         public async Task PersonCanBeCreatedWithAuthId()
         {
             var newPerson = new DtoPerson

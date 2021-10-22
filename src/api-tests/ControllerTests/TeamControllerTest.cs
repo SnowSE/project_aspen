@@ -67,43 +67,19 @@ namespace Tests.Controller
             actual.StatusCode.Should().Be(400);
         }
 
-        //[Test]
-        //public async Task CanEditTeam()
-        //{
-        //    var newTeam = new DtoTeam { Name = "Ben" };
-        //    var createdTeam = (await GetTeamController().Add(newTeam)).Value;
+        [Test]
+        public async Task CanEditTeam()
+        {
+            var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;
+            var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
+            var newTeam = new DtoTeam { Description = "George", OwnerID = newPerson.ID };
+            var dtoTeam = (await GetTeamController().Add(newTeam, newEvent.ID)).Value;
 
-        //    var Team = TestHelpers.AspenMapper.Map<Team>(createdTeam);
-        //    var editedTeam = Team.WithName("notBen").WithBio("new bio");
-        //    await GetTeamController().Edit(TestHelpers.AspenMapper.Map<DtoTeam>(editedTeam));
+            var editedTeam = dtoTeam with { Description = "Changed" };
+            await GetTeamController().Edit(editedTeam);
 
-        //    var returnedTeam = (await GetTeamController().GetByID(createdTeam.ID)).Value;
-        //    returnedTeam.Name.Should().Be(editedTeam.Name);
-        //}
-
-        //[Test]
-        //public async Task TeamCanBeCreatedWithAuthId()
-        //{
-        //    var newTeam = new DtoTeam
-        //    {
-        //        Name = "Bill",
-        //        AuthID = Guid.NewGuid().ToString()
-        //    };
-        //    var createdTeam = (await GetTeamController().Add(newTeam)).Value;
-        //    var returnedTeam = (await GetTeamController().GetByID(createdTeam.ID)).Value;
-        //    returnedTeam.AuthID.Should().Be(newTeam.AuthID);
-        //}
-
-        //[Test]
-        //public async Task CanAddAuthIdToTeamAfterCreation()
-        //{
-        //    var newTeam = new DtoTeam { Name = "Mike" };
-        //    var createdTeam = (await GetTeamController().Add(newTeam)).Value;
-        //    var authIdTeam = createdTeam.WithAuthID(Guid.NewGuid().ToString());
-        //    await GetTeamController().Edit(authIdTeam);
-
-        //    var returnedTeam = (await GetTeamController().GetByID(createdTeam.ID)).Value;
-        //    returnedTeam.AuthID.Should().Be(authIdTeam.AuthID);
-        //}
+            var returnedTeam = (await GetTeamController().GetByID(editedTeam.ID)).Value;
+            returnedTeam.Description.Should().Be(editedTeam.Description);
+        }
     }
 }
