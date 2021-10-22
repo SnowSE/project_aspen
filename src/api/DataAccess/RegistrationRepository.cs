@@ -16,6 +16,7 @@ namespace Api.DataAccess
         Task DeleteRegistrationAsync(long registrationID);
         Task<Registration> EditRegistrationAsync(Registration registration);
         Task<IEnumerable<Registration>> GetRegistrationsAsync();
+        Task<Registration> GetByIdAsync(long registrationID);
     }
 
     public class RegistrationRepository : IRegistrationRepository
@@ -39,7 +40,12 @@ namespace Api.DataAccess
             var dbRegistrations = await EntityFrameworkQueryableExtensions
                 .ToListAsync(context.Registrations);
             return mapper.Map<List<Registration>>(dbRegistrations);
+        }
 
+        public async Task<Registration> GetByIdAsync(long registrationID)
+        {
+            var dbRegistration = await context.Registrations.FindAsync(registrationID);
+            return mapper.Map<Registration>(dbRegistration);
         }
 
         public async Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration)

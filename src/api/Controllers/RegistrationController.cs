@@ -28,11 +28,24 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<DtoRegistration>> GetByID(long id)
+        {
+            try
+            {
+                var registration = await registrationRepository.GetByIdAsync(id);
+                return mapper.Map<DtoRegistration>(registration);
+            }
+            catch (NotFoundException<Registration>)
+            {
+                return NotFound("Unable to find requested registration.");
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<DtoRegistration>> Add([FromBody] DtoRegistration dtoRegistration)
         {
-
             if (ModelState.IsValid)
             {
                 var registration = await registrationRepository.AddRegistrationAsync(dtoRegistration);

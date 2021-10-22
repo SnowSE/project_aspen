@@ -47,8 +47,15 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreateRegistration()
         {
+            var dtoRegistration = await createRegistration();
+
+            dtoRegistration.CreationDate.Should().NotBe(null);
+        }
+
+        private async Task<DtoRegistration> createRegistration()
+        {
             var owner = await GetPersonRepository().AddAsync("ben", null);
-            var eventEntity = new Event(0, "Marathon1", new DateTime(2021,6,21));
+            var eventEntity = new Event(0, "Marathon1", new DateTime(2021, 6, 21));
             var newEvent = await GetEventRepository().AddEventAsync(eventEntity);
             var dtoTeam = new DtoTeam
             {
@@ -64,8 +71,15 @@ namespace Tests.Controller
             };
 
             var dtoRegistration = (await GetRegistrationController().Add(uncreatedDtoRegistration)).Value;
+            return dtoRegistration;
+        }
 
-            dtoRegistration.CreationDate.Should().NotBe(null);
+        [Test]
+        public async Task CanGetRegistrationById()
+        {
+            var original = await createRegistration();
+            var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
+            anotherCopy.Should().BeEquivalentTo(original);
         }
 
     }
