@@ -82,5 +82,16 @@ namespace Tests.Controller
             anotherCopy.Should().BeEquivalentTo(original);
         }
 
+        [Test]
+        public async Task CanUpdateRegistration()
+        {
+            var original = await createRegistration();
+            var modifiedDto = original with { Nickname = "New", IsPublic = !original.IsPublic };
+            var returnedDto = (await GetRegistrationController().Edit(modifiedDto)).Value;
+            returnedDto.Should().BeEquivalentTo(modifiedDto);
+
+            var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
+            anotherCopy.Should().BeEquivalentTo(returnedDto);
+        }
     }
 }

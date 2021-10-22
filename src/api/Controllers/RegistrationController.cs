@@ -42,7 +42,6 @@ namespace Api.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<ActionResult<DtoRegistration>> Add([FromBody] DtoRegistration dtoRegistration)
         {
@@ -58,6 +57,17 @@ namespace Api.Controllers
                     .Select(e => e.ErrorMessage));
                 return BadRequest(errorMessage);
             }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<DtoRegistration>> Edit([FromBody] DtoRegistration dtoRegistration)
+        {
+            if (ModelState.IsValid)
+            {
+                var registration = await registrationRepository.EditRegistrationAsync(dtoRegistration);
+                return mapper.Map<DtoRegistration>(registration);
+            }
+            return BadRequest();
         }
     }
 }

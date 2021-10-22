@@ -14,7 +14,7 @@ namespace Api.DataAccess
     {
         Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration);
         Task DeleteRegistrationAsync(long registrationID);
-        Task<Registration> EditRegistrationAsync(Registration registration);
+        Task<Registration> EditRegistrationAsync(DtoRegistration registration);
         Task<IEnumerable<Registration>> GetRegistrationsAsync();
         Task<Registration> GetByIdAsync(long registrationID);
     }
@@ -56,12 +56,12 @@ namespace Api.DataAccess
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task<Registration> EditRegistrationAsync(Registration registration)
+        public async Task<Registration> EditRegistrationAsync(DtoRegistration registration)
         {
-            var dtoRegistration = mapper.Map<DbRegistration>(registration);
-            context.Update(dtoRegistration);
+            var dbRegistration = mapper.Map<DbRegistration>(registration);
+            context.Update(dbRegistration);
             await context.SaveChangesAsync();
-            return mapper.Map<Registration>(dtoRegistration);
+            return mapper.Map<Registration>(dbRegistration);
         }
 
         public async Task DeleteRegistrationAsync(long registrationID)
