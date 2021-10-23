@@ -3,7 +3,6 @@ import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 import autoBind from 'auto-bind'
 
 Oidc.Log.logger = console;
-// Oidc.Log.level = Oidc.Log.INFO;
 Oidc.Log.level = Oidc.Log.ERROR;
 
 

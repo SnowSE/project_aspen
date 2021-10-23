@@ -1,19 +1,19 @@
 {
-    "name": "aspen dev environment",
-    "dockerComposeFile": "./docker-compose.yml",
-    "service": "api",
-    "shutdownAction": "stopCompose",
-    "workspaceFolder": "/src",
-    "remoteEnv": {
-        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-    },
-	"remoteUser": "root",
-	"extensions": [
-		"ms-dotnettools.csharp",
-		"formulahendry.dotnet-test-explorer",
-        "editorconfig.editorconfig",
-        "esbenp.prettier-vscode",
-        "dsznajder.es7-react-js-snippets",
-        "editorconfig.editorconfig"
-	]
+  "name": "aspen dev environment",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "editor",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/aspen/src",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "remoteUser": "root",
+  "extensions": [
+    "ms-dotnettools.csharp",
+    "formulahendry.dotnet-test-explorer",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "dsznajder.es7-react-js-snippets",
+    "editorconfig.editorconfig"
+  ]
 }
