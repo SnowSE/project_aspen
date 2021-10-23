@@ -55,25 +55,20 @@ namespace Tests.Controller
             var response = await assetController.PostAsync(fileMock.Object);
 
             var newFileName = (response.Result as OkObjectResult).Value as Response<string>;
-            var actualFileText = File.ReadAllText("assets/" + newFileName.data);
-            
+            var actualFileText = File.ReadAllText("assets/" + newFileName.Data);
+
             (response.Result as OkObjectResult).StatusCode.Should().Be(200);
-            newFileName.data.Should().NotBeEmpty();
-            
+            newFileName.Data.Should().NotBeEmpty();
+
             actualFileText.Should().Be("fake image");
         }
 
         private static Mock<IFormFile> SetUpMockFile()
         {
-            //Arrange
             var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
             var content = "fake image";
             var fileName = "test" + RandomString(4) + ".txt";
             var ms = new MemoryStream(Encoding.ASCII.GetBytes(content));
-            // var writer = new StreamWriter(ms);
-            // writer.Write(content);
-            // writer.Flush();
             ms.Position = 0;
             fileMock.Setup(_ => _.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None))
                 .Callback<Stream, CancellationToken>((stream, token) =>

@@ -86,8 +86,15 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await personRepository.DeleteAsync(id);
-            return Ok();
+            try
+            {
+                await personRepository.DeleteAsync(id);
+                return Ok();
+            }
+            catch (NotFoundException<Person> e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
     }

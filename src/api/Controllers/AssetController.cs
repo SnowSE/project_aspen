@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controller
 {
-    public record Response<T>(T data);
+    public record Response<T> { public T Data { get; init; } }
 
     [ApiController]
     [Authorize]
@@ -28,7 +28,7 @@ namespace Api.Controller
         {
             var newId = await assetsFileService.StoreAsset(image);
 
-            return Ok(new Response<string>(newId));
+            return Ok(new Response<string> { Data = newId });
         }
     }
 }

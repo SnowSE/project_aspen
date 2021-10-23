@@ -1,6 +1,8 @@
 ﻿using Api.DataAccess;
 using Api.DbModels;
 using Api.DtoModels;
+using Api.Exceptions;
+using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -70,14 +72,14 @@ namespace Aspen.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            if (teamRepository.TeamExists(id))
+            try
             {
                 await teamRepository.DeleteTeamAsync(id);
-                return Ok("Delete Team was successful");
+                return Ok();
             }
-            else
+            catch (NotFoundException<Team> e)
             {
-                return BadRequest("Team id does not exist");
+                return BadRequest(e.Message);
             }
         }
     }

@@ -68,6 +68,16 @@ namespace Tests.Controller
         }
 
         [Test]
+        public async Task BadDeleteCallReturnsAppropriateResponse()
+        {
+            var badDeleteResult = await GetTeamController().Delete(-1);
+
+            var result = badDeleteResult as BadRequestObjectResult;
+            result.StatusCode.Should().Be(400);
+            result.Value.Should().Be("Team ID: -1 not found");
+        }
+
+        [Test]
         public async Task CanEditTeam()
         {
             var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;

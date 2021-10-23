@@ -18,7 +18,8 @@ namespace Api.Controllers
     {
         [HttpGet]
         [Authorize(Roles = "admin-aspen")]
-        public IEnumerable<UserClaim> Get() => User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
+        public IEnumerable<UserClaim> Get() =>
+            User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
     }
 
     public record UserClaim(string claim, string value);

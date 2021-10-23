@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Controllers;
 using Api.DataAccess;
 using Api.DtoModels;
+using Api.Exceptions;
 using Api.Mappers;
 using Api.Models;
 using Api.Models.Entities;
@@ -63,6 +64,16 @@ namespace Tests.Controller
 
             var actual = badPersonRequests.Result as NotFoundObjectResult;
             actual.StatusCode.Should().Be(404);
+        }
+
+        [Test]
+        public async Task BadDeleteRequestsReturnBadRequest()
+        {
+            var badDeleteResult = await GetPersonController().Delete(-1);
+
+            var result = badDeleteResult as BadRequestObjectResult;
+            result.StatusCode.Should().Be(400);
+            result.Value.Should().Be("Person ID: -1 not found");
         }
 
         [Test]

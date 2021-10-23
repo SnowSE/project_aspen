@@ -61,6 +61,10 @@ namespace Api.DataAccess
         public async Task DeleteAsync(long id)
         {
             var person = await context.Persons.FindAsync(id);
+            if (person == null)
+            {
+                throw new NotFoundException<Person>($"Person ID: {id} not found");
+            }
             context.Persons.Remove(person);
             await context.SaveChangesAsync();
         }

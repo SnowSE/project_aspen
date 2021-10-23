@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.DbModels;
 using Api.DtoModels;
+using Api.Exceptions;
 using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,8 @@ namespace Api.DataAccess
         public async Task DeleteTeamAsync(long id)
         {
             var team = await context.Teams.FindAsync(id);
+            if(team == null)
+                throw new NotFoundException<Team>($"Team ID: {id} not found");
 
             context.Teams.Remove(team);
             await context.SaveChangesAsync();
