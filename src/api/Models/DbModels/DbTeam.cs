@@ -23,20 +23,4 @@ namespace Api.DbModels
 
         public virtual ICollection<DbRegistration> Registrations { get; init; }
     }
-    public static class DbTeamHelper
-    {
-        public static DbTeam WithEvent(this DbTeam previousTeam, DbEvent newEvent)
-        {
-            return new DbTeam
-            {
-                ID = previousTeam.ID,
-                Description = previousTeam.Description,
-                MainImage = previousTeam.MainImage,
-                OwnerID = previousTeam.OwnerID,
-                Owner = previousTeam.Owner,
-                EventID = newEvent.ID,
-                Event = newEvent,
-            };
-        }
-    }
 }

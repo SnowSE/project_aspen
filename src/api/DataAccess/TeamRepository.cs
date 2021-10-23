@@ -55,7 +55,7 @@ namespace Api.DataAccess
         {
             var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
 
-            var dbTeam = mapper.Map<DbTeam>(dtoTeam).WithEvent(existingEvent);
+            var dbTeam = mapper.Map<DbTeam>(dtoTeam with { EventID = existingEvent.ID });
 
             await context.Teams.AddAsync(dbTeam);
             existingEvent.Teams.Add(dbTeam);

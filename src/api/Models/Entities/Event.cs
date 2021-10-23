@@ -57,7 +57,12 @@ namespace Api.Models.Entities
 
         public static Event WithPrimaryImageUrl(this Event currentEvent, string newPrimaryImageUrl)
         {
-            return new Event(currentEvent.ID, currentEvent.Description, currentEvent.Date, currentEvent.Location, newPrimaryImageUrl);
+            return new Event(
+                currentEvent.ID,
+                currentEvent.Description,
+                currentEvent.Date,
+                currentEvent.Location,
+                newPrimaryImageUrl);
         }
     }
 }

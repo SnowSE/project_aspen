@@ -9,7 +9,7 @@ namespace Tests
     public class TestSetup
     {
         [OneTimeSetUp]
-        public async Task MigrateDbAsync()
+        public void MigrateDbAsync()
         {
             var context = TestHelpers.CreateContext();
             context.Database.Migrate();

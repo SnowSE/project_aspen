@@ -63,7 +63,7 @@ namespace Api.DataAccess
             var mappedPageData = mapper.Map<DbPageData>(pageData);
             // mappedPageData.ID = existingDbPageData.ID;
 
-            var alteredPageData = mappedPageData.WithId(existingDbPageData.ID);
+            var alteredPageData = mappedPageData with { ID = existingDbPageData.ID };
             context.Update(alteredPageData);
             await context.SaveChangesAsync();
         }

@@ -12,16 +12,4 @@ namespace Api.DbModels
         public JsonDocument Data { get; init; }
 
     }
-    public static class DbPageDataHelper
-    {
-        public static DbPageData WithId(this DbPageData previousData, long newId)
-        {
-            return new DbPageData
-            {
-                ID = newId,
-                Key = previousData.Key,
-                Data = previousData.Data
-            };
-        }
-    }
 }
