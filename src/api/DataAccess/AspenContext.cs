@@ -7,10 +7,10 @@ namespace Api.DataAccess
     public class AspenContext : DbContext
     {
         public AspenContext(DbContextOptions<AspenContext> dbContextOptions) : base(dbContextOptions)
-        {            
+        {
         }
 
-        public DbSet<DbPageData> PageData{get;set;}
+        public DbSet<DbPageData> PageData { get; set; }
 
         public DbSet<DbEvent> Events { get; set; }
         public DbSet<DbTeam> Teams { get; set; }

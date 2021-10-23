@@ -63,8 +63,8 @@ namespace Tests.Controller
 
             var badTeamRequests = await GetTeamController().GetByID(dtoTeam.ID);
 
-            var actual = badTeamRequests.Result as BadRequestObjectResult;
-            actual.StatusCode.Should().Be(400);
+            var actual = badTeamRequests.Result as NotFoundObjectResult;
+            actual.StatusCode.Should().Be(404);
         }
 
         [Test]
@@ -72,9 +72,9 @@ namespace Tests.Controller
         {
             var badDeleteResult = await GetTeamController().Delete(-1);
 
-            var result = badDeleteResult as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            result.Value.Should().Be("Team ID: -1 not found");
+            var result = badDeleteResult as NotFoundObjectResult;
+            result.StatusCode.Should().Be(404);
+            result.Value.Should().Be("Team id does not exist");
         }
 
         [Test]

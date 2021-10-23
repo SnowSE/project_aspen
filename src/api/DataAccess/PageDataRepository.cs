@@ -11,12 +11,12 @@ namespace Api.DataAccess
 {
     public interface IPageDataRepository
     {
-        Task<DtoPageData> AddPageDataAsync(DtoPageData pageData);
-        Task DeletePageDataAsync(string key);
-        Task EditPageDataAsync(string key, DtoPageData pageData);
-        Task<IEnumerable<DtoPageData>> GetAllPageDataAsync();
-        Task<DtoPageData> GetPageDataAsync(string key);
-        bool PageDataExists(string key);
+        Task<bool> ExistsAsync(string key);
+        Task<DtoPageData> AddAsync(DtoPageData pageData);
+        Task DeleteAsync(string key);
+        Task EditAsync(string key, DtoPageData pageData);
+        Task<IEnumerable<DtoPageData>> GetAllAsync();
+        Task<DtoPageData> GetAsync(string key);
     }
 
     public class PageDataRepository : IPageDataRepository
@@ -30,24 +30,25 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool PageDataExists(string key)
+        public async Task<bool> ExistsAsync(string key)
         {
-            return context.PageData.Any(e => e.Key == key);
+            return await context.PageData.AnyAsync(e => e.Key == key);
         }
 
-        public async Task<IEnumerable<DtoPageData>> GetAllPageDataAsync()
+
+        public async Task<IEnumerable<DtoPageData>> GetAllAsync()
         {
             var AllPageData = await EntityFrameworkQueryableExtensions.ToListAsync(context.PageData);
             return mapper.Map<IEnumerable<DbPageData>, IEnumerable<DtoPageData>>(AllPageData);
         }
 
-        public async Task<DtoPageData> GetPageDataAsync(string key)
+        public async Task<DtoPageData> GetAsync(string key)
         {
             var dbPageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == key);
             return mapper.Map<DtoPageData>(dbPageData);
         }
 
-        public async Task<DtoPageData> AddPageDataAsync(DtoPageData pageData)
+        public async Task<DtoPageData> AddAsync(DtoPageData pageData)
         {
             var dbPageData = mapper.Map<DbPageData>(pageData);
 
@@ -57,7 +58,7 @@ namespace Api.DataAccess
             return mapper.Map<DtoPageData>(dbPageData);
         }
 
-        public async Task EditPageDataAsync(string key, DtoPageData pageData)
+        public async Task EditAsync(string key, DtoPageData pageData)
         {
             var existingDbPageData = await context.PageData.AsNoTracking().FirstOrDefaultAsync(r => r.Key == key);
             var mappedPageData = mapper.Map<DbPageData>(pageData);
@@ -68,7 +69,7 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public async Task DeletePageDataAsync(string key)
+        public async Task DeleteAsync(string key)
         {
             var pageData = await context.PageData.FirstOrDefaultAsync(r => r.Key == key);
 

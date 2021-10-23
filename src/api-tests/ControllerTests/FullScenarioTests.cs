@@ -30,7 +30,7 @@ namespace Tests.ControllerTests
             (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now, Location = "NUnit" })).Value;
 
         private async Task<IEnumerable<DtoEvent>> getEvents() =>
-            await EventControllerTest.GetEventController().GetAllEvents();
+            await EventControllerTest.GetEventController().GetAll();
 
         private async Task<DtoPerson> createPerson() =>
             (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
@@ -39,7 +39,7 @@ namespace Tests.ControllerTests
             (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Description = "Team1", OwnerID = person.ID }, eventId)).Value;
 
         private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
-            await TeamControllerTest.GetTeamController().GetAllTeams(eventId);
+            await TeamControllerTest.GetTeamController().GetAll(eventId);
 
         private async Task<DtoRegistration> createRegistration(DtoPerson owner, DtoTeam team) =>
             (await RegistrationControllerTest.GetRegistrationController().Add(new DtoRegistration { Nickname = "Reg1", OwnerID = owner.ID, TeamID = team.ID })).Value;

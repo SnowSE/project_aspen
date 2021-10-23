@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.DbModels;
 using Api.Models.Entities;
+using Api.Exceptions;
 
 namespace Api.Controllers
 {
@@ -19,6 +20,12 @@ namespace Api.Controllers
     {
         private readonly IEventRepository eventRepository;
         private readonly IMapper mapper;
+        private string getModelStateErrorMessage() =>
+            string.Join(" | ",
+                ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                );
 
         public EventController(IEventRepository eventRepository, IMapper mapper)
         {
@@ -27,61 +34,50 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<DtoEvent>> GetAllEvents()
+        public async Task<IEnumerable<DtoEvent>> GetAll()
         {
-            return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetEventsAsync());
+            return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DtoEvent>> GetEventByID(long id)
+        public async Task<ActionResult<DtoEvent>> GetByID(long id)
         {
+            if(!await eventRepository.ExistsAsync(id))
+                return NotFound("Event id does not exist");
 
-            if (eventRepository.EventExists(id))
-            {
-                return mapper.Map<DtoEvent>(await eventRepository.GetEventByIdAsync(id));
-            }
-            else
-            {
-                return BadRequest("Event id does not exist");
-            }
+            return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
         {
-            if (ModelState.IsValid)
-            {
-                var e = mapper.Map<Event>(dtoEvent);
-                return mapper.Map<DtoEvent>(await eventRepository.AddEventAsync(e));
-            }
-            return BadRequest("Event object is not valid");
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            var e = mapper.Map<Event>(dtoEvent);
+            return mapper.Map<DtoEvent>(await eventRepository.AddAsync(e));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditEvent([FromBody] DtoEvent dtoEvent, long id)
+        public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent, long id)
         {
-            if (ModelState.IsValid)
-            {
-                var e = mapper.Map<Event>(dtoEvent);
-                await eventRepository.EditEventAsync(e);
-                return Ok("Event edit was successful");
-            }
-            return BadRequest("There was error editing the event");
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            var e = mapper.Map<Event>(dtoEvent);
+            await eventRepository.EditAsync(e);
+            return Ok("Event edit was successful");
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            if (eventRepository.EventExists(id))
-            {
-                await eventRepository.DeleteEventAsync(id);
-                return Ok("Delete event was successful");
-            }
-            else
-            {
-                return BadRequest("Event id does not exist");
-            }
+            if(!await eventRepository.ExistsAsync(id))
+                return NotFound("Event id does not exist");
+
+            await eventRepository.DeleteAsync(id);
+            return Ok();
         }
     }
 }

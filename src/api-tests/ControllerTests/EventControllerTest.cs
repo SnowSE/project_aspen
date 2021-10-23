@@ -2,6 +2,7 @@
 using Api.DataAccess;
 using Api.DtoModels;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Tests.Controller
 
             var eventController = GetEventController();
             var createdEvent = (await eventController.Add(newEvent)).Value;
-            var returnedEvent = (await eventController.GetEventByID(createdEvent.ID)).Value;
+            var returnedEvent = (await eventController.GetByID(createdEvent.ID)).Value;
 
             returnedEvent.ID.Should().NotBe(0);
             returnedEvent.Description.Should().Be("Marathon2");
@@ -66,10 +67,37 @@ namespace Tests.Controller
             var createdEvent = (await GetEventController().Add(newEvent)).Value;
 
             var changedEvent = createdEvent with { Description = "This is changed" };
-            await GetEventController().EditEvent(changedEvent, changedEvent.ID);
+            await GetEventController().Edit(changedEvent, changedEvent.ID);
 
-            var returnedEvent = (await GetEventController().GetEventByID(createdEvent.ID)).Value;
+            var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
+        }
+
+        [Test]
+        public async Task CanDeleteEvent()
+        {
+            var newEvent = new DtoEvent()
+            {
+                Description = "Marathon2",
+                Location = "Snow"
+            };
+            var createdEvent = (await GetEventController().Add(newEvent)).Value;
+
+            await GetEventController().Delete(createdEvent.ID);
+
+            var badEventResult = await GetEventController().GetByID(createdEvent.ID);
+            var result = badEventResult.Result as NotFoundObjectResult;
+            result.StatusCode.Should().Be(404);
+            result.Value.Should().Be("Event id does not exist");
+        }
+
+        [Test]
+        public async Task BadDeleteRequestReturnsBadRequest()
+        {
+            var badDeleteResult = await GetEventController().Delete(-1);
+            var result = badDeleteResult as NotFoundObjectResult;
+            result.StatusCode.Should().Be(404);
+            result.Value.Should().Be("Event id does not exist");
         }
     }
 }

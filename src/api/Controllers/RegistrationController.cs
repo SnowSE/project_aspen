@@ -21,6 +21,12 @@ namespace Api.Controllers
 
         private IRegistrationRepository registrationRepository { get; }
         public IMapper mapper { get; }
+        private string getModelStateErrorMessage() =>
+            string.Join(" | ",
+                ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                );
 
         public RegistrationController(IRegistrationRepository registrationRepository, IMapper mapper)
         {
@@ -31,57 +37,46 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<DtoRegistration>> GetByID(long id)
         {
-            try
-            {
-                var registration = await registrationRepository.GetByIdAsync(id);
-                return mapper.Map<DtoRegistration>(registration);
-            }
-            catch (NotFoundException<Registration>)
-            {
-                return NotFound("Unable to find requested registration.");
-            }
+            if (!await registrationRepository.ExistsAsync(id))
+                return NotFound("Registration id does not exist");
+
+            var registration = await registrationRepository.GetByIdAsync(id);
+            return mapper.Map<DtoRegistration>(registration);
+
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoRegistration>> Add([FromBody] DtoRegistration dtoRegistration)
         {
-            if (ModelState.IsValid)
-            {
-                var registration = await registrationRepository.AddRegistrationAsync(dtoRegistration);
-                return mapper.Map<DtoRegistration>(registration);
-            }
-            else
-            {
-                var errorMessage = string.Join(" | ", ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage));
-                return BadRequest(errorMessage);
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            var registration = await registrationRepository.AddAsync(dtoRegistration);
+            return mapper.Map<DtoRegistration>(registration);
+
         }
 
         [HttpPut]
         public async Task<ActionResult<DtoRegistration>> Edit([FromBody] DtoRegistration dtoRegistration)
         {
-            if (ModelState.IsValid)
-            {
-                var registration = await registrationRepository.EditRegistrationAsync(dtoRegistration);
-                return mapper.Map<DtoRegistration>(registration);
-            }
-            return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            if (!await registrationRepository.ExistsAsync(dtoRegistration.ID))
+                return NotFound("Registration id does not exist");
+
+            var registration = await registrationRepository.EditAsync(dtoRegistration);
+            return mapper.Map<DtoRegistration>(registration);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            if (registrationRepository.RegistrationExists(id))
-            {
-                await registrationRepository.DeleteRegistrationAsync(id);
-                return Ok("Delete Team was successful");
-            }
-            else
-            {
-                return BadRequest("Team id does not exist");
-            }
+            if (!await registrationRepository.ExistsAsync(id))
+                return NotFound("Registration id does not exist");
+
+            await registrationRepository.DeleteAsync(id);
+            return Ok();
         }
     }
 }

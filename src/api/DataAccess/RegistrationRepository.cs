@@ -13,12 +13,12 @@ namespace Api.DataAccess
 {
     public interface IRegistrationRepository
     {
-        Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration);
-        Task DeleteRegistrationAsync(long registrationID);
-        Task<Registration> EditRegistrationAsync(DtoRegistration registration);
-        Task<IEnumerable<Registration>> GetRegistrationsAsync();
+        Task<Registration> AddAsync(DtoRegistration dtoRegistration);
+        Task DeleteAsync(long registrationID);
+        Task<Registration> EditAsync(DtoRegistration registration);
+        Task<IEnumerable<Registration>> GetAllAsync();
         Task<Registration> GetByIdAsync(long registrationID);
-        bool RegistrationExists(long registrationID);
+        Task<bool> ExistsAsync(long registrationID);
     }
 
     public class RegistrationRepository : IRegistrationRepository
@@ -32,12 +32,12 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool RegistrationExists(long registrationID)
+        public async Task<bool> ExistsAsync(long id)
         {
-            return context.Registrations.Any(e => e.ID == registrationID);
+            return await context.Registrations.AnyAsync(e => e.ID == id);
         }
 
-        public async Task<IEnumerable<Registration>> GetRegistrationsAsync()
+        public async Task<IEnumerable<Registration>> GetAllAsync()
         {
             var dbRegistrations = await EntityFrameworkQueryableExtensions
                 .ToListAsync(context.Registrations);
@@ -52,7 +52,7 @@ namespace Api.DataAccess
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task<Registration> AddRegistrationAsync(DtoRegistration dtoRegistration)
+        public async Task<Registration> AddAsync(DtoRegistration dtoRegistration)
         {
             var dbRegistration = mapper.Map<DbRegistration>(dtoRegistration);
             context.Registrations.Add(dbRegistration);
@@ -60,7 +60,7 @@ namespace Api.DataAccess
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task<Registration> EditRegistrationAsync(DtoRegistration registration)
+        public async Task<Registration> EditAsync(DtoRegistration registration)
         {
             var dbRegistration = mapper.Map<DbRegistration>(registration);
             context.Update(dbRegistration);
@@ -68,7 +68,7 @@ namespace Api.DataAccess
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task DeleteRegistrationAsync(long registrationID)
+        public async Task DeleteAsync(long registrationID)
         {
             var registration = await context.Registrations.FindAsync(registrationID);
 

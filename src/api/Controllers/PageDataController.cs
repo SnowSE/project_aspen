@@ -20,6 +20,12 @@ namespace Api.Controllers
     public class PageDataController : ControllerBase
     {
         private readonly IPageDataRepository pageDataRepository;
+        private string getModelStateErrorMessage() =>
+            string.Join(" | ",
+                ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                );
 
         public PageDataController(IPageDataRepository pageDataRepository)
         {
@@ -28,17 +34,17 @@ namespace Api.Controllers
 
         // GET: api/PageData
         [HttpGet]
-        public async Task<IEnumerable<DtoPageData>> GetPageData()
+        public async Task<IEnumerable<DtoPageData>> GetAll()
         {
-            return await pageDataRepository.GetAllPageDataAsync();
+            return await pageDataRepository.GetAllAsync();
         }
 
         [HttpGet("{key}")]
-        public async Task<ActionResult<DtoPageData>> GetPageData(string key)
+        public async Task<ActionResult<DtoPageData>> GetByKey(string key)
         {
-            var pageData = await pageDataRepository.GetPageDataAsync(key);
+            var pageData = await pageDataRepository.GetAsync(key);
             if (pageData == null)
-                return NotFound();
+                return NotFound("Page Data key does not exist");
             return pageData;
         }
 
@@ -46,11 +52,15 @@ namespace Api.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{key}")]
         /*[Authorize(Roles = "admin-aspen")]*/
-        public async Task<IActionResult> EditPageData(string key, DtoPageData pageData)
+        public async Task<IActionResult> Edit(string key, DtoPageData pageData)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+            if (!await pageDataRepository.ExistsAsync(pageData.Key))
+                return NotFound("Page Data key does not exist");
             try
             {
-                await pageDataRepository.EditPageDataAsync(key, pageData);
+                await pageDataRepository.EditAsync(key, pageData);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -61,13 +71,14 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/PageData
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         /*[Authorize(Roles = "admin-aspen")]*/
-        public async Task<ActionResult<DtoPageData>> PostPageData(DtoPageData pageData)
+        public async Task<ActionResult<DtoPageData>> Post(DtoPageData pageData)
         {
-            var pgData = await pageDataRepository.AddPageDataAsync(pageData);
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+            var pgData = await pageDataRepository.AddAsync(pageData);
 
             return CreatedAtAction("GetPageData", pgData);
         }
@@ -76,11 +87,11 @@ namespace Api.Controllers
         // DELETE: api/PageData?key={key}
         [HttpDelete("{key}")]
         /*[Authorize(Roles = "admin-aspen")]*/
-        public async Task<IActionResult> DeletePageData(string key)
+        public async Task<IActionResult> Delete(string key)
         {
-
-            await pageDataRepository.DeletePageDataAsync(key);
-
+            if (!await pageDataRepository.ExistsAsync(key))
+                return NotFound("Page Data key does not exist");
+            await pageDataRepository.DeleteAsync(key);
             return NoContent();
         }
     }

@@ -38,10 +38,10 @@ namespace Api
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-          // o.Authority = Configuration["Jwt:Authority"];
-          // o.Audience = Configuration["Jwt:Audience"];
+                // o.Authority = Configuration["Jwt:Authority"];
+                // o.Audience = Configuration["Jwt:Audience"];
 
-          o.Authority = "http://auth:8080/auth/realms/aspen";
+                o.Authority = "http://auth:8080/auth/realms/aspen";
                 o.Audience = "aspen-web";
 
 
@@ -58,20 +58,20 @@ namespace Api
                 {
                     OnAuthenticationFailed = c =>
               {
-                    Console.WriteLine("Authentication failure");
-                    Console.WriteLine(c.Exception);
+                  Console.WriteLine("Authentication failure");
+                  Console.WriteLine(c.Exception);
 
-                    c.NoResult();
+                  c.NoResult();
 
-                    c.Response.StatusCode = 500;
-                    c.Response.ContentType = "text/plain";
+                  c.Response.StatusCode = 500;
+                  c.Response.ContentType = "text/plain";
 
-                    if (CurrentEnvironment.IsDevelopment())
-                    {
-                        return c.Response.WriteAsync(c.Exception.ToString());
-                    }
-                    return c.Response.WriteAsync("An error occured processing your authentication.");
-                }
+                  if (CurrentEnvironment.IsDevelopment())
+                  {
+                      return c.Response.WriteAsync(c.Exception.ToString());
+                  }
+                  return c.Response.WriteAsync("An error occured processing your authentication.");
+              }
                 };
             });
 
@@ -93,9 +93,9 @@ namespace Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
 
             app.UseRouting();
 

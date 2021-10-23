@@ -57,7 +57,7 @@ namespace Tests.Controller
         {
             var owner = await GetPersonRepository().AddAsync("ben", null);
             var eventEntity = new Event(0, "Marathon1", new DateTime(2021, 6, 21));
-            var newEvent = await GetEventRepository().AddEventAsync(eventEntity);
+            var newEvent = await GetEventRepository().AddAsync(eventEntity);
             var dtoTeam = new DtoTeam
             {
                 OwnerID = owner.ID,
@@ -71,8 +71,8 @@ namespace Tests.Controller
                 TeamID = team.ID
             };
 
-            var dtoRegistration = (await GetRegistrationController().Add(uncreatedDtoRegistration)).Value;
-            return dtoRegistration;
+            var dtoRegistrationResponse = await GetRegistrationController().Add(uncreatedDtoRegistration);
+            return dtoRegistrationResponse.Value;
         }
 
         [Test]

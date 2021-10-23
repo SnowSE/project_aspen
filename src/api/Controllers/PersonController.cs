@@ -20,6 +20,12 @@ namespace Api.Controllers
     {
         private readonly IPersonRepository personRepository;
         private readonly IMapper mapper;
+        private string getModelStateErrorMessage() =>
+            string.Join(" | ",
+                ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                );
 
         public PersonController(IPersonRepository personRepository, IMapper mapper)
         {
@@ -30,71 +36,52 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<DtoPerson>> GetByID(long id)
         {
-            try
-            {
-                var person = await personRepository.GetByIDAsync(id);
-                return mapper.Map<DtoPerson>(person);
-            }
-            catch (NotFoundException<Person> e)
-            {
-                return NotFound(e.Message);
-            }
+            if (!await personRepository.ExistsAsync(id))
+                return NotFound("Person id does not exist");
+            var person = await personRepository.GetByIDAsync(id);
+            return mapper.Map<DtoPerson>(person);
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
         {
-            if (ModelState.IsValid)
-            {
-                if (string.IsNullOrEmpty(dtoPerson.AuthID))
-                {
-                    var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
-                    return mapper.Map<DtoPerson>(person);
-                }
-                else
-                {
-                    var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
-                    return mapper.Map<DtoPerson>(person);
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
 
-                }
+            if (string.IsNullOrEmpty(dtoPerson.AuthID))
+            {
+                var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
+                return mapper.Map<DtoPerson>(person);
             }
             else
             {
-                var errorMessage = string.Join(" | ", ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage));
-                return BadRequest(errorMessage);
+                var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
+                return mapper.Map<DtoPerson>(person);
             }
         }
+
 
         [HttpPut]
         public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var person = mapper.Map<Person>(dtoPerson);
-                    var updatedPerson = await personRepository.EditAsync(person);
-                    return mapper.Map<DtoPerson>(updatedPerson);
-                }
-            }
-            catch { } //any exception will end in BadRequest
-            return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+            if (!await personRepository.ExistsAsync(dtoPerson.ID))
+                return NotFound("Person id does not exist");
+
+            var person = mapper.Map<Person>(dtoPerson);
+            var updatedPerson = await personRepository.EditAsync(person);
+            return mapper.Map<DtoPerson>(updatedPerson);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await personRepository.DeleteAsync(id);
-                return Ok();
-            }
-            catch (NotFoundException<Person> e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (!await personRepository.ExistsAsync(id))
+                return NotFound("Person id does not exist");
+
+            await personRepository.DeleteAsync(id);
+            return Ok();
         }
 
     }

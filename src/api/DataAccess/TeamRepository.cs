@@ -17,9 +17,9 @@ namespace Api.DataAccess
         Task DeleteTeamAsync(long id);
         Task<DtoTeam> EditTeamAsync(DtoTeam team);
         Task<DtoTeam> GetTeamByIdAsync(long id);
-        Task<IEnumerable<DtoTeam>> GetTeamsAsync();
-        Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(long eventID);
-        bool TeamExists(long id);
+        Task<IEnumerable<DtoTeam>> GetAllAsync();
+        Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID);
+        Task<bool> ExistsAsync(long id);
     }
 
     public class TeamRepository : ITeamRepository
@@ -33,12 +33,12 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool TeamExists(long id)
+        public async Task<bool> ExistsAsync(long id)
         {
-            return context.Teams.Any(e => e.ID == id);
+            return await context.Teams.AnyAsync(e => e.ID == id);
         }
 
-        public async Task<IEnumerable<DtoTeam>> GetTeamsAsync()
+        public async Task<IEnumerable<DtoTeam>> GetAllAsync()
         {
             var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
             return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
@@ -79,13 +79,13 @@ namespace Api.DataAccess
         {
             var team = await context.Teams.FindAsync(id);
             if(team == null)
-                throw new NotFoundException<Team>($"Team ID: {id} not found");
+                throw new NotFoundException<Team>($"Person id does not exist");
 
             context.Teams.Remove(team);
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DtoTeam>> GetTeamsByEventIdAsync(long eventID)
+        public async Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID)
         {
             var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
 

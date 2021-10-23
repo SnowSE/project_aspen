@@ -2,6 +2,7 @@
 using Api.DataAccess;
 using Api.DbModels;
 using Api.DtoModels;
+using Api.Exceptions;
 using Api.Models.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,12 @@ namespace Api.DataAccess
 {
     public interface IEventRepository
     {
-        Task<Event> AddEventAsync(Event e);
-        Task DeleteEventAsync(long id);
-        Task EditEventAsync(Event e);
-        bool EventExists(long id);
-        Task<Event> GetEventByIdAsync(long id);
-        Task<IEnumerable<Event>> GetEventsAsync();
+        Task<Event> AddAsync(Event e);
+        Task DeleteAsync(long id);
+        Task EditAsync(Event e);
+        public Task<bool> ExistsAsync(long id);
+        Task<Event> GetByIdAsync(long id);
+        Task<IEnumerable<Event>> GetAllAsync();
     }
 
     public class EventRepository : IEventRepository
@@ -34,28 +35,25 @@ namespace Api.DataAccess
             this.mapper = mapper;
         }
 
-        public bool EventExists(long id)
+        public async Task<bool> ExistsAsync(long id)
         {
-            return context.Events.Any(e => e.ID == id);
+            return await context.Events.AnyAsync(e => e.ID == id);
         }
 
-        //Get all events
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<IEnumerable<Event>> GetAllAsync()
         {
             var eventList = await EntityFrameworkQueryableExtensions.ToListAsync(context.Events);
             return mapper.Map<IEnumerable<DbEvent>, IEnumerable<Event>>(eventList);
         }
 
-        //Get event
-        public async Task<Event> GetEventByIdAsync(long id)
+        public async Task<Event> GetByIdAsync(long id)
         {
             var e = await context.Events.FindAsync(id);
 
             return mapper.Map<Event>(e);
         }
 
-        //Add event
-        public async Task<Event> AddEventAsync(Event e)
+        public async Task<Event> AddAsync(Event e)
         {
             var newEvent = mapper.Map<DbEvent>(e);
             context.Events.Add(newEvent);
@@ -64,20 +62,18 @@ namespace Api.DataAccess
             return mapper.Map<Event>(newEvent);
         }
 
-        //edit event
-        public async Task EditEventAsync(Event e)
+        public async Task EditAsync(Event e)
         {
-            //This needs a fix to check for id if the even does not exist
             var dbEvent = mapper.Map<DbEvent>(e);
             context.Update(dbEvent);
             await context.SaveChangesAsync();
         }
 
-        //delete event
-        public async Task DeleteEventAsync(long id)
+        public async Task DeleteAsync(long id)
         {
             var e = await context.Events.FindAsync(id);
-
+            if(e == null)
+                throw new NotFoundException<Event>("Event id does not exist");
             context.Events.Remove(e);
             await context.SaveChangesAsync();
         }

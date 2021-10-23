@@ -71,9 +71,9 @@ namespace Tests.Controller
         {
             var badDeleteResult = await GetPersonController().Delete(-1);
 
-            var result = badDeleteResult as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            result.Value.Should().Be("Person ID: -1 not found");
+            var result = badDeleteResult as NotFoundObjectResult;
+            result.StatusCode.Should().Be(404);
+            result.Value.Should().Be("Person id does not exist");
         }
 
         [Test]
@@ -91,10 +91,12 @@ namespace Tests.Controller
         }
 
         [Test]
-        public async Task BadEditRequestReturnsBadRequestResult()
+        public async Task BadEditRequestReturnsNotFoundResult()
         {
-            var result = await GetPersonController().Edit(new DtoPerson { ID = -1 });
-            (result.Result as BadRequestResult).Should().NotBeNull();
+            var badEditResult = await GetPersonController().Edit(new DtoPerson { ID = -1 });
+
+            var result = badEditResult.Result as NotFoundObjectResult;
+            result.StatusCode.Should().Be(404);
         }
 
         [Test]

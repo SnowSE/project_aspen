@@ -18,6 +18,12 @@ namespace Aspen.Api.Controllers
     {
         private readonly ITeamRepository teamRepository;
         private readonly IMapper mapper;
+        private string getModelStateErrorMessage() =>
+            string.Join(" | ",
+                ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                );
 
         public TeamController(ITeamRepository teamRepository, IMapper mapper)
         {
@@ -26,61 +32,56 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpGet("{eventId?}")]
-        public async Task<IEnumerable<DtoTeam>> GetAllTeams(long? eventId)
+        public async Task<IEnumerable<DtoTeam>> GetAll(long? eventId)
         {
-            if(eventId == null)
-                return await teamRepository.GetTeamsAsync();
-            return await teamRepository.GetTeamsByEventIdAsync(eventId.Value);
+            if (eventId == null)
+                return await teamRepository.GetAllAsync();
+
+            return await teamRepository.GetByEventIdAsync(eventId.Value);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<DtoTeam>> GetByID(long id)
         {
-
-            if (teamRepository.TeamExists(id))
-            {
-                return await teamRepository.GetTeamByIdAsync(id);
-            }
-            else
-            {
-                return BadRequest("Team id does not exist");
-            }
+            if (!await teamRepository.ExistsAsync(id))
+                return NotFound("Team id does not exist");
+            return await teamRepository.GetTeamByIdAsync(id);
         }
 
         [HttpPost]
         public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam team, long eventId)
         {
-            if (ModelState.IsValid)
-            {
-                var newTeam = await teamRepository.AddAsync(team, eventId);
-                return mapper.Map<DtoTeam>(newTeam);
-            }
-            return BadRequest("Team object is not valid");
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            var newTeam = await teamRepository.AddAsync(team, eventId);
+            return mapper.Map<DtoTeam>(newTeam);
+
         }
 
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] DtoTeam team)
         {
-            if (ModelState.IsValid)
-            {
-                await teamRepository.EditTeamAsync(team);
-                return Ok("Team edit was successful");
-            }
-            return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(getModelStateErrorMessage());
+
+            if (!await teamRepository.ExistsAsync(team.ID))
+                return NotFound("Team id does not exist");
+
+            await teamRepository.EditTeamAsync(team);
+            return Ok("Team edit was successful");
+
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await teamRepository.DeleteTeamAsync(id);
-                return Ok();
-            }
-            catch (NotFoundException<Team> e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (!await teamRepository.ExistsAsync(id))
+                return NotFound("Team id does not exist");
+
+            await teamRepository.DeleteTeamAsync(id);
+            return Ok();
+
         }
     }
 }
