@@ -14,6 +14,7 @@ const userManager = new UserManager({
   authority: 'http://localhost/auth/realms/aspen/.well-known/openid-configuration',
   client_id: 'aspen-web',
   redirect_uri: window.location.href + '?login=callback',
+  post_logout_redirect_uri: window.location.origin,
   silent_redirect_uri: window.location.origin + '?login=silentrenew',
   response_type: 'code',
   scope: 'openid profile email',
@@ -104,7 +105,8 @@ export default class AuthService {
 
   async logout() {
     await userManager.signoutRedirect({
-      id_token_hint: localStorage.getItem("id_token")
+      id_token_hint: localStorage.getItem("id_token"),
+      
     });
     await userManager.clearStaleState();
   };
