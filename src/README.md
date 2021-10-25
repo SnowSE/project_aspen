@@ -1,5 +1,16 @@
 # How do I run the app?
 
+Step 0: Get Docker running on your machine. 
+Step 1: Accquire an instance of Ubuntu (WSL), either from Microsoft Store or Other means
+*Note*: make sure WSL is version 2 by using the command `wsl --set-version <distro> 2` (do this from command prompt)
+*Note*: Make sure your docker has WSL enabled in your Docker Desktop, go to Resources>WSL Integration, make sure you see your distro as a toggle, if not, you are not in wsl version 2.
+Step 2: Inside of the ubuntu instance, create a directory to make sure you are in Linux, not Windows
+*Note*: Using mkdir ~/git will make a linux directory that you can cd into
+Step 3: Clone the Aspen_Project repo into the directory 
+Step 4: Get into the directory, e.g. `~/git/project_aspen/src`, and open it in vscode with `code .`
+Step 5: **IMPORTANT** Make sure you reopen the folder in a container from the popup when you open src in vscode 
+*Note*: If you miss the notification, you can click on the green button in the bottom left of vscode, and choose to reopen it in a dev container from there. 
+
 ```bash
 docker-compose up -d --build
 ```
