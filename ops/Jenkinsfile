@@ -1,0 +1,35 @@
+def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
+
+pipeline {
+    agent none
+    stages {
+        stage(test) {
+            agent {
+                label 'engineering.snow.edu'
+            }
+            steps {
+                git branch: $BRANCH_NAME, credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: $repo
+                sh """
+                  cd ops
+                  docker-compose pull
+                  docker-compose build
+                  docker-compose up -d
+                  docker exec -it api_test dotnet test
+                """
+            }
+        }
+        // stage(deploy) {
+        //     agent {
+        //         label 'engineering.snow.edu'
+        //     }
+        //     steps {
+        //         git branch: $BRANCH_NAME, credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: $repo
+        //         sh """
+        //         cd ops/public
+        //         # docker-compose pull
+        //         docker-compose up -d
+        //         """
+        //     }
+        // }
+    }
+}
