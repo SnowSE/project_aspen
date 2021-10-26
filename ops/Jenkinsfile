@@ -11,10 +11,9 @@ pipeline {
                 git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
                 sh """
                   cd ops
-                  docker-compose pull
-                  docker-compose build
+                  docker-compose build --parallel --pull
                   docker-compose up -d
-                  docker exec -it api_test dotnet test
+                  docker exec api_test dotnet test
                 """
             }
         }
