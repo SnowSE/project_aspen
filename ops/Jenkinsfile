@@ -14,6 +14,7 @@ pipeline {
                   COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
                   docker-compose up -d
                   docker exec api_test dotnet test
+                  docker-compose down 
                 """
             }
         }
