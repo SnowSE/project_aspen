@@ -17,19 +17,19 @@ pipeline {
                 """
             }
         }
-        // stage(deploy) {
-        //     agent {
-        //         label 'engineering.snow.edu'
-        //     }
-        //     steps {
-        //         git branch: $BRANCH_NAME, credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: $repo
-        //         sh """
-        //         cd ops/public
-        //         # docker-compose pull
-        //         docker-compose up -d
-        //         """
-        //     }
-        // }
+        stage(merge) {
+            agent {
+                label 'engineering.snow.edu'
+            }
+            steps {
+                git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
+                sh """
+                  git checkout master
+                  git merge --no-ff test-pipeline
+                  git push origin master
+                """
+            }
+        }
     }
     post { 
         always { 
