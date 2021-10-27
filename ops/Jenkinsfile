@@ -39,7 +39,7 @@ pipeline {
                         //     $class: 'LocalBranch', 
                         //     localBranch: "master"
                         // ],
-                        [$class: 'CloneOption', noTags: true, reference: '', shallow: true]
+                        [$class: 'CloneOption', noTags: true, reference: '', shallow: true],
                         [
                             $class: 'UserIdentity',
                             email: 'jenkins@snow.edu',
