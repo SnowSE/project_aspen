@@ -15,11 +15,13 @@
 cp -r /mnt/c/users/yourwindowsusername/.ssh ~/
 chown -R yourwslusername. ~/.ssh/ #NOTE: The trailing . after your linux user name is IMPORTANT.
 chmod 700 ~/.ssh/
-chmod 600 ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa*
 chmod 644 ~/.ssh/known_hosts
 git config --global user.email "your@email.com"
 git config --global user.name "Your Name"
 ```
+
+If you don't have a .ssh folder in your windows user profile directory just run "ssh-keygen" from within WSL.
 
 3. Clone the project_aspen repo into the directory 
 
