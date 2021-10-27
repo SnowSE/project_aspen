@@ -12,6 +12,8 @@
 
     *Note*: Using mkdir ~/git will make a linux directory that you can cd into
 
+    *Note*: you will want to copy your windows users .ssh folder to ~/.ssh
+
 3. Clone the Aspen_Project repo into the directory 
 4. Get into the directory, e.g. `~/git/project_aspen/src`, and open it in vscode with `code .`
 5. **IMPORTANT** Make sure you reopen the folder in a container from the popup when you open src in vscode 
