@@ -44,14 +44,10 @@ pipeline {
                         ],
                     ]
                 )
-                // sh """
-                //   git remote set-branches --add origin master
-                //   git config --global user.email "jenkins@snow.edu"
-                //   git config --global user.name "Jenkins Pipeline"
-                //   git checkout --track origin/master
-                //   git merge --no-ff ${env.BRANCH_NAME}
-                //   git push origin master
-                // """
+                sh """
+                  git status
+                  git push
+                """
             }
         }
     }
