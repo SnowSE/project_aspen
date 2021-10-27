@@ -39,7 +39,9 @@ pipeline {
                         //     $class: 'LocalBranch', 
                         //     localBranch: "master"
                         // ],
-                        [$class: 'CloneOption', noTags: true, reference: '', shallow: false],
+                        [$class: 'LocalBranch'],
+                        [$class: 'WipeWorkspace'],
+                        [$class: 'CloneOption', shallow: false, honorRefspec: true],
                         [
                             $class: 'UserIdentity',
                             email: 'jenkins@snow.edu',
