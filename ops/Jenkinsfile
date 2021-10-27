@@ -23,40 +23,44 @@ pipeline {
             }
             steps {
                 git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
-                checkout(
-                    [
-                        $class: 'GitSCM',
-                        extensions: [
-                            [
-                                $class: "PreBuildMerge",
-                                options: [
-                                    mergeTarget: "master",
-                                    fastForwardMode: "FF",
-                                    mergeRemote: "origin",
-                                    mergeStrategy: "RECURSIVE_THEIRS"
-                                ],
-                            ],
-                            [
-                              $class: 'LocalBranch', 
-                              localBranch: "master"
-                            ],
-                            [
-                                $class: 'UserIdentity',
-                                email: 'jenkins@snow.edu',
-                                name: 'Jenkins Pipeline'
-                            ],
+                checkout([
+                    $class: 'GitSCM',
+                    extensions: [
+                        // [
+                        //     $class: "PreBuildMerge",
+                        //     options: [
+                        //         mergeTarget: "master",
+                        //         fastForwardMode: "FF",
+                        //         mergeRemote: "origin",
+                        //         mergeStrategy: "RECURSIVE_THEIRS"
+                        //     ],
+                        // ],
+                        // [
+                        //     $class: 'LocalBranch', 
+                        //     localBranch: "master"
+                        // ],
+                        [$class: 'CloneOption', noTags: true, reference: '', shallow: true]
+                        [
+                            $class: 'UserIdentity',
+                            email: 'jenkins@snow.edu',
+                            name: 'Jenkins Pipeline'
                         ],
-                        userRemoteConfigs: [[
-                          credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
-                          name: 'origin',
-                          url: "$repo"
-                        ]]
-                    ]
-                )
+                    ],
+                    userRemoteConfigs: [[
+                      credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
+                      name: 'origin',
+                      url: "$repo"
+                    ]]
+                ])
                 sh """
-                  git status
-                  git push --set-upstream origin master
+                  git checkout master
+                  git pull
+                  git merge ${env.BRANCH_NAME}
+                  git commit -am "Merged ${env.BRANCH_NAME} branch to master"
+                  git push origin master
                 """
+                  // git status
+                  // git push --set-upstream origin master
             }
         }
     }
