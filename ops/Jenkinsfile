@@ -38,7 +38,7 @@ pipeline {
                             ],
                             [
                               $class: 'LocalBranch', 
-                              localBranch: "**"
+                              localBranch: "master"
                             ],
                             // [
                             //     $class: 'UserIdentity',
