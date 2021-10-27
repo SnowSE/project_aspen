@@ -37,11 +37,20 @@ pipeline {
                                 ],
                             ],
                             [
-                                $class: 'UserIdentity',
-                                email: 'jenkins@snow.edu',
-                                name: 'Jenkins Pipeline'
+                              $class: 'LocalBranch', 
+                              localBranch: "**"
                             ],
+                            // [
+                            //     $class: 'UserIdentity',
+                            //     email: 'jenkins@snow.edu',
+                            //     name: 'Jenkins Pipeline'
+                            // ],
                         ],
+                        userRemoteConfigs: [[
+                          credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
+                          name: 'origin',
+                          url: "$repo"
+                        ]]
                     ]
                 )
                 sh """
