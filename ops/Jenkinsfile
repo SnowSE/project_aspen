@@ -14,7 +14,6 @@ pipeline {
                   COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
                   docker-compose up -d
                   docker exec api_test dotnet test
-                  docker-compose down 
                 """
             }
         }
@@ -31,5 +30,19 @@ pipeline {
         //         """
         //     }
         // }
+    }
+    post { 
+        always { 
+            agent {
+                label 'engineering.snow.edu'
+            }
+            steps {
+                git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
+                sh """
+                  cd ops
+                  docker-compose down 
+                """
+            }
+        }
     }
 }
