@@ -57,7 +57,7 @@ pipeline {
                 sh """
                   git status
                   git merge origin/${env.BRANCH_NAME}
-                  git commit -am "Merged ${env.BRANCH_NAME} branch to master"
+                  git commit -am 'Merged ${env.BRANCH_NAME} branch to master' || true
                   git push origin master
                 """
                   // git status
