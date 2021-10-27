@@ -55,7 +55,7 @@ pipeline {
                 )
                 sh """
                   git status
-                  git push
+                  git push --set-upstream origin master
                 """
             }
         }
