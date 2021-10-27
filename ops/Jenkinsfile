@@ -1,36 +1,4 @@
 def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
-def mergeBeforeBuild() {
-  // Pull the source and test a merge
-  try {
-    def sourceScmCheck = checkout changelog: true, poll: true, scm: [
-      $class: 'GitSCM',
-      branches: [[name: "origin/$BRANCH_NAME" ]],
-      doGenerateSubmoduleConfigurations: false,
-      extensions: [[
-        $class: 'PreBuildMerge',
-        options: [
-          fastForwardMode: 'FF',
-          mergeRemote: 'origin',
-          mergeStrategy: 'default',
-          mergeTarget: "master"]],
-        [$class: 'UserIdentity',
-          email: 'jenkins@snow.edu',
-          name: 'Jenkins Pipeline'
-      ]],
-      submoduleCfg: [],
-      userRemoteConfigs: [[
-        credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
-        name: 'origin',
-        url: "$repo"
-      ]]
-    ]
-  } catch (error) {
-    currentBuild.result = 'FAILURE'
-    echo "ERROR: ${error}"
-    sh 'false'
-  }
-}
-
 
 pipeline {
     agent none
@@ -55,7 +23,27 @@ pipeline {
             }
             steps {
                 git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
-                mergeBeforeBuild()
+                checkout(
+                    [
+                        $class: 'GitSCM',
+                        extensions: [
+                            [
+                                $class: "PreBuildMerge",
+                                options: [
+                                    mergeTarget: "master",
+                                    fastForwardMode: "FF",
+                                    mergeRemote: "origin",
+                                    mergeStrategy: "RECURSIVE_THEIRS"
+                                ],
+                            ],
+                            [
+                                $class: 'UserIdentity',
+                                email: 'jenkins@snow.edu',
+                                name: 'Jenkins Pipeline'
+                            ],
+                        ],
+                    ]
+                )
                 // sh """
                 //   git remote set-branches --add origin master
                 //   git config --global user.email "jenkins@snow.edu"
