@@ -56,9 +56,6 @@ pipeline {
                 ])
                 sh """
                   git status
-                  git checkout master
-                  git pull
-                  git status
                   git merge ${env.BRANCH_NAME}
                   git commit -am "Merged ${env.BRANCH_NAME} branch to master"
                   git push origin master
