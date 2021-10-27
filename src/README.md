@@ -32,7 +32,7 @@ git clone git@github.com:SnowSE/project_aspen.git
 *Note:* If you have already cloned the repo over https, run the following commands to tell git to use SSH
 
 ```bash
-git romet remove origin
+git remote remove origin
 git remote add origin git@github.com:/SnowSE/project_aspen.git
 ```
 
