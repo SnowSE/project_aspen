@@ -32,8 +32,8 @@ pipeline {
                   docker-compose up -d
                   docker exec api_test dotnet test
 
-                  git push origin master
                 """
+                  // git push origin master
             }
         }
     }
