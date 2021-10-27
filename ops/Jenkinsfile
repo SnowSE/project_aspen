@@ -26,27 +26,10 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     extensions: [
-                        // [
-                        //     $class: "PreBuildMerge",
-                        //     options: [
-                        //         mergeTarget: "master",
-                        //         fastForwardMode: "FF",
-                        //         mergeRemote: "origin",
-                        //         mergeStrategy: "RECURSIVE_THEIRS"
-                        //     ],
-                        // ],
-                        // [
-                        //     $class: 'LocalBranch', 
-                        //     localBranch: "master"
-                        // ],
                         [$class: 'LocalBranch'],
                         [$class: 'WipeWorkspace'],
                         [$class: 'CloneOption', shallow: false, honorRefspec: true],
-                        [
-                            $class: 'UserIdentity',
-                            email: 'jenkins@snow.edu',
-                            name: 'Jenkins Pipeline'
-                        ],
+                        [$class: 'UserIdentity', email: 'jenkins@snow.edu', name: 'Jenkins Pipeline'],
                     ],
                     userRemoteConfigs: [[
                       credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
@@ -57,11 +40,8 @@ pipeline {
                 sh """
                   git status
                   git merge origin/${env.BRANCH_NAME}
-                  git commit -am 'Merged ${env.BRANCH_NAME} branch to master' || true
                   git push origin master
                 """
-                  // git status
-                  // git push --set-upstream origin master
             }
         }
     }
