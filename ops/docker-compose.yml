@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  web_test:
+    container_name: web_test
+    build:
+      dockerfile: ../../ops/webTests.Dockerfile
+      context: ../src/web/
+    networks:
+      shared_test:
+
+  api_test:
+    container_name: api_test
+    build:
+      dockerfile: ../ops/apiTests.Dockerfile
+      context: ../src/
+    environment:
+      ASPEN_TEST_CONNECTION_STRING: Server=api_db_test;Database=aspen;User Id=aspen;Password=password;
+    networks:
+      shared_test:
+      api_test:
+    depends_on:
+      api_db_test:
+        condition: service_healthy
+
+  api_db_test:
+    image: postgres
+    container_name: api_db_test
+    volumes:
+      - api_db_test:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: aspen
+      POSTGRES_USER: aspen
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+    networks:
+      api_test:
+
+volumes:
+  api_db_test:
+
+networks:
+  shared_test:
+  api_test:
