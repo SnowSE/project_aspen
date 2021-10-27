@@ -32,7 +32,6 @@ function App() {
           <ApiButton />
           <hr />
           <AdminApiButton />
-          <button onClick = {apiClickHandler}>Button</button>
         </div>
       )}
     </div>
