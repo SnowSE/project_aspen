@@ -3,7 +3,7 @@ def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
 pipeline {
     agent none
     stages {
-        stage(merge) {
+        stage("Merge and Test") {
             agent {
                 label 'engineering.snow.edu'
             }
