@@ -33,6 +33,7 @@ pipeline {
     }
     post { 
         always { 
+          stage(cleanup) {
             agent {
                 label 'engineering.snow.edu'
             }
@@ -43,6 +44,7 @@ pipeline {
                   docker-compose down 
                 """
             }
+          }
         }
     }
 }
