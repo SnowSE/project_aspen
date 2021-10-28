@@ -6,6 +6,8 @@ namespace Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("delete from \"PageData\"");
+
             migrationBuilder.CreateIndex(
                 name: "IX_PageData_Key",
                 table: "PageData",
