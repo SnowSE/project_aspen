@@ -29,5 +29,9 @@ pipeline {
                 """
           }
         }
+
+        failure {
+            office365ConnectorSend
+        }
     }
 }
