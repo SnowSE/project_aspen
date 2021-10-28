@@ -1,7 +1,6 @@
 version: "3.7"
 services:
   web_test:
-    container_name: web_test
     build:
       dockerfile: ../../ops/webTests.Dockerfile
       context: ../src/web/
@@ -9,7 +8,6 @@ services:
       shared_test:
 
   api_test:
-    container_name: api_test
     build:
       dockerfile: ../ops/apiTests.Dockerfile
       context: ../src/
@@ -24,7 +22,6 @@ services:
 
   api_db_test:
     image: postgres
-    container_name: api_db_test
     volumes:
       - api_db_test:/var/lib/postgresql/data
     environment:
