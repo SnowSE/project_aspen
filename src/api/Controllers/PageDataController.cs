@@ -84,9 +84,9 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
-            var pgData = await pageDataRepository.AddAsync(pageData);
+            var createdPageData = await pageDataRepository.AddAsync(pageData);
 
-            return CreatedAtAction("GetPageData", pgData);
+            return CreatedAtAction(nameof(GetByKey), new { key = createdPageData.Key }, createdPageData);
         }
 
         // DELETE: api/PageData/5
