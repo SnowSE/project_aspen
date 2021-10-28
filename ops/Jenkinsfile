@@ -2,11 +2,6 @@ def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
 
 pipeline {
     agent none
-       options {
-          office365ConnectorWebhooks([[
-                      startNotification: true,
-              ]])
-    }
     stages {
         stage("Test") {
             agent {
