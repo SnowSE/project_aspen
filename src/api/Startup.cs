@@ -41,7 +41,7 @@ namespace Api
                 // o.Authority = Configuration["Jwt:Authority"];
                 // o.Audience = Configuration["Jwt:Audience"];
 
-                o.Authority = "http://auth:8080/auth/realms/aspen";
+                o.Authority = "http://keycloak:8080/auth/realms/aspen";
                 o.Audience = "aspen-web";
 
 
