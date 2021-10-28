@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -33,21 +34,23 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreatePageData()
         {
-            var newPageData = new DtoPageData { Key="home", Data= JsonDocument.Parse("{\"key\": \"value1\"}")};
+            var keyName = Guid.NewGuid().ToString();
+            var newPageData = new DtoPageData { Key=keyName, Data= JsonDocument.Parse("{\"key\": \"value1\"}")};
             var dtoPageData = ((await pageDataController.Post(newPageData)).Result as CreatedAtActionResult).Value as DtoPageData;
 
-            dtoPageData.Key.Should().Be("home");
+            dtoPageData.Key.Should().Be(keyName);
             dtoPageData.Data.RootElement.GetProperty("key").GetString().Should().Be("value1");
         }
 
         [Test]
         public async Task CanGetDifferentPageData() //eventually
         {
-            var newPageData = new DtoPageData { Key = "home2", Data = JsonDocument.Parse("{\"key2\": \"value2\"}") };
+            var keyName = Guid.NewGuid().ToString();
+            var newPageData = new DtoPageData { Key = keyName, Data = JsonDocument.Parse("{\"key2\": \"value2\"}") };
             var createdPageData = ((await pageDataController.Post(newPageData)).Result as CreatedAtActionResult).Value as DtoPageData;
             var returnedPageData = (await pageDataController.GetByKey(createdPageData.Key)).Value;
 
-            returnedPageData.Key.Should().Be("home2");
+            returnedPageData.Key.Should().Be(keyName);
         }
     }
 }

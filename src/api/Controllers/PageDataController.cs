@@ -39,6 +39,12 @@ namespace Api.Controllers
             return await pageDataRepository.GetAllAsync();
         }
 
+        [HttpGet("keys")]
+        public async Task<IEnumerable<string>> GetKeys()
+        {
+            return (await pageDataRepository.GetAllAsync()).Select(pd => pd.Key);
+        }
+
         [HttpGet("{key}")]
         public async Task<ActionResult<DtoPageData>> GetByKey(string key)
         {
