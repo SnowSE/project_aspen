@@ -1,38 +1,39 @@
-import axios from 'axios'
-import { useCallback, useContext, useState } from 'react'
-import { AuthContext } from '../store/AuthContext'
-
+import axios from "axios";
+import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 
 const ApiButton = () => {
-  const [apiResponse, setApiResponse] = useState()
-  const authContext = useContext(AuthContext)
+  const [apiResponse, setApiResponse] = useState();
+  const user = useSelector((state) => state.auth.user);
 
   const getUserCallback = useCallback(() => {
-    authContext.getUser().then(u => {
-      console.log(u)
+    if (user) {
       const options = {
         headers: {
-          Authorization: `Bearer ${u.access_token}`
-        }
-      }
-      console.log(options)
-      axios.get('/api/user', options)
-        .then(response => {
-          console.log('got response from api', response)
-          setApiResponse(response.data)
+          Authorization: `Bearer ${user.access_token}`,
+        },
+      };
+      console.log(options, user);
+      axios
+        .get("/api/user", options)
+        .then((response) => {
+          console.log("got response from api", response);
+          setApiResponse(response.data);
         })
-        .catch(e => {
-          console.log('error from api', e)
-        })
-    })
-  }, [authContext])
+        .catch((e) => {
+          console.log("error from api", e);
+        });
+    }
+  }, [user]);
 
   return (
     <div>
-      <button className="btn btn-primary" onClick={getUserCallback}>Send API Request</button>
+      <button className="btn btn-primary" onClick={getUserCallback}>
+        Send API Request
+      </button>
       {apiResponse && <div>Api Response: {JSON.stringify(apiResponse)}</div>}
     </div>
-  )
-}
+  );
+};
 
-export { ApiButton }
+export { ApiButton };

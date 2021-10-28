@@ -41,7 +41,7 @@ namespace Api
                 // o.Authority = Configuration["Jwt:Authority"];
                 // o.Audience = Configuration["Jwt:Audience"];
 
-                o.Authority = "http://auth:8080/auth/realms/aspen";
+                o.Authority = "http://keycloak:8080/auth/realms/aspen";
                 o.Audience = "aspen-web";
 
 
@@ -57,21 +57,21 @@ namespace Api
                 o.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = c =>
-              {
-                  Console.WriteLine("Authentication failure");
-                  Console.WriteLine(c.Exception);
+                    {
+                        Console.WriteLine("Authentication failure");
+                        Console.WriteLine(c.Exception);
 
-                  c.NoResult();
+                        c.NoResult();
 
-                  c.Response.StatusCode = 500;
-                  c.Response.ContentType = "text/plain";
+                        c.Response.StatusCode = 500;
+                        c.Response.ContentType = "text/plain";
 
-                  if (CurrentEnvironment.IsDevelopment())
-                  {
-                      return c.Response.WriteAsync(c.Exception.ToString());
-                  }
-                  return c.Response.WriteAsync("An error occured processing your authentication.");
-              }
+                        if (CurrentEnvironment.IsDevelopment())
+                        {
+                            return c.Response.WriteAsync(c.Exception.ToString());
+                        }
+                        return c.Response.WriteAsync("An error occured processing your authentication.");
+                    }
                 };
             });
 
