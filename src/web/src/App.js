@@ -6,6 +6,7 @@ import { LogoutLanding } from "./views/auth/LogoutLanding";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkIfLoggedIn } from "./store/AuthSlice";
+import PageDataPage from "./views/PageDataPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route path="/logout/post">
           <LogoutLanding />
+        </Route>
+        <Route path="/pagedata">
+          <PageDataPage />
         </Route>
         <Route path="/">
           <Home />

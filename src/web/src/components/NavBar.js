@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { AuthService } from "../services/authService";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -13,6 +14,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-dark bg-secondary">
       <div className="container-fluid justify-content-end">
+        <NavLink to="/pagedata">PageData</NavLink>
         {isLoggedIn ? (
           <button className="btn btn-primary" onClick={logoutHandler}>
             Logout
