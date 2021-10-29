@@ -3,37 +3,19 @@ def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
 pipeline {
     agent none
     stages {
-        stage("Merge and Test") {
+        stage("Test") {
             agent {
                 label 'engineering.snow.edu'
             }
             steps {
                 git branch: "${env.BRANCH_NAME}", credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
-                checkout([
-                    $class: 'GitSCM',
-                    extensions: [
-                        [$class: 'LocalBranch'],
-                        [$class: 'WipeWorkspace'],
-                        [$class: 'CloneOption', shallow: false, honorRefspec: true],
-                        [$class: 'UserIdentity', email: 'jenkins@snow.edu', name: 'Jenkins Pipeline'],
-                    ],
-                    userRemoteConfigs: [[
-                      credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb',
-                      name: 'origin',
-                      url: "$repo"
-                    ]]
-                ])
                 sh """
-                  git status
-                  git merge origin/${env.BRANCH_NAME}
-
                   cd ops
-                  COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+                  DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
                   docker-compose up -d
-                  docker exec api_test dotnet test
-
+                  docker-compose exec -T api_test dotnet test
+                  docker-compose exec -T web_test npm run test -- --watchAll=false
                 """
-                  // git push origin master
             }
         }
     }

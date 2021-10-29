@@ -39,6 +39,12 @@ namespace Api.Controllers
             return await pageDataRepository.GetAllAsync();
         }
 
+        [HttpGet("keys")]
+        public async Task<IEnumerable<string>> GetKeys()
+        {
+            return (await pageDataRepository.GetAllAsync()).Select(pd => pd.Key);
+        }
+
         [HttpGet("{key}")]
         public async Task<ActionResult<DtoPageData>> GetByKey(string key)
         {
@@ -78,9 +84,9 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
-            var pgData = await pageDataRepository.AddAsync(pageData);
+            var createdPageData = await pageDataRepository.AddAsync(pageData);
 
-            return CreatedAtAction("GetPageData", pgData);
+            return CreatedAtAction(nameof(GetByKey), new { key = createdPageData.Key }, createdPageData);
         }
 
         // DELETE: api/PageData/5
