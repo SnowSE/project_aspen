@@ -1,7 +1,6 @@
 import { createSlice} from "@reduxjs/toolkit";
 import { getEvent, getEvents } from "../services/eventApiService";
 
-
 const initialEventState = {
     date: "",
     location: "",

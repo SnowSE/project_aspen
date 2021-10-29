@@ -16,7 +16,6 @@ function App() {
   
   return (
     <Router>
-      <Event></Event>
       <NavBar />
       <Switch>
         <Route path="/login/landing">

@@ -2,7 +2,7 @@ import { getEventList }  from "../store/EventSlice";
 import { useSelector } from "react-redux";
 
 function EventList(){
-    const events = useSelector(state => state.events.events)
+    const events = useSelector(state => state.event.events)
     return(
         <>
         {
