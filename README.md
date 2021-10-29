@@ -61,4 +61,3 @@ Run docker-compose up --build
 Use pull requests for all merges into master.  Pull requests must be approved by another developer, primarily the team lead.  
 
 
-.

@@ -1,18 +1,17 @@
 import axios from "axios";
-import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../store/AuthContext";
+import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 
 const AdminApiButton = () => {
   const [apiResponse, setApiResponse] = useState();
   const [errorResponse, setErrorResponse] = useState();
-  const authContext = useContext(AuthContext);
+  const user = useSelector((state) => state.auth.user);
 
   const getUserCallback = useCallback(() => {
-    authContext.getUser().then((u) => {
-      console.log(u);
+    if (user) {
       const options = {
         headers: {
-          Authorization: `Bearer ${u.access_token}`,
+          Authorization: `Bearer ${user.access_token}`,
         },
       };
       console.log(options);
@@ -28,8 +27,8 @@ const AdminApiButton = () => {
           setErrorResponse(e);
           setApiResponse("");
         });
-    });
-  }, [authContext]);
+    }
+  }, [user]);
 
   return (
     <div>

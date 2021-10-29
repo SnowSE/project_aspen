@@ -1,20 +1,32 @@
-import { useContext } from "react"
-import { AuthContext } from "../store/AuthContext"
+import { useSelector } from "react-redux";
+import { AuthService } from "../services/authService";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
-  const context = useContext(AuthContext)
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const logoutHandler = () => {
-    context.logout();
-  }
+    AuthService.logout();
+  };
+  const loginHandler = () => {
+    AuthService.signinRedirect();
+  };
   return (
     <nav className="navbar navbar-dark bg-secondary">
       <div className="container-fluid justify-content-end">
-        <button className="btn btn-primary" onClick={logoutHandler}>Logout</button>
+        <NavLink to="/pagedata">PageData</NavLink>
+        {isLoggedIn ? (
+          <button className="btn btn-primary" onClick={logoutHandler}>
+            Logout
+          </button>
+        ) : (
+          <button className="btn btn-primary" onClick={loginHandler}>
+            Login
+          </button>
+        )}
       </div>
     </nav>
+  );
+};
 
-  )
-}
-
-export { NavBar }
+export { NavBar };
