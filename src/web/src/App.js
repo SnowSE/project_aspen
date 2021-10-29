@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { AdminApiButton } from './components/AdminApiButton';
 import { ApiButton } from './components/ApiButton';
 import { NavBar } from './components/NavBar';
+import newPageDataForm from './components/PageData/newPageDataForm';
 import { AuthContext } from './store/AuthContext';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <hr />
         <AdminApiButton />
       </div>}
+      <newPageDataForm/>
     </div>
   );
 }
