@@ -20,3 +20,12 @@ const deletePerson = async (id) =>{
     const res = await axios.delete(url+"/"+id)
     return res
 }
+
+const personService ={
+    getPeople,
+    addPerson,
+    updatePerson,
+    deletePerson,
+};
+
+export default personService;
