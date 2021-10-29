@@ -9,11 +9,13 @@
   },
   "remoteUser": "root",
   "extensions": [
-    "ms-dotnettools.csharp",
-    "formulahendry.dotnet-test-explorer",
-    "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
-    "dsznajder.es7-react-js-snippets",
-    "editorconfig.editorconfig"
-  ]
+	"ms-dotnettools.csharp",
+	"formulahendry.dotnet-test-explorer",
+	"editorconfig.editorconfig",
+	"esbenp.prettier-vscode",
+	"dsznajder.es7-react-js-snippets",
+	"editorconfig.editorconfig",
+	"eamodio.gitlens",
+	"donjayamanne.githistory"
+]
 }

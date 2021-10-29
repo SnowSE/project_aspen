@@ -1,40 +1,38 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { AdminApiButton } from "./components/AdminApiButton";
-import { ApiButton } from "./components/ApiButton";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
-import { AuthContext } from "./store/AuthContext";
-
+import { Home } from "./views/Home";
+import Event from "./components/Event";
+import { LoginLanding } from "./views/auth/LoginLanding";
+import { LogoutLanding } from "./views/auth/LogoutLanding";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { checkIfLoggedIn } from "./store/AuthSlice";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState();
-  const context = useContext(AuthContext);
-
-  const loginCallback = useCallback(() => {
-    context.ensureLoggedIn().then((u) => {
-      setIsLoggedIn(true);
-      setUser(u);
-    });
-  }, [context]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    loginCallback();
-  }, [loginCallback]);
-
+    dispatch(checkIfLoggedIn());
+  }, [dispatch]);
+  
   return (
-    <div>
-      {!isLoggedIn && <div>Not Logged in</div>}
-      {isLoggedIn && user && (
-        <div>
-          <NavBar />
-          {JSON.stringify(user.profile)}
-          <br />
-          <ApiButton />
-          <hr />
-          <AdminApiButton />
-        </div>
-      )}
-    </div>
+    <Router>
+      <Event></Event>
+      <NavBar />
+      <Switch>
+        <Route path="/login/landing">
+          <LoginLanding />
+        </Route>
+        <Route path="/login/silent">
+          <LoginLanding />
+        </Route>
+        <Route path="/logout/post">
+          <LogoutLanding />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

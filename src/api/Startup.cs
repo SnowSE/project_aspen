@@ -41,7 +41,7 @@ namespace Api
                 // o.Authority = Configuration["Jwt:Authority"];
                 // o.Audience = Configuration["Jwt:Audience"];
 
-                o.Authority = "http://auth:8080/auth/realms/aspen";
+                o.Authority = "http://keycloak:8080/auth/realms/aspen";
                 o.Audience = "aspen-web";
 
 
@@ -57,21 +57,21 @@ namespace Api
                 o.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = c =>
-              {
-                  Console.WriteLine("Authentication failure");
-                  Console.WriteLine(c.Exception);
+                    {
+                        Console.WriteLine("Authentication failure");
+                        Console.WriteLine(c.Exception);
 
-                  c.NoResult();
+                        c.NoResult();
 
-                  c.Response.StatusCode = 500;
-                  c.Response.ContentType = "text/plain";
+                        c.Response.StatusCode = 500;
+                        c.Response.ContentType = "text/plain";
 
-                  if (CurrentEnvironment.IsDevelopment())
-                  {
-                      return c.Response.WriteAsync(c.Exception.ToString());
-                  }
-                  return c.Response.WriteAsync("An error occured processing your authentication.");
-              }
+                        if (CurrentEnvironment.IsDevelopment())
+                        {
+                            return c.Response.WriteAsync(c.Exception.ToString());
+                        }
+                        return c.Response.WriteAsync("An error occured processing your authentication.");
+                    }
                 };
             });
 
@@ -82,8 +82,11 @@ namespace Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
 
-            services.AddDbContext<AspenContext>(options => options.UseNpgsql(Configuration.GetConnectionString("docker")));
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql(getConnectionString()));
         }
+
+        private string getConnectionString() =>
+            Environment.GetEnvironmentVariable("ASPEN_CONNECTION_STRING") ?? Configuration.GetConnectionString("docker");
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,7 +98,7 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aspen API v1"));
 
             app.UseRouting();
 

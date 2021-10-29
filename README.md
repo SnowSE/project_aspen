@@ -25,22 +25,6 @@ Run docker-compose up --build
 - students and move between teams each sprint if they desire, just be sure you're not leaving your team understaffed and you take time working on both teams
 - scrum master will rotate every 2 sprints (4 weeks per term) giving 12 students a chance to be scrum master over 6 months until graduation.
  
-- Team 1
-  - Kaydon (scrum master)
-  - DJ
-  - Marcelo
-  - Zach
-- Team 2
-  - Stuart (scrum master)
-  - McKinnin
-  - Matt
-  - Wyatt
-- Team 3
-  - Ammon (scrum master)
-  - Jaaron
-  - Andy
-  - Caleb
- 
 ### Schedule
 - Sprint 1v2: Nov 30 - Dec 12 (Kaydon, Stuart, Ammon)
 - ...what about finals week?
@@ -75,3 +59,5 @@ Run docker-compose up --build
 
 ### Merge Policy
 Use pull requests for all merges into master.  Pull requests must be approved by another developer, primarily the team lead.  
+
+
