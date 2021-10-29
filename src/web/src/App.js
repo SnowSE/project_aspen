@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./views/Home";
+import Event from "./components/Event";
 import { LoginLanding } from "./views/auth/LoginLanding";
 import { LogoutLanding } from "./views/auth/LogoutLanding";
 import { useDispatch } from "react-redux";
@@ -39,3 +40,13 @@ function App() {
 }
 
 export default App;
+
+// useEffect(() => {
+//   const events = getEvents();
+//   console.log(events);
+// }, []);
+
+// const apiClickHandler = () => {
+//   const events = getEvents();
+//   console.log(events);
+// };

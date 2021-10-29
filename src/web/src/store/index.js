@@ -1,10 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import AuthReducer from "./AuthSlice";
+import { configureStore } from '@reduxjs/toolkit'
+import AuthReducer from './AuthSlice'
+import eventSlice from './EventSlice'
 import pageDataSlice from "./pageDataSlice";
 
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
-    pageData: pageDataSlice.reducer,
+    event: eventSlice.reducer,
+    pageData: pageDataSlice.reducer
   },
-});
+})
+
