@@ -1,5 +1,6 @@
 import { AdminApiButton } from "../components/AdminApiButton";
 import { ApiButton } from "../components/ApiButton";
+import NewPageDataForm from "../components/PageData/NewPageDataForm";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       <ApiButton />
       <hr />
       <AdminApiButton />
+      <NewPageDataForm />
     </div>
   );
 };

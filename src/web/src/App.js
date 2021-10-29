@@ -1,9 +1,3 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { AdminApiButton } from './components/AdminApiButton';
-import { ApiButton } from './components/ApiButton';
-import { NavBar } from './components/NavBar';
-import newPageDataForm from './components/PageData/newPageDataForm';
-import { AuthContext } from './store/AuthContext';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./views/Home";
@@ -18,7 +12,7 @@ function App() {
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
-  
+
   return (
     <Router>
       <NavBar />
