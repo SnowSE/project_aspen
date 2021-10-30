@@ -1,19 +1,19 @@
 import axios from "axios"
-import person from "../Models/person"
+import Person from "../Models/person"
 
 const url="api/Person"
 
-const getPeople = async () =>{
+const getAllPersons = async () =>{
     const res = await axios.get(url)
     return res
 }
 
-const addPerson = async (person) =>{
-    const res = await axios.post(url, {...person})
+const createPerson = async (Person) =>{
+    const res = await axios.post(url, {...Person})
 }
 
-const updatePerson = async (id, person) =>{
-    const res = await axios.put(url+"/"+id, {...person})
+const updatePerson = async (id, Person) =>{
+    const res = await axios.put(url+"/"+id, {...Person})
 }
 
 const deletePerson = async (id) =>{
@@ -22,8 +22,8 @@ const deletePerson = async (id) =>{
 }
 
 const personService ={
-    getPeople,
-    addPerson,
+    createPerson,
+    getAllPersons,
     updatePerson,
     deletePerson,
 };
