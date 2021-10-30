@@ -12,7 +12,13 @@ const getPageDataByKey = async (key) => {
   return pdResponse.data;
 };
 
+const getPageDataKeys = async () => {
+  const res = await axios.get(baseUrl + "keys");
+  return res.data;
+};
+
 const postPageData = async (data) => {
+  console.log(data);
   const pdResponse = await axios.post(baseUrl, data);
   return pdResponse.status;
 };
@@ -30,6 +36,7 @@ const deletePageData = async (key) => {
 const pageDataService = {
   getAllPageData,
   getPageDataByKey,
+  getPageDataKeys,
   postPageData,
   putPageData,
   deletePageData,
