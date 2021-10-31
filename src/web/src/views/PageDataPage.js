@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NewPageDataForm from "../components/PageData/NewPageDataForm";
+import NewEventForm from "../components/Forms/NewEventForm";
 import PageDataItemForm from "../components/PageData/PageDataItemForm";
 import PageDataList from "../components/PageData/PageDataList";
 import { clearCurrentKey, getPageDataKeys, postPageData, putPageData } from "../store/pageDataSlice";
@@ -30,6 +31,7 @@ const PageDataPage = () => {
 
   return (
     <div>
+      <NewEventForm />
       <NewPageDataForm onSubmit={submitNewPDHandler}/>
       <PageDataList keys={pdState.keys} />
       {pdState.currentKey && <PageDataItemForm pageData={pageData} onSubmit={updatePageDataHandler} onCancel={cancelHandler}/>}

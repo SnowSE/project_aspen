@@ -6,6 +6,8 @@ const Url="api/events"
 //Create
 export const addEvent = async (event) =>{
     const res = await axios.post(Url, {...event})
+    console.log(res)
+    return res
 }
 //Read all
 export const getEvents = async () => {

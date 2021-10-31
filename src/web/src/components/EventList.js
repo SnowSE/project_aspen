@@ -1,23 +1,22 @@
-import { getEventList }  from "../store/EventSlice";
+import { getEventList } from "../store/EventSlice";
 import { useSelector } from "react-redux";
+import { useState } from 'react'
+import EventCard from "./EventCard";
+import NewEventForm from "./Forms/NewEventForm";
 
-function EventList(){
-    const events = useSelector(state => state.event.events)
-    return(
-        <>
-        {
-            events.map( event =>{
-                <>
-                <h4>{event.date}</h4>
-                <h4>{event.location}</h4>
-                <p>{event.description}</p>
-                <h4>{event.image}</h4>
-                </>
-            })
-            
-        }
-        </>
-    )
+function EventList() {
+  const events = useSelector(state => state.event.events);
+  const [editing, setEditing] = useState(false)
+  return (
+    <>
+      {events.map((event) => {
+        return (
+            !editing ? <EventCard event={event}/> : <NewEventForm event={event} isEditing={editing}/>
+           
+        );
+      })}
+    </>
+  );
 }
 
 export default EventList;
