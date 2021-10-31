@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
-import { deletePageData, putPageData } from "../../store/pageDataSlice";
+import { deletePageData, getPageDataByKey, putPageData, setCurrentKey } from "../../store/pageDataSlice";
 import PageDataItem from "./PageDataItem";
 
 const PageDataList = (props) => {
   const dispatch = useDispatch();
 
   const editKeyHandler = (key) => {
-
+    dispatch(setCurrentKey(key))
   };
 
   const deleteKeyHandler = (key) => {

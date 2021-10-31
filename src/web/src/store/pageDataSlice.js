@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import pageDataService from "../services/pageDataService";
 
 const initialState = {
-  currentKey: "",
-  currentData: {},
+  currentKey: null,
+  currentData: null,
   keys: [],
 };
 
@@ -38,8 +38,8 @@ export const postPageData = createAsyncThunk(
 
 export const putPageData = createAsyncThunk(
   "putPageData",
-  async (data, thunkAPI) => {
-    await pageDataService.putPageData(data);
+  async (pageData, thunkAPI) => {
+    await pageDataService.putPageData(pageData);
     // return await pageDataService.getPageDataKeys();
   }
 );
@@ -52,6 +52,13 @@ export const deletePageData = createAsyncThunk(
   }
 );
 
+export const setCurrentKey = createAsyncThunk(
+  'setCurrentKey',
+  async (key, thunkAPI) => {
+    return await pageDataService.getPageDataByKey(key);
+  }
+)
+
 const pageDataSlice = createSlice({
   name: "pageData",
   initialState,
@@ -59,8 +66,12 @@ const pageDataSlice = createSlice({
     setPageData(state, action) {
       // state.pdList = action.payload;
     },
-    setCurrentKey(state, action) {
-      // state.current = action.payload;
+    // setCurrentKey(state, action) {
+    //   state.currentKey = action.payload;
+    // },
+    clearCurrentKey(state, action) {
+      state.currentKey = null;
+      state.currentData = null;
     },
     setKeys(state, action) {
       // state.current = action.payload;
@@ -78,12 +89,16 @@ const pageDataSlice = createSlice({
       .addCase(postPageData.fulfilled, (state, action) => {
         state.keys = action.payload;
       })
-      .addCase(putPageData.fulfilled, (state, aciton) => {})
+      .addCase(putPageData.fulfilled, (state, action) => {})
       .addCase(deletePageData.fulfilled, (state, action) => {
         state.keys = action.payload;
-      });
+      })
+      .addCase(setCurrentKey.fulfilled, (state, action) => {
+        state.currentKey = action.payload.key;
+        state.currentData = JSON.stringify(action.payload.data);
+      })
   },
 });
 
-export const pageDataActions = pageDataSlice.actions;
+export const { clearCurrentKey } = pageDataSlice.actions;
 export default pageDataSlice;
