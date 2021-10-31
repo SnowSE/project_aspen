@@ -2,31 +2,29 @@ import React from "react";
 import useInput from "../../hooks/use-input";
 import TextInput from "../../Inputs/TextInput";
 
-const NewPageDataForm = () => {
+const NewPageDataForm = (props) => {
   const newKeyName = useInput(
     "Key",
     "Key cannot be empty",
     (value) => value.trim() !== ""
   );
-  const name = useInput("name", "name cannot be empty",  (value) => value.trim() !== "" )
 
-  const newKeyHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (newKeyName.isValid) {
       const newKeyObject = {
         key: newKeyName.value,
         data: {},
       };
-      console.log(newKeyObject);
+      
+      props.onSubmit(newKeyObject);
       newKeyName.reset();
-      // handleNewPageDataCreation(newKeyObject)
     }
   };
 
   return (
-    <form onSubmit={newKeyHandler}>
+    <form onSubmit={submitHandler}>
       <TextInput inputControl={newKeyName} />
-      <TextInput inputControl={name}/>
       <button className="btn btn-primary">Save</button>
     </form>
   );
