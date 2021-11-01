@@ -56,13 +56,13 @@ const personSlice = createSlice({
     builder.addCase(getAllPersons.rejected, (state, action) => {
       console.log("error ", action.payload);
     });
-    builder.addCase(updatePerson.rejected, (state, action) => {
+    builder.addCase(updatePerson.fulfilled, (state, action) => {
       console.log("success", action.payload);
     });
     builder.addCase(updatePerson.rejected, (state, action) => {
       console.log("error", action.payload);
     });
-    builder.addCase(deletePerson.rejected, (state, action) => {
+    builder.addCase(deletePerson.fulfilled, (state, action) => {
       console.log("success", action.payload);
     });
     builder.addCase(deletePerson.rejected, (state, action) => {

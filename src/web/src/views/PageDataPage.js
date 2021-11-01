@@ -31,7 +31,6 @@ const PageDataPage = () => {
 
   return (
     <div>
-      <NewEventForm />
       <NewPageDataForm onSubmit={submitNewPDHandler}/>
       <PageDataList keys={pdState.keys} />
       {pdState.currentKey && <PageDataItemForm pageData={pageData} onSubmit={updatePageDataHandler} onCancel={cancelHandler}/>}
