@@ -10,8 +10,13 @@ export const checkIfLoggedIn = createAsyncThunk(
   }
 );
 
+const checkIfAdmin = (user) => {
+  console.log(user)
+  return user.profile.roles.includes("admin-aspen")
+}
 const initialState = {
   isLoggedIn: false,
+  isAdmin: false,
   user: null,
 };
 
@@ -22,10 +27,12 @@ const AuthSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isLoggedIn = true;
+      state.isAdmin = checkIfAdmin(action.payload);
     },
     clearUser: (state) => {
       state.user = null;
       state.isLoggedIn = false;
+      state.isAdmin = false;
     },
   },
   extraReducers: (builder) => {
@@ -33,14 +40,17 @@ const AuthSlice = createSlice({
       if (action.payload) {
         state.user = action.payload;
         state.isLoggedIn = true;
+        state.isAdmin = checkIfAdmin(action.payload)
       } else {
         state.user = null;
         state.isLoggedIn = false;
+        state.isAdmin = false;
       }
     });
     builder.addCase(checkIfLoggedIn.rejected, (state) => {
       state.user = null;
       state.isLoggedIn = false;
+      state.isAdmin = false;
     });
   },
 });
