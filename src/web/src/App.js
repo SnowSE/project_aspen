@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkIfLoggedIn } from "./store/AuthSlice";
 import PageDataPage from "./views/PageDataPage";
+import Admin from "./views/Admin";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
         </Route>
         <Route path="/pagedata">
           <PageDataPage />
+        </Route>
+        <Route path="/admin">
+          <Admin />
         </Route>
         <Route path="/">
           <Home />

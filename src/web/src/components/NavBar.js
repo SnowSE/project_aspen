@@ -14,6 +14,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-dark bg-secondary">
       <div className="container-fluid justify-content-end">
+        <NavLink to ="/admin">Admin Page </NavLink>
         <NavLink to="/pagedata">PageData</NavLink>
         {isLoggedIn ? (
           <button className="btn btn-primary" onClick={logoutHandler}>
