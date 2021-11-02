@@ -43,6 +43,14 @@ namespace Tests.Controller
         }
 
         [Test]
+        public async Task CannotCreatePageDataWithNullKey()
+        {
+            var keyName = Guid.NewGuid().ToString();
+            var newPageData = new DtoPageData { Key = null, Data = JsonDocument.Parse("{\"key\": \"value1\"}") };
+            ((await pageDataController.Post(newPageData)).Result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        }
+
+        [Test]
         public async Task CanGetDifferentPageData() //eventually
         {
             var keyName = Guid.NewGuid().ToString();
