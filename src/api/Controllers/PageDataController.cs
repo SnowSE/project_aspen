@@ -62,7 +62,7 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
-            if (!await pageDataRepository.ExistsAsync(pageData.Key))
+            if (!await pageDataRepository.ExistsAsync(key))
                 return NotFound("Page Data key does not exist");
             try
             {
@@ -71,7 +71,6 @@ namespace Api.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 throw;
-
             }
 
             return NoContent();
@@ -82,7 +81,7 @@ namespace Api.Controllers
         /*[Authorize(Roles = "admin-aspen")]*/
         public async Task<ActionResult<DtoPageData>> Post(DtoPageData pageData)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || string.IsNullOrWhiteSpace(pageData.Key) || pageData.Data == null)
                 return BadRequest(getModelStateErrorMessage());
             var createdPageData = await pageDataRepository.AddAsync(pageData);
 
