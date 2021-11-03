@@ -7,7 +7,7 @@ interface Props {
   onCancel: () => void;
 }
 const PageDataItemForm = ({ pageData, onCancel, onSubmit }: Props) => {
-  const [data, setData] = useState<string>(JSON.stringify(pageData.data) ?? "");
+  const [data, setData] = useState(JSON.stringify(pageData.data) ?? "");
   const [isDataValid, setIsDataValid] = useState(true);
 
   console.log(pageData.key, data, isDataValid);
