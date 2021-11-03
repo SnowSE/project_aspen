@@ -74,7 +74,10 @@ services:
     container_name: keycloak
     build:
       context: ../../dev-resources/keycloak
+    volumes:
+      - ../../dev-resources/keycloak/themes/aspen:/opt/jboss/keycloak/themes/aspen
     environment:
+      - KEYCLOAK_WELCOME_THEME=aspen
       - DB_VENDOR=POSTGRES
       - DB_ADDR=keycloak_db
       - DB_DATABASE=keycloak
