@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { checkIfLoggedIn } from "./store/authSlice";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
+import CreatePersonForm from "./components/Person/CreatePersonForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,9 @@ function App() {
         </Route>
         <Route path="/admin">
           <Admin />
+        </Route>
+        <Route path="/person">
+          <CreatePersonForm/>
         </Route>
         <Route path="/">
           <Home />
