@@ -15,7 +15,7 @@ const NavBar = () => {
   };
   return (
     <nav className="navbar navbar-dark bg-secondary row p-3 ">
-      <div className="container-fluid justify-content-start col ">
+      <div className="container-fluid justify-content-start col-1">
         <img
           src={logo}
           className="img-fluid img-thumbnail rounded-circle m-2 p-2"
@@ -24,7 +24,7 @@ const NavBar = () => {
           height="100"
         />
       </div>
-      <div className="container-fluid justify-content-end col">
+      <div className="container-fluid justify-content-center col">
         {isAdmin ? (
           <NavLink
             className="border border-primary rounded p-2 bg-primary text-light m-1"
@@ -50,15 +50,18 @@ const NavBar = () => {
         >
           Person
         </NavLink>
-        {isLoggedIn ? (
-          <button className="btn btn-primary m-1" onClick={logoutHandler}>
-            Logout
-          </button>
-        ) : (
-          <button className="btn btn-primary m-1" onClick={loginHandler}>
-            Login
-          </button>
-        )}
+        
+      </div>
+      <div className="justify-content-end col-1">
+          {isLoggedIn ? (
+            <button className="btn btn-primary m-1" onClick={logoutHandler}>
+              Logout
+            </button>
+          ) : (
+            <button className="btn btn-primary m-1" onClick={loginHandler}>
+              Login
+            </button>
+          )}
       </div>
     </nav>
   );
