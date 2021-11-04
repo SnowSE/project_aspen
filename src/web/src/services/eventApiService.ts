@@ -10,6 +10,7 @@ export const addEvent = async (event: EventModel) => {
     console.log(res);
     throw Error("Api error adding event");
   }
+  console.log(res)
   return res;
 };
 //Read all

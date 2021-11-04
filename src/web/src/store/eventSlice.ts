@@ -50,6 +50,7 @@ const eventSlice = createSlice({
 export const createNewEvent = (event: EventModel) => {
   return async (dispatch: StoreDispatch) => {
     const response = await addEvent(event);
+    console.log("Response in thunk" + response)
     if (response.status === 200) {
       dispatch(getEventList());
     }
