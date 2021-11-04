@@ -15,7 +15,7 @@ const NavBar = () => {
   };
   return (
     <nav className="navbar navbar-dark bg-secondary row p-3 ">
-      <div className="container-fluid justify-content-start col-1">
+      <div className="container-fluid justify-content-start col-2 col-sm">
         <img
           src={logo}
           className="img-fluid img-thumbnail rounded-circle m-2 p-2"
@@ -27,8 +27,8 @@ const NavBar = () => {
       <div className="container-fluid justify-content-center col">
         {isAdmin ? (
           <NavLink
-            className="border border-primary rounded p-2 bg-primary text-light m-1"
-            activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
+            className="btn btn-primary m-1"
+            activeClassName="btn btn-light m-1"
             to="/admin"
           >
             Admin Page
@@ -37,22 +37,22 @@ const NavBar = () => {
           <div></div>
         )}
         <NavLink
-          className="border border-primary rounded p-2 bg-primary text-light m-1"
-          activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
+          className="btn btn-primary m-1"
+          activeClassName="btn btn-light m-1"
           to="/pagedata"
         >
           PageData
         </NavLink>
         <NavLink
-          className="border border-primary rounded p-2 bg-primary text-light m-1"
-          activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
+          className="btn btn-primary m-1"
+          activeClassName="btn btn-light m-1"
           to="/person"
         >
           Person
         </NavLink>
         
       </div>
-      <div className="justify-content-end col-1">
+      <div className=" container-fluid justify-content-end col-2 col-sm">
           {isLoggedIn ? (
             <button className="btn btn-primary m-1" onClick={logoutHandler}>
               Logout
