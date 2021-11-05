@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function AdminNavBar() {
+  const history = useHistory()
   const [showAdminNavBar, setShowAdminNavBar] = useState<boolean>(false);
 
   const onButtonClick = () => {
@@ -15,7 +16,14 @@ export default function AdminNavBar() {
             <a className="navbar-brand">Admin Tools</a>
             <div>
               <label>Events: </label>
-              <button className="btn btn-primary mx-1">Create Event</button>
+              <button
+                className="btn btn-primary mx-1"
+                onClick={() => {
+                  history.push("/admin/createEvent");
+                }}
+              >
+                Create Event
+              </button>
               <button className="btn btn-primary mx-1">Update Event</button>
               <button className="btn btn-primary mx-1">Delete Event</button>
             </div>

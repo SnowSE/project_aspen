@@ -42,7 +42,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DtoEvent>> GetByID(long id)
         {
-            if(!await eventRepository.ExistsAsync(id))
+            if (!await eventRepository.ExistsAsync(id))
                 return NotFound("Event id does not exist");
 
             return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
@@ -53,9 +53,8 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
-
-            var e = mapper.Map<Event>(dtoEvent);
-            return mapper.Map<DtoEvent>(await eventRepository.AddAsync(e));
+            var newEvent = await eventRepository.AddAsync(dtoEvent.Date, dtoEvent.Description, dtoEvent.PrimaryImageUrl, dtoEvent.Location);
+            return mapper.Map<DtoEvent>(newEvent);
         }
 
         [HttpPut("{id}")]
@@ -73,7 +72,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            if(!await eventRepository.ExistsAsync(id))
+            if (!await eventRepository.ExistsAsync(id))
                 return NotFound("Event id does not exist");
 
             await eventRepository.DeleteAsync(id);
