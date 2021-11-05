@@ -5,6 +5,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 
 import "./custom.scss";
+import 'bootstrap/dist/js/bootstrap'
 
 ReactDOM.render(
   <Provider store={store}>

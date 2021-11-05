@@ -14,54 +14,51 @@ const NavBar = () => {
     AuthService.signinRedirect();
   };
   return (
-    <nav className="navbar navbar-dark bg-secondary row p-3 ">
-      <div className="container-fluid justify-content-start col-1">
-        <img
-          src={logo}
-          className="img-fluid img-thumbnail rounded-circle m-2 p-2"
-          alt="logo"
-          width="100"
-          height="100"
-        />
-      </div>
-      <div className="container-fluid justify-content-center col">
-        {isAdmin ? (
-          <NavLink
-            className="border border-primary rounded p-2 bg-primary text-light m-1"
-            activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
-            to="/admin"
-          >
-            Admin Page
-          </NavLink>
-        ) : (
-          <div></div>
-        )}
-        <NavLink
-          className="border border-primary rounded p-2 bg-primary text-light m-1"
-          activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
-          to="/pagedata"
+    <nav className="navbar navbar-expand-lg navbar-dark bg-secondary">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">
+          <img
+            src={logo}
+            className="img-fluid img-thumbnail rounded-circle m-2 p-2"
+            alt="logo"
+            width="50"
+            height="50"
+          />
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
         >
-          PageData
-        </NavLink>
-        <NavLink
-          className="border border-primary rounded p-2 bg-primary text-light m-1"
-          activeClassName="border border-primary rounded p-2 bg-light text-dark m-1"
-          to="/person"
-        >
-          Person
-        </NavLink>
-        
-      </div>
-      <div className="justify-content-end col-1">
-          {isLoggedIn ? (
-            <button className="btn btn-primary m-1" onClick={logoutHandler}>
-              Logout
-            </button>
-          ) : (
-            <button className="btn btn-primary m-1" onClick={loginHandler}>
-              Login
-            </button>
-          )}
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {isAdmin && (
+              <li className="nav-item">
+                <NavLink className='btn btn-primary' to="/admin">Admin Page</NavLink>
+              </li>
+            )}
+            <li className="nav-item mx-2">
+              <NavLink className='btn btn-primary' to="/pagedata">PageData</NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              <NavLink className='btn btn-primary' to="/person">Person</NavLink>
+            </li>
+            <li className="nav-item mx-2">
+              {isLoggedIn ? (
+                <button className="btn btn-primary" onClick={logoutHandler}>
+                  Logout
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={loginHandler}>
+                  Login
+                </button>
+              )}
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
