@@ -9,7 +9,7 @@ import EventModel from "../models/event";
 import { StoreDispatch } from ".";
 
 interface EventState {
-  date?: string,
+  date: string,
   location: string,
   description: string,
   image: string,
@@ -17,7 +17,7 @@ interface EventState {
 }
 
 const initialEventState: EventState = {
-  date: undefined,
+  date: (new Date()).toString(),
   location: "",
   description: "",
   image: "",
