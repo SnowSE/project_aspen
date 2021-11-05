@@ -6,11 +6,7 @@ import EventModel from "../../models/event";
 import { createNewEvent, updateExistingEvent } from "../../store/eventSlice";
 import { FormEvent } from "react";
 
-interface Props {
-  event: EventModel;
-  isEditing: boolean;
-}
-const NewEventForm = ({ event, isEditing }: Props) => {
+const NewEventForm = () => {
   const dispatch = useDispatch();
   const date = useInput(
     "Date",
@@ -42,19 +38,14 @@ const NewEventForm = ({ event, isEditing }: Props) => {
       description.isValid &&
       image.isValid
     ) {
-      const event  = new EventModel(
+      const event = new EventModel(
         new Date(date.value),
         location.value,
         description.value,
         image.value
       );
       console.log(event);
-      if (isEditing) {
-        dispatch(updateExistingEvent(event));
-      } else {
-        dispatch(createNewEvent(event));
-      }
-
+      dispatch(createNewEvent(event));
       date.reset();
       description.reset();
       location.reset();

@@ -12,7 +12,7 @@ function EventList() {
         return !editing ? (
           <EventCard event={event} />
         ) : (
-          <NewEventForm event={event} isEditing={editing} />
+          <NewEventForm/>
         );
       })}
     </>
