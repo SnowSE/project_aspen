@@ -11,9 +11,9 @@ import { LogoutLanding } from "./views/auth/LogoutLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
 import { checkIfLoggedIn } from "./store/authSlice";
-import { useStoreSelector } from "./store";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
+import CreatePersonForm from "./components/Person/CreatePersonForm";
 import { useStoreSelector } from "./store";
 import Unauthorized from "./views/auth/Unauthorized";
 import AdminNavBar from "./components/UI/AdminNavBar";
@@ -40,7 +40,6 @@ const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
 
 function App() {
   const dispatch = useDispatch();
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
