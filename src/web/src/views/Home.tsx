@@ -1,10 +1,10 @@
 import MainContainer from "../components/Home/MainContainer"
-import Event from "../components/Event"
+// import Event from "../components/Event"
 const Home = () => {
   return (
     <div>
       {/* {JSON.stringify(user.profile)} */}
-    <Event/>
+    {/* <Event/> */}
       <hr />
       <MainContainer />
     </div>
