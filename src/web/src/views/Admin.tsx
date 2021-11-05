@@ -14,6 +14,7 @@ export default function Admin() {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     async function fetchEvents(){
+      console.log("executed")
       getEventList()
     }
     fetchEvents()

@@ -14,11 +14,10 @@ import { checkIfLoggedIn } from "./store/authSlice";
 import { useStoreSelector } from "./store";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
-import { useStoreSelector } from "./store";
 import Unauthorized from "./views/auth/Unauthorized";
 import AdminNavBar from "./components/UI/AdminNavBar";
 
-const AuthorizedRoute: FC<any> = ({ children, authed: isAuthorized, ...rest }) => {
+const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
     if (isAuthorized === true) {
       return <Route {...rest}>{children}</Route>;
     } else {
@@ -29,6 +28,7 @@ const AuthorizedRoute: FC<any> = ({ children, authed: isAuthorized, ...rest }) =
   };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
+  console.log(isAdmin)
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
@@ -46,23 +46,22 @@ function App() {
   }, [dispatch]);
 
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
 
   return (
     <Router>
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
-        <AdminRoute authed={isAuthenticated} path="/admin">
+        <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
-        <AdminRoute authed={isAuthenticated} path="/pagedata">
+        <AdminRoute isAdmin={isAdmin} path="/pagedata">
           <Admin />
         </AdminRoute>
-        <AuthorizedRoute admin={isAdmin} path="/login/silent">
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/silent">
           <LoginLanding/>
         </AuthorizedRoute>
-        <AuthorizedRoute admin={isAdmin} path="/login/post">
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
           <LoginLanding/>
         </AuthorizedRoute>
         <Route path="/login/landing">
