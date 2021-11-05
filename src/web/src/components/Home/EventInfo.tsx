@@ -5,11 +5,11 @@ interface Props {
 }
 const EventInfo = ({ event }: Props) => {
   return (
-    <>
-      <h3>{event.description}</h3>
+    <div className="card text-center bg-info">
+      <h3 className="text-light m-3">{event.description}</h3>
       <h3></h3>
       <EventDisplayButtonBar/>
-    </>
+    </div>
   );
 };
 

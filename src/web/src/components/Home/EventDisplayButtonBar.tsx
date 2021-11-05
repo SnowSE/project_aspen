@@ -1,58 +1,38 @@
 import { AdminApiButton } from "../AdminApiButton";
 import { ApiButton } from "../ApiButton";
 import { useStoreSelector } from "../../store";
-import { useHistory } from "react-router-dom";
+import {NavLink} from "react-router-dom"
 
 const EventDisplayButtonBar = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
   const events = useStoreSelector((state) => state.event.events);
-  const history = useHistory();
-
-  const createNewEventRedirect = () => {
-    history.push("/admin/createnewevent");
-  };
-  const donationPageRedirect = () => {
-    history.push("/donations");
-  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
+          <div className="d-flex">
             {/* {!isLoggedIn && isAdmin && <></>} error page, how would anyone get here, really? */}
-            {!isLoggedIn && !isAdmin && events.length === 0 && <></>}
+            {!isLoggedIn && !isAdmin && events.length === 0 && <><NavLink className="btn btn-light" to="/nowhere" >Example</NavLink></>}
+
             {isLoggedIn && !isAdmin && events.length === 0 && <></>}
             {isLoggedIn && !isAdmin && events.length > 0 && (
               <>
-                <button>Register</button> <button>Donate</button>
+                <NavLink className="btn btn-primary" to="/auth/register">Register</NavLink> <NavLink className="btn btn-primary" to="/donations">Donate</NavLink>
               </>
             )}
             {isLoggedIn && isAdmin && events.length === 0 && (
-              <button onClick={createNewEventRedirect}>Create New Event</button>
+              <NavLink className="btn btn-primary" to="/admin/createnewevent">Create New Event</NavLink>
             )}
             {isLoggedIn && isAdmin && events.length > 0 && (
               <>
-                <button onClick={donationPageRedirect}>Donate</button>
-                <button onClick={createNewEventRedirect}>
+                <NavLink className="btn btn-primary" to="/donations">Donate</NavLink>
+                <NavLink className="btn btn-primary" to="/admin/createnewevent">
                   Create New Event
-                </button>
+                </NavLink>
               </>
             )}
           </div>
-        </div>
       </div>
     </nav>
   );
