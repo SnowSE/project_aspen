@@ -1,14 +1,12 @@
-import { AdminApiButton } from "../components/AdminApiButton";
-import { ApiButton } from "../components/ApiButton";
-
+import MainContainer from "../components/Home/MainContainer"
+// import Event from "../components/Event"
 const Home = () => {
   return (
     <div>
       {/* {JSON.stringify(user.profile)} */}
-      <br />
-      <ApiButton />
+    {/* <Event/> */}
       <hr />
-      <AdminApiButton />
+      <MainContainer />
     </div>
   );
 };

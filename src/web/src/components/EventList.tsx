@@ -5,15 +5,13 @@ import { useStoreSelector } from "../store";
 
 function EventList() {
   const events = useStoreSelector((state) => state.event.events);
-  const [editing, setEditing] = useState(false);
+  console.log("Events " + events)
   return (
     <>
       {events.map((event) => {
-        return !editing ? (
+        return (
           <EventCard event={event} />
-        ) : (
-          <NewEventForm/>
-        );
+      )
       })}
     </>
   );
