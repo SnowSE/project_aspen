@@ -40,12 +40,12 @@ const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
 
 function App() {
   const dispatch = useDispatch();
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
 
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
+  const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
 
   return (
     <Router>
