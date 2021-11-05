@@ -5,12 +5,13 @@ import { useStoreSelector } from "../store";
 
 function EventList() {
   const events = useStoreSelector((state) => state.event.events);
-  console.log("Events " +events)
+  console.log("Events " + events)
   return (
     <>
       {events.map((event) => {
-        return 
+        return (
           <EventCard event={event} />
+      )
       })}
     </>
   );
