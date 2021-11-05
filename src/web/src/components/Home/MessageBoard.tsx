@@ -1,4 +1,3 @@
-
 const MessageBoard = ({message}: {message: string}) => {
     return(
         <div>
