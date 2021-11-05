@@ -24,14 +24,11 @@ const EventDisplay = () => {
           ? a
           : b;
       });
-
-      if (typeof closestEvent !== "undefined") {
-        setEvent(closestEvent);
-      } else {
-        setEvent(dummyEvent);
-      }
+      setEvent(closestEvent);
+    } else {
+      setEvent(dummyEvent);
     }
-  }, [events]);
+  }, []);
 
   const dispatch = useDispatch();
 

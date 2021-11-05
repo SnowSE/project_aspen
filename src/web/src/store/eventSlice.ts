@@ -77,7 +77,7 @@ export const getSingleEvent = (id: number) => {
 export const getEventList = () => {
   return async (dispatch: StoreDispatch) => {
     const response = await getEvents();
-    dispatch(eventActions.setEvents(response.data));
+    dispatch(eventActions.setEvents(response.data?? []));
   };
 };
 
