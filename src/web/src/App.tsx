@@ -8,9 +8,13 @@ import { useEffect } from "react";
 import { checkIfLoggedIn } from "./store/authSlice";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
+import { useStoreSelector } from "./store";
+import Unauthorized from "./views/auth/Unauthorized";
+import AdminNavBar from "./components/UI/AdminNavBar";
 
 function App() {
   const dispatch = useDispatch();
+  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
@@ -18,6 +22,7 @@ function App() {
   return (
     <Router>
       <NavBar />
+      {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
         <Route path="/login/landing">
           <LoginLanding />
@@ -31,9 +36,7 @@ function App() {
         <Route path="/pagedata">
           <PageDataPage />
         </Route>
-        <Route path="/admin">
-          <Admin />
-        </Route>
+        <Route path="/admin">{isAdmin ? <Admin /> : <Unauthorized />}</Route>
         <Route path="/">
           <Home />
         </Route>
