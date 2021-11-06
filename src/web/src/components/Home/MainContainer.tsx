@@ -5,23 +5,20 @@ import Event from '../Event'
 
 const MainContainer = () => {
     return(
-        <div>
-            <Event/>
-        </div>
-        
-        // <div className="container">
-        //     <div className="row">
-        //         <div className="col">
-        //             <EventDisplay/>
-        //         </div>
-        //     </div>
-        //     <div className="row">
-        //         <div className="col">
-        //             <MessageBoard message={"Welcome!"}/>
-        //         </div>
-        //     </div>
+       
+        <div className="container">
+            <div className="row">
+                <div className="col">
+                    <EventDisplay/>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
+                    <MessageBoard message={"Welcome!"}/>
+                </div>
+            </div>
 
-        // </div>
+        </div>
     )
 }
 
