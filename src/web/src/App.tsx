@@ -14,24 +14,25 @@ import { checkIfLoggedIn } from "./store/authSlice";
 import { useStoreSelector } from "./store";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
+import { AuthService } from "./services/authService";
+import UnAuthorized from "./views/UnAuthorized";
 
-const AuthorizedRoute: FC<any> = ({ children, authed: isAuthorized, ...rest }) => {
-    if (isAuthorized === true) {
-      return <Route {...rest}>{children}</Route>;
-    } else {
-      return (
-        <Redirect to={{ pathname: "/login"}} />
-      );
-    }
-  };
+const AuthorizedRoute: FC<any> = ({
+  children,
+  authed: isAuthorized,
+  ...rest
+}) => {
+  if (!isAuthorized) {
+    AuthService.signinRedirect();
+  }
+  return <Route {...rest}>{children}</Route>;
+};
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
-    return (
-      <Redirect to={{ pathname: "/login"}} />
-    );
+    return <Route {...rest}><UnAuthorized/></Route>;
   }
 };
 
@@ -55,10 +56,10 @@ function App() {
           <Admin />
         </AdminRoute>
         <AuthorizedRoute admin={isAdmin} path="/login/silent">
-          <LoginLanding/>
+          <LoginLanding />
         </AuthorizedRoute>
         <AuthorizedRoute admin={isAdmin} path="/login/post">
-          <LoginLanding/>
+          <LoginLanding />
         </AuthorizedRoute>
         <Route path="/login/landing">
           <LoginLanding />
