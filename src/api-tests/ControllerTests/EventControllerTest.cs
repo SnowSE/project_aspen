@@ -56,6 +56,24 @@ namespace Tests.Controller
         }
 
         [Test]
+        public async Task CanGetCreatedEventTitle() //eventually
+        {
+            var newEvent = new DtoEvent()
+            {
+                Title = "Marathon",
+                Description = "Cool Marathon2",
+                Location = "Snow"
+            };
+
+            var eventController = GetEventController();
+            var createdEvent = (await eventController.Add(newEvent)).Value;
+            var returnedEvent = (await eventController.GetByID(createdEvent.ID)).Value;
+
+            returnedEvent.ID.Should().NotBe(0);
+            returnedEvent.Title.Should().Be("Marathon");
+        }
+
+        [Test]
         public async Task CanEditCreatedEvent() //eventually
         {
             var newEvent = new DtoEvent()
@@ -71,6 +89,25 @@ namespace Tests.Controller
 
             var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
+        }
+
+        [Test]
+        public async Task CanEditCreatedEventWithTitle() //eventually
+        {
+            var newEvent = new DtoEvent()
+            {
+                Title = "Best title",
+                Description = "Marathon2",
+                Location = "Snow"
+            };
+
+            var createdEvent = (await GetEventController().Add(newEvent)).Value;
+
+            var changedEvent = createdEvent with { Title = "This is changed" };
+            await GetEventController().Edit(changedEvent, changedEvent.ID);
+
+            var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
+            returnedEvent.Title.Should().Be("This is changed");
         }
 
         [Test]

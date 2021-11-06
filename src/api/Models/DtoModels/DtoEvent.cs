@@ -13,6 +13,7 @@ namespace Api.DtoModels
     {
         public long ID { get; init; }
         public DateTime Date { get; init; }
+        public string Title { get; init; }
         public string Location { get; init; }
         public string Description { get; init; }
         public string PrimaryImageUrl { get; init; }

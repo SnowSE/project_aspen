@@ -56,8 +56,8 @@ namespace Tests.Controller
         private async Task<DtoRegistration> createRegistration()
         {
             var owner = await GetPersonRepository().AddAsync("ben", null);
-            var eventEntity = new Event(0, "Marathon1", new DateTime(2021, 6, 21));
-            var newEvent = await GetEventRepository().AddAsync(eventEntity.Date, eventEntity.Description, eventEntity.PrimaryImageUrl, eventEntity.Location);
+            var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
+            var newEvent = await GetEventRepository().AddAsync(eventEntity.Date, eventEntity.Title, eventEntity.Description, eventEntity.PrimaryImageUrl, eventEntity.Location);
             var dtoTeam = new DtoTeam
             {
                 OwnerID = owner.ID,
