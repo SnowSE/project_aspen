@@ -16,6 +16,7 @@ import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
 import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
+import AdminNavBar from "./components/UI/AdminNavBar";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -38,16 +39,16 @@ const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
 
 function App() {
   const dispatch = useDispatch();
+  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
-
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
 
   return (
     <Router>
       <NavBar />
+      {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
         <AdminRoute authed={isAuthenticated} path="/admin">
           <Admin />
