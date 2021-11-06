@@ -46,7 +46,7 @@ const PageDataPage = () => {
   };
   return (
     <div>
-      <NewEventForm event={newEvent} isEditing={true} />
+      <NewEventForm/>
       <NewPageDataForm onSubmit={submitNewPDHandler} />
       <PageDataList keys={pdState.keys} />
       {pdState.currentKey && (

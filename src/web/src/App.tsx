@@ -30,6 +30,7 @@ const AuthorizedRoute: FC<any> = ({
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
+  console.log(isAdmin)
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
@@ -39,28 +40,28 @@ const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
 
 function App() {
   const dispatch = useDispatch();
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
+  const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
 
   return (
     <Router>
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
-        <AdminRoute authed={isAuthenticated} path="/admin">
+        <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
-        <AdminRoute authed={isAuthenticated} path="/pagedata">
+        <AdminRoute isAdmin={isAdmin} path="/pagedata">
           <Admin />
         </AdminRoute>
-        <AuthorizedRoute admin={isAdmin} path="/login/silent">
-          <LoginLanding />
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/silent">
+          <LoginLanding/>
         </AuthorizedRoute>
-        <AuthorizedRoute admin={isAdmin} path="/login/post">
-          <LoginLanding />
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
+          <LoginLanding/>
         </AuthorizedRoute>
         <Route path="/login/landing">
           <LoginLanding />

@@ -57,7 +57,7 @@ namespace Tests.Controller
         {
             var owner = await GetPersonRepository().AddAsync("ben", null);
             var eventEntity = new Event(0, "Marathon1", new DateTime(2021, 6, 21));
-            var newEvent = await GetEventRepository().AddAsync(eventEntity);
+            var newEvent = await GetEventRepository().AddAsync(eventEntity.Date, eventEntity.Description, eventEntity.PrimaryImageUrl, eventEntity.Location);
             var dtoTeam = new DtoTeam
             {
                 OwnerID = owner.ID,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import EventModel from "../models/event";
 
-const Url = "api/events";
+const Url = "/api/events";
 
 //Create
 export const addEvent = async (event: EventModel) => {
@@ -10,10 +10,12 @@ export const addEvent = async (event: EventModel) => {
     console.log(res);
     throw Error("Api error adding event");
   }
+  console.log(res)
   return res;
 };
 //Read all
 export const getEvents = async () => {
+  console.log("called")
   const res = await axios.get(Url);
   if (res.status !== 200) {
     console.log(res);
