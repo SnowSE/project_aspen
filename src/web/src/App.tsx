@@ -14,27 +14,27 @@ import { checkIfLoggedIn } from "./store/authSlice";
 import { useStoreSelector } from "./store";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
-import Unauthorized from "./views/auth/Unauthorized";
+import { AuthService } from "./services/authService";
+import UnAuthorized from "./views/UnAuthorized";
 import AdminNavBar from "./components/UI/AdminNavBar";
 
-const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
-    if (isAuthorized === true) {
-      return <Route {...rest}>{children}</Route>;
-    } else {
-      return (
-        <Redirect to={{ pathname: "/login"}} />
-      );
-    }
-  };
+const AuthorizedRoute: FC<any> = ({
+  children,
+  authed: isAuthorized,
+  ...rest
+}) => {
+  if (!isAuthorized) {
+    AuthService.signinRedirect();
+  }
+  return <Route {...rest}>{children}</Route>;
+};
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
   console.log(isAdmin)
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
-    return (
-      <Redirect to={{ pathname: "/login"}} />
-    );
+    return <Route {...rest}><UnAuthorized/></Route>;
   }
 };
 
@@ -43,7 +43,6 @@ function App() {
   useEffect(() => {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
-
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
 
