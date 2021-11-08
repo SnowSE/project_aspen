@@ -10,22 +10,25 @@ namespace Api.Models.Entities
 #nullable enable
     public class Event
     {
-        public Event(long id, string description, DateTime date)
+        public Event(long id, string title, string description, DateTime date)
         {
             ID = id;
+            Title = title;
             Description = description;
             Date = date;
         }
-        public Event(long id, string description, DateTime date, string location)
+        public Event(long id, string title, string description, DateTime date, string location)
         {
             ID = id;
+            Title = title;
             Description = description;
             Date = date;
             Location = location;
         }
-        public Event(long id, string description, DateTime date, string location, string primaryImageUrl)
+        public Event(long id, string title, string description, DateTime date, string location, string primaryImageUrl)
         {
             ID = id;
+            Title = title;
             Description = description;
             Date = date;
             Location = location;
@@ -38,6 +41,8 @@ namespace Api.Models.Entities
 
         public string? Location { get; init; }
 
+        public string Title { get; init; }
+
         public string Description { get; init; }
 
         public string? PrimaryImageUrl { get; init; }
@@ -45,14 +50,14 @@ namespace Api.Models.Entities
 
     public static class EventExtensions
     {
-        public static Event WithDescriptionAndDate(this Event currentEvent, string newDescription, DateTime newDate)
+        public static Event WithTitleDescriptionAndDate(this Event currentEvent, string newTitle, string newDescription, DateTime newDate)
         {
-            return new Event(currentEvent.ID, newDescription, newDate);
+            return new Event(currentEvent.ID, newTitle, newDescription, newDate);
         }
 
         public static Event WithLocation(this Event currentEvent, string newLocation)
         {
-            return new Event(currentEvent.ID, currentEvent.Description, currentEvent.Date, newLocation);
+            return new Event(currentEvent.ID, currentEvent.Title, currentEvent.Description, currentEvent.Date, newLocation);
         }
 
         public static Event WithPrimaryImageUrl(this Event currentEvent, string newPrimaryImageUrl)
@@ -60,6 +65,7 @@ namespace Api.Models.Entities
             return new Event(
                 currentEvent.ID,
                 currentEvent.Description,
+                currentEvent.Title,
                 currentEvent.Date,
                 currentEvent.Location,
                 newPrimaryImageUrl);
