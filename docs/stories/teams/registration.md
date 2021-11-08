@@ -15,7 +15,7 @@ As an enrolled user I want to register my family for the team.
 
 As an enrolled user I want to modify the people in my registration.
 
-As a user I can choose to hide my information when I registor.
+As a user I can choose to hide my information when I register.
 
 As a user registering, I can set the nickname for my registration.
 
