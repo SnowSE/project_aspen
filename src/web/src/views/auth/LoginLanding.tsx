@@ -16,6 +16,6 @@ export const LoginLanding = () => {
         history.push(desiredDestination);
       }
     })
-  });
+  }, []);
   return <div>Authentication Successful, redirecting...</div>;
 };

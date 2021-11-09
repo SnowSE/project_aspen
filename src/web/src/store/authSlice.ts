@@ -12,7 +12,7 @@ export const checkIfLoggedIn = createAsyncThunk(
 );
 
 const checkIfAdmin = (user: User) => {
-  console.log(user)
+  // console.log(user)
   return user.profile.roles.includes("admin-aspen")
 }
 

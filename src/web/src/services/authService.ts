@@ -70,10 +70,11 @@ export const AuthService = {
   },
 
   logout: async () => {
-    await userManager.signoutRedirect({
-      id_token_hint: localStorage.getItem("id_token"),
-    });
     await userManager.clearStaleState();
+    await userManager.signoutRedirect();
+    // await userManager.signoutRedirect({
+    //   id_token_hint: localStorage.getItem("id_token"),
+    // });
   },
 
   signoutRedirectCallback: async () => {
