@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controller
 {
@@ -14,19 +15,18 @@ namespace Api.Controller
     [Route("/api/[controller]")]
     public class AssetController : ControllerBase
     {
-        public ILogger<AssetController> logger { get; }
         public IAssetFileService assetsFileService { get; }
 
-        public AssetController(ILogger<AssetController> logger, IAssetFileService assetsFileService)
+        public AssetController(IAssetFileService assetsFileService)
         {
-            this.logger = logger;
             this.assetsFileService = assetsFileService;
         }
 
+        [SwaggerOperation(Summary ="Endpoint for users to upload file assets.", Description = "Recieves one file in FormData that has the key 'asset'. Returned data value can be accessed at that can be accessed at /assets/{data}")]
         [HttpPost]
-        public async Task<ActionResult<Response<string>>> PostAsync([FromBody] IFormFile image)
+        public async Task<ActionResult<Response<string>>> PostAsync([FromForm] IFormFile asset)
         {
-            var newId = await assetsFileService.StoreAsset(image);
+            var newId = await assetsFileService.StoreAsset(asset);
 
             return Ok(new Response<string> { Data = newId });
         }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Api.DataAccess;
 using Api.Mappers;
+using Api.Services;
 
 namespace Api
 {
@@ -32,6 +33,7 @@ namespace Api
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IPageDataRepository, PageDataRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IAssetFileService, AssetFileService>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,6 +81,7 @@ namespace Api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
+                c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
             });
 
