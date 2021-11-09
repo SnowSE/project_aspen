@@ -1,0 +1,27 @@
+name: run-tests-for-pull-request
+
+on:
+  pull_request:
+    branches: [ master ]
+    
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: build
+        run: DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+        
+      - name: start containers
+        run: docker-compose up -d
+        
+      - name: run api tests
+        run: docker-compose exec -T api_test dotnet test
+        
+      - name: run web tests
+        run: docker-compose exec -T web_test npm run test -- --watchAll=false
