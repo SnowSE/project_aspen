@@ -33,7 +33,6 @@ namespace Tests.Controller
         [SetUp]
         public void Setup()
         {
-            var nullLogger = new NullLogger<AssetController>();
 
             var inMemorySettings = new Dictionary<string, string> {
                 {"AssetsDirectory", "assets/"},
@@ -44,7 +43,7 @@ namespace Tests.Controller
               .Build();
 
             assetFileService = new AssetFileService(new NullLogger<AssetFileService>(), configuration);
-            assetController = new AssetController(nullLogger, assetFileService);
+            assetController = new AssetController(assetFileService);
         }
 
         [Test]

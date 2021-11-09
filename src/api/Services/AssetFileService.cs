@@ -25,14 +25,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> StoreAsset(IFormFile image)
+        public async Task<string> StoreAsset(IFormFile asset)
         {
-            var extension = Path.GetExtension(image.FileName);
+            Console.WriteLine(asset.FileName);
+            var extension = Path.GetExtension(asset.FileName);
             var newFileName = Guid.NewGuid().ToString() + extension;
             var filePath = Path.Combine(assetsDirectory, newFileName);
             using (Stream fileStream = new FileStream(filePath, FileMode.Create))
             {
-                await image.CopyToAsync(fileStream);
+                await asset.CopyToAsync(fileStream);
             }
             return newFileName;
         }
