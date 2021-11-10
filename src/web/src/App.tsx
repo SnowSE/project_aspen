@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
 import { checkIfLoggedIn } from "./store/authSlice";
 import { useStoreSelector } from "./store";
+import AdminSideBar from "./components/UI/AdminSideBar";
 import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
 import { AuthService } from "./services/authService";
@@ -54,7 +55,9 @@ function App() {
   return (
     <Router>
       <NavBar />
-
+      <div className="col-md-1 bg-primary">
+        <AdminSideBar />
+      </div>
       <Switch>
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
