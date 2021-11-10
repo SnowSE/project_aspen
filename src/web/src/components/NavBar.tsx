@@ -16,7 +16,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-secondary">
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to='/'>
+        <NavLink className="navbar-brand" to="/">
           <img
             src={logo}
             className="img-fluid img-thumbnail rounded-circle m-2 p-2"
@@ -34,30 +34,34 @@ const NavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 justify-content-end container-fluid">
+          <ul className="navbar-nav justify-content-center container">
             {isAdmin && (
-              <li className="nav-item p-1">
-                <NavLink className='btn btn-primary' to="/admin">Admin Page</NavLink>
+              <li className="nav-item p-1  text-center">
+                <NavLink className="text-white" to="/admin">
+                  Admin Page
+                </NavLink>
               </li>
             )}
-            <li className="nav-item mx-2 p-1">
-              <NavLink className='btn btn-primary' to="/pagedata">PageData</NavLink>
+            <li className="nav-item mx-2 p-1 text-center text-light">
+              <NavLink className="text-white" to="/pagedata">
+                PageData
+              </NavLink>
             </li>
-            <li className="nav-item mx-2 p-1">
-              <NavLink className='btn btn-primary' to="/register">Register</NavLink>
-            </li>
-            <li className="nav-item mx-2 p-1">
-              {isLoggedIn ? (
-                <button className="btn btn-primary" onClick={logoutHandler}>
-                  Logout
-                </button>
-              ) : (
-                <button className="btn btn-primary" onClick={loginHandler}>
-                  Login
-                </button>
-              )}
+            <li className="nav-item mx-2 p-1 text-center text-light">
+              <NavLink className="text-white" to="/register">
+                Register
+              </NavLink>
             </li>
           </ul>
+          {isLoggedIn ? (
+            <button className="btn btn-primary me-2" onClick={logoutHandler}>
+              Logout
+            </button>
+          ) : (
+            <button className="btn btn-primary me-2" onClick={loginHandler}>
+              Login
+            </button>
+          )}
         </div>
       </div>
     </nav>
