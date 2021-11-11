@@ -6,8 +6,8 @@ USER jboss
 
 RUN sed -i -e 's|<web-context>auth</web-context>|<web-context>aspen/auth/auth</web-context>|' $JBOSS_HOME/standalone/configuration/standalone.xml
 RUN sed -i -e 's|<web-context>auth</web-context>|<web-context>aspen/auth/auth</web-context>|' $JBOSS_HOME/standalone/configuration/standalone-ha.xml
-RUN sed -i -e 's|name="/"|name="/aspen/"|' $JBOSS_HOME/standalone/configuration/standalone.xml
-RUN sed -i -e 's|name="/"|name="/aspen/"|' $JBOSS_HOME/standalone/configuration/standalone-ha.xml
+RUN sed -i -e 's|name="/"|name="/aspen/auth"|' $JBOSS_HOME/standalone/configuration/standalone.xml
+RUN sed -i -e 's|name="/"|name="/aspen/auth"|' $JBOSS_HOME/standalone/configuration/standalone-ha.xml
 RUN sed -i -e 's|/auth|/aspen/auth"|' $JBOSS_HOME/welcome-content/index.html
 # RUN sed -i -e 's|<web-context>auth</web-context>|<web-context>auth/auth</web-context>|g' $JBOSS_HOME/standalone/configuration/standalone.xml
 
