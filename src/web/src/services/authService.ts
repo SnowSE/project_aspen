@@ -6,19 +6,18 @@ import { UserManager, WebStorageStateStore } from "oidc-client";
 if(!process.env.REACT_APP_AUTH_URL) throw Error('REACT_APP_AUTH_URL not set')
 const authUrl = process.env.REACT_APP_AUTH_URL
 
-const reactAppUrl =
-  window.location.origin + process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
+const reactAppPath = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
-console.log("my url is", reactAppUrl)
+console.log("my url is", window.location.origin + reactAppPath)
 
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority:
     `${authUrl}/realms/aspen/.well-known/openid-configuration`,
   client_id: "aspen-web",
-  redirect_uri: reactAppUrl + "/login/landing",
-  post_logout_redirect_uri: reactAppUrl + "/logout/post",
-  silent_redirect_uri: reactAppUrl + "/login/silent",
+  redirect_uri: window.location.origin + reactAppPath + "/login/landing",
+  post_logout_redirect_uri: window.location.origin + reactAppPath + "/logout/post",
+  silent_redirect_uri: window.location.origin + reactAppPath + "/login/silent",
   response_type: "code",
   scope: "openid profile email",
   loadUserInfo: true,
@@ -85,7 +84,7 @@ export const AuthService = {
   signoutRedirectCallback: async () => {
     await userManager.signoutRedirectCallback().then(() => {
       localStorage.clear();
-      window.location.replace(reactAppUrl);
+      window.location.replace(reactAppPath);
     });
     await userManager.clearStaleState();
   },
