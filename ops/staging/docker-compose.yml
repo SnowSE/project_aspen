@@ -53,7 +53,7 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - PROXY_ADDRESS_FORWARDING=true
-      - KEYCLOAK_FRONTEND_URL=https://engineering.snow.edu/aspen
+      - KEYCLOAK_FRONTEND_URL=https://engineering.snow.edu/aspen/auth
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/aspen/auth/resources/vc52l/welcome/keycloak/img/favicon.ico"]
       interval: 3s
