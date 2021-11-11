@@ -53,7 +53,7 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - PROXY_ADDRESS_FORWARDING=true
-      - KEYCLOAK_FRONTEND_URL=https://engineering.snow.edu/
+      - KEYCLOAK_FRONTEND_URL=https://engineering.snow.edu/aspen
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/aspen/auth/resources/vc52l/welcome/keycloak/img/favicon.ico"]
       interval: 3s
@@ -71,7 +71,7 @@ services:
     container_name: staging_keycloak_db
     volumes:
       - keycloak_db:/var/lib/postgresql/data
-      - ./keycloak.sql:/docker-entrypoint-initdb.d/backup.sql
+      # - ./keycloak.sql:/docker-entrypoint-initdb.d/backup.sql
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
