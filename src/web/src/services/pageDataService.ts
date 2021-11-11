@@ -1,6 +1,6 @@
 import axios from "axios";
 import { PageData } from "../models/pageData";
-const baseUrl = "/api/PageData/";
+const baseUrl = `${process.env.PUBLIC_URL}/api/PageData/`;
 
 const getAllPageData = async () => {
   const pdResponse = await axios.get(baseUrl);

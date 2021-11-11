@@ -4,7 +4,8 @@ import { UserManager, WebStorageStateStore } from "oidc-client";
 // Oidc.Log.logger = console;
 // Oidc.Log.level = Oidc.Log.ERROR;
 
-const reactAppUrl = window.location.origin;
+const reactAppUrl =
+  window.location.origin + process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),

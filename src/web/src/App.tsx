@@ -67,11 +67,11 @@ function App() {
         <Route path="/login/landing">
           <LoginLanding />
         </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
         <Route path="/register">
           <PersonPage />
+        </Route>
+        <Route exact path="/">
+          <Home />
         </Route>
       </Switch>
     </Router>

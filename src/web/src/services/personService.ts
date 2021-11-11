@@ -1,6 +1,6 @@
 import axios from "axios";
 import Person from "../models/person";
-const url = "/api/Person";
+const url = `${process.env.PUBLIC_URL}/api/Person`;
 
 const getAllPersons = async () => {
   const res = await axios.get<Person[]>(url);
