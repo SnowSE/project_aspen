@@ -90,8 +90,6 @@ services:
     container_name: staging_reverse_proxy
     volumes:
       - assets:/assets
-    ports:
-      - 80:80
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/index.html"]
       interval: 3s
