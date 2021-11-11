@@ -72,7 +72,7 @@ services:
     container_name: staging_keycloak_db
     volumes:
       - keycloak_db:/var/lib/postgresql/data
-      - ../../dev-resources/keycloak/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+      # - ../../dev-resources/keycloak/backup.sql:/docker-entrypoint-initdb.d/backup.sql
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
