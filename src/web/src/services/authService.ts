@@ -3,6 +3,8 @@ import { UserManager, WebStorageStateStore } from "oidc-client";
 
 // Oidc.Log.logger = console;
 // Oidc.Log.level = Oidc.Log.ERROR;
+if(!process.env.REACT_APP_AUTH_URL) throw Error('REACT_APP_AUTH_URL not set')
+const authUrl = process.env.REACT_APP_AUTH_URL
 
 const reactAppUrl =
   window.location.origin + process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
@@ -10,7 +12,7 @@ const reactAppUrl =
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority:
-    "http://localhost/auth/realms/aspen/.well-known/openid-configuration",
+    `${authUrl}/realms/aspen/.well-known/openid-configuration`,
   client_id: "aspen-web",
   redirect_uri: reactAppUrl + "/login/landing",
   post_logout_redirect_uri: reactAppUrl + "/logout/post",
