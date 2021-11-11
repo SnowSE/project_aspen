@@ -2,15 +2,15 @@ version: "3.7"
 services:
   web_test:
     build:
-      dockerfile: ../../ops/webTests.Dockerfile
-      context: ../src/web/
+      dockerfile: ../../ops/testing/webTests.Dockerfile
+      context: ../../src/web/
     networks:
       shared_test:
 
   api_test:
     build:
-      dockerfile: ../ops/apiTests.Dockerfile
-      context: ../src/
+      dockerfile: ../ops/testing/apiTests.Dockerfile
+      context: ../../src/
     environment:
       ASPEN_TEST_CONNECTION_STRING: Server=api_db_test;Database=aspen;User Id=aspen;Password=password;
     networks:
