@@ -31,11 +31,15 @@ const AuthorizedRoute: FC<any> = ({
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
-  console.log(isAdmin)
+  console.log(isAdmin);
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
-    return <Route {...rest}><UnAuthorized/></Route>;
+    return (
+      <Route {...rest}>
+        <UnAuthorized />
+      </Route>
+    );
   }
 };
 
@@ -45,33 +49,42 @@ function App() {
     dispatch(checkIfLoggedIn());
   }, [dispatch]);
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
+  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
 
   return (
-    <Router>
+    <Router basename="/aspen">
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
-        <AdminRoute isAdmin={isAdmin} path="/admin">
+        <AdminRoute isAdmin={isAdmin} path={`${process.env.PUBLIC_URL}/admin`}>
           <Admin />
         </AdminRoute>
-        <AdminRoute isAdmin={isAdmin} path="/pagedata">
+        <AdminRoute
+          isAdmin={isAdmin}
+          path={`${process.env.PUBLIC_URL}/pagedata`}
+        >
           <Admin />
         </AdminRoute>
-        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/silent">
-          <LoginLanding/>
+        <AuthorizedRoute
+          isAuthorized={isAuthenticated}
+          path={`${process.env.PUBLIC_URL}/login/silent`}
+        >
+          <LoginLanding />
         </AuthorizedRoute>
-        <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
-          <LoginLanding/>
+        <AuthorizedRoute
+          isAuthorized={isAuthenticated}
+          path={`${process.env.PUBLIC_URL}/login/post`}
+        >
+          <LoginLanding />
         </AuthorizedRoute>
-        <Route path="/login/landing">
+        <Route path={`${process.env.PUBLIC_URL}/login/landing`}>
           <LoginLanding />
         </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/register">
+        <Route path={`${process.env.PUBLIC_URL}/register`}>
           <PersonPage />
+        </Route>
+        <Route exact path={`${process.env.PUBLIC_URL}/`}>
+          <Home />
         </Route>
       </Switch>
     </Router>
