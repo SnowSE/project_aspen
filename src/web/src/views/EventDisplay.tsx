@@ -1,15 +1,14 @@
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useStoreSelector } from "../../store";
-import { getEventList } from "../../store/eventSlice";
-import EventModel from "../../models/event";
-import EventInfo from "./EventInfo";
+import { useStoreSelector } from "../store";
+import { getEventList } from "../store/eventSlice";
+import EventModel from "../models/event";
+import EventInfo from "../components/Home/EventInfo";
 
 const EventDisplay = () => {
   const events = useStoreSelector((state) => state.event.events);
   const [event, setEvent] = useState<EventModel>(new EventModel());
   useEffect(() => {
-    dispatch(getEventList());
     const dummyEvent = new EventModel(
       new Date(),
       "",
@@ -28,21 +27,20 @@ const EventDisplay = () => {
     } else {
       setEvent(dummyEvent);
     }
+  }, [events]);
+
+  useEffect(() => {
+    dispatch(getEventList());
   }, []);
 
   const dispatch = useDispatch();
 
   return (
     <div>
-      {events.length > 0 ? (
-        <>
-          <EventInfo event={event} />
-        </>
-      ) : (
-        <>
-          <EventInfo event={event} />
-        </>
-      )}
+      <EventInfo event={event} />
+      {
+        events.map(e => <div>{e.description}</div>)
+      }
     </div>
   );
 };

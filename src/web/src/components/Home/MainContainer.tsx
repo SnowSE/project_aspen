@@ -1,4 +1,4 @@
-import EventDisplay from "./EventDisplay";
+import EventDisplay from "../../views/EventDisplay";
 import MessageBoard from "./MessageBoard";
 import ButtonBar from "./EventDisplayButtonBar";
 import Event from '../Event'
