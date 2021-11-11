@@ -1,14 +1,17 @@
 import EventModel from "../../models/event";
-import EventDisplayButtonBar from "./EventDisplayButtonBar";
+import EventList from "../EventList"
+
 interface Props {
   event: EventModel;
 }
-const EventInfo = ({ event }: Props) => {
+const EventInfo = () => {
+  const charity= "Justins jockies"
   return (
-    <div className="card text-center bg-info">
-      <h3 className="text-light m-3">{event.description}</h3>
-      <h3></h3>
-      <EventDisplayButtonBar/>
+    <div className="card text-center bg-light">
+      <h3 className="m-3">Upcoming Events</h3>
+      <EventList/>
+
+  
     </div>
   );
 };

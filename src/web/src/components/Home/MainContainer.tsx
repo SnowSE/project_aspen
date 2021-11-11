@@ -1,7 +1,9 @@
 import EventDisplay from "../../views/EventDisplay";
-import MessageBoard from "./MessageBoard";
+
+import EventInfo from "./EventInfo";
 import ButtonBar from "./EventDisplayButtonBar";
 import Event from '../Event'
+import EventTeam from "./EventTeam";
 
 const MainContainer = () => {
     return(
@@ -14,7 +16,10 @@ const MainContainer = () => {
             </div>
             <div className="row">
                 <div className="col">
-                    <MessageBoard message={"Welcome!"}/>
+                    <EventTeam/>
+                </div>
+                <div className="col">
+                    <EventInfo/>
                 </div>
             </div>
 
