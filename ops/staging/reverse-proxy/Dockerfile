@@ -10,7 +10,7 @@ RUN npm run build
 
 FROM nginx
 RUN apt update && apt install -y curl
-WORKDIR /usr/share/nginx/html
+WORKDIR /etc/nginx/html
 RUN rm -rf ./*
 COPY ops/staging/reverse-proxy/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/build .
