@@ -48,7 +48,7 @@ function App() {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
 
   return (
-    <Router basename="/aspen">
+    <Router basename={`${process.env.PUBLIC_URL}`}>
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
