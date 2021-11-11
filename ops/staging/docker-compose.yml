@@ -56,7 +56,7 @@ services:
       - KEYCLOAK_FRONTEND_URL=https://engineering.snow.edu/aspen/auth/auth
     healthcheck:
       # test: ["CMD", "curl", "-f", "http://localhost:8080/aspen/auth/resources/vc52l/welcome/keycloak/img/favicon.ico"]
-      test: ["CMD", "curl", "-f", "http://localhost:8080/aspen/auth/auth"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/aspen/auth"]
       interval: 3s
       timeout: 1s
       retries: 15
