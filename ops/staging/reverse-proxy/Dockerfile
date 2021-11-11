@@ -11,7 +11,7 @@ RUN npm run build
 FROM nginx
 RUN apt update && apt install -y curl
 WORKDIR /etc/nginx/html
-RUN rm -rf ./*
+RUN mkdir aspen
 COPY ops/staging/reverse-proxy/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/build .
+COPY --from=builder /app/build /aspen
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
