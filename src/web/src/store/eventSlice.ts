@@ -41,7 +41,6 @@ const eventSlice = createSlice({
       state.image = action.payload;
     },
     setEvents(state, action) {
-      console.log(action.payload);
       state.events = action.payload;
     },
   },
@@ -76,8 +75,9 @@ export const getSingleEvent = (id: number) => {
 
 export const getEventList = () => {
   return async (dispatch: StoreDispatch) => {
-    const response = await getEvents();
-    dispatch(eventActions.setEvents(response.data?? []));
+    const events = await getEvents();
+    console.log("Event.log", events)
+    dispatch(eventActions.setEvents(events?? []));
   };
 };
 

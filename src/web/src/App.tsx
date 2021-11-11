@@ -18,6 +18,8 @@ import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
 import AdminNavBar from "./components/UI/AdminNavBar";
 import PersonPage from "./views/PersonPage";
+import NewEventForm from "./components/Forms/NewEventForm";
+import EventDisplay from "./views/EventDisplay";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -52,6 +54,11 @@ function App() {
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
+        <AdminRoute isAdmin={isAdmin} path="/admin/events"><EventDisplay/></AdminRoute>
+      <AdminRoute isAdmin={isAdmin} path ="/admin/createnewevent">
+          <NewEventForm/>
+        </AdminRoute>
+
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
@@ -73,6 +80,7 @@ function App() {
         <Route path="/register">
           <PersonPage />
         </Route>
+       
       </Switch>
     </Router>
   );
