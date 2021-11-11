@@ -9,6 +9,8 @@ const authUrl = process.env.REACT_APP_AUTH_URL
 const reactAppUrl =
   window.location.origin + process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
+console.log("my url is", reactAppUrl)
+
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority:
