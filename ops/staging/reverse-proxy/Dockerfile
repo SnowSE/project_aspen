@@ -1,6 +1,7 @@
 FROM node:15-alpine AS builder
 WORKDIR /app
-COPY src/web/package* .
+COPY src/web/package.json .
+COPY src/web/package-lock.json .
 RUN npm install 
 COPY src/web/ .
 
