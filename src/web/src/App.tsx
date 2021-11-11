@@ -50,6 +50,7 @@ function App() {
   }, [dispatch]);
   const isAuthenticated = useStoreSelector((state) => state.auth.isLoggedIn);
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
+  console.log(process.env.PUBLIC_URL)
 
   return (
     <Router basename="/aspen">
