@@ -50,7 +50,7 @@ function App() {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin)
 
   return (
-    <Router>
+    <Router basename={`${process.env.PUBLIC_URL}`}>
       <NavBar />
       {isAdmin ? <AdminNavBar /> : <></>}
       <Switch>
@@ -74,13 +74,12 @@ function App() {
         <Route path="/login/landing">
           <LoginLanding />
         </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
         <Route path="/register">
           <PersonPage />
         </Route>
-       
+        <Route exact path="/">
+          <Home />
+        </Route>
       </Switch>
     </Router>
   );
