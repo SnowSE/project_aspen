@@ -75,7 +75,7 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
-      PROXY_ADDRESS_FORWARDING: true
+      PROXY_ADDRESS_FORWARDING: "true"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 3s
