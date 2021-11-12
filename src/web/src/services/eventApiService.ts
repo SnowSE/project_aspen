@@ -1,7 +1,8 @@
 import axios from "axios";
 import EventModel from "../models/event";
 
-const Url = `${process.env.PUBLIC_URL}/api/events`;
+// const Url = `${process.env.PUBLIC_URL}/api/events`;
+const Url = 'http://localhost/api/events';
 
 //Create
 export const addEvent = async (event: EventModel) => {
@@ -18,9 +19,9 @@ export const addEvent = async (event: EventModel) => {
 export const getEvents = async () => {
   console.log("called")
   const res = await axios.get(Url);
-  console.log(res)
+  console.log("api response" + res)
   if (res.status !== 200) {
-    console.log(res);
+    console.log("!200 response");
     throw Error("Api error getting all events");
   }
   return res.data;
