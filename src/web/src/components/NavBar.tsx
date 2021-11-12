@@ -40,9 +40,11 @@ const NavBar = () => {
                 <NavLink className='btn btn-primary' to="/admin">Admin Page</NavLink>
               </li>
             )}
+            {isAdmin && (
             <li className="nav-item mx-2 p-1">
               <NavLink className='btn btn-primary' to="/pagedata">PageData</NavLink>
             </li>
+            )}
             <li className="nav-item mx-2 p-1">
               <NavLink className='btn btn-primary' to="/register">Register</NavLink>
             </li>
