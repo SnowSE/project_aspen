@@ -19,5 +19,17 @@ namespace Api.DtoModels
         public long OwnerID { get; init; }
 
         public long TeamID { get; init; }
+
+        public IEnumerable<DtoPersonRegistration> PersonRegistrations { get; init; }
+    }
+
+    public record DtoPersonRegistration
+    {
+        public long ID { get; init; }
+
+        public long PersonID { get; init; }
+        public DtoPerson Person { get; init; }
+
+        public DateTime CreatedDate { get; init; }
     }
 }

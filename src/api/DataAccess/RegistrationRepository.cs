@@ -19,6 +19,7 @@ namespace Api.DataAccess
         Task<IEnumerable<Registration>> GetAllAsync();
         Task<Registration> GetByIdAsync(long registrationID);
         Task<bool> ExistsAsync(long registrationID);
+        Task<Registration> LinkPersonToRegistrationAsync(long registrationId, long personId);
     }
 
     public class RegistrationRepository : IRegistrationRepository
@@ -46,7 +47,9 @@ namespace Api.DataAccess
 
         public async Task<Registration> GetByIdAsync(long registrationID)
         {
-            var dbRegistration = await context.Registrations.FindAsync(registrationID);
+            var dbRegistration = await context.Registrations
+                //.Include(r=>r.PersonRegistrations)
+                .FirstOrDefaultAsync(r=>r.ID == registrationID);
             if (dbRegistration == null)
                 throw new NotFoundException<Registration>();
             return mapper.Map<Registration>(dbRegistration);
@@ -76,5 +79,25 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
+        public async Task<Registration> LinkPersonToRegistrationAsync(long registrationId, long personId)
+        {
+            var registration = await context.Registrations.FindAsync(registrationId) ?? throw new NotFoundException<Registration>(); ;
+            var person = await context.Persons.FindAsync(personId) ?? throw new NotFoundException<Person>();
+
+            var personRegistration = new DbPersonRegistration
+            {
+                CreatedDate = DateTime.Now,
+                PersonID = personId,
+                RegistrationID = registrationId
+            };
+            context.PersonRegistrations.Add(personRegistration);
+            await context.SaveChangesAsync();
+
+            var updatedRegistration = await context.Registrations
+                .Include(r => r.PersonRegistrations)
+                .ThenInclude(pr => pr.Person)
+                .FirstOrDefaultAsync(r => r.ID == registrationId);
+            return mapper.Map<Registration>(updatedRegistration);
+        }
     }
 }
