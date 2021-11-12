@@ -11,8 +11,6 @@ const EventInfo = ({ event }: Props) => {
     <div className="card text-center bg-light w-100">
       <h3 className="m-3">Upcoming Event</h3>
       <EventCard event={event}/>
-
-  
     </div>
   );
 };

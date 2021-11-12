@@ -38,8 +38,7 @@ const MainContainer = () => {
   
     const dispatch = useDispatch();
 
-    return(
-       
+    return(  
         <div className="container">
             <div className="row d-flex">
                 <div className="col">
@@ -54,9 +53,10 @@ const MainContainer = () => {
                     <EventInfo event={event}/>
                 </div>
             </div>
-
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
 export default MainContainer;

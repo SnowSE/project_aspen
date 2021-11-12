@@ -1,11 +1,8 @@
-import MainContainer from "../components/Home/MainContainer"
-// import Event from "../components/Event"
+import MainContainer from "../components/Home/MainContainer";
+
 const Home = () => {
   return (
-    <div>
-      {/* {JSON.stringify(user.profile)} */}
-    {/* <Event/> */}
-      <hr />
+    <div className="container-fluid">
       <MainContainer />
     </div>
   );
