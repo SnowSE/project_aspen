@@ -3,7 +3,7 @@ import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import DateInput from "../../inputs/DateInput";
 import EventModel from "../../models/event";
-import { createNewEvent, updateExistingEvent } from "../../store/eventSlice";
+import { createNewEvent } from "../../store/eventSlice";
 import { FormEvent } from "react";
 
 const NewEventForm = () => {
@@ -44,11 +44,11 @@ const NewEventForm = () => {
         description.value,
         image.value
       );
-      console.log("This is the event inside of the handler:" + {...event});
+      console.log("This is the event inside of the handler:" + { ...event });
       // if (isEditing) {
       //   dispatch(updateExistingEvent(event));
       // } else {
-        dispatch(createNewEvent(event));
+      dispatch(createNewEvent(event));
       // }
 
       date.reset();

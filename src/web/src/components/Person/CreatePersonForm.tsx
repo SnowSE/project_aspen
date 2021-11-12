@@ -1,4 +1,4 @@
-import React, { FormEvent, SyntheticEvent } from "react";
+import { FormEvent } from "react";
 import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import Person from "../../models/person";
