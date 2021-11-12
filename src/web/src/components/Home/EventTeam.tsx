@@ -6,7 +6,8 @@ const EventTeam = () => {
     return (
         <div className="card text-center bg-light">
             <img src={img_url} alt="team logo" width="550" height="200" className="pb-3"/>
-            <p>{info}</p>
+            <hr/>
+            <p className="card h-100">{info}</p>
     
       
         </div>
