@@ -8,6 +8,7 @@ import EventInfo from "../components/Home/EventInfo";
 const EventDisplay = () => {
   const events = useStoreSelector((state) => state.event.events);
   const [event, setEvent] = useState<EventModel>(new EventModel());
+  const dispatch = useDispatch();
   useEffect(() => {
     const dummyEvent = new EventModel(
       new Date(),
@@ -16,7 +17,7 @@ const EventDisplay = () => {
       ""
     );
     const today = new Date();
-    if (events.length != 0) {
+    if (events.length !== 0) {
       const closestEvent = events.reduce((a, b) => {
         const diff = new Date(a.date).getTime() - today.getTime();
         return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
@@ -31,16 +32,14 @@ const EventDisplay = () => {
 
   useEffect(() => {
     dispatch(getEventList());
-  }, []);
-
-  const dispatch = useDispatch();
+  }, [dispatch]);
 
   return (
     <div>
       <EventInfo event={event} />
-      {
-        events.map(e => <div>{e.description}</div>)
-      }
+      {events.map((e) => (
+        <div>{e.description}</div>
+      ))}
     </div>
   );
 };

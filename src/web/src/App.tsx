@@ -1,19 +1,12 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./views/Home";
 import { LoginLanding } from "./views/auth/LoginLanding";
-import { LogoutLanding } from "./views/auth/LogoutLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
 import { checkIfLoggedIn } from "./store/authSlice";
 import { useStoreSelector } from "./store";
 import AdminSideBar from "./components/UI/AdminSideBar";
-import PageDataPage from "./views/PageDataPage";
 import Admin from "./views/Admin";
 import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
@@ -57,13 +50,17 @@ function App() {
   return (
     <Router basename={`${process.env.PUBLIC_URL}`}>
       <NavBar />
-      <div className="col-md-1 bg-primary">
-        <AdminSideBar />
-      </div>
+      {isAdmin && (
+        <div className="col-md-1 bg-primary">
+          <AdminSideBar />
+        </div>
+      )}
       <Switch>
-        <AdminRoute isAdmin={isAdmin} path="/admin/events"><EventDisplay/></AdminRoute>
-      <AdminRoute isAdmin={isAdmin} path ="/admin/createnewevent">
-          <NewEventForm/>
+        <AdminRoute isAdmin={isAdmin} path="/admin/events">
+          <EventDisplay />
+        </AdminRoute>
+        <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
+          <NewEventForm />
         </AdminRoute>
 
         <AdminRoute isAdmin={isAdmin} path="/admin">
