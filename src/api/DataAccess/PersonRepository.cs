@@ -18,6 +18,7 @@ namespace Api.DataAccess
         Task DeleteAsync(long id);
         Task<Person> EditAsync(Person e);
         Task<Person> GetByIDAsync(long id);
+        Task<Person> GetByAuthIdAsync(string authId);
     }
 
     public class PersonRepository : IPersonRepository
@@ -89,6 +90,16 @@ namespace Api.DataAccess
             if (dbPerson == null)
             {
                 throw new NotFoundException<Person>($"Person id does not exist");
+            }
+            return mapper.Map<Person>(dbPerson);
+        }
+
+        public async Task<Person> GetByAuthIdAsync(string authId)
+        {
+            var dbPerson = await context.Persons.FirstOrDefaultAsync(p => p.AuthID == authId);
+            if(dbPerson == null)
+            {
+                throw new NotFoundException<Person>($"Unable to locate person by authId");
             }
             return mapper.Map<Person>(dbPerson);
         }

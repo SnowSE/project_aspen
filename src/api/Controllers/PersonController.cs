@@ -33,12 +33,21 @@ namespace Api.Controllers
             this.personRepository = personRepository;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<DtoPerson>> GetByID(long id)
         {
             if (!await personRepository.ExistsAsync(id))
                 return NotFound("Person id does not exist");
             var person = await personRepository.GetByIDAsync(id);
+            return mapper.Map<DtoPerson>(person);
+        }
+
+        [HttpGet("authid/{authId}")]
+        public async Task<ActionResult<DtoPerson>> GetByAuthId(string authId)
+        {
+            var person = await personRepository.GetByAuthIdAsync(authId);
+            if (person == null)
+                return NotFound("AuthID does not exist");
             return mapper.Map<DtoPerson>(person);
         }
 
@@ -60,8 +69,7 @@ namespace Api.Controllers
             }
         }
 
-
-        [HttpPut]
+        [HttpPut()]
         public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
         {
             if (!ModelState.IsValid)
