@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { useStoreSelector } from "../store";
 import { getEventList } from "../store/eventSlice";
 import EventModel from "../models/event";
-import EventInfo from "../components/Home/EventInfo";
+import EventInfo from "../components/Home/EventBanner";
 
 const EventDisplay = () => {
   const events = useStoreSelector((state) => state.event.events);
   const [event, setEvent] = useState<EventModel>(new EventModel());
+  const dispatch = useDispatch();
   useEffect(() => {
     const dummyEvent = new EventModel(
       new Date(),
@@ -16,7 +17,7 @@ const EventDisplay = () => {
       ""
     );
     const today = new Date();
-    if (events.length != 0) {
+    if (events.length !== 0) {
       const closestEvent = events.reduce((a, b) => {
         const diff = new Date(a.date).getTime() - today.getTime();
         return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
@@ -31,16 +32,11 @@ const EventDisplay = () => {
 
   useEffect(() => {
     dispatch(getEventList());
-  }, []);
-
-  const dispatch = useDispatch();
+  }, [dispatch]);
 
   return (
     <div>
       <EventInfo event={event} />
-      {
-        events.map(e => <div>{e.description}</div>)
-      }
     </div>
   );
 };

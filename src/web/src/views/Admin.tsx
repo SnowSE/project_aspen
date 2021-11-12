@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { useEffect } from "react";
+import { Route } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import EventList from "../components/EventList";
 import NewEventForm from "../components/Forms/NewEventForm";
-import AdminNavBar from "../components/UI/AdminNavBar";
 import { useStoreSelector } from "../store";
 import { getEventList } from "../store/eventSlice";
 import Demo from "./Demo";
@@ -13,12 +12,12 @@ export default function Admin() {
   const user = useStoreSelector((state) => state.auth.user);
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   useEffect(() => {
-    async function fetchEvents(){
-      console.log("executed")
-      getEventList()
+    async function fetchEvents() {
+      console.log("executed");
+      getEventList();
     }
-    fetchEvents()
-  }, [])
+    fetchEvents();
+  }, []);
   return (
     <div>
       <Route exact path="/admin/">
@@ -39,13 +38,13 @@ export default function Admin() {
         <Demo />
       </Route>
       <Route exact path="/admin/createEvent">
-        <NewEventForm/>
+        <NewEventForm />
       </Route>
       <Route exact path="/admin/events/editEvent"></Route>
       <Route exact path="/admin/events">
         <h1>events:</h1>
         {getEventList()}
-        <EventList/>
+        <EventList />
       </Route>
     </div>
   );
