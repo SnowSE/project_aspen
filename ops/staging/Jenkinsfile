@@ -1,0 +1,20 @@
+def repo = 'ssh://git@github.com/SnowSE/project_aspen.git'
+
+pipeline {
+    agent none
+    stages {
+        stage("Build and Deploy") {
+            agent {
+                label 'engineering.snow.edu'
+            }
+            steps {
+                git credentialsId: 'ea61f9dc-d1a9-4eb7-8b4c-441ad8bed5fb', url: "$repo"
+                sh """
+                  cd ops/staging
+                  DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+                  docker-compose up -d
+                """
+            }
+        }
+    }
+}

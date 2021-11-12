@@ -19,6 +19,8 @@ import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
 
 import PersonPage from "./views/PersonPage";
+import NewEventForm from "./components/Forms/NewEventForm";
+import EventDisplay from "./views/EventDisplay";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -53,12 +55,17 @@ function App() {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
 
   return (
-    <Router>
+    <Router basename={`${process.env.PUBLIC_URL}`}>
       <NavBar />
       <div className="col-md-1 bg-primary">
         <AdminSideBar />
       </div>
       <Switch>
+        <AdminRoute isAdmin={isAdmin} path="/admin/events"><EventDisplay/></AdminRoute>
+      <AdminRoute isAdmin={isAdmin} path ="/admin/createnewevent">
+          <NewEventForm/>
+        </AdminRoute>
+
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
@@ -74,11 +81,11 @@ function App() {
         <Route path="/login/landing">
           <LoginLanding />
         </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
         <Route path="/register">
           <PersonPage />
+        </Route>
+        <Route exact path="/">
+          <Home />
         </Route>
       </Switch>
     </Router>
