@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useStoreSelector } from "../store";
 import { getEventList } from "../store/eventSlice";
 import EventModel from "../models/event";
-import EventInfo from "../components/Home/EventInfo";
+import EventInfo from "../components/Home/EventBanner";
 
 const EventDisplay = () => {
   const events = useStoreSelector((state) => state.event.events);
@@ -37,9 +37,6 @@ const EventDisplay = () => {
   return (
     <div>
       <EventInfo event={event} />
-      {events.map((e) => (
-        <div>{e.description}</div>
-      ))}
     </div>
   );
 };
