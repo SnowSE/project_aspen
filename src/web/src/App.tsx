@@ -11,7 +11,7 @@ import Admin from "./views/Admin";
 import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
 
-import PersonPage from "./views/PersonPage";
+import RegistrationPage from "./views/RegistrationPage";
 import NewEventForm from "./components/Forms/NewEventForm";
 import EventDisplay from "./views/EventDisplay";
 
@@ -82,7 +82,7 @@ function App() {
           <LoginLanding />
         </AuthorizedRoute>
         <AuthorizedRoute isAuthorized={isAuthenticated} path="/register">
-            <PersonPage />
+            <RegistrationPage />
         </AuthorizedRoute>
         <Route path="/login/landing">
           <LoginLanding />

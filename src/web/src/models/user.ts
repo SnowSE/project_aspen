@@ -1,6 +1,7 @@
 export interface User {
   access_token: string,
   profile: {
-    roles: string[]
+    roles: string[],
+    email: string
   }
 }

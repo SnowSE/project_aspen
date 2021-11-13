@@ -12,8 +12,8 @@ export const getAllPersons = createAsyncThunk(
 export const getPersonByAuthId = createAsyncThunk(
   "person/getPersonByAuthId",
   async (authId: string, ThunkAPI) => {
-    const personList = await personService.getPersonByAuthId(authId);
-    return personList;
+    const person = await personService.getPersonByAuthId(authId);
+    return person;
   }
 );
 export const createPerson = createAsyncThunk(
@@ -36,11 +36,11 @@ export const deletePerson = createAsyncThunk(
 );
 
 interface PersonState {
-  selectedPerson: Person,
+  selectedPerson?: Person,
   personList: Person[],
 }
 const initialPersonState: PersonState = {
-  selectedPerson: { authID: "", name: "", bio: "", ID: -1},
+  selectedPerson: undefined,
   personList: [],
 };
 
