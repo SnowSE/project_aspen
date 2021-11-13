@@ -83,6 +83,7 @@ namespace Api
             {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
+                c.RoutePrefix= "aspen";
             });
 
             services.AddDbContext<AspenContext>(options => options.UseNpgsql(getConnectionString()));
