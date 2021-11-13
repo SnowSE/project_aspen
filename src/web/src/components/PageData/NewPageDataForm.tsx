@@ -28,8 +28,10 @@ const NewPageDataForm = ({ onSubmit }: Props) => {
 
   return (
     <form onSubmit={submitHandler}>
-      <TextInput inputControl={newKeyName} />
-      <button className="btn btn-primary">Save</button>
+      <div className="mt-2 w-50 d-inline-block">
+        <TextInput inputControl={newKeyName} />
+      </div>      
+      <button className="btn btn-primary btn-sm ms-2">Save</button>
     </form>
   );
 };

@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import NewPageDataForm from "../components/PageData/NewPageDataForm";
 import PageDataItemForm from "../components/PageData/PageDataItemForm";
 import PageDataList from "../components/PageData/PageDataList";
 import {
   clearCurrentKey,
   getPageDataKeys,
-  postPageData,
   putPageData,
 } from "../store/pageDataSlice";
 import { useStoreSelector } from "../store";
@@ -24,11 +22,6 @@ const PageDataPage = () => {
     dispatch(getPageDataKeys());
   }, [dispatch]);
 
-  const submitNewPDHandler = (pageData: PageData) => {
-    dispatch(postPageData(pageData));
-    console.log(pdState);
-  };
-
   const updatePageDataHandler = (pageData: PageData) => {
     console.log(pageData);
     dispatch(putPageData(pageData));
@@ -39,16 +32,23 @@ const PageDataPage = () => {
   };
 
   return (
-    <div>
-      <NewPageDataForm onSubmit={submitNewPDHandler} />
-      <PageDataList keys={pdState.keys} />
-      {pdState.currentKey && (
-        <PageDataItemForm
-          pageData={pageData}
-          onSubmit={updatePageDataHandler}
-          onCancel={cancelHandler}
-        />
-      )}
+    <div className="container border pb-4">
+      <div className="fs-3 text-center bg-light ">Page Data</div>
+      <div className="row px-5 mt-2">
+        <div className="col-3 border">
+          <PageDataList keys={pdState.keys} />
+        </div>
+        <div className="col-9">
+          {pdState.currentKey && (
+          <PageDataItemForm
+            pageData={pageData}
+            onSubmit={updatePageDataHandler}
+            onCancel={cancelHandler}
+          />
+          )}
+        </div>        
+      </div>
+      
     </div>
   );
 };
