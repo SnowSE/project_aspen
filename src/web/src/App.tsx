@@ -11,22 +11,29 @@ import Admin from "./views/Admin";
 import { AuthService } from "./services/authService";
 import UnAuthorized from "./views/UnAuthorized";
 
-import PersonPage from "./views/PersonPage";
+import RegistrationPage from "./views/RegistrationPage";
 import NewEventForm from "./components/Forms/NewEventForm";
 import EventDisplay from "./views/EventDisplay";
 
 const AuthorizedRoute: FC<any> = ({
   children,
-  authed: isAuthorized,
+  isAuthorized,
   ...rest
 }) => {
   if (!isAuthorized) {
+    console.log(isAuthorized)
     AuthService.signinRedirect();
+    return <div></div>
   }
+  console.log(isAuthorized)
   return <Route {...rest}>{children}</Route>;
 };
 
-const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
+const AdminRoute: FC<any> = ({
+  children,
+  isAdmin,
+  ...rest
+}) => {
   console.log(isAdmin);
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
@@ -62,7 +69,6 @@ function App() {
         <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
           <NewEventForm />
         </AdminRoute>
-
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
@@ -75,11 +81,11 @@ function App() {
         <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
           <LoginLanding />
         </AuthorizedRoute>
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/register">
+            <RegistrationPage />
+        </AuthorizedRoute>
         <Route path="/login/landing">
           <LoginLanding />
-        </Route>
-        <Route path="/register">
-          <PersonPage />
         </Route>
         <Route exact path="/">
           <Home />
