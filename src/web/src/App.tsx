@@ -17,12 +17,15 @@ import EventDisplay from "./views/EventDisplay";
 
 const AuthorizedRoute: FC<any> = ({
   children,
-  authed: isAuthorized,
+  isAuthorized,
   ...rest
 }) => {
   if (!isAuthorized) {
+    console.log(isAuthorized)
     AuthService.signinRedirect();
+    return <div></div>
   }
+  console.log(isAuthorized)
   return <Route {...rest}>{children}</Route>;
 };
 
@@ -78,9 +81,9 @@ function App() {
         <Route path="/login/landing">
           <LoginLanding />
         </Route>
-        <Route path="/register">
-          <PersonPage />
-        </Route>
+        <AuthorizedRoute isAuthorized={isAuthenticated} path="/register">
+            <PersonPage />
+        </AuthorizedRoute>
         <Route exact path="/">
           <Home />
         </Route>
