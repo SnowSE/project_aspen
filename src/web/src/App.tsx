@@ -29,7 +29,11 @@ const AuthorizedRoute: FC<any> = ({
   return <Route {...rest}>{children}</Route>;
 };
 
-const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
+const AdminRoute: FC<any> = ({
+  children,
+  isAdmin,
+  ...rest
+}) => {
   console.log(isAdmin);
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
@@ -65,7 +69,6 @@ function App() {
         <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
           <NewEventForm />
         </AdminRoute>
-
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
@@ -78,12 +81,12 @@ function App() {
         <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
           <LoginLanding />
         </AuthorizedRoute>
-        <Route path="/login/landing">
-          <LoginLanding />
-        </Route>
         <AuthorizedRoute isAuthorized={isAuthenticated} path="/register">
             <PersonPage />
         </AuthorizedRoute>
+        <Route path="/login/landing">
+          <LoginLanding />
+        </Route>
         <Route exact path="/">
           <Home />
         </Route>
