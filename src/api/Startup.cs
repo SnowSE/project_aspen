@@ -83,7 +83,6 @@ namespace Api
             {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
-                c.RoutePrefix= "aspen";
             });
 
             services.AddDbContext<AspenContext>(options => options.UseNpgsql(getConnectionString()));
@@ -102,7 +101,11 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/aspen/swagger/v1/swagger.json", "Aspen API v1"));
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/aspen/swagger/v1/swagger.json", "Aspen API v1");
+                c.RoutePrefix = "aspen";
+            });
 
             app.UseRouting();
 
