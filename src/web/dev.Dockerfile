@@ -3,4 +3,4 @@ RUN apk add curl
 
 WORKDIR /src/web
 
-CMD npm install && npm start
+CMD npm install && npm run start-legacy

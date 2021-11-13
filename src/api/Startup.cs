@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Api.DataAccess;
@@ -100,8 +101,21 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            // https://vmsdurano.com/fixing-swagger-ui-when-in-behind-proxy/
+            app.UseSwagger(options =>
+            {
+                options.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
+                    {
+                        var basePath = "aspen";
+                        var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
+                        swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+                    }
+                });
+            });
+            // app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/aspen/swagger/v1/swagger.json", "Aspen API v1");
             });
