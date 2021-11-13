@@ -109,7 +109,8 @@ namespace Api
                     if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
                     {
                         var basePath = "aspen";
-                        var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
+                        var scheme = httpReq.Headers["X-Forwarded-Host"] == "engineering.snow.edu" ? "https" : "http"
+                        var serverUrl = $"{scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
                         swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
                     }
                 });
