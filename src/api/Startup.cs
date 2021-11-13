@@ -104,7 +104,6 @@ namespace Api
             app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/aspen/swagger/v1/swagger.json", "Aspen API v1");
-                c.RoutePrefix = "aspen";
             });
 
             app.UseRouting();
