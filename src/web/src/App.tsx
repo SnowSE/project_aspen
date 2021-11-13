@@ -66,9 +66,6 @@ function App() {
         <AdminRoute isAdmin={isAdmin} path="/admin">
           <Admin />
         </AdminRoute>
-        <AdminRoute isAdmin={isAdmin} path="/pagedata">
-          <Admin />
-        </AdminRoute>
         <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/silent">
           <LoginLanding />
         </AuthorizedRoute>

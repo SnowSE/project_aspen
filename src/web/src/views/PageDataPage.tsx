@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import NewPageDataForm from "../components/PageData/NewPageDataForm";
-import NewEventForm from "../components/Forms/NewEventForm";
 import PageDataItemForm from "../components/PageData/PageDataItemForm";
 import PageDataList from "../components/PageData/PageDataList";
 import {
@@ -11,13 +10,15 @@ import {
   putPageData,
 } from "../store/pageDataSlice";
 import { useStoreSelector } from "../store";
-import EventModel from "../models/event";
 import { PageData } from "../models/pageData";
 
 const PageDataPage = () => {
   const dispatch = useDispatch();
   const pdState = useStoreSelector((state) => state.pageData);
-  const pageData: PageData = { key: pdState.currentKey ?? "", data: JSON.parse(pdState.currentData ?? "{}") };
+  const pageData: PageData = {
+    key: pdState.currentKey ?? "",
+    data: JSON.parse(pdState.currentData ?? "{}"),
+  };
 
   useEffect(() => {
     dispatch(getPageDataKeys());
@@ -37,16 +38,8 @@ const PageDataPage = () => {
     dispatch(clearCurrentKey({}));
   };
 
-  const newEvent: EventModel = {
-    ID: -1,
-    date: new Date(),
-    location: "",
-    description: "",
-    primaryImageUrl: "",
-  };
   return (
     <div>
-      <NewEventForm/>
       <NewPageDataForm onSubmit={submitNewPDHandler} />
       <PageDataList keys={pdState.keys} />
       {pdState.currentKey && (

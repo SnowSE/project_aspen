@@ -6,6 +6,7 @@ import NewEventForm from "../components/Forms/NewEventForm";
 import { useStoreSelector } from "../store";
 import { getEventList } from "../store/eventSlice";
 import Demo from "./Demo";
+import PageDataPage from "./PageDataPage";
 
 export default function Admin() {
   const history = useHistory();
@@ -36,6 +37,9 @@ export default function Admin() {
       </Route>
       <Route exact path="/admin/demo">
         <Demo />
+      </Route>
+      <Route exact path="/admin/pagedata">
+        <PageDataPage />
       </Route>
       <Route exact path="/admin/createEvent">
         <NewEventForm />
