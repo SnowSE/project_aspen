@@ -1,10 +1,6 @@
 import MainContainer from "../components/Home/MainContainer";
 
 const Home = () => {
-  return (
-    <div className="container-fluid">
-      <MainContainer />
-    </div>
-  );
+  return <MainContainer />;
 };
 export { Home };
