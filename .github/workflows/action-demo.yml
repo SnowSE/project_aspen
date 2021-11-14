@@ -1,7 +1,7 @@
 name: Run Tests
 on: [push]
 jobs:
-  update-infrastructure:
+  run-tests:
     runs-on: self-hosted
     steps:
       - name: checkout repo
@@ -14,8 +14,12 @@ jobs:
           docker-compose up -d
           docker-compose exec -T api_test dotnet test
           docker-compose exec -T web_test npm run test -- -- watchAll=
-        continue-on-error: true
 
+  teardown:
+    runs-on: self-hosted
+    if: ${{ always() }}
+    needs: [run-tests]
+    steps:
       - name: teardown
         run: |
           cd ops/testing
