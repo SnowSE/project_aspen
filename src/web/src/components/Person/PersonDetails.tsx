@@ -6,11 +6,11 @@ import Person from "../../models/person";
 export default function PersonDetails({ person }: {person: Person}) {
   const dispatch = useDispatch();
   function onDelete() {
-      dispatch(deletePerson(person.ID))
+      dispatch(deletePerson(person.id))
   }
   return (
     <div>
-      <p>id: {person.ID}</p>
+      <p>id: {person.id}</p>
       <p>AuthId: {person.authID}</p>
       <p>Name: {person.name}</p>
       <p>Bio: {person.bio}</p>

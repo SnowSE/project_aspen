@@ -18,7 +18,7 @@ const createPerson = async (person: Person) => {
 };
 
 const updatePerson = async (person: Person) => {
-  const res = await axios.put<Person>(url + "/" + person.ID, { ...person });
+  const res = await axios.put<Person>(url + "/" + person.id, { ...person });
   return res.data
 };
 

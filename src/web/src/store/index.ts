@@ -4,6 +4,7 @@ import eventSlice from "./eventSlice";
 import pageDataSlice from "./pageDataSlice";
 import personSlice from "./personSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+import teamSlice from "./teamSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     event: eventSlice.reducer,
     pageData: pageDataSlice.reducer,
     person: personSlice.reducer,
+    team: teamSlice.reducer
   },
 });
 
