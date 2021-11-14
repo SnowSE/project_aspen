@@ -1,4 +1,4 @@
-name: Run Tests
+name: Deploy Staging
 on:
   push:
     branches:
