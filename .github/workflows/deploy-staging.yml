@@ -1,0 +1,17 @@
+name: Run Tests
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deloy-staging:
+    runs-on: self-hosted
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: build and test
+        run: |
+          cd ops/staging
+          DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+          docker-compose up -d
