@@ -1,6 +1,9 @@
 import axios from "axios";
+import Registration from "../models/registration";
 import Team from "../models/team"
+
 const url = `${process.env.PUBLIC_URL}/api/teams`;
+const registrationUrl = `${process.env.PUBLIC_URL}/api/Registration`
 
 const getAllTeams = async () =>{
     const res = await axios.get<Team[]>(url);
@@ -12,9 +15,14 @@ const createTeam = async (team :Team) =>{
     return res.data;
 }
 
+const createRegistration = async (registration: Registration) => {
+    const res = await axios.post<Registration>( registrationUrl, registration)
+    return res.data
+}
 
 const teamService={
     getAllTeams,
-    createTeam
+    createTeam,
+    createRegistration
 }
 export default teamService; 

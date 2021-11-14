@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import Registration from "../models/registration";
 import Team from "../models/team";
 import teamService from "../services/teamService";
 
@@ -11,17 +12,26 @@ export const getAllTeams = createAsyncThunk (
 );
 export const createTeam = createAsyncThunk(
     "team/createTeam",
-    async(team: Team, ThunkAPI) =>{
-        await teamService.createTeam(team);
-        const teams = teamService.getAllTeams();
-        return teams;
+    async(args:any, ThunkAPI) =>{
+        const team = await teamService.createTeam(args.team);
+        args.registration.teamID = team.id
+        await teamService.createRegistration(args.registration)
+        return team
+    }
+)
+export const createRegistration = createAsyncThunk(
+    "team/createRegistration",
+    async(registration: Registration, ThunkAPI) => {
+        await teamService.createRegistration(registration)   
     }
 )
 
 interface TeamState {
-    teamList: Team[]
+    currentTeam?: Team;
+    teamList: Team[];
 }
 const initialTeamState: TeamState ={
+    currentTeam: undefined,
     teamList: []
 }
 
@@ -40,10 +50,16 @@ const teamSlice = createSlice({
                 console.log('error', action.payload);
             })
             .addCase(createTeam.fulfilled, (state, action) => {
-                state.teamList = action.payload;
+                state.currentTeam = action.payload;
             })
-            .addCase(createTeam.rejected, (satate, aciton) => {
-                console.log('error', aciton.payload);
+            .addCase(createTeam.rejected, (state, action) => {
+                console.log('error', action.payload);
+            })
+            .addCase(createRegistration.fulfilled, (state, action) => {
+                console.log('success')
+            })
+            .addCase(createRegistration.rejected, (state, action) => {
+                console.log('error', action.payload)
             })
     }
 });
