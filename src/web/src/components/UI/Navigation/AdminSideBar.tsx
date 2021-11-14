@@ -9,7 +9,7 @@ import {
 const AdminSideBar = () => {
   return (
     <>
-      <div className="d-flex align-items-center p-2  me-md-auto text-decoration-none text-light">
+      <div className="d-flex align-items-center p-2  me-md-auto text-decoration-none text-light bg-primary">
         <span className="fs-4">Admin Tools</span>
       </div>
       <ul className="nav nav-tabs flex-column mb-auto">

@@ -30,14 +30,17 @@ const PageDataItemForm = ({ pageData, onCancel, onSubmit }: Props) => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <label>{pageData.key}</label>
-      <textarea value={data.toString()} onChange={dataChangedHandler} />
-      <button type="submit">Save</button>
-      <button type="button" onClick={() => onCancel()}>
-        Cancel
-      </button>
-    </form>
+    <div className="border p-3">
+      <form onSubmit={submitHandler}>
+        <label className="form-label fs-5">{pageData.key}</label>
+        <textarea className="form-control" value={data.toString()} onChange={dataChangedHandler} />
+        <button type="submit" className="btn btn-primary btn-sm me-1 my-2">Save</button>
+        <button type="button" className="btn btn-secondary btn-sm ms-1 my-2" onClick={() => onCancel()}>
+          Cancel
+        </button>
+      </form>
+    </div>
+    
   );
 };
 
