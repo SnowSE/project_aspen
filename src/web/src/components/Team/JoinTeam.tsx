@@ -5,7 +5,7 @@ import { getAllTeams } from "../../store/teamSlice";
 import TeamItem from "./TeamItem";
 
 type Props = {
-
+    ownerId: number;
 }
 
 const JoinTeam: FC<Props> = (props): JSX.Element => {
@@ -21,7 +21,7 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
             {teams.map(t => {
                 return (
                     <div className = "d-flex justify-content-center">
-                        <TeamItem team={t} />
+                        <TeamItem ownerId={props.ownerId} team={t} />
                     </div>
                 )
             })}

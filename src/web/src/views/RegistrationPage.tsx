@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import CreatePersonForm from '../components/Person/CreatePersonForm'
 import TeamRegistration from '../components/Team/TeamRegistration'
 import { useStoreSelector } from '../store'
 import { getPersonByAuthId } from '../store/personSlice'
 const RegistrationPage = () => {
-    const [isPersonFetched, setIsPersonFetched] = useState(false);
     const authId = useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
     const selectedPerson = useStoreSelector((state) => state.person.selectedPerson)
     const dispatch = useDispatch();
@@ -14,7 +13,6 @@ const RegistrationPage = () => {
 
     useEffect(() => {
         dispatch(getPersonByAuthId(authId));
-        setIsPersonFetched(true);
     }, [authId, dispatch]);
 
     return (

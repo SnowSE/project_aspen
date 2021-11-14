@@ -4,7 +4,7 @@ import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import Registration from "../../models/registration";
 import Team from "../../models/team";
-import { createRegistration, createTeam } from "../../store/teamSlice";
+import { createTeam } from "../../store/teamSlice";
 
 type Props = {
     ownerId: number;

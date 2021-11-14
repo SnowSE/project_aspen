@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Person from "../../models/person";
-import { useStoreSelector } from "../../store";
 import TeamForm from "../Forms/TeamForm";
 import JoinTeam from "./JoinTeam";
 
@@ -11,7 +10,7 @@ type Props = {
 const TeamRegistration: FC<Props> = (props): JSX.Element => {
     return (
         <div>
-            <JoinTeam />
+            <JoinTeam ownerId={props.person.id} />
             <TeamForm ownerId={props.person.id}/>
         </div>
     )
