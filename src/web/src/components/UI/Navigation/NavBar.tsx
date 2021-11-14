@@ -1,10 +1,9 @@
-import { AuthService } from "../services/authService";
+import { AuthService } from "../../../services/authService";
 import { NavLink } from "react-router-dom";
-import { useStoreSelector } from "../store";
-import logo from "../tempLogo.png";
+import { useStoreSelector } from "../../../store";
+import logo from "./tempLogo.png";
 
 const NavBar = () => {
-  const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
 
   const logoutHandler = () => {
@@ -35,18 +34,6 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav justify-content-center container">
-            {isAdmin && (
-              <li className="nav-item p-1  text-center">
-                <NavLink className="text-white" to="/admin">
-                  Admin Page
-                </NavLink>
-              </li>
-            )}
-            <li className="nav-item mx-2 p-1 text-center text-light">
-              <NavLink className="text-white" to="/pagedata">
-                PageData
-              </NavLink>
-            </li>
             <li className="nav-item mx-2 p-1 text-center text-light">
               <NavLink className="text-white" to="/register">
                 Register

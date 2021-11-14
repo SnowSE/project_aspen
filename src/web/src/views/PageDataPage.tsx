@@ -1,32 +1,26 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import NewPageDataForm from "../components/PageData/NewPageDataForm";
-import NewEventForm from "../components/Forms/NewEventForm";
 import PageDataItemForm from "../components/PageData/PageDataItemForm";
 import PageDataList from "../components/PageData/PageDataList";
 import {
   clearCurrentKey,
   getPageDataKeys,
-  postPageData,
   putPageData,
 } from "../store/pageDataSlice";
 import { useStoreSelector } from "../store";
-import EventModel from "../models/event";
 import { PageData } from "../models/pageData";
 
 const PageDataPage = () => {
   const dispatch = useDispatch();
   const pdState = useStoreSelector((state) => state.pageData);
-  const pageData: PageData = { key: pdState.currentKey ?? "", data: JSON.parse(pdState.currentData ?? "{}") };
+  const pageData: PageData = {
+    key: pdState.currentKey ?? "",
+    data: JSON.parse(pdState.currentData ?? "{}"),
+  };
 
   useEffect(() => {
     dispatch(getPageDataKeys());
   }, [dispatch]);
-
-  const submitNewPDHandler = (pageData: PageData) => {
-    dispatch(postPageData(pageData));
-    console.log(pdState);
-  };
 
   const updatePageDataHandler = (pageData: PageData) => {
     console.log(pageData);
@@ -37,25 +31,24 @@ const PageDataPage = () => {
     dispatch(clearCurrentKey({}));
   };
 
-  const newEvent: EventModel = {
-    ID: -1,
-    date: new Date(),
-    location: "",
-    description: "",
-    primaryImageUrl: "",
-  };
   return (
-    <div>
-      <NewEventForm/>
-      <NewPageDataForm onSubmit={submitNewPDHandler} />
-      <PageDataList keys={pdState.keys} />
-      {pdState.currentKey && (
-        <PageDataItemForm
-          pageData={pageData}
-          onSubmit={updatePageDataHandler}
-          onCancel={cancelHandler}
-        />
-      )}
+    <div className="container border pb-4">
+      <div className="fs-3 text-center bg-light ">Page Data</div>
+      <div className="row px-5 mt-2">
+        <div className="col-3 border">
+          <PageDataList keys={pdState.keys} />
+        </div>
+        <div className="col-9">
+          {pdState.currentKey && (
+          <PageDataItemForm
+            pageData={pageData}
+            onSubmit={updatePageDataHandler}
+            onCancel={cancelHandler}
+          />
+          )}
+        </div>        
+      </div>
+      
     </div>
   );
 };
