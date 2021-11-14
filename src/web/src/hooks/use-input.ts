@@ -13,9 +13,10 @@ export interface InputControl {
 const useInput = (
   inputName: string,
   errorMessage: string,
-  validateValue?: (value: string) => boolean
+  validateValue?: (value: string) => boolean,
+  initialValue?: string
 ): InputControl => {
-  const [enteredValue, setEnteredValue] = useState("");
+  const [enteredValue, setEnteredValue] = useState(initialValue ?? "");
   const [isTouched, setIsTouched] = useState(false);
   let valueIsValid: boolean;
 

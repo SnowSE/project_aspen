@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import CreatePersonForm from '../components/Person/CreatePersonForm'
+import TeamRegistration from '../components/Team/TeamRegistration'
 import { useStoreSelector } from '../store'
 import { getPersonByAuthId } from '../store/personSlice'
 const RegistrationPage = () => {
@@ -18,7 +19,7 @@ const RegistrationPage = () => {
 
     return (
         <div>
-            {!selectedPerson ? <CreatePersonForm /> : <TeamForm />}
+            {!selectedPerson ? <CreatePersonForm authId={authId}/> : <TeamRegistration person={selectedPerson}/>}
         </div>
     )
 }

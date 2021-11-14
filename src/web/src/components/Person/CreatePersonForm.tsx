@@ -1,16 +1,21 @@
-import { FormEvent } from "react";
+import { FC, FormEvent } from "react";
 import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import Person from "../../models/person";
 import { useDispatch } from "react-redux";
 import { createPerson } from "../../store/personSlice";
 
-export default function CreatePersonForm() {
+type Props = {
+  authId?: string;
+}
+
+const CreatePersonForm: FC<Props> = (props): JSX.Element => {
   const dispatch = useDispatch();
   const authId = useInput(
     "AuthId",
     "Please enter a valid AuthId.",
-    (value) => value.trim() !== ""
+    (value) => value.trim() !== "",
+    props.authId
   );
   const name = useInput(
     "Name",
@@ -43,3 +48,5 @@ export default function CreatePersonForm() {
     </form>
   );
 }
+
+export default CreatePersonForm;
