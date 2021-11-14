@@ -10,7 +10,7 @@ type Props = {
 const TeamRegistration: FC<Props> = (props): JSX.Element => {
     return (
         <div>
-            <TeamForm ownerId={props.person.ID}/>
+            <TeamForm ownerId={props.person.id}/>
         </div>
     )
 }

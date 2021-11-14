@@ -47,3 +47,6 @@ const teamSlice = createSlice({
             })
     }
 });
+
+export default teamSlice;
+export const teamActions = teamSlice.actions;

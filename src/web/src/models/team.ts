@@ -1,15 +1,15 @@
 export default class Team {
-    Id: number;
+    id: number;
     description: string;
     mainImage: string;
-    owenerId: number;
-    eventId: number;
+    ownerID: number;
+    eventID: number;
 
     constructor (description: string, mainImage: string, owenerId: number, eventId: number, id?: number){
-        this.Id = id ?? -1;
+        this.id = id ?? -1;
         this.description = description ?? "";
         this.mainImage = mainImage ?? "";
-        this.owenerId = owenerId ?? -1;
-        this.eventId = eventId ?? -1;
+        this.ownerID = owenerId ?? -1;
+        this.eventID = eventId ?? -1;
     }
 }

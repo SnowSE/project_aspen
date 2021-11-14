@@ -8,6 +8,13 @@ const getAllTeams = async () =>{
 }
 
 const createTeam = async (team :Team) =>{
-    const res = await axios.post<Team>(url, team)
+    const res = await axios.post<Team>(url + `?eventId=${team.eventID}`, team)
     return res.data;
 }
+
+
+const teamService={
+    getAllTeams,
+    createTeam
+}
+export default teamService; 

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import Team from "../../models/team";
+import { createTeam } from "../../store/teamSlice";
 
 type Props = {
     ownerId: number;
@@ -10,6 +11,7 @@ type Props = {
 
 const TeamForm: FC<Props> = (props): JSX.Element => {
     const dispatch = useDispatch();
+    console.log(props.ownerId)
 
     const desciption = useInput(
         "Description",
@@ -34,7 +36,8 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
 
         if (desciption.isValid && mainImage.isValid && eventId.isValid) {
             const team = new Team(desciption.value, mainImage.value, props.ownerId, parseInt(eventId.value))
-            //dispatch an aciton.
+            console.log(team)
+            dispatch(createTeam(team))
         }
     };
 
@@ -44,6 +47,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
             <TextInput inputControl={desciption} />
             <TextInput inputControl={mainImage} />
             <TextInput inputControl={eventId} />
+            <button type="submit">Submit</button>
         </form>
     )
 };
