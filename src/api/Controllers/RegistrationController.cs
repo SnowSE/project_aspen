@@ -53,8 +53,9 @@ namespace Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
-            var registration = await registrationRepository.AddAsync(dtoRegistration);
-            return mapper.Map<DtoRegistration>(registration);
+            var registrationToAdd = mapper.Map<Registration>(dtoRegistration);
+            var updatedRegistration = await registrationRepository.AddAsync(registrationToAdd);
+            return mapper.Map<DtoRegistration>(updatedRegistration);
         }
 
         [HttpPost("/link/{registrationId}/{personId}")]
@@ -81,8 +82,9 @@ namespace Api.Controllers
             if (!await registrationRepository.ExistsAsync(dtoRegistration.ID))
                 return NotFound("Registration id does not exist");
 
-            var registration = await registrationRepository.EditAsync(dtoRegistration);
-            return mapper.Map<DtoRegistration>(registration);
+            var registrationToEdit = mapper.Map<Registration>(dtoRegistration);
+            var editedRegistration = await registrationRepository.EditAsync(registrationToEdit);
+            return mapper.Map<DtoRegistration>(editedRegistration);
         }
 
         [HttpDelete("{id}")]

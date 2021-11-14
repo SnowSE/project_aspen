@@ -60,13 +60,13 @@ namespace Tests.Controller
             var owner = await GetPersonRepository().AddAsync("ben", null);
             var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
             var newEvent = await GetEventRepository().AddAsync(eventEntity.Date, eventEntity.Title, eventEntity.Description, eventEntity.PrimaryImageUrl, eventEntity.Location);
-            var dtoTeam = new DtoTeam
+            var team = new Team
             {
                 OwnerID = owner.ID,
                 EventID = newEvent.ID
             };
 
-            var team = await GetTeamRepository().AddAsync(dtoTeam, newEvent.ID);
+            team = await GetTeamRepository().AddAsync(team, newEvent.ID);
             var uncreatedDtoRegistration = new DtoRegistration
             {
                 OwnerID = owner.ID,
@@ -81,7 +81,7 @@ namespace Tests.Controller
         [Test]
         public async Task CanGetRegistrationWithParticipants()
         {
-            var dtoRegistration = await createRegistration();            
+            var dtoRegistration = await createRegistration();
             var personId = (await GetPersonRepository().AddAsync("Person1", "Bogus Bio")).ID;
 
             var returnedRegistration = (await GetRegistrationController().LinkPersonRegistration(dtoRegistration.ID, personId)).Value;

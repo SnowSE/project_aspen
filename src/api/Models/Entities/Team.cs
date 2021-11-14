@@ -21,4 +21,21 @@ namespace Api.Models.Entities
         public long EventID { get; init; }
         public Event Event { get; init; }
     }
+
+    public static class TeamExtensions
+    {
+        public static Team WithEventId(this Team currentTeam, long newEventId)
+        {
+            return new Team
+            {
+                ID = currentTeam.ID,
+                Description = currentTeam.Description,
+                MainImage = currentTeam.MainImage,
+                OwnerID = currentTeam.OwnerID,
+                Owner = currentTeam.Owner,
+                EventID = newEventId,
+                Event = currentTeam.Event
+            };
+        }
+    }
 }

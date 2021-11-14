@@ -35,9 +35,9 @@ namespace Aspen.Api.Controllers
         public async Task<IEnumerable<DtoTeam>> GetAll(long? eventId)
         {
             if (eventId == null)
-                return await teamRepository.GetAllAsync();
+                return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetAllAsync());
 
-            return await teamRepository.GetByEventIdAsync(eventId.Value);
+            return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId.Value));
         }
 
         [HttpGet("{id}")]
@@ -45,25 +45,28 @@ namespace Aspen.Api.Controllers
         {
             if (!await teamRepository.ExistsAsync(id))
                 return NotFound("Team id does not exist");
-            return await teamRepository.GetTeamByIdAsync(id);
+            return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam team, long eventId)
+        public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam, long eventId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
+            var team = mapper.Map<Team>(dtoTeam);
             var newTeam = await teamRepository.AddAsync(team, eventId);
             return mapper.Map<DtoTeam>(newTeam);
 
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] DtoTeam team)
+        public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
+
+            var team = mapper.Map<Team>(dtoTeam);
 
             if (!await teamRepository.ExistsAsync(team.ID))
                 return NotFound("Team id does not exist");

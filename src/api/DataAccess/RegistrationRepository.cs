@@ -13,9 +13,9 @@ namespace Api.DataAccess
 {
     public interface IRegistrationRepository
     {
-        Task<Registration> AddAsync(DtoRegistration dtoRegistration);
+        Task<Registration> AddAsync(Registration registration);
         Task DeleteAsync(long registrationID);
-        Task<Registration> EditAsync(DtoRegistration registration);
+        Task<Registration> EditAsync(Registration registration);
         Task<IEnumerable<Registration>> GetAllAsync();
         Task<Registration> GetByIdAsync(long registrationID);
         Task<bool> ExistsAsync(long registrationID);
@@ -55,15 +55,15 @@ namespace Api.DataAccess
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task<Registration> AddAsync(DtoRegistration dtoRegistration)
+        public async Task<Registration> AddAsync(Registration registration)
         {
-            var dbRegistration = mapper.Map<DbRegistration>(dtoRegistration);
+            var dbRegistration = mapper.Map<DbRegistration>(registration);
             context.Registrations.Add(dbRegistration);
             await context.SaveChangesAsync();
             return mapper.Map<Registration>(dbRegistration);
         }
 
-        public async Task<Registration> EditAsync(DtoRegistration registration)
+        public async Task<Registration> EditAsync(Registration registration)
         {
             var dbRegistration = mapper.Map<DbRegistration>(registration);
             context.Update(dbRegistration);
@@ -81,7 +81,7 @@ namespace Api.DataAccess
 
         public async Task<Registration> LinkPersonToRegistrationAsync(long registrationId, long personId)
         {
-            var registration = await context.Registrations.FindAsync(registrationId) ?? throw new NotFoundException<Registration>(); ;
+            var registration = await context.Registrations.FindAsync(registrationId) ?? throw new NotFoundException<Registration>();
             var person = await context.Persons.FindAsync(personId) ?? throw new NotFoundException<Person>();
 
             var personRegistration = new DbPersonRegistration
