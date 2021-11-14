@@ -1,6 +1,7 @@
 # project_aspen
 
 ![Staging Status](https://github.com/SnowSE/project_aspen/actions/workflows/deploy-staging.yml/badge.svg)
+![Test Status](https://github.com/SnowSE/project_aspen/actions/workflows/testing.yml/badge.svg)
 
 Project Aspen
 To start the project on a new computer start docker, then navigate to “../project_aspen/src/aspen” then run
