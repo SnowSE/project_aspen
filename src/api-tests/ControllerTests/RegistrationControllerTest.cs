@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Api.Controllers;
@@ -42,7 +43,8 @@ namespace Tests.Controller
         {
             var context = TestHelpers.CreateContext();
             var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
-            return new RegistrationController(registrationRepository, TestHelpers.AspenMapper);
+            var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
+            return new RegistrationController(registrationRepository, personRepository, TestHelpers.AspenMapper);
         }
 
         [Test]
@@ -58,13 +60,13 @@ namespace Tests.Controller
             var owner = await GetPersonRepository().AddAsync("ben", null);
             var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
             var newEvent = await GetEventRepository().AddAsync(eventEntity.Date, eventEntity.Title, eventEntity.Description, eventEntity.PrimaryImageUrl, eventEntity.Location);
-            var dtoTeam = new DtoTeam
+            var team = new Team
             {
                 OwnerID = owner.ID,
                 EventID = newEvent.ID
             };
 
-            var team = await GetTeamRepository().AddAsync(dtoTeam, newEvent.ID);
+            team = await GetTeamRepository().AddAsync(team, newEvent.ID);
             var uncreatedDtoRegistration = new DtoRegistration
             {
                 OwnerID = owner.ID,
@@ -73,6 +75,18 @@ namespace Tests.Controller
 
             var dtoRegistrationResponse = await GetRegistrationController().Add(uncreatedDtoRegistration);
             return dtoRegistrationResponse.Value;
+        }
+
+
+        [Test]
+        public async Task CanGetRegistrationWithParticipants()
+        {
+            var dtoRegistration = await createRegistration();
+            var personId = (await GetPersonRepository().AddAsync("Person1", "Bogus Bio")).ID;
+
+            var returnedRegistration = (await GetRegistrationController().LinkPersonRegistration(dtoRegistration.ID, personId)).Value;
+
+            returnedRegistration.PersonRegistrations.First().PersonID.Should().Be(personId);
         }
 
         [Test]

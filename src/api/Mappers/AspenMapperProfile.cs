@@ -54,7 +54,10 @@ namespace Api.Mappers
             CreateMap<DbRegistration, Registration>()
                 .ReverseMap();
 
-            CreateMap<DbRegistration, DtoRegistration>()
+            CreateMap<DbPersonRegistration, PersonRegistration>()
+                .ReverseMap();
+
+            CreateMap<DtoPersonRegistration, PersonRegistration>()
                 .ReverseMap();
         }
     }

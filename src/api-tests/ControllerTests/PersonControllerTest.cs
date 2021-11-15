@@ -123,5 +123,19 @@ namespace Tests.Controller
             var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
             returnedPerson.AuthID.Should().Be(authIdPerson.AuthID);
         }
+
+        [Test]
+        public async Task GetPersonByAuthId()
+        {
+            var authId = Guid.NewGuid().ToString();
+            var newPerson = new DtoPerson
+            {
+                Name = "Bill",
+                AuthID = authId
+            };
+            var createdPerson = (await GetPersonController().Add(newPerson)).Value;
+            var returnedPerson = (await GetPersonController().GetByAuthId(authId)).Value;
+            returnedPerson.AuthID.Should().Be(newPerson.AuthID);
+        }
     }
 }

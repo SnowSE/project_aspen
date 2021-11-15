@@ -7,13 +7,18 @@ const getAllPersons = async () => {
   return res.data;
 };
 
+const getPersonByAuthId = async (authId: string)=>{
+  const res = await axios.get<Person>(url + "/authid/" + authId )
+  return res.data;
+}
+
 const createPerson = async (person: Person) => {
   const res = await axios.post<Person>(url, { ...person });
   return res.data
 };
 
 const updatePerson = async (person: Person) => {
-  const res = await axios.put<Person>(url + "/" + person.ID, { ...person });
+  const res = await axios.put<Person>(url + "/" + person.id, { ...person });
   return res.data
 };
 
@@ -26,6 +31,7 @@ const personService = {
   getAllPersons,
   updatePerson,
   deletePerson,
+  getPersonByAuthId
 };
 
 export default personService;

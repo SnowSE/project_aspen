@@ -9,6 +9,13 @@ export const getAllPersons = createAsyncThunk(
     return personList;
   }
 );
+export const getPersonByAuthId = createAsyncThunk(
+  "person/getPersonByAuthId",
+  async (authId: string, ThunkAPI) => {
+    const person = await personService.getPersonByAuthId(authId);
+    return person;
+  }
+);
 export const createPerson = createAsyncThunk(
   "person/createPerson",
   async (person: Person, _ThunkAPI) => {
@@ -29,11 +36,11 @@ export const deletePerson = createAsyncThunk(
 );
 
 interface PersonState {
-  selectedPerson: Person,
+  selectedPerson?: Person,
   personList: Person[],
 }
 const initialPersonState: PersonState = {
-  selectedPerson: { authID: "", name: "", bio: "", ID: -1},
+  selectedPerson: undefined,
   personList: [],
 };
 
@@ -53,6 +60,13 @@ const personSlice = createSlice({
       console.log("success");
     });
     builder.addCase(createPerson.rejected, (state, action) => {
+      console.log("error", action.payload);
+    });
+    builder.addCase(getPersonByAuthId.fulfilled, (state, action) => {
+      console.log("success");
+      state.selectedPerson= action.payload
+    });
+    builder.addCase(getPersonByAuthId.rejected, (state, action) => {
       console.log("error", action.payload);
     });
     builder.addCase(getAllPersons.fulfilled, (state, action) => {
