@@ -6,7 +6,7 @@ describe("Admin Side Bar Tests", () => {
   test("checks for the Home link", () => {
     // Arrange
     render(
-      <Router basename={`${process.env.PUBLIC_URL}`}>
+      <Router>
         <AdminSideBar />
       </Router>
     );
@@ -14,12 +14,11 @@ describe("Admin Side Bar Tests", () => {
     const linkElement = screen.getByText(/Home/);
     // Assert
     expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toEqual("Home");
   });
   test("checks for the People link", () => {
     // Arrange
     render(
-      <Router basename={`${process.env.PUBLIC_URL}`}>
+      <Router>
         <AdminSideBar />
       </Router>
     );
@@ -27,12 +26,11 @@ describe("Admin Side Bar Tests", () => {
     const linkElement = screen.getByText(/People/);
     // Assert
     expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toEqual("People");
   });
   test("checks for the Events link", () => {
     // Arrange
     render(
-      <Router basename={`${process.env.PUBLIC_URL}`}>
+      <Router>
         <AdminSideBar />
       </Router>
     );
@@ -40,6 +38,5 @@ describe("Admin Side Bar Tests", () => {
     const linkElement = screen.getByText(/Events/);
     // Assert
     expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toEqual("Events");
   });
 });
