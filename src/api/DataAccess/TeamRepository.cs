@@ -13,12 +13,12 @@ namespace Api.DataAccess
 {
     public interface ITeamRepository
     {
-        Task<DtoTeam> AddAsync(DtoTeam team, long eventID);
+        Task<Team> AddAsync(Team team, long eventID);
         Task DeleteTeamAsync(long id);
-        Task<DtoTeam> EditTeamAsync(DtoTeam team);
-        Task<DtoTeam> GetTeamByIdAsync(long id);
-        Task<IEnumerable<DtoTeam>> GetAllAsync();
-        Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID);
+        Task<Team> EditTeamAsync(Team team);
+        Task<Team> GetTeamByIdAsync(long id);
+        Task<IEnumerable<Team>> GetAllAsync();
+        Task<IEnumerable<Team>> GetByEventIdAsync(long eventID);
         Task<bool> ExistsAsync(long id);
     }
 
@@ -38,25 +38,25 @@ namespace Api.DataAccess
             return await context.Teams.AnyAsync(e => e.ID == id);
         }
 
-        public async Task<IEnumerable<DtoTeam>> GetAllAsync()
+        public async Task<IEnumerable<Team>> GetAllAsync()
         {
             var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(teams);
         }
 
-        public async Task<DtoTeam> GetTeamByIdAsync(long id)
+        public async Task<Team> GetTeamByIdAsync(long id)
         {
             var team = await context.Teams
                 .FirstAsync(r => r.ID == id);
 
-            return mapper.Map<DtoTeam>(team);
+            return mapper.Map<Team>(team);
         }
 
-        public async Task<DtoTeam> AddAsync(DtoTeam dtoTeam, long eventID)
+        public async Task<Team> AddAsync(Team team, long eventID)
         {
             var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == eventID);
-
-            var dbTeam = mapper.Map<DbTeam>(dtoTeam with { EventID = existingEvent.ID });
+            var newTeam = team.WithEventId(existingEvent.ID);
+            var dbTeam = mapper.Map<DbTeam>(newTeam);
 
             await context.Teams.AddAsync(dbTeam);
             existingEvent.Teams.Add(dbTeam);
@@ -64,10 +64,10 @@ namespace Api.DataAccess
             context.Update(existingEvent);
 
             await context.SaveChangesAsync();
-            return mapper.Map<DtoTeam>(dbTeam);
+            return mapper.Map<Team>(dbTeam);
         }
 
-        public async Task<DtoTeam> EditTeamAsync(DtoTeam team)
+        public async Task<Team> EditTeamAsync(Team team)
         {
             var dbTeam = mapper.Map<DbTeam>(team);
             context.Update(dbTeam);
@@ -85,11 +85,11 @@ namespace Api.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID)
+        public async Task<IEnumerable<Team>> GetByEventIdAsync(long eventID)
         {
             var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
 
-            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(existingEvent.Teams);
+            return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(existingEvent.Teams);
         }
 
     }
