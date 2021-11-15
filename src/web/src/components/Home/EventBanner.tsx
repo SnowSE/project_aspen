@@ -6,7 +6,7 @@ interface Props {
   event: EventModel;
 }
 const EventBanner = ({ event }: Props) => {
-  const charity= "Justins jockies"
+  const charity= "Walking With Angels"
   return (
     <div className="card text-center bg-light">
       {/* <img src={event.primaryImageUrl} alt="event background" width="500" height="500"/> */}
