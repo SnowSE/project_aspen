@@ -9,7 +9,7 @@ import Admin from "../../../views/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
 
-import PersonPage from "../../../views/PersonPage";
+import PersonPage from "../../../views/RegistrationPage";
 import NewEventForm from "../../../components/Forms/NewEventForm";
 import EventDisplay from "../../../views/EventDisplay";
 
