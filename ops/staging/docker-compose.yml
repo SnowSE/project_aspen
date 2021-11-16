@@ -13,7 +13,7 @@ services:
     volumes:
       - assets:/assets
     environment:
-      - SwaggerBasePath: aspen
+      - SwaggerBasePath=aspen
     networks:
       shared:
       api:
