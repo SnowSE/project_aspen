@@ -33,6 +33,7 @@ namespace Api
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IPageDataRepository, PageDataRepository>();
+            services.AddScoped<IRegistrationRepository, RegistrationRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IAssetFileService, AssetFileService>();
             services.AddAuthentication(options =>

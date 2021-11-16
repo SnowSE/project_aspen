@@ -8,7 +8,6 @@ namespace Api.Models.Entities
 {
     public class Registration
     {
-
         public long ID { get; init; }
 
         public DateTime CreationDate { get; init; }
@@ -24,7 +23,6 @@ namespace Api.Models.Entities
         public IEnumerable<PersonRegistration> PersonRegistrations { get; init; }
 
     }
-
 
     public record PersonRegistration
     {
