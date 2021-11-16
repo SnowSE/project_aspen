@@ -1,0 +1,26 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "API testing w/RestSharp",
+  "steps": [
+    {
+      "file": "api-tests/Hooks/Hooks.cs",
+      "description": "An in-memory instance of the API is started when the test process begins.\r\nA random port number is acquired and then assigned to the ExposedPort property.",
+      "line": 23
+    },
+    {
+      "file": "api-tests/Steps/PersonSteps.cs",
+      "description": "Actual API calls are consolidated into an AspenApi object so all the RestSharp-specific calls are localized.",
+      "line": 40
+    },
+    {
+      "file": "api-tests/Steps/AspenApi.cs",
+      "description": "A client is created using the local test instance of the API running on the random port",
+      "line": 13
+    },
+    {
+      "file": "api-tests/Steps/AspenApi.cs",
+      "description": "Calling the API w/RestSharp is as simple as defining which endpoint you want to hit, adding the appropriate body and posting with the correct return type.  Easy peasy.",
+      "line": 20
+    }
+  ]
+}

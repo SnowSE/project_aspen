@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Api.DataAccess;
 using Api.Mappers;
 using Api.Services;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using System.Linq;
 
 namespace Api
 {
@@ -25,6 +27,7 @@ namespace Api
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment CurrentEnvironment { get; set; }
+        public static IEnumerable<string> HostedAddresses { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -94,9 +97,14 @@ namespace Api
             Environment.GetEnvironmentVariable("ASPEN_CONNECTION_STRING") ?? Configuration.GetConnectionString("docker");
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             CurrentEnvironment = env;
+
+            lifetime.ApplicationStarted.Register(() =>
+            {
+                Startup.HostedAddresses = app.ServerFeatures.Get<IServerAddressesFeature>().Addresses;
+            });
 
             var swaggerBasePath = Configuration["SwaggerBasePath"] ?? "";
             if (!string.IsNullOrEmpty(swaggerBasePath) && swaggerBasePath.Length > 0)
