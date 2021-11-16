@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Api.DtoModels
     //var newEvent = oldEvent with {Description = "New Descr"};
     public record DtoEvent
     {
+        [SwaggerSchema(ReadOnly = true)]
         public long ID { get; init; }
         public DateTime Date { get; init; }
         public string Title { get; init; }

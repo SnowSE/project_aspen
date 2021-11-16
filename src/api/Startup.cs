@@ -98,6 +98,10 @@ namespace Api
         {
             CurrentEnvironment = env;
 
+            var swaggerBasePath = Configuration["SwaggerBasePath"] ?? "";
+            if (!string.IsNullOrEmpty(swaggerBasePath) && swaggerBasePath.Length > 0)
+                swaggerBasePath += "/";
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -109,17 +113,15 @@ namespace Api
                 {
                     if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
                     {
-                        var basePath = "aspen";
                         var scheme = httpReq.Headers["X-Forwarded-Host"] == "engineering.snow.edu" ? "https" : "http";
-                        var serverUrl = $"{scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
+                        var serverUrl = $"{scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{swaggerBasePath}";
                         swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
                     }
                 });
             });
-            // app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/aspen/swagger/v1/swagger.json", "Aspen API v1");
+                c.SwaggerEndpoint($"/{swaggerBasePath}swagger/v1/swagger.json", "Aspen API v1");
             });
 
             app.UseRouting();

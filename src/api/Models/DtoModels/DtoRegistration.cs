@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace Api.DtoModels
 {
     public record DtoRegistration
     {
+        [SwaggerSchema(ReadOnly = true)]
         public long ID { get; init; }
 
         public DateTime CreationDate { get; init; }

@@ -52,7 +52,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
+        public async Task<ActionResult<DtoPerson>> Add([FromBody]DtoPerson dtoPerson)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ namespace Api.DtoModels
 {
     public record DtoTeam
     {
+        [SwaggerSchema(ReadOnly = true)]
         public long ID { get; init; }
 
         public string Description { get; init; }

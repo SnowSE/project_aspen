@@ -1,3 +1,4 @@
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ namespace Api.DtoModels
 {
     public record DtoPerson
     {
+        [SwaggerSchema(ReadOnly = true)]
         public long ID { get; init; }
 
         public string AuthID { get; init; }

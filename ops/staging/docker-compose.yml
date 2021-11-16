@@ -12,7 +12,8 @@ services:
       retries: 15
     volumes:
       - assets:/assets
-    # environment:
+    environment:
+      - SwaggerBasePath: aspen
     networks:
       shared:
       api:
