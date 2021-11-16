@@ -12,13 +12,11 @@ namespace Api.DtoModels
     {
         [SwaggerSchema(ReadOnly = true)]
         public long ID { get; init; }
-
+        [Required]
+        public string Name { get; set; }
         public string Description { get; init; }
-
         public string MainImage {get; init; }
-
         public long OwnerID { get; init; }
-
         public long EventID { get; init; }
     }
 }

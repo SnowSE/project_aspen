@@ -8,16 +8,12 @@ namespace Api.Models.Entities
 {
     public class Team
     {
-
         public long ID { get; init; }
-
+        public string Name { get; init; }
         public string Description { get; init; }
-
         public string MainImage { get; init; }
-
         public long OwnerID { get; init; }
         public Person Owner { get; init; }
-
         public long EventID { get; init; }
         public Event Event { get; init; }
     }
@@ -29,6 +25,7 @@ namespace Api.Models.Entities
             return new Team
             {
                 ID = currentTeam.ID,
+                Name = currentTeam.Name,
                 Description = currentTeam.Description,
                 MainImage = currentTeam.MainImage,
                 OwnerID = currentTeam.OwnerID,

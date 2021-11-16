@@ -36,7 +36,7 @@ namespace Tests.ControllerTests
             (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
 
         private async Task<DtoTeam> createTeam(DtoPerson person, long eventId) =>
-            (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Description = "Team1", OwnerID = person.ID }, eventId)).Value;
+            (await TeamControllerTest.GetTeamController().Add(new DtoTeam {Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId })).Value;
 
         private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
             await TeamControllerTest.GetTeamController().GetAll(eventId);

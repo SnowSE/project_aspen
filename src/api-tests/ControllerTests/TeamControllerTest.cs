@@ -30,12 +30,13 @@ namespace Tests.Controller
         [Test]
         public async Task CanCreateTeam()
         {
-            var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;
+            var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent {Description = "New Event" })).Value;
             var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
-            var newTeam = new DtoTeam { Description = "George", OwnerID = newPerson.ID };
-            var dtoTeam = (await GetTeamController().Add(newTeam, newEvent.ID)).Value;
+            var newTeam = new DtoTeam { Name = "New Team!", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID };
+            var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
             dtoTeam.ID.Should().NotBe(0);
             dtoTeam.Description.Should().Be("George");
+            dtoTeam.Name.Should().Be("New Team!");
         }
 
         [Test]
@@ -43,8 +44,8 @@ namespace Tests.Controller
         {
             var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;
             var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
-            var newTeam = new DtoTeam { Description = "George", OwnerID = newPerson.ID };
-            var dtoTeam = (await GetTeamController().Add(newTeam, newEvent.ID)).Value;
+            var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID };
+            var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
 
             var returnedTeam = (await GetTeamController().GetByID(dtoTeam.ID)).Value;
             returnedTeam.Description.Should().Be("George");
@@ -55,8 +56,8 @@ namespace Tests.Controller
         {
             var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;
             var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
-            var newTeam = new DtoTeam { Description = "George", OwnerID = newPerson.ID };
-            var dtoTeam = (await GetTeamController().Add(newTeam, newEvent.ID)).Value;
+            var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID };
+            var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
             var returnedTeam = (await GetTeamController().GetByID(dtoTeam.ID)).Value;
 
             await GetTeamController().Delete(returnedTeam.ID);
@@ -82,8 +83,8 @@ namespace Tests.Controller
         {
             var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event" })).Value;
             var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
-            var newTeam = new DtoTeam { Description = "George", OwnerID = newPerson.ID };
-            var dtoTeam = (await GetTeamController().Add(newTeam, newEvent.ID)).Value;
+            var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID };
+            var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
 
             var editedTeam = dtoTeam with { Description = "Changed" };
             await GetTeamController().Edit(editedTeam);

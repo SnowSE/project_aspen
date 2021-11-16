@@ -49,13 +49,13 @@ namespace Aspen.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam, long eventId)
+        public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
             var team = mapper.Map<Team>(dtoTeam);
-            var newTeam = await teamRepository.AddAsync(team, eventId);
+            var newTeam = await teamRepository.AddAsync(team);
             return mapper.Map<DtoTeam>(newTeam);
 
         }

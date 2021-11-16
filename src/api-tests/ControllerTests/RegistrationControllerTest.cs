@@ -63,10 +63,11 @@ namespace Tests.Controller
             var team = new Team
             {
                 OwnerID = owner.ID,
-                EventID = newEvent.ID
+                EventID = newEvent.ID,
+                Name = $"New Team {owner.ID}-{newEvent.ID}"
             };
 
-            team = await GetTeamRepository().AddAsync(team, newEvent.ID);
+            team = await GetTeamRepository().AddAsync(team);
             var uncreatedDtoRegistration = new DtoRegistration
             {
                 OwnerID = owner.ID,
