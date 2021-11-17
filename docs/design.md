@@ -15,7 +15,12 @@
   - Sponsors can sign up on the website, give a certain amount, upload their logo.
   - Local administrators can also create sponsors and put in their images.
   - Sponsors can be per-event or annual giving partners that support the charity in general.
-- Team Owner  
+- Team Owner 
+  - Manage team
+    - Delete team members (don't require pre-approval to join)
+    - set fundraising goal
+    - update story / description / video
+    - update name
 - Participant
   - Can manage their own registration
   - Can donate / pledge
@@ -35,8 +40,15 @@ A different as-yet-undetermined URL route could/would allow access to previous/f
 - A team only exists within an event.
 - Team owners can manage members on their team
 - Team owners can set fundraising goals for their team
-- Team owners can set the story, the picture, the description, etc. for the team.
+- Team owners can set the story, the picture, the description, video link, etc. for the team.
 
 
 # Fundraising (out of scope for 2021)
 There are different fundraising tier amounts, (e.g. $500 for 6 movie tickets, $1k for a kindle, $2k for an iPad, etc.)  Prizes are public on the sign-up page.  Show whatever prize you most recently qualified for and how far away you are from the next prize.  Prizes are per event.
+
+# T-Shirts & Food (out of scope for 2021)
+- A set of add-ons exists per event
+- Add-ons could be t-shirts, food items, etc.
+- Each add-on can have indiv. details (e.g. shirt size)
+- A registration owner can purchase add-ons for the regsitration members of their registration
+  - That can be 0+ of each add-on per registration member. 
