@@ -44,7 +44,14 @@ export const AuthService = {
   },
 
   signinRedirect: async () => {
-    localStorage.setItem("redirectUri", window.location.pathname);
+    if(window.location.pathname === '/aspen/')
+    {
+      localStorage.setItem("redirectUri", '/');
+    }
+    else
+    {
+      localStorage.setItem("redirectUri", window.location.pathname);
+    }
     await userManager.signinRedirect();
   },
 
