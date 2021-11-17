@@ -1,4 +1,4 @@
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Home } from "../../../views/Home";
 import { LoginLanding } from "../../../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import UnAuthorized from "../../../views/UnAuthorized";
 import PersonPage from "../../../views/RegistrationPage";
 import NewEventForm from "../../../components/Forms/NewEventForm";
 import EventDisplay from "../../../views/EventDisplay";
+import { LogoutLanding } from "../../../views/auth/LogoutLanding";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -65,7 +66,7 @@ const MainSwitch = () => {
         <LoginLanding />
       </Route>
       <Route path="/logout/post" exact>
-        <Redirect to="/" />
+        <LogoutLanding />
       </Route>
       <Route path="/register">
         <PersonPage />

@@ -17,11 +17,12 @@ export const addEvent = async (event: EventModel) => {
 //Read all
 export const getEvents = async () => {
   console.log("called")
+  console.log(Url)
   const res = await axios.get(Url);
   console.log("api response" + res)
   if (res.status !== 200) {
     console.log("!200 response");
-    throw Error("Api error getting all events");
+    // throw Error("Api error getting all events");
   }
   return res.data;
 };
