@@ -1,6 +1,6 @@
 import React from "react";
 import { deletePerson } from "../../store/personSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Person from "../../models/person";
 
 export default function PersonDetails({ person }: {person: Person}) {

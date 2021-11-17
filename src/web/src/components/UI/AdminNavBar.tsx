@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export default function AdminNavBar() {
   const history = useHistory()
@@ -13,7 +13,7 @@ export default function AdminNavBar() {
       {showAdminNavBar ? (
         <nav className="navbar navbar-light bg-success">
           <div className="container-fluid">
-            <a className="navbar-brand">Admin Tools</a>
+            <span className="navbar-brand">Admin Tools</span>
             <div>
               <label>Events: </label>
               <button

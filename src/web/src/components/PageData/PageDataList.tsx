@@ -11,11 +11,7 @@ const PageDataList = ({keys}: {keys: string[]}) => {
   const dispatch = useDispatch();
 
   const pdState = useStoreSelector((state) => state.pageData);
-  const pageData: PageData = {
-    key: pdState.currentKey ?? "",
-    data: JSON.parse(pdState.currentData ?? "{}"),
-  };
-
+  
   const editKeyHandler = (key: string) => {
     dispatch(setCurrentKey(key))
   };
