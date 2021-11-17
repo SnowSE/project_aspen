@@ -44,7 +44,8 @@ export const AuthService = {
   },
 
   signinRedirect: async () => {
-    if(window.location.pathname === '/aspen/')
+    console.log(window.location.pathname)
+    if(window.location.pathname === '/aspen/' || window.location.pathname === '/aspen')
     {
       localStorage.setItem("redirectUri", '/');
     }
