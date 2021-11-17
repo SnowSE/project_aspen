@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import EventList from "../components/EventList";
-import NewEventForm from "../components/Forms/NewEventForm";
-import { useStoreSelector } from "../store";
-import { getEventList } from "../store/eventSlice";
-import Demo from "./Demo";
-import PageDataPage from "./PageDataPage";
+
+import AdminEvents from "./AdminEvents";
+import { useStoreSelector } from "../../store";
+import { getEventList } from "../../store/eventSlice";
+import Demo from "../Demo";
+import PageDataPage from "../PageDataPage";
 
 export default function Admin() {
   const history = useHistory();
@@ -41,14 +41,9 @@ export default function Admin() {
       <Route exact path="/admin/pagedata">
         <PageDataPage />
       </Route>
-      <Route exact path="/admin/createEvent">
-        <NewEventForm />
-      </Route>
       <Route exact path="/admin/events/editEvent"></Route>
       <Route exact path="/admin/events">
-        <h1>events:</h1>
-        {getEventList()}
-        <EventList />
+        <AdminEvents />
       </Route>
     </div>
   );
