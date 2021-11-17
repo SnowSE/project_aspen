@@ -1,8 +1,7 @@
 import axios from "axios";
 import EventModel from "../models/event";
 
-// const Url = `${process.env.PUBLIC_URL}/api/events`;
-const Url = 'http://localhost/api/events';
+const Url = `${process.env.PUBLIC_URL}/api/events`;
 
 //Create
 export const addEvent = async (event: EventModel) => {
