@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Home } from "../../../views/Home";
 import { LoginLanding } from "../../../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
@@ -63,6 +63,9 @@ const MainSwitch = () => {
       </AuthorizedRoute>
       <Route path="/login/landing">
         <LoginLanding />
+      </Route>
+      <Route path="/logout/post" exact>
+        <Redirect to="/" />
       </Route>
       <Route path="/register">
         <PersonPage />
