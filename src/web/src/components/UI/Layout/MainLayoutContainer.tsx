@@ -6,19 +6,21 @@ import { useStoreSelector } from "../../../store";
 const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
-    <div className="row">
-      <div className="col-12">
+    <>
+      <div className="row">
         <NavBar />
       </div>
-      {isAdmin && (
-        <div className="col-2">
-          <AdminSideBar />
+      <div className="row">
+        {isAdmin && (
+          <div className="col-lg-2 bg-secondary ">
+            <AdminSideBar />
+          </div>
+        )}
+        <div className="col p-0">
+          <MainSwitch />
         </div>
-      )}
-      <div className={isAdmin ? "col-10" : "col-12"}>
-        <MainSwitch />
       </div>
-    </div>
+    </>
   );
 };
 
