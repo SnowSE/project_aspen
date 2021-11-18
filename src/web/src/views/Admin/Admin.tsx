@@ -41,7 +41,6 @@ export default function Admin() {
       <Route exact path="/admin/pagedata">
         <PageDataPage />
       </Route>
-      <Route exact path="/admin/events/editEvent"></Route>
       <Route exact path="/admin/events">
         <AdminEvents />
       </Route>

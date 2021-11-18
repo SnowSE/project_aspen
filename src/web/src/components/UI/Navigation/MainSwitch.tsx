@@ -10,8 +10,6 @@ import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
 
 import PersonPage from "../../../views/RegistrationPage";
-import NewEventForm from "../../../components/Forms/NewEventForm";
-import EventDisplay from "../../../views/EventDisplay";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
 
 const AuthorizedRoute: FC<any> = ({
