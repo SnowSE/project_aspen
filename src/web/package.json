@@ -35,6 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "ops:test": "react-scripts test --watchAll=false",
+    "ops:lint": "eslint --max-warnings 0 .",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
