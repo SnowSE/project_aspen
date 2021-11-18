@@ -40,6 +40,11 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
         value => value.trim() !== ""
     )
 
+    const name = useInput(
+        "Team Name",
+        "Please enter a team name",
+        value => value.trim() !== ""
+    )
     const submitTeamHandler = (event: FormEvent) => {
         event.preventDefault();
 
@@ -64,6 +69,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     return (
         <form onSubmit={submitTeamHandler}>
             <label>Create your team!</label>
+            <TextInput inputControl={name}/>
             <TextInput inputControl={desciption} />
             <TextInput inputControl={mainImage} />
             <TextInput inputControl={eventId} />
