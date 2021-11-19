@@ -21,7 +21,7 @@ const MainLayoutContainer = () => {
           <MainSwitch />
         </div>
       </div>
-      <div className="row m-0 p-0">
+      <div className="row m-0 p-0 position-absolute bottom-0 w-100">
         <Footer />
       </div>
     </>
