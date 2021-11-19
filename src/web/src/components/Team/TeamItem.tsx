@@ -40,7 +40,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
         <div className="border w-50 border-2 m-2 p-2 ">
             
             <p className="d-flex justify-content-center">
-                Team description: {props.team.description}
+                {props.team.name}
             </p>
             <div className="d-flex justify-content-center" >
                 <form onSubmit={submitRegistrationHandler}>

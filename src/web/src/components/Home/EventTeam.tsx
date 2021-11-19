@@ -17,8 +17,8 @@ const EventTeam = () => {
             <hr/>
             <p className="card h-100">{info}</p>
             {isLoggedIn? <div className="my-3">
-                <NavLink to="/JoinTeam"  className="btn btn-primary me-1">Join Team</NavLink>
-                <NavLink to="/register" className="btn btn-primary ms-1">Create Team</NavLink>
+                <NavLink to="/jointeam"  className="btn btn-primary me-1">Join Team</NavLink>
+                <NavLink to="/teamregistration" className="btn btn-primary ms-1">Create Team</NavLink>
             </div>: <div className="my-3">
                 <button onClick={loginHandler} className="btn btn-primary me-1">Join Team</button>
                 <button onClick={loginHandler} className="btn btn-primary ms-1">Create Team</button>

@@ -49,7 +49,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
         event.preventDefault();
 
         if (desciption.isValid && mainImage.isValid && eventId.isValid) {
-            const team = new Team(desciption.value, mainImage.value, props.ownerId, parseInt(eventId.value))
+            const team = new Team(name.value, desciption.value, mainImage.value, props.ownerId, parseInt(eventId.value))
             const registration: Registration = new Registration (
                 (new Date()).toUTCString(),
                 isPublic,
