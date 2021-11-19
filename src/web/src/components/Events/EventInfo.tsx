@@ -1,5 +1,5 @@
 import EventModel from "../../models/event";
-import EventCard from "../EventCard";
+import EventCard from "./EventCard";
 
 interface Props {
   event: EventModel;

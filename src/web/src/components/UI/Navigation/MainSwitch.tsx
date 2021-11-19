@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
 import { checkIfLoggedIn } from "../../../store/authSlice";
 import { useStoreSelector } from "../../../store";
-import Admin from "../../../views/Admin";
+import Admin from "../../../views/Admin/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
 import RegistrationPage from "../../../views/RegistrationPage";
@@ -47,12 +47,12 @@ const MainSwitch = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
     <Switch>
-      <AdminRoute isAdmin={isAdmin} path="/admin/events">
+      {/* <AdminRoute isAdmin={isAdmin} path="/admin/events">
         <EventDisplay />
-      </AdminRoute>
-      <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
+      </AdminRoute> */}
+      {/* <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
         <NewEventForm />
-      </AdminRoute>
+      </AdminRoute> */}
       <AdminRoute isAdmin={isAdmin} path="/admin">
         <Admin />
       </AdminRoute>

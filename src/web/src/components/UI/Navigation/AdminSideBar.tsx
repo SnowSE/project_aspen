@@ -15,25 +15,25 @@ const AdminSideBar = () => {
       <ul className="nav nav-tabs flex-column mb-auto">
         <li className="nav-item">
           <NavLink to="/" className="nav-link" exact>
-            <IoHome className="me-1" />
+            <IoHome className="me-1" size="1.5em" />
             Home
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink to="/admin/people" className="nav-link ">
-            <IoAccessibility className="me-1" />
+            <IoAccessibility className="me-1" size="1.5em" />
             People
           </NavLink>
         </li>
         <li>
           <NavLink to="/admin/events" className="nav-link ">
-            <IoCalendarClear className="me-1" />
+            <IoCalendarClear className="me-1" size="1.5em" />
             Events
           </NavLink>
         </li>
         <li>
           <NavLink to="/admin/pagedata" className="nav-link">
-            <IoSettingsSharp className="me-1" />
+            <IoSettingsSharp className="me-1" size="1.5em" />
             Settings (Page Data)
           </NavLink>
         </li>

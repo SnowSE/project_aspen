@@ -1,4 +1,11 @@
-
 @import "../node_modules/bootswatch/dist/sandstone/variables";
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootswatch/dist/sandstone/bootswatch";
+
+.btn-transparent {
+  background-color: transparent;
+}
+
+html, body, #root, .App {
+    height: 100%;
+  }

@@ -1,5 +1,5 @@
-import EventBanner from "./EventBanner";
-import EventInfo from "./EventInfo";
+import EventBanner from "../Events/EventBanner";
+import EventInfo from "../Events/EventInfo";
 import EventTeam from "./EventTeam";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

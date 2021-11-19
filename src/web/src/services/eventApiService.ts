@@ -2,7 +2,7 @@ import axios from "axios";
 import EventModel from "../models/event";
 
 const Url = `${process.env.PUBLIC_URL}/api/events`;
-
+//new behavior here
 //Create
 export const addEvent = async (event: EventModel) => {
   const res = await axios.post(Url, { ...event });
