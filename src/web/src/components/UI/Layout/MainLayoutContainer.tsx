@@ -7,7 +7,7 @@ import Footer from "../Navigation/Footer";
 const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
-    <div className="row-100">
+    <div className="row">
       <div className="col-12">
         <NavBar />
       </div>

@@ -1,7 +1,6 @@
 import { FC } from "react";
 import Person from "../../models/person";
 import TeamForm from "../Forms/TeamForm";
-import JoinTeam from "./JoinTeam";
 
 type Props = {
     person: Person;

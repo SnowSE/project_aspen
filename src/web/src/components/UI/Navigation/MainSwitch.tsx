@@ -9,8 +9,8 @@ import Admin from "../../../views/Admin/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
 import RegistrationPage from "../../../views/RegistrationPage";
-import NewEventForm from "../../../components/Forms/NewEventForm";
-import EventDisplay from "../../../views/EventDisplay";
+// import NewEventForm from "../../../components/Forms/NewEventForm";
+// import EventDisplay from "../../../views/EventDisplay";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
 import JoinTeamPage from "../../../views/JoinTeamPage";
 
