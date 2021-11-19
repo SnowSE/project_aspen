@@ -7,20 +7,24 @@ import Footer from "../Navigation/Footer";
 const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
-    <div className="row-100">
-      <div className="col-12">
+    <>
+      <div className="row m-0 p-0">
         <NavBar />
       </div>
-      {isAdmin && (
-        <div className="col-2">
-          <AdminSideBar />
+      <div className="row m-0 p-0">
+        {isAdmin && (
+          <div className="col-2 ps-0">
+            <AdminSideBar />
+          </div>
+        )}
+        <div className="col">
+          <MainSwitch />
         </div>
-      )}
-      <div className={isAdmin ? "col-10" : "col-12"}>
-        <MainSwitch />
       </div>
-      <Footer/>
-    </div>
+      <div className="row m-0 p-0">
+        <Footer />
+      </div>
+    </>
   );
 };
 
