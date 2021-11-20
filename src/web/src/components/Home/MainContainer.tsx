@@ -4,7 +4,7 @@ import EventTeam from "./EventTeam";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
-import EventModel from "../../models/event";
+import EventModel from "../../models/eventModel";
 import { getEventList } from "../../store/eventSlice";
 
 const MainContainer = () => {

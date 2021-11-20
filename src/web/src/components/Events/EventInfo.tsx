@@ -1,4 +1,4 @@
-import EventModel from "../../models/event";
+import EventModel from "../../models/eventModel";
 import EventCard from "./EventCard";
 
 interface Props {
