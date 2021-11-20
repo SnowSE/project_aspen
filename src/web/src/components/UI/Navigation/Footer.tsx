@@ -4,7 +4,7 @@ import logo from "./tempLogo.png";
 const Footer = () => {
 
     return (
-        <div className="text-center text-lg-start text-muted">
+        <footer className="text-center text-lg-start text-muted m-0">
             <hr/>
             <section className="">
                 <div className="container text-center text-md-start">
@@ -83,7 +83,7 @@ const Footer = () => {
                 © 2021 Copyright, All Rights Reserved
             </div>
             {/* <!-- Copyright --> */}
-       </div>
+       </footer>
     )
 }
 

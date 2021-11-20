@@ -5,40 +5,54 @@ import {
   IoCalendarClear,
   IoHome,
 } from "react-icons/io5";
+import { useState } from "react";
 
 const AdminSideBar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const onToggleNavBar = () => {
+    setIsCollapsed(previous => !previous)
+  }
+
+  const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black" + (isCollapsed ? `col-sm col-xxl-12 mobile-col` : " text-decoration-none")
+
   return (
-    <>
-      <div className="d-flex align-items-center p-2  me-md-auto text-decoration-none text-light bg-primary">
-        <span className="fs-4">Admin Tools</span>
+    <div className="col-xxl-2 bg-secondary shadow" id={isCollapsed ? 'collapsed' : ''}>
+      <div id="admin-nav" className="container-fluid d-flex p-0 h-100 flex-column">
+        <div className="row text-center py-2 text-light bg-primary">
+          <span className="fs-4">{!isCollapsed && "Admin Tools"}</span>
+        </div>
+        <div className="row">
+          <div className="col"></div>
+          <div className="col"></div>
+        </div>
+        <div className="row">
+          <NavLink to="/" className={genericClasses} exact>
+            <IoHome />
+            {!isCollapsed && "Home"}
+          </NavLink>
+          <NavLink to="/admin/people" className={genericClasses} exact>
+            <IoAccessibility />
+            {!isCollapsed && "People"}
+          </NavLink>
+          <NavLink to="/admin/events" className={genericClasses} exact>
+            <IoCalendarClear />
+            {!isCollapsed && "Events"}
+          </NavLink>
+          <NavLink to="/admin/pagedata" className={genericClasses} exact>
+            <IoSettingsSharp />
+            {!isCollapsed && "Page Data"}
+          </NavLink>
+        </div>
+        <div className="row flex-grow-1"></div>
+        <div className="row">
+          <button id="responsive-expand-button" className="btn btn-primary col-12" type="button" onClick={onToggleNavBar}>
+            {isCollapsed ? 'expand' : 'collapse'}
+          </button>
+        </div>
+
       </div>
-      <ul className="nav nav-tabs flex-column mb-auto">
-        <li className="nav-item">
-          <NavLink to="/" className="nav-link" exact>
-            <IoHome className="me-1" size="1.5em" />
-            Home
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to="/admin/people" className="nav-link ">
-            <IoAccessibility className="me-1" size="1.5em" />
-            People
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/admin/events" className="nav-link ">
-            <IoCalendarClear className="me-1" size="1.5em" />
-            Events
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/admin/pagedata" className="nav-link">
-            <IoSettingsSharp className="me-1" size="1.5em" />
-            Settings (Page Data)
-          </NavLink>
-        </li>
-      </ul>
-    </>
+    </div>
   );
 };
 
