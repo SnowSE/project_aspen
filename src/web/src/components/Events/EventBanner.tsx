@@ -1,4 +1,4 @@
-import EventModel from "../../models/event";
+import EventModel from "../../models/eventModel";
 import EventDisplayButtonBar from "./EventDisplayButtonBar";
 
 interface Props {

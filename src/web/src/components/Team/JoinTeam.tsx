@@ -20,11 +20,14 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     }, [dispatch])
 
     return (
-        <div className="">
-            {teams.map(t => {
+        <div className="justify-content-center">
+            <div className="fs-2 text-center">
+                Current Teams
+            </div>
+            {!selectedPerson ? <CreatePersonForm authId={authId} /> : teams.map(t => {
                 return (
                     <div className = "d-flex justify-content-center">
-                        {!selectedPerson ? <CreatePersonForm authId={authId}/> : <TeamItem ownerId={props.ownerId} team={t} />}
+                        <TeamItem key={t.id} ownerId={props.ownerId} team={t} />
                     </div>
                 )
             })}

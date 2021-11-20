@@ -8,7 +8,7 @@ import { useStoreSelector } from "../../../store";
 import Admin from "../../../views/Admin/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
-import RegistrationPage from "../../../views/RegistrationPage";
+import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
 // import NewEventForm from "../../../components/Forms/NewEventForm";
 // import EventDisplay from "../../../views/EventDisplay";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
@@ -62,12 +62,18 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
         <LoginLanding />
       </AuthorizedRoute>
-      <AuthorizedRoute path="/teamregistration">
+      {/* <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
         <RegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
         <JoinTeamPage/>
-      </AuthorizedRoute>
+      </AuthorizedRoute> */}
+      <Route path = "/jointeam">
+        <JoinTeamPage />
+      </Route>
+      <Route path = "/teamregistration">
+        <TeamRegistrationPage />
+      </Route>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
