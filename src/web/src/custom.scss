@@ -2,7 +2,25 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootswatch/dist/sandstone/bootswatch";
 
-.btn-transparent {
-  background-color: transparent;
+// #top-nav, #footer{
+//   min-height: 5vh;
+// }
+// #body{
+//   min-height: 80vh;
+// }
+// .btn-transparent {
+//   background-color: transparent;
+// }
+@media only screen and (min-width: 	1400px) {
+  #collapsed {
+    width: 3% !important;
+    background: #000;
+  }
+}
+@media only screen and (max-width: 	1400px) {
+  .mobile-col {
+    width: 25% !important;
+    text-decoration: none;
+  }
 }
 

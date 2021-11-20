@@ -13,15 +13,13 @@ const MainLayoutContainer = () => {
       </div>
       <div className="row m-0 p-0">
         {isAdmin && (
-          <div className="col-2 ps-0">
-            <AdminSideBar />
-          </div>
+           <AdminSideBar />
         )}
-        <div className="col">
+        <div className="col mt-2">
           <MainSwitch />
         </div>
       </div>
-      <div className="row m-0 p-0 position-absolute bottom-0 w-100">
+      <div className="row m-0 p-0">
         <Footer />
       </div>
     </>
