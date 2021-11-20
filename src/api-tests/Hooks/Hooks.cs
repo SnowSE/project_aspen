@@ -19,7 +19,7 @@ namespace Tests.Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            host = Program.CreateHostBuilder(new[] {"--urls", "http://127.0.0.1:0"}).Build();
+            host = Program.CreateHostBuilder(new[] {"--urls", "http://127.0.0.1:0", "--ASPEN_TEST_CONNECTION_STRING", "Server=api_db_test;Database=aspen;User Id=aspen;Password=password;" }).Build();
             host.Start();
             foreach(var address in Api.Startup.HostedAddresses)
             {
