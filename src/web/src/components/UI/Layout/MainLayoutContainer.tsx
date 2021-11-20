@@ -2,23 +2,27 @@ import { NavBar } from "../Navigation/NavBar";
 import AdminSideBar from "../Navigation/AdminSideBar";
 import MainSwitch from "../Navigation/MainSwitch";
 import { useStoreSelector } from "../../../store";
+import Footer from "../Navigation/Footer";
 
 const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
     <>
-      <div className="row">
+      <div className="row m-0 p-0">
         <NavBar />
       </div>
-      <div className="row">
+      <div className="row m-0 p-0">
         {isAdmin && (
-          <div className="col-lg-2 bg-secondary ">
+          <div className="col-2 ps-0">
             <AdminSideBar />
           </div>
         )}
-        <div className="col p-0">
+        <div className="col">
           <MainSwitch />
         </div>
+      </div>
+      <div className="row m-0 p-0 position-absolute bottom-0 w-100">
+        <Footer />
       </div>
     </>
   );
