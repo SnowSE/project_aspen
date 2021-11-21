@@ -5,7 +5,7 @@ const Footer = () => {
 
     return (
         <footer className="text-center text-lg-start text-muted m-0">
-            <hr/>
+            <hr className="mt-0"/>
             <section className="">
                 <div className="container text-center text-md-start">
                     {/* <!-- Grid row --> */}
