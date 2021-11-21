@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { BrowserRouter as Router, NavLink } from "react-router-dom";
+import { BrowserRouter as Router} from "react-router-dom";
 import EventTeam from "./EventTeam";
 
 describe("Event Team tests", ()=>{
