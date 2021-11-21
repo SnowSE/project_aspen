@@ -34,21 +34,37 @@ A different as-yet-undetermined URL route could/would allow access to previous/f
 - An event has multiple teams.
 - An event has a location
 - An event can have a schedule of activities (out of scope for 2021)
+- An event has sponsor tiers are based on donation amounts
 
 
 ## Teams
-- A team only exists within an event.
-- Team owners can manage members on their team
-- Team owners can set fundraising goals for their team
-- Team owners can set the story, the picture, the description, video link, etc. for the team.
+- A team only exists within an event.  
+- Team owners can manage members on their team  
+- Team owners can set fundraising goals for their team  
+- Team owners can set the story, the picture, the description, video link, etc. for the team.  
 
 
-# Fundraising (out of scope for 2021)
-There are different fundraising tier amounts, (e.g. $500 for 6 movie tickets, $1k for a kindle, $2k for an iPad, etc.)  Prizes are public on the sign-up page.  Show whatever prize you most recently qualified for and how far away you are from the next prize.  Prizes are per event.
+## Donations
+- Any donation can be made anonymous or linked to a logged-in user  
+- Donations can be made to an event or to a specific team  
+- A donation can have a sponsorID (but cannot have both a sponsorID and a personID)
+
+# Sponsors
+- Track sponsors globally
+- Many-to-many sponsor to event relationship
+- Sponsors can be flagged as ActiveRecurring, if so flagged they'll be automatically added as sponsors to new events
+- For MVP, sponsors are added/updated by admin, not public.  In the future we could let people sign up themselves as a sponsor.
+
+
 
 # T-Shirts & Food (out of scope for 2021)
-- A set of add-ons exists per event
-- Add-ons could be t-shirts, food items, etc.
-- Each add-on can have indiv. details (e.g. shirt size)
-- A registration owner can purchase add-ons for the regsitration members of their registration
-  - That can be 0+ of each add-on per registration member. 
+- A set of add-ons exists per event  
+- Add-ons could be t-shirts, food items, etc.  
+- Each add-on can have indiv. details (e.g. shirt size)  
+- A registration owner can purchase add-ons for the regsitration members of their registration  
+  - That can be 0+ of each add-on per registration member.  
+
+
+# Gamification of donations (out of scope for 2021)
+There are different fundraising tier amounts, (e.g. $500 for 6 movie tickets, $1k for a kindle, $2k for an iPad, etc.)  Prizes are public on the sign-up page.  Show whatever prize you most recently qualified for and how far away you are from the next prize.  Prizes are per event.
+

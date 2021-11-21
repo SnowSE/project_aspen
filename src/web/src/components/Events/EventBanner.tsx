@@ -1,4 +1,4 @@
-import EventModel from "../../models/eventModel";
+import EventModel from "../../models/event";
 import EventDisplayButtonBar from "./EventDisplayButtonBar";
 
 interface Props {
@@ -10,7 +10,7 @@ const EventBanner = ({ event }: Props) => {
     <div className="card text-center bg-light">
       {/* <img src={event.primaryImageUrl} alt="event background" width="500" height="500"/> */}
       <h3 className="m-3">{event.description}</h3>
-      <EventDisplayButtonBar />
+      <EventDisplayButtonBar/>
       <div className="centered">
         <strong> Learn more about {charity}</strong>
       </div>

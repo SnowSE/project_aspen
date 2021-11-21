@@ -1,4 +1,4 @@
-import EventModel from "../../models/eventModel";
+import EventModel from "../../models/event";
 
 const EventCard = ({ event }: { event: EventModel }) => {
   console.log(event);

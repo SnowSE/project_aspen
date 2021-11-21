@@ -1,5 +1,5 @@
 import axios from "axios";
-import EventModel from "../models/eventModel";
+import EventModel from "../models/event";
 
 const Url = `${process.env.PUBLIC_URL}/api/events`;
 //new behavior here
