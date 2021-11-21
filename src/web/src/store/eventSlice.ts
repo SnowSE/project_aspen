@@ -5,7 +5,7 @@ import {
   addEvent,
   updateEvent,
 } from "../services/eventApiService";
-import EventModel from "../models/eventModel";
+import EventModel from "../models/event";
 import { StoreDispatch } from ".";
 
 interface EventState {

@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import useInput from "../../hooks/use-input";
 import TextInput from "../../inputs/TextInput";
 import DateInput from "../../inputs/DateInput";
-import EventModel from "../../models/eventModel";
+import EventModel from "../../models/event";
 import { createNewEvent } from "../../store/eventSlice";
 import { FormEvent } from "react";
 
