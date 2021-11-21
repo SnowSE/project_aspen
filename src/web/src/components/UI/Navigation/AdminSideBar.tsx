@@ -14,17 +14,13 @@ const AdminSideBar = () => {
     setIsCollapsed(previous => !previous)
   }
 
-  const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black" + (isCollapsed ? `col-sm col-xxl-12 mobile-col` : " text-decoration-none")
+  const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col-3` : " text-decoration-none")
 
   return (
-    <div className="col-xxl-2 bg-secondary shadow" id={isCollapsed ? 'collapsed' : ''}>
+    <div className={`col-xxl-2 bg-secondary shadow test ${isCollapsed ? 'collapsed-nav': 'extended-nav'}`}>
       <div id="admin-nav" className="container-fluid d-flex p-0 h-100 flex-column">
         <div className="row text-center py-2 text-light bg-primary">
           <span className="fs-4">{!isCollapsed && "Admin Tools"}</span>
-        </div>
-        <div className="row">
-          <div className="col"></div>
-          <div className="col"></div>
         </div>
         <div className="row">
           <NavLink to="/" className={genericClasses} exact>
@@ -46,11 +42,10 @@ const AdminSideBar = () => {
         </div>
         <div className="row flex-grow-1"></div>
         <div className="row">
-          <button id="responsive-expand-button" className="btn btn-primary col-12" type="button" onClick={onToggleNavBar}>
-            {isCollapsed ? 'expand' : 'collapse'}
+          <button id="responsive-expand-button" className="btn btn-dark col-12" type="button" onClick={onToggleNavBar}>
+            {isCollapsed ? '⇲' : '⇱'}
           </button>
         </div>
-
       </div>
     </div>
   );
