@@ -12,14 +12,12 @@ const MainLayoutContainer = () => {
         <NavBar />
       </div>
       <div className="row m-0 p-0">
-        {isAdmin && (
-           <AdminSideBar />
-        )}
+        {isAdmin && <AdminSideBar />}
         <div className="col mt-2" id="body">
           <MainSwitch />
         </div>
       </div>
-      <div className="row m-0 p-0" id='footer'>
+      <div className="row m-0 p-0" id="footer">
         <Footer />
       </div>
     </>
