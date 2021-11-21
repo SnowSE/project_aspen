@@ -99,7 +99,11 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 <label className="form-label fs-5">Create your team!</label>
                 <TextInput inputControl={name}/>
                 <TextInput inputControl={desciption} />
-                <TextInput inputControl={mainImage} />
+                <label>Main Image</label>
+                <input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
+                {
+                //<TextInput inputControl={mainImage} />
+                }
                 <TextInput inputControl={nickname} />
 
                 <div className="form-check my-2">
