@@ -19,7 +19,7 @@ namespace Api.DataAccess
 
             builder.Entity<DbDonation>(entity =>
             {
-                entity.Property(nameof(DbDonation.Pending)).HasDefaultValue(true);
+                entity.Property(nameof(DbDonation.IsPending)).HasDefaultValue(true);
             });
         }
 

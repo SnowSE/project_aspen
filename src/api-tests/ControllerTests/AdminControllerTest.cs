@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Api.Controllers;
+using Api.DataAccess;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,18 @@ namespace Tests.Controller
         private AdminController adminController;
         private ClaimsPrincipal adminUser;
 
+        public static AdminController GetAdminController()
+        {
+            var context = TestHelpers.CreateContext();
+            var donationRepository = new DonationRepository(context, TestHelpers.AspenMapper);
+            var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
+            return new AdminController(donationRepository, eventRepository, TestHelpers.AspenMapper);
+        }
+        
         [SetUp]
         public void Setup()
         {
-            adminController = new AdminController();
+            adminController = GetAdminController();
             var userClaims = new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, "testAdmin"),
                 new Claim(ClaimTypes.Role, "admin-aspen")

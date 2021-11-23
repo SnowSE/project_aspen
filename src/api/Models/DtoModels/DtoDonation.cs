@@ -12,6 +12,6 @@ namespace Api.DtoModels
         public long? PersonID { get; init; }
         public DateTime Date { get; init; }
         public decimal Amount { get; init; }
-        public bool Pending { get; init; } = false;
+        public bool IsPending { get; init; } = false;
     }
 }

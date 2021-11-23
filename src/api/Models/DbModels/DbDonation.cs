@@ -14,6 +14,6 @@ namespace Api.DbModels
         public DbPerson Person { get; init; }
         public DateTime Date { get; init; }
         public decimal Amount { get; init; }
-        public bool Pending { get; init; } = true;
+        public bool IsPending { get; init; } = true;
     }
 }

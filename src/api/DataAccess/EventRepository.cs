@@ -83,6 +83,5 @@ namespace Api.DataAccess
             context.Events.Remove(e);
             await context.SaveChangesAsync();
         }
-
     }
 }
