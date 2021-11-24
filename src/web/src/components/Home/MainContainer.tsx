@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
 import EventModel from "../../models/event";
-import { getEventList } from "../../store/eventSlice";
+import { getEventList, setCurrentEventId } from "../../store/eventSlice";
 
 const MainContainer = () => {
   const events = useStoreSelector((state) => state.event.events);
@@ -27,6 +27,8 @@ const MainContainer = () => {
           : b;
       });
       setEvent(closestEvent);
+      console.log('closest event is ', closestEvent);
+      setCurrentEventId(closestEvent.ID);
     } else {
       setEvent(dummyEvent);
     }

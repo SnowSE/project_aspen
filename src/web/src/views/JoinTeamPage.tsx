@@ -6,7 +6,8 @@ import { useStoreSelector } from '../store'
 import { getPersonByAuthId } from '../store/personSlice'
 const JoinTeamPage = () => {
     const authId = useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
-    const selectedPerson = useStoreSelector((state) => state.person.selectedPerson)
+    const selectedPerson = useStoreSelector((state) => state.person.selectedPerson);
+    const currentEventId = useStoreSelector((state) => state.event.currentEventId);
     const dispatch = useDispatch();
 
     console.log("here", selectedPerson)
@@ -17,7 +18,8 @@ const JoinTeamPage = () => {
 
     return (
         <div>
-            {!selectedPerson ? <CreatePersonForm authId={authId}/> : <JoinTeam ownerId={selectedPerson.id}/>}
+            {!selectedPerson ? <CreatePersonForm authId={authId}/> : 
+            <JoinTeam ownerId={selectedPerson.id} eventId={currentEventId}/>}
         </div>
     )
 }

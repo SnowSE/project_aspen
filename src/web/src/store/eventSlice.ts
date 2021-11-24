@@ -13,7 +13,8 @@ interface EventState {
   location: string,
   description: string,
   image: string,
-  events: EventModel[]
+  events: EventModel[],
+  currentEventId: number
 }
 
 const initialEventState: EventState = {
@@ -22,6 +23,7 @@ const initialEventState: EventState = {
   description: "",
   image: "",
   events: [],
+  currentEventId: 0
 };
 
 const eventSlice = createSlice({
@@ -43,6 +45,9 @@ const eventSlice = createSlice({
     setEvents(state, action) {
       state.events = action.payload;
     },
+    setCurrentEventId(state, action) {
+      state.currentEventId = action.payload;
+    }
   },
 });
 
@@ -62,6 +67,13 @@ export const updateExistingEvent = (event: EventModel) => {
     dispatch(getEventList());
   };
 };
+
+export const setCurrentEventId = (eventId: number) => {
+  return async (dispatch: StoreDispatch) => {
+    console.log('Setting current eventId to ', eventId);
+    dispatch(eventActions.setCurrentEventId(eventId));
+  }
+}
 
 export const getSingleEvent = (id: number) => {
   return async (dispatch: StoreDispatch) => {

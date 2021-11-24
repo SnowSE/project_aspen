@@ -7,6 +7,7 @@ import CreatePersonForm from '../Person/CreatePersonForm'
 
 type Props = {
     ownerId: number;
+    eventId: number;
 }
 
 const JoinTeam: FC<Props> = (props): JSX.Element => {
@@ -16,8 +17,8 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     const authId = useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
 
     useEffect(() => {
-        dispatch(getAllTeams());
-    }, [dispatch])
+        dispatch(getAllTeams(props.eventId));
+    }, [dispatch, props.eventId])
 
     return (
         <div className="justify-content-center">

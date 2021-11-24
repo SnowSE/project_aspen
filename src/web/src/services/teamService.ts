@@ -5,8 +5,8 @@ import Team from "../models/team"
 const url = `${process.env.PUBLIC_URL}/api/teams`;
 const registrationUrl = `${process.env.PUBLIC_URL}/api/Registration`
 
-const getAllTeams = async () =>{
-    const res = await axios.get<Team[]>(url);
+const getAllTeams = async (eventID: number) =>{
+    const res = await axios.get<Team[]>(url+`/event/${eventID}`);
     return res.data;
 }
 
