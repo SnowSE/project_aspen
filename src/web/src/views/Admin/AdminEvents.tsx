@@ -13,7 +13,7 @@ const AdminEvents = () => {
         <div className="mt-3">
           <NewEventForm />
           <button
-            className="btn btn-transparent"
+            className="btn"
             onClick={() => {
               setAddNew(!addNew);
             }}
@@ -23,7 +23,7 @@ const AdminEvents = () => {
         </div>
       ) : (
         <button
-          className="btn btn-transparent align-items-center mt-2"
+          className="btn align-items-center mt-2"
           onClick={() => {
             setAddNew(!addNew);
           }}

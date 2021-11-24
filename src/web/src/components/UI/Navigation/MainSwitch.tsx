@@ -8,9 +8,11 @@ import { useStoreSelector } from "../../../store";
 import Admin from "../../../views/Admin/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
-
-import PersonPage from "../../../views/RegistrationPage";
+import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
+// import NewEventForm from "../../../components/Forms/NewEventForm";
+// import EventDisplay from "../../../views/EventDisplay";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
+import JoinTeamPage from "../../../views/JoinTeamPage";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -60,14 +62,26 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
         <LoginLanding />
       </AuthorizedRoute>
+      
+      {/* <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
+        <TeamRegistrationPage />
+      </AuthorizedRoute>
+      <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
+        <JoinTeamPage/>
+      </AuthorizedRoute> */}
+
+      <Route path="/teamregistration">
+        <TeamRegistrationPage />
+      </Route>
+      <Route path="/jointeam">
+        <JoinTeamPage />
+      </Route>
+
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
       <Route path="/logout/post" exact>
         <LogoutLanding />
-      </Route>
-      <Route path="/register">
-        <PersonPage />
       </Route>
       <Route exact path="/">
         <Home />

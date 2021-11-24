@@ -19,5 +19,6 @@ namespace Api.DtoModels
         public string Location { get; init; }
         public string Description { get; init; }
         public string PrimaryImageUrl { get; init; }
+        public decimal DonationTarget { get; init; }
     }
 }

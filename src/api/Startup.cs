@@ -38,6 +38,7 @@ namespace Api
             services.AddScoped<IPageDataRepository, PageDataRepository>();
             services.AddScoped<IRegistrationRepository, RegistrationRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IDonationRepository, DonationRepository>();
             services.AddScoped<IAssetFileService, AssetFileService>();
             services.AddAuthentication(options =>
             {

@@ -8,6 +8,12 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Security.Claims;
+using Api.DtoModels;
+using Api.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Api.DbModels;
+using Api.Models.Entities;
 
 namespace Api.Controllers
 {
@@ -16,10 +22,35 @@ namespace Api.Controllers
     [Route("/api/[controller]")]
     public class AdminController : ControllerBase
     {
-        [HttpGet]
-        [Authorize(Roles = "admin-aspen")]
+        public const string AspenAdminRole = "admin-aspen";
+        private readonly DonationRepository donationRepository;
+        private readonly EventRepository eventRepository;
+        private readonly IMapper mapper;
+
+        public AdminController(DonationRepository donationRepository, EventRepository eventRepository, IMapper mapper)
+        {
+            this.donationRepository = donationRepository;
+            this.eventRepository = eventRepository;
+            this.mapper = mapper;
+        }
+
+        [HttpGet, Authorize(Roles = AspenAdminRole)]
         public IEnumerable<UserClaim> Get() =>
             User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
+
+        [HttpGet("donation/{eventID}"), Authorize(Roles = AspenAdminRole)]
+        public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
+        {
+            var donations = await donationRepository.GetByEventIdAsync(eventID);
+            return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
+        }
+
+        [HttpGet("donation/{eventID}/{teamID}"), Authorize(Roles = AspenAdminRole)]
+        public async Task<IEnumerable<DtoDonation>> GetTeamDonations(long eventID, long teamID)
+        {
+            var donations = await donationRepository.GetByTeamIdAsync(eventID, teamID);
+            return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
+        }
     }
 
     public record UserClaim(string claim, string value);

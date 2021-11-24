@@ -16,7 +16,7 @@ namespace Api.DataAccess
 {
     public interface IEventRepository
     {
-        Task<Event> AddAsync(DateTime date, string title, string description, string primaryImageUrl, string location);
+        Task<Event> AddAsync(Event newEvent);
         Task DeleteAsync(long id);
         Task EditAsync(Event e);
         public Task<bool> ExistsAsync(long id);
@@ -52,16 +52,9 @@ namespace Api.DataAccess
 
             return mapper.Map<Event>(e);
         }
-        public async Task<Event> AddAsync(DateTime date, string title, string description, string primaryImageUrl, string location)
+        public async Task<Event> AddAsync(Event @event)
         {
-
-            var newEvent = new DbEvent {
-                Date = date,
-                Title = title,
-                Description = description,
-                PrimaryImageUrl = primaryImageUrl,
-                Location = location
-            };
+            var newEvent = mapper.Map<DbEvent>(@event);
             context.Events.Add(newEvent);
             await context.SaveChangesAsync();
 
@@ -83,6 +76,5 @@ namespace Api.DataAccess
             context.Events.Remove(e);
             await context.SaveChangesAsync();
         }
-
     }
 }

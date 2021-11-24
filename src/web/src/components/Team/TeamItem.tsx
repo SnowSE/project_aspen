@@ -39,15 +39,16 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
     return (
         <div className="border w-50 border-2 m-2 p-2 ">
             
-            <p className="d-flex justify-content-center">
-                Team description: {props.team.description}
+            <p className="d-flex justify-content-center fs-4 bold">
+                {props.team.name}
             </p>
             <div className="d-flex justify-content-center" >
                 <form onSubmit={submitRegistrationHandler}>
                     <TextInput inputControl={nickname} />
-                    <label>Is Registration Public: </label>
-                    <input type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
-                    <br/><br/>
+                    <div className="form-check my-2">
+                        <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
+                        <label className="form-check-label">Is Registration Public</label>
+                    </div>
                     <button className="btn btn-outline-primary" type='submit'>Join Team!</button>
                 </form>
             </div>

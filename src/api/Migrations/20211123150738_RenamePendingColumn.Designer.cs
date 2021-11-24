@@ -4,15 +4,17 @@ using System.Text.Json;
 using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    partial class AspenContextModelSnapshot : ModelSnapshot
+    [Migration("20211123150738_RenamePendingColumn")]
+    partial class RenamePendingColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +72,6 @@ namespace Api.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
-
-                    b.Property<decimal>("DonationTarget")
-                        .HasColumnType("numeric");
 
                     b.Property<string>("Location")
                         .HasColumnType("text");

@@ -46,6 +46,7 @@ namespace Api.Models.Entities
         public string Description { get; init; }
 
         public string? PrimaryImageUrl { get; init; }
+        public decimal DonationTarget { get; init; }
     }
 
     public static class EventExtensions
@@ -69,6 +70,20 @@ namespace Api.Models.Entities
                 currentEvent.Date,
                 currentEvent.Location,
                 newPrimaryImageUrl);
+        }
+
+        public static Event WithDonationTarget(this Event currentEvent, decimal donationTarget)
+        {
+            return new Event(
+                currentEvent.ID,
+                currentEvent.Description,
+                currentEvent.Title,
+                currentEvent.Date,
+                currentEvent.Location,
+                currentEvent.PrimaryImageUrl)
+            {
+                DonationTarget = donationTarget
+            };
         }
     }
 }

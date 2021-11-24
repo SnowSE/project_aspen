@@ -62,7 +62,8 @@ namespace Tests.Controller
             {
                 Title = "Marathon",
                 Description = "Cool Marathon2",
-                Location = "Snow"
+                Location = "Snow",
+                DonationTarget=1.23M
             };
 
             var eventController = GetEventController();
@@ -71,6 +72,7 @@ namespace Tests.Controller
 
             returnedEvent.ID.Should().NotBe(0);
             returnedEvent.Title.Should().Be("Marathon");
+            returnedEvent.DonationTarget.Should().Be(1.23M);
         }
 
         [Test]
@@ -84,11 +86,12 @@ namespace Tests.Controller
 
             var createdEvent = (await GetEventController().Add(newEvent)).Value;
 
-            var changedEvent = createdEvent with { Description = "This is changed" };
+            var changedEvent = createdEvent with { Description = "This is changed", DonationTarget = 12345.67M };
             await GetEventController().Edit(changedEvent, changedEvent.ID);
 
             var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
+            returnedEvent.DonationTarget.Should().Be(12345.67M);
         }
 
         [Test]
