@@ -53,7 +53,8 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
-            var newEvent = await eventRepository.AddAsync(dtoEvent.Date, dtoEvent.Title, dtoEvent.Description, dtoEvent.PrimaryImageUrl, dtoEvent.Location);
+            var @event = mapper.Map<Event>(dtoEvent);
+            var newEvent = await eventRepository.AddAsync(@event);
             return mapper.Map<DtoEvent>(newEvent);
         }
 

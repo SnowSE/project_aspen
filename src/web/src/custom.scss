@@ -2,25 +2,18 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootswatch/dist/sandstone/bootswatch";
 
-// #top-nav, #footer{
-//   min-height: 5vh;
-// }
-// #body{
-//   min-height: 80vh;
-// }
-// .btn-transparent {
-//   background-color: transparent;
-// }
 @media only screen and (min-width: 	1400px) {
-  #collapsed {
-    width: 3% !important;
-    background: #000;
+  .collapsed-nav {
+    width: 50px !important;
   }
-}
-@media only screen and (max-width: 	1400px) {
-  .mobile-col {
-    width: 25% !important;
-    text-decoration: none;
+  .extended-nav {
+    width: 200px !important;
+  }
+  #top-nav, #footer{
+    min-height: 4vh;
+  }
+  #body{
+    min-height: 80vh;
   }
 }
 

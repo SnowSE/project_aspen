@@ -8,18 +8,16 @@ const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
     <>
-      <div className="row m-0 p-0">
+      <div className="row m-0 p-0" id="top-nav">
         <NavBar />
       </div>
       <div className="row m-0 p-0">
-        {isAdmin && (
-           <AdminSideBar />
-        )}
-        <div className="col mt-2">
+        {isAdmin && <AdminSideBar />}
+        <div className="col mt-2" id="body">
           <MainSwitch />
         </div>
       </div>
-      <div className="row m-0 p-0">
+      <div className="row m-0 p-0" id="footer">
         <Footer />
       </div>
     </>

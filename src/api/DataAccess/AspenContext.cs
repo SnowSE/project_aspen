@@ -16,6 +16,11 @@ namespace Api.DataAccess
             {
                 entity.HasIndex(e => e.Key).IsUnique();
             });
+
+            builder.Entity<DbDonation>(entity =>
+            {
+                entity.Property(nameof(DbDonation.IsPending)).HasDefaultValue(true);
+            });
         }
 
         public DbSet<DbPageData> PageData { get; set; }
@@ -24,5 +29,6 @@ namespace Api.DataAccess
         public DbSet<DbRegistration> Registrations { get; set; }
         public DbSet<DbPersonRegistration> PersonRegistrations { get; set; }
         public DbSet<DbPerson> Persons { get; set; }
+        public DbSet<DbDonation> Donations { get; set; }
     }
 }
