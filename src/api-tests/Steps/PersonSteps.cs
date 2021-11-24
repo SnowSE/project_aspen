@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace Tests.Steps
 {
@@ -14,11 +15,13 @@ namespace Tests.Steps
     {
         private readonly AspenApi api;
         private readonly ScenarioContext scenarioContext;
+        private readonly ISpecFlowOutputHelper outputHelper;
 
-        public PersonSteps(AspenApi api, ScenarioContext scenarioContext)
+        public PersonSteps(AspenApi api, ScenarioContext scenarioContext, ISpecFlowOutputHelper outputHelper)
         {
             this.api = api;
             this.scenarioContext = scenarioContext;
+            this.outputHelper = outputHelper;
         }
 
         [Given(@"I want to create a person with the following information")]
@@ -36,6 +39,7 @@ namespace Tests.Steps
         [When(@"I create that person")]
         public async Task WhenICreateThatPersonAsync()
         {
+            outputHelper.WriteLine("*** Connection String: " + Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING"));
             var dtoPerson = scenarioContext.Get<DtoPerson>("personToCreate");
             var createdPerson = await api.CreatePersonAsync(dtoPerson);
             scenarioContext.Set(createdPerson, "createdPerson");
