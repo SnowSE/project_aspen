@@ -3,7 +3,7 @@ export default class EventModel {
   location: string;
   description: string;
   primaryImageUrl: string;
-  ID: number = -1;
+  id: number = -1;
   constructor(
     date?: Date,
     location?: string,

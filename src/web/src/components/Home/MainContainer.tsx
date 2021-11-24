@@ -28,11 +28,12 @@ const MainContainer = () => {
       });
       setEvent(closestEvent);
       console.log('closest event is ', closestEvent);
-      setCurrentEventId(closestEvent.ID);
+      dispatch(setCurrentEventId(closestEvent.id));
+      //setCurrentEventId(closestEvent.id);
     } else {
       setEvent(dummyEvent);
     }
-  }, [events]);
+  }, [events, dispatch]);
 
   useEffect(() => {
     dispatch(getEventList());
