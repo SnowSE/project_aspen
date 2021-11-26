@@ -19,9 +19,15 @@ namespace Tests.Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            host = Program.CreateHostBuilder(new[] {"--urls", "http://127.0.0.1:0"}).Build();
+            var inDocker = Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") != null;
+
+            host = Program.CreateHostBuilder(new[] {
+                "--urls", "http://127.0.0.1:0",
+                inDocker ? "--ASPEN_CONNECTION_STRING" : "",
+                inDocker ? Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") : ""
+            }).Build();
             host.Start();
-            foreach(var address in Api.Startup.HostedAddresses)
+            foreach (var address in Startup.HostedAddresses)
             {
                 var parts = address.Split(':');
                 ExposedPort = int.Parse(parts[2]);
