@@ -6,12 +6,18 @@ import {
   IoHome,
 } from "react-icons/io5";
 import { useState } from "react";
+import { alertActions } from "../../../store/alertSlice";
+import { useDispatch } from "react-redux";
 
 const AdminSideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const dispatch = useDispatch();
 
   const onToggleNavBar = () => {
     setIsCollapsed(previous => !previous)
+  }
+  const displayAlert = () => {
+    dispatch(alertActions.displayAlert({message: "This is how the alert looks", danger:true}));
   }
 
   const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col-3` : " text-decoration-none")
@@ -39,6 +45,9 @@ const AdminSideBar = () => {
             <IoSettingsSharp />
             {!isCollapsed && "Page Data"}
           </NavLink>
+          <button id="responsive-expand-button" className="btn btn-danger" type="button" onClick={displayAlert}>
+            ⚠
+          </button>
         </div>
         <div className="row flex-grow-1"></div>
         <div className="row">
@@ -52,3 +61,4 @@ const AdminSideBar = () => {
 };
 
 export default AdminSideBar;
+

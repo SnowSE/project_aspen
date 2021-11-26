@@ -5,7 +5,7 @@ import logo from "./tempLogo.png";
 
 const NavBar = () => {
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
-
+  
   const logoutHandler = () => {
     AuthService.logout();
   };

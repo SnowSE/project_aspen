@@ -82,7 +82,7 @@ const Footer = () => {
             <div className="text-center p-2" >
                 © 2021 Copyright, All Rights Reserved
             </div>
-            {/* <!-- Copyright --> */}
+            {/* <!-- Copyright --> */}            
        </footer>
     )
 }

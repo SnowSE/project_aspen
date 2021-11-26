@@ -3,11 +3,13 @@ import AdminSideBar from "../Navigation/AdminSideBar";
 import MainSwitch from "../Navigation/MainSwitch";
 import { useStoreSelector } from "../../../store";
 import Footer from "../Navigation/Footer";
+import AlertDisplay from "../AlertDisplay";
 
 const MainLayoutContainer = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
     <>
+      <AlertDisplay/>
       <div className="row m-0 p-0" id="top-nav">
         <NavBar />
       </div>
