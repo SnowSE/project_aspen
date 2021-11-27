@@ -19,7 +19,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     const events = useStoreSelector((state) => state.event.events)
 
     const dispatch = useDispatch();
-    console.log(props.ownerId)
+   
 
     const desciption = useInput(
         "Description",

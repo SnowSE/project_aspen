@@ -7,6 +7,7 @@ import { createPerson } from "../../store/personSlice";
 
 type Props = {
   authId?: string;
+  given_name?: string;
 }
 
 const CreatePersonForm: FC<Props> = (props): JSX.Element => {
@@ -20,22 +21,18 @@ const CreatePersonForm: FC<Props> = (props): JSX.Element => {
   const name = useInput(
     "Name",
     "Please enter a valid name.",
-    (value) => value.trim() !== ""
+    (value) => value.trim() !== "",
+    props.given_name
   );
-  const bio = useInput(
-    "Bio",
-    "Please enter a valid bio.",
-    (value) => value.trim() !== ""
-  );
+  
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     console.log("above");
-    if (authId.isValid && name.isValid && bio.isValid) {
-      const person = new Person(authId.value, name.value, bio.value);
+    if (authId.isValid && name.isValid) {
+      const person = new Person(authId.value, name.value, "");
       dispatch(createPerson(person));
       authId.reset();
       name.reset();
-      bio.reset();
     }
   };
   return (
@@ -43,7 +40,6 @@ const CreatePersonForm: FC<Props> = (props): JSX.Element => {
       <label>Create Person:</label>
       <TextInput inputControl={authId} />
       <TextInput inputControl={name} />
-      <TextInput inputControl={bio} />
       <button type="submit">Submit</button>
     </form>
   );

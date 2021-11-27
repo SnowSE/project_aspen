@@ -1,25 +1,43 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import CreatePersonForm from '../components/Person/CreatePersonForm'
-import JoinTeam from '../components/Team/JoinTeam'
-import { useStoreSelector } from '../store'
-import { getPersonByAuthId } from '../store/personSlice'
+import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import JoinTeam from "../components/Team/JoinTeam";
+import { useStoreSelector } from "../store";
+import { createPerson, getPersonByAuthId } from "../store/personSlice";
+import Person from "../models/person";
+
 const JoinTeamPage = () => {
-    const authId = useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
-    const selectedPerson = useStoreSelector((state) => state.person.selectedPerson)
-    const dispatch = useDispatch();
+  const authId =
+    useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
+  const given_name =
+    useStoreSelector((state) => state.auth.user?.profile.given_name) ?? "";
+  const selectedPerson = useStoreSelector(
+    (state) => state.person.selectedPerson
+  );
+  const dispatch = useDispatch();
+  const checkPerson =  useCallback( async () => {
+    await dispatch(getPersonByAuthId(authId));
+    if (!selectedPerson) {
+      const person = new Person(authId, given_name, "");
+      await dispatch(createPerson(person));
+      await dispatch(getPersonByAuthId(authId));
+    }
+  }, [authId, dispatch, given_name, selectedPerson])
 
-    console.log("here", selectedPerson)
+  useEffect(() => {
+    //dispatch(getPersonByAuthId(authId));
+    checkPerson();
+  }, [checkPerson]);
 
-    useEffect(() => {
-        dispatch(getPersonByAuthId(authId));
-    }, [authId, dispatch]);
 
-    return (
-        <div>
-            {!selectedPerson ? <CreatePersonForm authId={authId}/> : <JoinTeam ownerId={selectedPerson.id}/>}
-        </div>
-    )
-}
+  return (
+    <div>
+      {!selectedPerson ? (
+        <div>Loading</div>
+      ) : (
+        <JoinTeam ownerId={selectedPerson!.id} />
+      )}
+    </div>
+  );
+};
 
-export default JoinTeamPage
+export default JoinTeamPage;

@@ -16,13 +16,17 @@ import JoinTeamPage from "../../../views/JoinTeamPage";
 
 const AuthorizedRoute: FC<any> = ({
   children,
-  authed: isAuthorized,
+  isAuthorized,
   ...rest
 }) => {
   if (!isAuthorized) {
     AuthService.signinRedirect();
+    return <Route {...rest}>{children}</Route>;
   }
-  return <Route {...rest}>{children}</Route>;
+  else{
+    return <Route {...rest}>{children}</Route>;
+  }
+  
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
@@ -63,19 +67,19 @@ const MainSwitch = () => {
         <LoginLanding />
       </AuthorizedRoute>
       
-      {/* <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
+       <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
         <JoinTeamPage/>
-      </AuthorizedRoute> */}
+      </AuthorizedRoute> 
 
-      <Route path="/teamregistration">
+     {/* <Route path="/teamregistration" >
         <TeamRegistrationPage />
       </Route>
       <Route path="/jointeam">
         <JoinTeamPage />
-      </Route>
+      </Route>*/}
 
       <Route path="/login/landing">
         <LoginLanding />
