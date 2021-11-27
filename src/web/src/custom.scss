@@ -16,4 +16,18 @@
     min-height: 80vh;
   }
 }
+.alert-display{
+  z-index:9999; 
+  animation: 0.25s ease-out 0s 1 slideIn;
+  margin: 0;
+}
+@keyframes slideIn{
+  0% {
+    transform: translateY(+100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 
