@@ -74,13 +74,6 @@ const MainSwitch = () => {
         <JoinTeamPage/>
       </AuthorizedRoute> 
 
-     {/* <Route path="/teamregistration" >
-        <TeamRegistrationPage />
-      </Route>
-      <Route path="/jointeam">
-        <JoinTeamPage />
-      </Route>*/}
-
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
