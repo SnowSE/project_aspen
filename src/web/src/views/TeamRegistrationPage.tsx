@@ -1,9 +1,10 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import TeamForm from "../components/Team/TeamForm";
 import { useStoreSelector } from "../store";
 import { createPerson, getPersonByAuthId } from "../store/personSlice";
 import Person from "../models/person";
+
 const TeamRegistrationPage = () => {
   const authId =
     useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
@@ -12,16 +13,17 @@ const TeamRegistrationPage = () => {
   const selectedPerson = useStoreSelector(
     (state) => state.person.selectedPerson
   );
+  const personRef = useRef(selectedPerson);
   const dispatch = useDispatch();
 
   const checkPerson = useCallback(async () => {
     await dispatch(getPersonByAuthId(authId));
-    if (!selectedPerson) {
+    if (!personRef) {
       const person = new Person(authId, given_name, "");
       await dispatch(createPerson(person));
       await dispatch(getPersonByAuthId(authId));
     }
-  },[authId, dispatch, given_name, selectedPerson]);  
+  },[dispatch, authId, given_name]);  
 
   useEffect(() => {
     //dispatch(getPersonByAuthId(authId));

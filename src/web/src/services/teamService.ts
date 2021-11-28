@@ -11,7 +11,15 @@ const getAllTeams = async () =>{
 }
 
 const createTeam = async (team :Team) =>{
-    const res = await axios.post<Team>(url + `?eventId=${team.eventID}`, team)
+    const thisTeam={
+        name: team.name,
+        description: team.description,
+        mainImage: team.mainImage,
+        ownerID: team.ownerID,
+        eventID: team.eventID
+    }
+    const res = await axios.post<Team>(url, thisTeam)
+    console.log(res)
     return res.data;
 }
 

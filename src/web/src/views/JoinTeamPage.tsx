@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import JoinTeam from "../components/Team/JoinTeam";
 import { useStoreSelector } from "../store";
@@ -13,15 +13,17 @@ const JoinTeamPage = () => {
   const selectedPerson = useStoreSelector(
     (state) => state.person.selectedPerson
   );
+
+  const personRef = useRef(selectedPerson)
   const dispatch = useDispatch();
   const checkPerson =  useCallback( async () => {
     await dispatch(getPersonByAuthId(authId));
-    if (!selectedPerson) {
+    if (!personRef) {
       const person = new Person(authId, given_name, "");
       await dispatch(createPerson(person));
       await dispatch(getPersonByAuthId(authId));
     }
-  }, [authId, dispatch, given_name, selectedPerson])
+  }, [authId, dispatch, given_name])
 
   useEffect(() => {
     //dispatch(getPersonByAuthId(authId));
