@@ -64,7 +64,7 @@ const NewEventForm = () => {
         <TextInput inputControl={location} />
         <TextInput inputControl={description} />
         <TextInput inputControl={image} />
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   );
