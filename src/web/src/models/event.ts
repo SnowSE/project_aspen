@@ -8,6 +8,7 @@ export default class EventModel {
   ID: number = -1;
   constructor(
     date?: Date,
+    title?: string,
     location?: string,
     description?: string,
     primaryImageUrl?: string,
@@ -15,6 +16,7 @@ export default class EventModel {
     donationTarget?: number
   ) {
     this.date = date ?? new Date();
+    this.title = title ?? "";
     this.location = location ?? "";
     this.description = description ?? "";
     this.primaryImageUrl = primaryImageUrl ?? "";
