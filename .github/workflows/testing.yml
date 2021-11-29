@@ -11,9 +11,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: checkout repo
-        uses: actions/checkout@v2
-        with:
-          submodules: 'false'
+        uses: actions/checkout@v1
 
       - name: build and test
         run: |
