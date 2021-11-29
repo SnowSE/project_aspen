@@ -11,12 +11,14 @@ function EventList() {
     dispatch(getEventList());
   }, [dispatch]);
   return (
-    <>
-      <h1>events:</h1>
+    <div className="w-100">
+      <div className="border-bottom border-5 border-dark m-0">
+        <h1 className="text-center"><strong>Events</strong></h1>
+      </div>
       {events.map((event) => {
         return <EventCard event={event} />;
       })}
-    </>
+    </div>
   );
 }
 

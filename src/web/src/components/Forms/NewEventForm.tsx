@@ -8,6 +8,11 @@ import { FormEvent } from "react";
 
 const NewEventForm = () => {
   const dispatch = useDispatch();
+  const title = useInput(
+    "Title",
+    "Title cannot be empty",
+    (value) => value.trim() !== ""
+  );
   const date = useInput(
     "Date",
     "Event must have a date",
@@ -50,7 +55,7 @@ const NewEventForm = () => {
       // } else {
       dispatch(createNewEvent(event));
       // }
-
+      title.reset();
       date.reset();
       description.reset();
       location.reset();
