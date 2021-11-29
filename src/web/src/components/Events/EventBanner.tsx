@@ -1,20 +1,14 @@
 import EventModel from "../../models/event";
-import EventDisplayButtonBar from "./EventDisplayButtonBar";
 
 interface Props {
   event: EventModel;
 }
 const EventBanner = ({ event }: Props) => {
-  const charity = "Walking With Angels";
+  const img_url = "https://i.pinimg.com/originals/eb/f0/02/ebf002d6348c3ae432649da4418fce40.jpg";
   return (
-    <div className="card text-center bg-light">
-      {/* <img src={event.primaryImageUrl} alt="event background" width="500" height="500"/> */}
-      <h3 className="m-3">{event.description}</h3>
-      <EventDisplayButtonBar/>
-      <div className="centered">
-        <strong> Learn more about {charity}</strong>
-      </div>
-    </div>
+    <>
+      <img src={img_url} alt="team logo" width="100%" height="400px"/>
+    </>
   );
 };
 
