@@ -8,7 +8,6 @@ export default class EventModel {
   ID: number = -1;
   constructor(
     date?: Date,
-    title?: string,
     location?: string,
     description?: string,
     primaryImageUrl?: string,
