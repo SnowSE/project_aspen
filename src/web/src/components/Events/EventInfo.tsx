@@ -1,14 +1,15 @@
 import EventModel from "../../models/event";
-import EventCard from "./EventCard";
 
 interface Props {
   event: EventModel;
 }
 const EventInfo = ({ event }: Props) => {
   return (
-    <div className="card text-center bg-light w-100">
-      <h3 className="m-3">Upcoming Event</h3>
-      <EventCard event={event} />
+    <div className='py-2'>
+      <h3>{event.description}</h3>
+      <p>For this event the participants will walk to around the USU track in Logan Utah.
+        For each mile walked, our contributors will each give a promised amount teams will compete to see which 
+        can make the most money in the alloted time.</p>
     </div>
   );
 };
