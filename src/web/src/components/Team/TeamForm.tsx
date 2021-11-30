@@ -19,19 +19,13 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     const events = useStoreSelector((state) => state.event.events)
 
     const dispatch = useDispatch();
-    console.log(props.ownerId)
+   
 
     const desciption = useInput(
         "Description",
         "Please enter a description",
         (value) => value.trim() !== ""
     );
-
-    const mainImage = useInput(
-        "Main Image",
-        "Please enter a main image URL?",
-        (value) => value.trim() !== ''
-    )
 
     const nickname = useInput(
         "Your Nickname",
@@ -74,9 +68,9 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
 
     const submitTeamHandler = (event: FormEvent) => {
         event.preventDefault();
-
-        if (desciption.isValid && mainImage.isValid) {
-            const team = new Team(name.value, desciption.value, mainImage.value, props.ownerId, currentEvent.id)
+       
+        if (desciption.isValid && name.isValid) {
+            const team = new Team(name.value, desciption.value, "url for image here", props.ownerId, currentEvent.ID)
             const registration: Registration = new Registration (
                 (new Date()).toUTCString(),
                 isPublic,
@@ -85,7 +79,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 team.id
             )
 
-            console.log(registration);
+            
             dispatch(createTeam({
                 team: team,
                 registration: registration

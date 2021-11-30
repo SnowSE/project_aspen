@@ -1,11 +1,12 @@
 import EventBanner from "../Events/EventBanner";
 import EventInfo from "../Events/EventInfo";
-import EventTeam from "./EventTeam";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
 import EventModel from "../../models/event";
 import { getEventList, setCurrentEventId } from "../../store/eventSlice";
+import EventSponsors from "../Events/EventSponsors";
+import EventTeams from "../Events/EventTeams";
 
 const MainContainer = () => {
   const events = useStoreSelector((state) => state.event.events);
@@ -40,18 +41,19 @@ const MainContainer = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row d-flex">
-        <div className="col">
+        <div className="col-12 p-0">
           <EventBanner event={event} />
         </div>
-      </div>
-      <div className="row">
-        <div className="col d-flex w-100">
-          <EventTeam />
-        </div>
-        <div className="col d-flex w-100">
+        <div className="col-lg-8 p-0">
           <EventInfo event={event} />
+        </div>
+        <div className="border border-secondary col-lg-2 p-0">
+          <EventSponsors />
+        </div>
+        <div className="border border-secondary col-lg-2 p-0">
+          <EventTeams />
         </div>
       </div>
     </div>

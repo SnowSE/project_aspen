@@ -13,6 +13,9 @@ export const getAllTeams = createAsyncThunk (
 export const createTeam = createAsyncThunk(
     "team/createTeam",
     async(args:any, ThunkAPI) =>{
+        console.log(args.team)
+
+    
         const team = await teamService.createTeam(args.team);
         args.registration.teamID = team.id
         await teamService.createRegistration(args.registration)

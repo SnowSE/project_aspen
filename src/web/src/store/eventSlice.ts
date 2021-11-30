@@ -7,6 +7,7 @@ import {
 } from "../services/eventApiService";
 import EventModel from "../models/event";
 import { StoreDispatch } from ".";
+import { alertActions } from "./alertSlice";
 
 interface EventState {
   date: string,
@@ -57,6 +58,9 @@ export const createNewEvent = (event: EventModel) => {
     console.log("Response in thunk" + response)
     if (response.status === 200) {
       dispatch(getEventList());
+    }
+    else {
+      dispatch(alertActions.displayAlert({title: "error", message: `${response.status} error. Please try again`, danger:true}));
     }
   };
 };
