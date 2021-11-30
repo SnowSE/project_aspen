@@ -100,10 +100,10 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 <TextInput inputControl={name}/>
                 <TextInput inputControl={desciption} />
                 <label>Main Image</label>
-                <input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 {
-                //<TextInput inputControl={mainImage} />
+                //<input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 }
+                <TextInput inputControl={mainImage} />
                 <TextInput inputControl={nickname} />
 
                 <div className="form-check my-2">
