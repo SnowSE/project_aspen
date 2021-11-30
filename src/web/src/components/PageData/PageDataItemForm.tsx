@@ -1,7 +1,7 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import { PageData } from "../../models/pageData";
 import { useDispatch } from 'react-redux'
-import { alertActions } from "../../store/alertSlice";
+// import { alertActions } from "../../store/alertSlice";
 
 
 
@@ -38,14 +38,13 @@ const PageDataItemForm = ({ pageData, onCancel, onSubmit }: Props) => {
       onSubmit({ key: pageData.key, data: JSON.parse(data.toString()) });
     }
   };
-  const displayAlert = () => 
-    dispatch(alertActions.displayAlert({title: "Success!", message: "Successfully Submitted!", danger: false}));
+  // const displayAlert = () => 
+  //   dispatch(alertActions.displayAlert({title: "Success!", message: "Successfully Submitted!", danger: false}));
 
   return (
     <div className="border p-3">
       <form onSubmit={submitHandler}>
         <label className="form-label fs-5">{pageData.key}</label>
-        {/* <TextInput ></TextInput> */}
         <textarea className="form-control" value={data} onChange={dataChangedHandler} />
         <button type="submit" className="btn btn-primary btn-sm me-1 my-2">Save</button>
         <button type="button" className="btn btn-secondary btn-sm ms-1 my-2" onClick={() => onCancel()}>
