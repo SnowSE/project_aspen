@@ -25,6 +25,7 @@ const createTeam = async (team :Team) =>{
 
 const createRegistration = async (registration: Registration) => {
     const res = await axios.post<Registration>( registrationUrl, registration)
+    console.log(res.data);
     return res.data
 }
 
