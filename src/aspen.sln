@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api-tests", "api-tests\api-tests.csproj", "{C267E97B-5DB2-4E07-8664-28C5470A46DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFC16E7B-A9D7-4158-B558-43E0479C5151}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		docker-compose.yml = docker-compose.yml
+		..\ops\testing\docker-compose.yml = ..\ops\testing\docker-compose.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -26,10 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C4EB7FB-8B33-4BE6-A334-E6933C349286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C4EB7FB-8B33-4BE6-A334-E6933C349286}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C4EB7FB-8B33-4BE6-A334-E6933C349286}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C4EB7FB-8B33-4BE6-A334-E6933C349286}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C267E97B-5DB2-4E07-8664-28C5470A46DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C267E97B-5DB2-4E07-8664-28C5470A46DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C267E97B-5DB2-4E07-8664-28C5470A46DE}.Release|Any CPU.ActiveCfg = Release|Any CPU

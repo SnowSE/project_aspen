@@ -1,13 +1,11 @@
 export default class Registration {
-    id: number;
     creationDate: string;
     isPublic: boolean;
     nickname: string;
     ownerID: number;
     teamID: number;
 
-    constructor (creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id?: number){
-        this.id = id ?? -1;
+    constructor (creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number){
         this.creationDate = creationDate ?? "";
         this.isPublic = isPublic;
         this.nickname = nickname ?? "";

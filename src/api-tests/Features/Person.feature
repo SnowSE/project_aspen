@@ -3,7 +3,6 @@
 Tests relating to CRUD operations on a person
 
 @person
-@ignore
 Scenario: Create Person
 	Given I want to create a person with the following information
 	| Name          | Bio                        |

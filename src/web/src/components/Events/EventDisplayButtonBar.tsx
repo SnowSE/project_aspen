@@ -11,24 +11,11 @@ const EventDisplayButtonBar = () => {
       <div className="container-fluid">
 
           <div className="d-flex">
-            {/* {!isLoggedIn && isAdmin && <></>} error page, how would anyone get here, really? */}
             {!isLoggedIn && !isAdmin && events.length === 0 && <><NavLink className="btn btn-light" to="/nowhere" >Example</NavLink></>}
-           
-            {isLoggedIn && !isAdmin && events.length === 0 && <></>}
-            {isLoggedIn && !isAdmin && events.length > 0 && (
-              <>
-                <NavLink className="btn btn-primary" to="/teams">Join a Team</NavLink> <NavLink className="btn btn-primary" to="/donations">Donate</NavLink>
-              </>
-            )}
-            {/* {isLoggedIn && isAdmin && events.length === 0 && (
-              <NavLink className="btn btn-primary" to="/admin/createnewevent">Create New Event</NavLink>
-            )} */}
+
             {isLoggedIn && isAdmin && events.length > 0 && (
               <>
                 <NavLink className="btn btn-primary" to="/donations">Donate</NavLink>
-                {/* <NavLink className="btn btn-primary" to="/admin/createnewevent">
-                  Create New Event
-                </NavLink> */}
               </>
             )}
           </div>

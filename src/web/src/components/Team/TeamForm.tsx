@@ -19,19 +19,13 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     const events = useStoreSelector((state) => state.event.events)
 
     const dispatch = useDispatch();
-    console.log(props.ownerId)
+   
 
     const desciption = useInput(
         "Description",
         "Please enter a description",
         (value) => value.trim() !== ""
     );
-
-    const mainImage = useInput(
-        "Main Image",
-        "Please enter a main image URL?",
-        (value) => value.trim() !== ''
-    )
 
     const nickname = useInput(
         "Your Nickname",
@@ -74,9 +68,9 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
 
     const submitTeamHandler = (event: FormEvent) => {
         event.preventDefault();
-
-        if (desciption.isValid && mainImage.isValid) {
-            const team = new Team(name.value, desciption.value, mainImage.value, props.ownerId, currentEvent.ID)
+       
+        if (desciption.isValid && name.isValid) {
+            const team = new Team(name.value, desciption.value, "url for image here", props.ownerId, currentEvent.id)
             const registration: Registration = new Registration (
                 (new Date()).toUTCString(),
                 isPublic,
@@ -85,7 +79,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 team.id
             )
 
-            console.log(registration);
+            
             dispatch(createTeam({
                 team: team,
                 registration: registration
@@ -100,15 +94,16 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 <TextInput inputControl={name}/>
                 <TextInput inputControl={desciption} />
                 <label>Main Image</label>
-                <input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 {
-                //<TextInput inputControl={mainImage} />
+                //<input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 }
+                {/* <TextInput inputControl={mainImage} /> */}
                 <TextInput inputControl={nickname} />
 
                 <div className="form-check my-2">
-                    <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
-                    <label className="form-check-label">Is Registration Public</label>
+                    <label className="form-check-label">Is Registration Public
+                        <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
+                    </label>
                 </div>
                 <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
