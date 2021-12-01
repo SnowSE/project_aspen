@@ -1,8 +1,8 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "proxy": "http://127.0.0.1:5000/",
-  "homepage": "/",
+  "proxy": "https://engineering.snow.edu/",
+  "homepage": "/aspen",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.10.1",
