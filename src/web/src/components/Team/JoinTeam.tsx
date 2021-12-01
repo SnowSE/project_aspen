@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import Team from "../../models/team";
 import { useStoreSelector } from "../../store";
 import { getAllTeams } from "../../store/teamSlice";
@@ -34,7 +35,7 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
         <div className="justify-content-center">
             <div className="text-center">
                 <h3>Current Teams</h3>
-                <button className='btn btn-success' type='button'>Create New Team</button>
+                <Link className='btn btn-success' to='/teamregistration'>Create New Team</Link>
             </div>
             {currTeam && <JoinTeamForm team={currTeam} ownerId={selectedPerson!.id} onCancel={cancelJoinHandler}/>}
             {teams.map(t => {
