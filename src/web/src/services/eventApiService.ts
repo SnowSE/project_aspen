@@ -38,7 +38,7 @@ export const getEvent = async (id: number) => {
 };
 //Update
 export const updateEvent = async (event: EventModel) => {
-  const res = await axios.put(Url + "/" + event.ID, { ...event });
+  const res = await axios.put(Url + "/" + event.id, { ...event });
   if (res.status !== 200) {
     console.log(res);
     throw Error("Api error updating event");

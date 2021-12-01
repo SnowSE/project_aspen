@@ -39,7 +39,7 @@ namespace Tests.ControllerTests
             (await TeamControllerTest.GetTeamController().Add(new DtoTeam {Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId })).Value;
 
         private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
-            await TeamControllerTest.GetTeamController().GetAll(eventId);
+            await TeamControllerTest.GetTeamController().GetByEventID(eventId);
 
         private async Task<DtoRegistration> createRegistration(DtoPerson owner, DtoTeam team) =>
             (await RegistrationControllerTest.GetRegistrationController().Add(new DtoRegistration { Nickname = "Reg1", OwnerID = owner.ID, TeamID = team.ID })).Value;

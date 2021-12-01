@@ -10,6 +10,7 @@ import TeamItem from "./TeamItem";
 
 type Props = {
     ownerId?: number;
+    eventId: number;
 }
 
 const JoinTeam: FC<Props> = (props): JSX.Element => {
@@ -20,8 +21,8 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     const [currTeam, setCurrTeam] = useState<Team>();
 
     useEffect(() => {
-        dispatch(getAllTeams());
-    }, [dispatch])
+        dispatch(getAllTeams(props.eventId));
+    }, [dispatch, props.eventId])
 
     const joinTeamHandler = (team: Team) => {
         setCurrTeam(team);

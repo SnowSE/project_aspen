@@ -5,7 +5,7 @@ export default class Registration {
     nickname: string;
     ownerID: number;
     teamID: number;
-
+  
     constructor (creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id?: number){
         this.id = id;
         this.creationDate = creationDate;
