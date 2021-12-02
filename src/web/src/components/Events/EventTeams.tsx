@@ -16,7 +16,7 @@ const EventTeams: FC = (): JSX.Element => {
         <div className='p-2'>
             <h5 className='text-center'>Our Teams</h5>
             {teamList.map(t => <p>{t.name}</p>)}
-            <div className="my-3">
+            <div className="my-3 text-center">
                 <NavLink to="/jointeam" className="btn btn-primary me-1">Join Team</NavLink>
             </div>
         </div>

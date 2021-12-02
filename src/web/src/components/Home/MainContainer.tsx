@@ -43,15 +43,16 @@ const MainContainer = () => {
         <div className="col-12 p-0">
           <EventBanner event={event} />
         </div>
+        <div className="border border-secondary col-lg-2 p-0">
+          <EventTeams />
+        </div>
         <div className="col-lg-8 p-0">
           <EventInfo event={event} />
         </div>
         <div className="border border-secondary col-lg-2 p-0">
           <EventSponsors />
         </div>
-        <div className="border border-secondary col-lg-2 p-0">
-          <EventTeams />
-        </div>
+        
       </div>
     </div>
   );
