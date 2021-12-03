@@ -1,21 +1,32 @@
-import { FC, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import EventModel from "../../models/eventModel";
 import { useStoreSelector } from "../../store";
-import { getAllTeams } from "../../store/teamSlice";
+import { getAllTeams, getTeamsByEvent } from "../../store/teamSlice";
 
-const EventTeams: FC = (): JSX.Element => {
+interface Props {
+    event: EventModel;
+  }
+const EventTeams = ({ event }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
     const dispatch = useDispatch();
-
+    const [filteredTeams, setFilteredTeams] = useState(teamList)
     useEffect(() => {
-        dispatch(getAllTeams(1))
+        dispatch(getTeamsByEvent(event.id))
     }, [dispatch])
+
+    // const filterHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFilteredTeams(event.target.value)
+    
+    // }
 
     return (
         <div className='p-2'>
-            <h5 className='text-center'>Our Teams</h5>
-            {teamList.map(t => <p>{t.name}</p>)}
+            <h5 className='text-center'>Registered Teams</h5>
+            <label>Filter Teams </label>
+            {/* <input id="filter" type="text" value={filteredTeams} onChange={filterHandler}/> */}
+            {filteredTeams.map(t => <p>{t.name}</p>)}
             <div className="my-3 text-center">
                 <NavLink to="/jointeam" className="btn btn-primary me-1">Join Team</NavLink>
             </div>
