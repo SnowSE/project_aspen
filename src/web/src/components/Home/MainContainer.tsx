@@ -55,7 +55,6 @@ const MainContainer = () => {
         <div className="border border-secondary col-lg-2 p-0">
           <EventSponsors />
         </div>
-        
       </div>
     </div>
   );
