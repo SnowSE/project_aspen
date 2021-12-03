@@ -10,6 +10,13 @@ export const getAllTeams = createAsyncThunk (
         return teams;
     }
 );
+
+export const getTeamsByEvent = createAsyncThunk (
+    "team/getTeamsByEventId", async (id: number, ThunkAPI) => {
+        const teams = await teamService.getTeamsByEventId(id)
+        return teams;
+    }
+)
 export const createTeam = createAsyncThunk(
     "team/createTeam",
     async(args:any, ThunkAPI) =>{
@@ -51,6 +58,12 @@ const teamSlice = createSlice({
             })
             .addCase(getAllTeams.rejected, (state, action) => {
                 console.log('error', action.payload);
+            })
+            .addCase(getTeamsByEvent.fulfilled, (state, action)=>{
+                state.teamList = action.payload;
+            })
+            .addCase(getTeamsByEvent.rejected, (state, action)=>{
+                console.log('teams by event id error', action.payload)
             })
             .addCase(createTeam.fulfilled, (state, action) => {
                 state.currentTeam = action.payload;
