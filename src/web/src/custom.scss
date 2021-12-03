@@ -30,4 +30,8 @@
   }
 }
 
+.active {
+  @extend .text-success;
+}
+
 
