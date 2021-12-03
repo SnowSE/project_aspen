@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useState, useEffect } from "react";
+// import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import EventModel from "../../models/eventModel";
 import { useStoreSelector } from "../../store";
-import { getTeamsByEvent } from "../../store/teamSlice";
+// import { getTeamsByEvent } from "../../store/teamSlice";
 
 interface Props {
     event: EventModel;
   }
 const EventTeams = ({ event }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // const [filteredTeams, setFilteredTeams] = useState(teamList)
     // useEffect(() => {
     //     dispatch(getTeamsByEvent(event.id))
