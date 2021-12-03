@@ -87,7 +87,7 @@ namespace Tests.Controller
             var createdEvent = (await GetEventController().Add(newEvent)).Value;
 
             var changedEvent = createdEvent with { Description = "This is changed", DonationTarget = 12345.67M };
-            await GetEventController().Edit(changedEvent, changedEvent.ID);
+            await GetEventController().Edit(changedEvent);
 
             var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
             returnedEvent.Description.Should().Be("This is changed");
@@ -107,7 +107,7 @@ namespace Tests.Controller
             var createdEvent = (await GetEventController().Add(newEvent)).Value;
 
             var changedEvent = createdEvent with { Title = "This is changed" };
-            await GetEventController().Edit(changedEvent, changedEvent.ID);
+            await GetEventController().Edit(changedEvent);
 
             var returnedEvent = (await GetEventController().GetByID(createdEvent.ID)).Value;
             returnedEvent.Title.Should().Be("This is changed");

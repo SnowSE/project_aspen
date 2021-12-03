@@ -58,8 +58,8 @@ namespace Api.Controllers
             return mapper.Map<DtoEvent>(newEvent);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent, long id)
+        [HttpPut()]
+        public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
