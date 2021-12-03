@@ -1,7 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   IoSettingsSharp,
-  IoAccessibility,
   IoCalendarClear,
   IoHome,
   IoHeart,
