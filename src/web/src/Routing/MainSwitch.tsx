@@ -1,18 +1,18 @@
 import { Switch, Route } from "react-router-dom";
-import { Home } from "../../../views/Home";
-import { LoginLanding } from "../../../views/auth/LoginLanding";
+import { Home } from "../views/Home";
+import { LoginLanding } from "../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
-import { checkIfLoggedIn } from "../../../store/authSlice";
-import { useStoreSelector } from "../../../store";
-import Admin from "../../../views/Admin/Admin";
-import { AuthService } from "../../../services/authService";
-import UnAuthorized from "../../../views/UnAuthorized";
-import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
-// import NewEventForm from "../../../components/Forms/NewEventForm";
-// import EventDisplay from "../../../views/EventDisplay";
-import { LogoutLanding } from "../../../views/auth/LogoutLanding";
-import JoinTeamPage from "../../../views/JoinTeamPage";
+import { checkIfLoggedIn } from "../store/authSlice";
+import { useStoreSelector } from "../store";
+import Admin from "../views/Admin/Admin";
+import { AuthService } from "../services/authService";
+import UnAuthorized from "../views/UnAuthorized";
+import TeamRegistrationPage from "../views/TeamRegistrationPage";
+import { LogoutLanding } from "../views/auth/LogoutLanding";
+import JoinTeamPage from "../views/JoinTeamPage";
+
+import DonationSubRouter
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -74,6 +74,9 @@ const MainSwitch = () => {
         <JoinTeamPage/>
       </AuthorizedRoute> 
 
+      <Route path="/donations">
+      <DonationSubRouter/>  
+      </Route>      
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
