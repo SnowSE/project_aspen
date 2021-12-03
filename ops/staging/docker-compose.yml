@@ -95,6 +95,7 @@ services:
     container_name: staging_reverse_proxy
     volumes:
       - assets:/assets
+      - ./reverse-proxy/errorpages:/usr/share/nginx/errorpages/
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/aspen/index.html"]
       interval: 3s

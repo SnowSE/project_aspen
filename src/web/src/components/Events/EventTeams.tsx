@@ -13,7 +13,7 @@ const EventTeams = ({ event }: Props) => {
     const dispatch = useDispatch();
     const [filteredTeams, setFilteredTeams] = useState(teamList)
     useEffect(() => {
-        dispatch(getTeamsByEvent(event.ID))
+        dispatch(getTeamsByEvent(event.id))
     }, [dispatch])
 
     // const filterHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

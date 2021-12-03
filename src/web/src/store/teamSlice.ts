@@ -5,8 +5,8 @@ import teamService from "../services/teamService";
 
 export const getAllTeams = createAsyncThunk (
     "team/getAllTeams",
-    async(_arg, ThunkAPI) =>{
-        const teams = await teamService.getAllTeams();
+    async(eventID: number, ThunkAPI) =>{
+        const teams = await teamService.getAllTeams(eventID);
         return teams;
     }
 );

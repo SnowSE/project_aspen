@@ -26,7 +26,7 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
         event.preventDefault();
         if (nickname.isValid) {
             const registration = new Registration(
-                (new Date()).toUTCString(),
+                (new Date()).toISOString(),
                 isPublic,
                 nickname.value,
                 props.ownerId,
