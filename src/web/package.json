@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "proxy": "https://engineering.snow.edu/",
+  "homepage": "/aspen",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.10.1",
@@ -60,6 +61,5 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/redux-mock-store": "^1.0.3",
     "redux-mock-store": "^1.5.4"
-  },
-  "homepage": "/aspen"
+  }
 }

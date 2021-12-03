@@ -9,7 +9,7 @@ const EventTeams: FC = (): JSX.Element => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllTeams())
+        dispatch(getAllTeams(1))
     }, [dispatch])
 
     return (

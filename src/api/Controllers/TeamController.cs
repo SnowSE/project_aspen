@@ -31,21 +31,18 @@ namespace Aspen.Api.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{eventId?}")]
-        public async Task<IEnumerable<DtoTeam>> GetAll(long? eventId)
+        [HttpGet("event/{eventId}")]
+        public async Task<IEnumerable<DtoTeam>> GetByEventID(long eventId)
         {
-            if (eventId == null)
-                return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetAllAsync());
-
-            return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId.Value));
+            return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DtoTeam>> GetByID(long id)
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
         {
-            if (!await teamRepository.ExistsAsync(id))
+            if (!await teamRepository.ExistsAsync(teamId))
                 return NotFound("Team id does not exist");
-            return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(id));
+            return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
         }
 
         [HttpPost]

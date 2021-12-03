@@ -7,7 +7,8 @@ import Person from "../models/person";
 
 const JoinTeamPage = () => {
   const authId =
-    useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
+        useStoreSelector((state) => state.auth.user?.profile.email) ?? "";
+  const currentEventId = useStoreSelector((state) => state.event.currentEventId);
   const given_name =
     useStoreSelector((state) => state.auth.user?.profile.given_name) ?? "";
   const selectedPerson = useStoreSelector(
@@ -36,7 +37,7 @@ const JoinTeamPage = () => {
       {!selectedPerson ? (
         <div>Loading</div>
       ) : (
-        <JoinTeam ownerId={selectedPerson!.id} />
+        <JoinTeam ownerId={selectedPerson!.id} eventId={currentEventId} />
       )}
     </div>
   );

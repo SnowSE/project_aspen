@@ -5,7 +5,7 @@ export default class EventModel {
   description: string;
   primaryImageUrl: string;
   donationTarget: number;
-  ID: number = -1;
+  id: number = -1;
   constructor(
     date?: Date,
     location?: string,

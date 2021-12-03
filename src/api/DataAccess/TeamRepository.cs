@@ -88,6 +88,8 @@ namespace Api.DataAccess
         public async Task<IEnumerable<Team>> GetByEventIdAsync(long eventID)
         {
             var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
+            if (existingEvent == null)
+                throw new NotFoundException<IEnumerable<Team>>($"Event {eventID} does not exist");
 
             return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(existingEvent.Teams);
         }

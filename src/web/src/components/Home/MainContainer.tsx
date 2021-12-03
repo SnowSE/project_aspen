@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
 import EventModel from "../../models/event";
-import { getEventList } from "../../store/eventSlice";
+import { getEventList, setCurrentEventId } from "../../store/eventSlice";
 import EventSponsors from "../Events/EventSponsors";
 import EventTeams from "../Events/EventTeams";
 
@@ -28,10 +28,13 @@ const MainContainer = () => {
           : b;
       });
       setEvent(closestEvent);
+      console.log('closest event is ', closestEvent);
+      dispatch(setCurrentEventId(closestEvent.id));
+      //setCurrentEventId(closestEvent.id);
     } else {
       setEvent(dummyEvent);
     }
-  }, [events]);
+  }, [events, dispatch]);
 
   useEffect(() => {
     dispatch(getEventList());

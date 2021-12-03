@@ -70,7 +70,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
         event.preventDefault();
        
         if (desciption.isValid && name.isValid) {
-            const team = new Team(name.value, desciption.value, "url for image here", props.ownerId, currentEvent.ID)
+            const team = new Team(name.value, desciption.value, "url for image here", props.ownerId, currentEvent.id)
             const registration: Registration = new Registration (
                 (new Date()).toUTCString(),
                 isPublic,
@@ -94,15 +94,16 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
                 <TextInput inputControl={name}/>
                 <TextInput inputControl={desciption} />
                 <label>Main Image</label>
-                <input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 {
-                //<TextInput inputControl={mainImage} />
+                //<input className="col form-control mb-3" type="file" data-buttonText="Your label here." />
                 }
+                {/* <TextInput inputControl={mainImage} /> */}
                 <TextInput inputControl={nickname} />
 
                 <div className="form-check my-2">
-                    <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
-                    <label className="form-check-label">Is Registration Public</label>
+                    <label className="form-check-label">Is Registration Public
+                        <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
+                    </label>
                 </div>
                 <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
