@@ -1,7 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   IoSettingsSharp,
-  IoAccessibility,
   IoCalendarClear,
   IoHome,
   IoHeart,
@@ -46,10 +45,6 @@ const AdminSideBar = () => {
           <NavLink to="/" className={getNavClasses("/")} exact>
             <IoHome />
             {!isCollapsed && "Home"}
-          </NavLink>
-          <NavLink to="/admin/people" className={getNavClasses("/admin/people")} exact>
-            <IoAccessibility />
-            {!isCollapsed && "People"}
           </NavLink>
           <NavLink to="/admin/donations" className={getNavClasses("/admin/donations")} exact>
             <IoHeart />
