@@ -57,6 +57,9 @@ namespace Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
+            if (dtoPerson.ID != 0)
+                return BadRequest("Cannot add with a valid id");
+
             if (string.IsNullOrEmpty(dtoPerson.AuthID))
             {
                 var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);

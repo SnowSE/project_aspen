@@ -51,6 +51,9 @@ namespace Aspen.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
+            if (dtoTeam.ID != 0)
+                return BadRequest("Cannot add with a valid id");
+
             var team = mapper.Map<Team>(dtoTeam);
             var newTeam = await teamRepository.AddAsync(team);
             return mapper.Map<DtoTeam>(newTeam);

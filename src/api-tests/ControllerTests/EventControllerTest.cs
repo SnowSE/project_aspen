@@ -139,5 +139,23 @@ namespace Tests.Controller
             result.StatusCode.Should().Be(404);
             result.Value.Should().Be("Event id does not exist");
         }
+
+        [Test]
+        public async Task EnsurePostedIdIsIgnoredOnPush()
+        {
+            //Arrange, make a good event
+            var newEvent = new DtoEvent()
+            {
+                Description = "Marathon2",
+                Location = "Snow"
+            };
+            var goodEvent = (await GetEventController().Add(newEvent)).Value;
+
+            //act - try to re-create that same event
+            var failureResponse = (await GetEventController().Add(goodEvent)).Result as BadRequestObjectResult;
+
+            //assert - can't do it.
+            failureResponse.StatusCode.Should().Be(400);
+        }
     }
 }
