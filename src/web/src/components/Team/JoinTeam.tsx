@@ -47,8 +47,8 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     }
 
     return (
-        <div className="justify-content-center">
-            <div>
+        <div className="container">
+            <div className="d-flex justify-content-center">
                 <TextInput inputControl={filter} />
             </div>
 
