@@ -47,10 +47,6 @@ const AdminSideBar = () => {
             <IoHome />
             {!isCollapsed && "Home"}
           </NavLink>
-          <NavLink to="/admin/people" className={getNavClasses("/admin/people")} exact>
-            <IoAccessibility />
-            {!isCollapsed && "People"}
-          </NavLink>
           <NavLink to="/admin/donations" className={getNavClasses("/admin/donations")} exact>
             <IoHeart />
             {!isCollapsed && "Donations"}
