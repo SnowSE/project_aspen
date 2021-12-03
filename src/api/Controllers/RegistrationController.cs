@@ -53,6 +53,9 @@ namespace Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
 
+            if (dtoRegistration.ID != 0)
+                return BadRequest("Cannot add with a valid id");
+
             var registrationToAdd = mapper.Map<Registration>(dtoRegistration);
             var updatedRegistration = await registrationRepository.AddAsync(registrationToAdd);
             return mapper.Map<DtoRegistration>(updatedRegistration);

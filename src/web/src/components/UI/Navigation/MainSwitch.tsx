@@ -9,10 +9,9 @@ import Admin from "../../../views/Admin/Admin";
 import { AuthService } from "../../../services/authService";
 import UnAuthorized from "../../../views/UnAuthorized";
 import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
-// import NewEventForm from "../../../components/Forms/NewEventForm";
-// import EventDisplay from "../../../views/EventDisplay";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
 import JoinTeamPage from "../../../views/JoinTeamPage";
+import TeamDetailPage from "../../Team/TeamDetailPage";
 
 const AuthorizedRoute: FC<any> = ({
   children,
@@ -72,8 +71,10 @@ const MainSwitch = () => {
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
         <JoinTeamPage/>
-      </AuthorizedRoute> 
-
+      </AuthorizedRoute>
+      <Route path="/teamdetails">
+        <TeamDetailPage/>
+      </Route>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>

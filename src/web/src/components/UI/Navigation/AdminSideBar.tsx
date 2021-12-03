@@ -4,6 +4,7 @@ import {
   IoAccessibility,
   IoCalendarClear,
   IoHome,
+  IoHeart,
 } from "react-icons/io5";
 import { useState } from "react";
 import { alertActions } from "../../../store/alertSlice";
@@ -17,10 +18,10 @@ const AdminSideBar = () => {
     setIsCollapsed(previous => !previous)
   }
   const displayAlert = () => {
-    dispatch(alertActions.displayAlert({title: "Sample alert",  message: "This is how the alert looks", danger: true }));
+    dispatch(alertActions.displayAlert({ title: "Sample alert", message: "This is how the alert looks", danger: true }));
   }
 
-  const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col-3` : " text-decoration-none")
+  const genericClasses = "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
 
   return (
     <div className={`col-xxl-2 bg-secondary shadow test ${isCollapsed ? 'collapsed-nav' : 'extended-nav'}`}>
@@ -36,6 +37,10 @@ const AdminSideBar = () => {
           <NavLink to="/admin/people" className={genericClasses} exact>
             <IoAccessibility />
             {!isCollapsed && "People"}
+          </NavLink>
+          <NavLink to="/admin/donations" className={genericClasses} exact>
+            <IoHeart />
+            {!isCollapsed && "Donations"}
           </NavLink>
           <NavLink to="/admin/events" className={genericClasses} exact>
             <IoCalendarClear />

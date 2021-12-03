@@ -17,7 +17,8 @@ namespace Api.DbModels
         public long OwnerID { get; init; }
         public DbPerson Owner{ get; init; }
         public long EventID { get; init; }
-        public DbEvent Event {get; init;}
+        public DbEvent Event {get; init; }
+        public decimal DonationTarget { get; init; }
 
         public virtual ICollection<DbRegistration> Registrations { get; init; }
     }

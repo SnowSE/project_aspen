@@ -53,13 +53,16 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
+            if (dtoEvent.ID != 0)
+                return BadRequest("Cannot add event with a valid id");
+
             var @event = mapper.Map<Event>(dtoEvent);
             var newEvent = await eventRepository.AddAsync(@event);
             return mapper.Map<DtoEvent>(newEvent);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent, long id)
+        [HttpPut()]
+        public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
