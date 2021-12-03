@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { alertActions } from "../../../store/alertSlice";
 import { useDispatch } from "react-redux";
+import './AdminSideBar.module.scss'
 
 const AdminSideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
