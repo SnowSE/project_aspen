@@ -5,6 +5,7 @@ import logo from "./tempLogo.png";
 
 const NavBar = () => {
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
+  const userName = useStoreSelector(state => state.auth.user?.profile.given_name)
 
   const logoutHandler = () => {
     AuthService.logout();
@@ -36,9 +37,12 @@ const NavBar = () => {
           <ul className="navbar-nav justify-content-end container-fluid">
             <li className="nav-item mx-2 p-1 text-center text-light">
               {isLoggedIn ? (
-                <button className="btn btn-primary me-2" onClick={logoutHandler}>
-                  Logout
-                </button>
+                <div className="d-flex align-items-center">
+                  <p className="text-black m-0 me-3">Welcome back, {userName}!</p>
+                  <button className="btn btn-primary me-2" onClick={logoutHandler}>
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <button className="btn btn-primary me-2" onClick={loginHandler}>
                   Login
