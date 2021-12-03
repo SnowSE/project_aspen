@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import useInput from "../../hooks/use-input";
+import TextInput from "../../inputs/TextInput";
 import Team from "../../models/team";
 import { useStoreSelector } from "../../store";
 import { getAllTeams } from "../../store/teamSlice";
@@ -18,11 +20,23 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     const selectedPerson = useStoreSelector((state) => state.person.selectedPerson)
     const dispatch = useDispatch();
 
+    const filter = useInput(
+        "Filter by name",
+        ''
+    )
+    const filterParameter = filter.value;
+
+    const [filteredTeams, SetFilteredTeams] = useState<Team[]>(teams)
     const [currTeam, setCurrTeam] = useState<Team>();
+
+    useEffect(() => {
+        SetFilteredTeams(teams.filter(t => t.name.includes(filterParameter)))
+    }, [filterParameter, teams])
 
     useEffect(() => {
         dispatch(getAllTeams(props.eventId));
     }, [dispatch, props.eventId])
+
 
     const joinTeamHandler = (team: Team) => {
         setCurrTeam(team);
@@ -34,12 +48,16 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className="justify-content-center">
+            <div>
+                <TextInput inputControl={filter} />
+            </div>
+
             <div className="text-center">
                 <h3>Current Teams</h3>
                 <Link className='btn btn-success' to='/teamregistration'>Create New Team</Link>
             </div>
-            {currTeam && <JoinTeamForm team={currTeam} ownerId={selectedPerson!.id} onCancel={cancelJoinHandler}/>}
-            {teams.map(t => {
+            {currTeam && <JoinTeamForm team={currTeam} ownerId={selectedPerson!.id} onCancel={cancelJoinHandler} />}
+            {filteredTeams.map(t => {
                 return (
                     <div className="d-flex justify-content-center">
                         <TeamItem key={t.id} ownerId={selectedPerson!.id} team={t} onJoinTeam={joinTeamHandler} />
