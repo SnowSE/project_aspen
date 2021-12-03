@@ -18,5 +18,6 @@ namespace Api.DtoModels
         public string MainImage {get; init; }
         public long OwnerID { get; init; }
         public long EventID { get; init; }
+        public decimal DonationTarget { get; init; }
     }
 }

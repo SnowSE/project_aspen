@@ -33,6 +33,10 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(getModelStateErrorMessage());
+
+            if (dtoDonation.ID != 0)
+                return BadRequest("Cannot add with a valid id");
+
             var donation = mapper.Map<Donation>(dtoDonation);
             var newDonation = await donationRepository.AddAsync(donation);
             return mapper.Map<DtoDonation>(newDonation);
