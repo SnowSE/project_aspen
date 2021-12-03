@@ -23,11 +23,11 @@ namespace Api.Controllers
     public class AdminController : ControllerBase
     {
         public const string AspenAdminRole = "admin-aspen";
-        private readonly DonationRepository donationRepository;
-        private readonly EventRepository eventRepository;
+        private readonly IDonationRepository donationRepository;
+        private readonly IEventRepository eventRepository;
         private readonly IMapper mapper;
 
-        public AdminController(DonationRepository donationRepository, EventRepository eventRepository, IMapper mapper)
+        public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper)
         {
             this.donationRepository = donationRepository;
             this.eventRepository = eventRepository;
