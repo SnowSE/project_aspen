@@ -1,6 +1,6 @@
 import { Route } from "react-router";
 
-export const DonationSubRouter = () => {
+const DonationSubRouter = () => {
   return (
     <>
       {/*render Donation form without pre-filled parameter information */}
@@ -9,3 +9,4 @@ export const DonationSubRouter = () => {
     </>
   );
 };
+export default DonationSubRouter;

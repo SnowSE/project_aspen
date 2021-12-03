@@ -12,21 +12,15 @@ import TeamRegistrationPage from "../views/TeamRegistrationPage";
 import { LogoutLanding } from "../views/auth/LogoutLanding";
 import JoinTeamPage from "../views/JoinTeamPage";
 
-import DonationSubRouter
+import DonationSubRouter from "./DonationSubRouter";
 
-const AuthorizedRoute: FC<any> = ({
-  children,
-  isAuthorized,
-  ...rest
-}) => {
+const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
   if (!isAuthorized) {
     AuthService.signinRedirect();
     return <Route {...rest}>{children}</Route>;
-  }
-  else{
+  } else {
     return <Route {...rest}>{children}</Route>;
   }
-  
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
@@ -66,22 +60,25 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
         <LoginLanding />
       </AuthorizedRoute>
-      
-       <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
+
+      <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
-        <JoinTeamPage/>
-      </AuthorizedRoute> 
+        <JoinTeamPage />
+      </AuthorizedRoute>
 
       <Route path="/donations">
-      <DonationSubRouter/>  
-      </Route>      
+        <DonationSubRouter />
+      </Route>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
       <Route path="/logout/post" exact>
         <LogoutLanding />
+      </Route>
+      <Route path="/donations">
+        <DonationPage />
       </Route>
       <Route exact path="/">
         <Home />

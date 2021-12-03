@@ -1,5 +1,5 @@
 import axios from "axios";
-import Donation from "../models/Donation";
+import Donation from "../models/donation";
 const url = `${process.env.PUBLIC_URL}/api/donations`;
 
 const createDonation = async (donation: Donation) => {
