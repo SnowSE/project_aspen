@@ -7,6 +7,7 @@ import Team from "../../models/team";
 import { createRegistration } from "../../store/teamSlice";
 import { useDispatch } from "react-redux";
 import { alertActions } from "../../store/alertSlice";
+import { useHistory } from "react-router";
 
 type Props = {
     team: Team;
@@ -17,6 +18,7 @@ type Props = {
 const JoinTeamForm: FC<Props> = (props): JSX.Element => {
     const [isPublic, setIsPublic] = useState(false);
     const dispatch = useDispatch<StoreDispatch>();
+    const history = useHistory();
 
     const nickname = useInput(
         "Registration Nickname",
@@ -38,10 +40,11 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
             dispatch(createRegistration(registration))
                 .then(r => {
                     if (r.meta.requestStatus === 'fulfilled') {
-                        dispatch(alertActions.displayAlert({ title: 'Registration Succcessful', message: 'Your registration has been processed' }))
+                        dispatch(alertActions.displayAlert({ title: 'Registration Succcessful', message: 'Your registration has been processed' }));
+                        history.push(`/teams/${props.team.id}`);
                     }
                     else {
-                        dispatch(alertActions.displayAlert({ title: 'Registration Failed', message: `Your registration has been rejected.`, danger: true }))
+                        dispatch(alertActions.displayAlert({ title: 'Registration Failed', message: `Your registration has been rejected.`, danger: true }));
                     }
                 })
         }

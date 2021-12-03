@@ -33,22 +33,19 @@ const NavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav justify-content-center container">
+          <ul className="navbar-nav justify-content-end container-fluid">
             <li className="nav-item mx-2 p-1 text-center text-light">
-              <NavLink className="text-white" to="/register">
-                Register
-              </NavLink>
+              {isLoggedIn ? (
+                <button className="btn btn-primary me-2" onClick={logoutHandler}>
+                  Logout
+                </button>
+              ) : (
+                <button className="btn btn-primary me-2" onClick={loginHandler}>
+                  Login
+                </button>
+              )}
             </li>
           </ul>
-          {isLoggedIn ? (
-            <button className="btn btn-primary me-2" onClick={logoutHandler}>
-              Logout
-            </button>
-          ) : (
-            <button className="btn btn-primary me-2" onClick={loginHandler}>
-              Login
-            </button>
-          )}
         </div>
       </div>
     </nav>
