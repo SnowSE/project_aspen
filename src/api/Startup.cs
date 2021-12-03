@@ -49,7 +49,7 @@ namespace Api
                 // o.Authority = Configuration["Jwt:Authority"];
                 // o.Audience = Configuration["Jwt:Audience"];
 
-                o.Authority = "http://keycloak:8080/auth/realms/aspen";
+                o.Authority = "https://engineering.snow.edu/aspen/auth/realms/aspen";
                 o.Audience = "aspen-web";
 
 
@@ -58,7 +58,7 @@ namespace Api
                     ValidAudiences = new string[] { "aspen" },
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
-                    ValidIssuer = "http://localhost/auth/realms/aspen",
+                    ValidIssuer = "https://engineering.snow.edu/aspen/auth/realms/aspen",
                 };
 
                 o.RequireHttpsMetadata = false;
@@ -89,6 +89,24 @@ namespace Api
             {
                 c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                c.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement();
+                securityRequirement.Add(securitySchema, new[] { "Bearer" });
+                c.AddSecurityRequirement(securityRequirement);
             });
 
             services.AddDbContext<AspenContext>(options => options.UseNpgsql(getConnectionString()));
