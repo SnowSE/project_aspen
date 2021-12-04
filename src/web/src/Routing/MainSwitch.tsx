@@ -1,8 +1,9 @@
 import { Switch, Route } from "react-router-dom";
-import { Home } from "../../../views/Home";
-import { LoginLanding } from "../../../views/auth/LoginLanding";
+import { Home } from "../views/Home";
+import { LoginLanding } from "../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
+<<<<<<< HEAD:src/web/src/components/UI/Navigation/MainSwitch.tsx
 import { checkIfLoggedIn } from "../../../store/authSlice";
 import { useStoreSelector } from "../../../store";
 import Admin from "../../../views/Admin/Admin";
@@ -12,20 +13,26 @@ import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
 import { LogoutLanding } from "../../../views/auth/LogoutLanding";
 import JoinTeamPage from "../../../views/JoinTeamPage";
 import TeamDetailPage from "../../Team/TeamDetailPage";
+=======
+import { checkIfLoggedIn } from "../store/authSlice";
+import { useStoreSelector } from "../store";
+import Admin from "../views/Admin/Admin";
+import { AuthService } from "../services/authService";
+import UnAuthorized from "../views/UnAuthorized";
+import TeamRegistrationPage from "../views/TeamRegistrationPage";
+import { LogoutLanding } from "../views/auth/LogoutLanding";
+import JoinTeamPage from "../views/JoinTeamPage";
+import DonationPage from "../views/DonationPage";
+import DonationSubRouter from "./DonationSubRouter";
+>>>>>>> origin/chance_dallyn:src/web/src/Routing/MainSwitch.tsx
 
-const AuthorizedRoute: FC<any> = ({
-  children,
-  isAuthorized,
-  ...rest
-}) => {
+const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
   if (!isAuthorized) {
     AuthService.signinRedirect();
     return <Route {...rest}>{children}</Route>;
-  }
-  else{
+  } else {
     return <Route {...rest}>{children}</Route>;
   }
-  
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
@@ -65,21 +72,32 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
         <LoginLanding />
       </AuthorizedRoute>
-      
-       <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
+
+      <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
+<<<<<<< HEAD:src/web/src/components/UI/Navigation/MainSwitch.tsx
         <JoinTeamPage/>
       </AuthorizedRoute>
       <Route path="/teamdetails">
         <TeamDetailPage/>
+=======
+        <JoinTeamPage />
+      </AuthorizedRoute>
+
+      <Route path="/donations">
+        <DonationSubRouter />
+>>>>>>> origin/chance_dallyn:src/web/src/Routing/MainSwitch.tsx
       </Route>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
       <Route path="/logout/post" exact>
         <LogoutLanding />
+      </Route>
+      <Route path="/donations1">
+        <DonationPage />
       </Route>
       <Route exact path="/">
         <Home />
