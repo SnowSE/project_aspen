@@ -25,16 +25,6 @@ describe("Admin Side Bar Tests", () => {
     // Assert
     expect(linkElement).toBeInTheDocument();
   });
-  test("checks for the People link", () => {
-    // Arrange
-    render(
-      <TestWrapper children={<AdminSideBar />} />
-    );
-    // Act
-    const linkElement = screen.getByText(/People/);
-    // Assert
-    expect(linkElement).toBeInTheDocument();
-  });
   test("checks for the Events link", () => {
     // Arrange
     render(

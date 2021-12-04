@@ -1,0 +1,11 @@
+@import '../../../custom.scss';
+
+a {
+    &:hover{
+        @extend .bg-secondary;
+
+        @extend .text-light;
+
+        transition: 500ms;
+    }    
+}
