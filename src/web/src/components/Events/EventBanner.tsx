@@ -1,15 +1,21 @@
 import EventModel from "../../models/event";
+import ImageCarousel from "../UI/ImageCarousel";
 
 interface Props {
   event: EventModel;
 }
 const EventBanner = ({ event }: Props) => {
-  const img_url = "https://i.pinimg.com/originals/eb/f0/02/ebf002d6348c3ae432649da4418fce40.jpg";
+  const imgUrls = [
+    "https://wallpaperaccess.com/full/5356065.jpg",
+    "https://wallpaperaccess.com/full/5356101.jpg",
+    "https://wallpaperaccess.com/full/5356202.jpg"
+  ];
+
   return (
-    <div className = "text-center">
+    <div className="text-center">
       <h1>{event.title}</h1>
-      <hr/>
-      <img src={img_url} alt="team logo" width="100%" height="400px"/>
+      <hr />
+      <ImageCarousel imageUrls={imgUrls}/>
     </div>
   );
 };
