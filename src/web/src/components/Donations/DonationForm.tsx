@@ -8,6 +8,7 @@ import { getEventList } from "../../store/eventSlice";
 import { useStoreSelector } from "../../store";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { getPersonByAuthId } from "../../store/personSlice";
 
 interface Props{
     eventid?: string
@@ -18,14 +19,18 @@ interface Props{
 const DonationForm = ({eventid, teamid}: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
     const eventList = useStoreSelector(state => state.event.events)
+    const userLoggedIn = useStoreSelector(state => state.auth.isLoggedIn)
+    const curUser = useStoreSelector(state => state.auth.user)
+    const selectedPerson = useStoreSelector(state => state.person.selectedPerson)
     const dispatch = useDispatch();
     const [teamSelect, setTeamSelect] = useState(0)
-    const [eventSelect, setEventSelect] = useState(0)
+    const [eventSelect, setEventSelect] = useState(Number(eventid) ?? 0)
 
     useEffect(() => {
         dispatch(getAllTeams(Number(eventid) || 1))
         dispatch(getEventList())
-    },[dispatch, eventid])
+        dispatch(getPersonByAuthId(curUser?.profile.email ?? ""))
+    },[dispatch, eventid, curUser])
     
     const amount = useInput(
         "Donation Amount",
@@ -45,8 +50,17 @@ const DonationForm = ({eventid, teamid}: Props) => {
     const submitDonationHandler = async (event: FormEvent) =>{
         event.preventDefault();
         
-        if (amount.isValid){
-           const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), eventSelect, teamSelect, 0)
+        if (amount.isValid && !userLoggedIn){
+           const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(eventid), teamSelect)
+           console.log(newDonation)
+           console.log(eventid)
+           const res= await donationService.createDonation(newDonation)
+           console.log(res)
+        }
+        else if (amount.isValid && userLoggedIn){
+           
+           const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), eventSelect, teamSelect, selectedPerson?.id)
+           console.log(newDonation)
            const res= await donationService.createDonation(newDonation)
            console.log(res)
         }
