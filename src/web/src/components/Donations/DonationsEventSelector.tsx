@@ -7,6 +7,7 @@ import { useState } from "react";
 import donationService from '.././../services/donationService'
 
 export default function DonationsEventSelector() {
+    const user = useStoreSelector((state) => state.auth.user);
     const events = useStoreSelector((state) => state.event.events);
     var [myEvents, setMyEvents] = useState<any[]>([])
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export default function DonationsEventSelector() {
     useEffect(() => {
         async function initializeDonations() {
             var eventResult = await Promise.all(events.map(async (event) => {
-                var currentEventDonations = await donationService.getDonationByEvent(event.id)
+                var currentEventDonations = await donationService.getDonationAmountByEvent(event.id)
                 return { ...event, donations: currentEventDonations }
             }))
             setMyEvents(eventResult)
