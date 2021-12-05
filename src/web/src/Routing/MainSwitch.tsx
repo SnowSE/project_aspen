@@ -11,7 +11,6 @@ import UnAuthorized from "../views/UnAuthorized";
 import TeamRegistrationPage from "../views/TeamRegistrationPage";
 import { LogoutLanding } from "../views/auth/LogoutLanding";
 import JoinTeamPage from "../views/JoinTeamPage";
-import DonationPage from "../views/DonationPage";
 import DonationSubRouter from "./DonationSubRouter";
 
 const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
@@ -68,17 +67,12 @@ const MainSwitch = () => {
         <JoinTeamPage />
       </AuthorizedRoute>
 
-      <Route path="/donations">
-        <DonationSubRouter />
-      </Route>
+      <DonationSubRouter/>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>
       <Route path="/logout/post" exact>
         <LogoutLanding />
-      </Route>
-      <Route path="/donations1">
-        <DonationPage />
       </Route>
       <Route exact path="/">
         <Home />
