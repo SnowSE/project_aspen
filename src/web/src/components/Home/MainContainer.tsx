@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
 import EventModel from "../../models/event";
 import { getEventList, setCurrentEventId } from "../../store/eventSlice";
+// import EventSponsors from "../Events/EventSponsors";
 import EventTeams from "../Events/EventTeams";
 import TopDonors from "../Events/TopDonors";
 
@@ -46,13 +47,14 @@ const MainContainer = () => {
         <div className="col-12 p-0">
           <EventBanner event={event} />
         </div>
-        <div className="border border-secondary col-lg-2 mt-3">
+  
+        <div className="col-lg-2 mt-3">
           <EventTeams event={event}/>
         </div>
         <div className="col-lg-8 p-3">
           <EventInfo event={event} />
         </div>
-        <div className="border border-secondary col-lg-2 mt-3">
+        <div className="col-lg-2 mt-3">
           <TopDonors event={event}/>
         </div>
       </div>

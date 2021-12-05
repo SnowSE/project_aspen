@@ -14,7 +14,6 @@ const EventTeams = ({ event }: Props) => {
     const [filteredTeams, setFilteredTeams] = useState(teamList);
 
     useEffect(() => {
-        console.log(event.id)
         if(teamList.length === 0){
             dispatch(getTeamsByEvent(event.id))
         }
@@ -26,14 +25,14 @@ const EventTeams = ({ event }: Props) => {
         setFilteredTeams(newFilter)
     
     }
-    console.log(event)
+
     return (
-        <div className='p-2'>
+        <div className='text-center p-2'>
             <h5 className='text-center'>Registered Teams</h5>
             <label>Filter Teams </label>
             <input id="filter" type="text" onChange={filterHandler}/>
             <hr/>
-            <div className="card">
+            <div>
                 {filteredTeams.map(t => <p>{t.name}</p>)}
             </div>
             
