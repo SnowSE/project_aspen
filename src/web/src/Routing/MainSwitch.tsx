@@ -67,7 +67,9 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
         <JoinTeamPage/>
       </AuthorizedRoute>
-      <DonationSubRouter/>
+      
+      
+       
       <Route path="/teamdetails">
         <TeamDetailPage/>
       </Route>
@@ -80,6 +82,7 @@ const MainSwitch = () => {
       <Route exact path="/">
         <Home />
       </Route>
+      <DonationSubRouter/>
     </Switch>
   );
 };

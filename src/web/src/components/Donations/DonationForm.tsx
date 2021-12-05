@@ -56,10 +56,10 @@ const DonationForm = ({eventid, teamid}: Props) => {
 
 
     return (
-        <div>
+        <div className="container w-50 border p-5 my-3">
             <form onSubmit={submitDonationHandler}>
             { eventList.length > 0 && 
-            <div className='form-group'>
+            <div className='form-group my-3'>
             <label htmlFor= "inputGroupSelect02">Which Event?</label>
             <select className='btn btn-dark dropdown-toggle form-control' id="inputGroupSelect02" value={eventSelect} onChange={eventChangeHandler}>
                     {typeof(eventid) == 'undefined' ? 

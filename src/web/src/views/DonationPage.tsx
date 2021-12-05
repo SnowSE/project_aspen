@@ -12,6 +12,7 @@ const DonationPage = () => {
     const {teamid} = useParams<DonationParams>()
     return (
         <div>
+            <h1 className="text-center">Donations</h1>
             <DonationForm eventid={eventid} teamid={teamid}/>
         </div>
     )
