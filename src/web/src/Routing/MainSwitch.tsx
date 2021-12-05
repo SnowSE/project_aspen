@@ -12,7 +12,6 @@ import TeamRegistrationPage from "../views/TeamRegistrationPage";
 import { LogoutLanding } from "../views/auth/LogoutLanding";
 import JoinTeamPage from "../views/JoinTeamPage";
 import TeamDetail from "../components/Team/TeamDetail";
-import DonationPage from "../views/DonationPage";
 import DonationSubRouter from "./DonationSubRouter";
 
 const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
@@ -79,12 +78,10 @@ const MainSwitch = () => {
       <Route path="/logout/post" exact>
         <LogoutLanding />
       </Route>
-      <Route path="/donations1">
-        <DonationPage />
-      </Route>
       <Route exact path="/">
         <Home />
       </Route>
+      <DonationSubRouter/>
     </Switch>
   );
 };

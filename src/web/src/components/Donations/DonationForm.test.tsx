@@ -20,6 +20,18 @@ describe("Donation Form tests", () => {
         },
       ],
     },
+    event: {
+      events:[
+        {
+          id:0,
+          title: "this event"
+        },
+        {
+          id:1,
+          title: "second event"
+        }
+      ]
+    }
   };
   const mockStore = configureStore(middlewares);
   let store;

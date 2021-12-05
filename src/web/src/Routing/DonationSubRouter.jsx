@@ -1,11 +1,12 @@
 import { Route } from "react-router";
+import DonationPage from "../views/DonationPage";
 
 const DonationSubRouter = () => {
   return (
     <>
-      {/*render Donation form without pre-filled parameter information */}
-      <Route path="/:event"></Route>
-      <Route path="/:event/:team"></Route>
+      <Route path="/donate/:eventid/:teamid" component={DonationPage} exact/>
+      <Route path="/donate/:eventid" component={DonationPage} exact/>
+      <Route path="/donate" component={DonationPage} exact/>
     </>
   );
 };
