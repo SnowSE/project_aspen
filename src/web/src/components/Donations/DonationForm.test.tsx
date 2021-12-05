@@ -31,6 +31,14 @@ describe("Donation Form tests", () => {
           title: "second event"
         }
       ]
+    },
+    auth:{
+      isLoggedIn: true
+    },
+    person:{
+      selectedPerson:{
+        id: 1
+      }
     }
   };
   const mockStore = configureStore(middlewares);
