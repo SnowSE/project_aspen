@@ -23,13 +23,17 @@ const TopDonors = ({ event }: Props) => {
 
 
     useEffect(() => {
-        if (teamList.length === 0) {
             dispatch(getTeamsByEvent(event.id))
-        }
+    }, [dispatch, event.id])
 
+    useEffect(() => {
+        const temp: donationsByTeam[] = []
         teamList.forEach(t => donationService.getDonationAmountByTeam(t.id, event.id)
-            .then(r => setTeamDonations(prev => [...prev, { team: t, donationAmount: r }].sort((a, b) => (a.donationAmount < b.donationAmount ? -1 : 1)))))
-    }, [dispatch, teamList, event.id])
+            .then(r => temp.push({team : t , donationAmount : r}))
+            .then(r=> setTeamDonations(temp.sort((a,b) => (a.donationAmount < b.donationAmount ? 1: -1))))
+        )
+        
+    }, [teamList, event.id])
 
 
     return (
