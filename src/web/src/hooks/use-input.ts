@@ -10,6 +10,7 @@ export interface InputControl {
   inputBlurHandler: (event: FocusEvent<HTMLInputElement>) => void,
   reset: () => void,
 }
+
 const useInput = (
   inputName: string,
   errorMessage: string,
@@ -20,9 +21,11 @@ const useInput = (
   const [isTouched, setIsTouched] = useState(false);
   let valueIsValid: boolean;
 
-  if (validateValue == null) {
+  if (validateValue == null)
+  {
     valueIsValid = true;
-  } else {
+  } else
+  {
     valueIsValid = validateValue(enteredValue);
   }
 

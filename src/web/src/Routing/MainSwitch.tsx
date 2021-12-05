@@ -1,31 +1,26 @@
 import { Switch, Route } from "react-router-dom";
-import { Home } from "../../../views/Home";
-import { LoginLanding } from "../../../views/auth/LoginLanding";
+import { Home } from "../views/Home";
+import { LoginLanding } from "../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
-import { checkIfLoggedIn } from "../../../store/authSlice";
-import { useStoreSelector } from "../../../store";
-import Admin from "../../../views/Admin/Admin";
-import { AuthService } from "../../../services/authService";
-import UnAuthorized from "../../../views/UnAuthorized";
-import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
-import { LogoutLanding } from "../../../views/auth/LogoutLanding";
-import JoinTeamPage from "../../../views/JoinTeamPage";
-import TeamDetailPage from "../../Team/TeamDetailPage";
+import { checkIfLoggedIn } from "../store/authSlice";
+import { useStoreSelector } from "../store";
+import Admin from "../views/Admin/Admin";
+import { AuthService } from "../services/authService";
+import UnAuthorized from "../views/UnAuthorized";
+import TeamRegistrationPage from "../views/TeamRegistrationPage";
+import { LogoutLanding } from "../views/auth/LogoutLanding";
+import JoinTeamPage from "../views/JoinTeamPage";
+import DonationSubRouter from "./DonationSubRouter";
+import TeamDetailPage from "../components/Team/TeamDetailPage";
 
-const AuthorizedRoute: FC<any> = ({
-  children,
-  isAuthorized,
-  ...rest
-}) => {
+const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
   if (!isAuthorized) {
     AuthService.signinRedirect();
     return <Route {...rest}>{children}</Route>;
-  }
-  else{
+  } else {
     return <Route {...rest}>{children}</Route>;
   }
-  
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
@@ -65,13 +60,16 @@ const MainSwitch = () => {
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/login/post">
         <LoginLanding />
       </AuthorizedRoute>
-      
-       <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
+
+      <AuthorizedRoute isAuthorized={isAuthenticated} path="/teamregistration">
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
         <JoinTeamPage/>
       </AuthorizedRoute>
+      
+      
+       
       <Route path="/teamdetails">
         <TeamDetailPage/>
       </Route>
@@ -84,6 +82,7 @@ const MainSwitch = () => {
       <Route exact path="/">
         <Home />
       </Route>
+      <DonationSubRouter/>
     </Switch>
   );
 };
