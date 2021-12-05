@@ -43,7 +43,7 @@ describe("Donation Form tests", () => {
   };
   const mockStore = configureStore(middlewares);
   let store;
-  test("Checks for Amount on page", () => {
+  test("Checks for Amount form element on page", () => {
     store = mockStore(initialState);
     render(
         <Provider store={store}>
