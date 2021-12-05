@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import DonationForm from "./DonationForm";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import DonationReport from "./DonationsReport";
@@ -30,7 +29,6 @@ describe("Donation Report tests", () => {
         render(
             <TestWrapper children={<DonationReport />} />
         )
-        screen
         const header = screen.getByTestId("headers")
         expect(header.childElementCount).toBe(6)
     })
@@ -38,7 +36,6 @@ describe("Donation Report tests", () => {
         render(
             <TestWrapper children={<DonationReport />} />
         )
-        screen
         const loadingRow = screen.getByTestId("loading-row")
         expect(loadingRow).toBeInTheDocument
     })
