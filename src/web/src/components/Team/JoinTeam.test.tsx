@@ -46,7 +46,7 @@ describe("Test join team page", () => {
             </Provider>
         );
 
-        const createButton = screen.getByText(/CREATE NEW TEAM/);
+        const createButton = screen.getByText(/Create New Team/);
         expect(createButton).toBeInTheDocument();
     })
 })
