@@ -20,9 +20,15 @@ const DonationForm = () => {
     }, [dispatch])
 
     
-    const selectedEvent = useInput(
+    const eventID = useInput(
         "Event ID",
         "Please enter a event ID",
+        value => value.trim() !== ""
+    );
+
+    const personID = useInput(
+        "person ID",
+        "Please enter a person ID of a donor",
         value => value.trim() !== ""
     );
     
@@ -41,7 +47,7 @@ const DonationForm = () => {
         event.preventDefault();
         
         if (Number(amount.value) > 0){
-           const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(selectedEvent.value), teamSelect )
+           const newDonation = new Donation(Number(eventID.value), teamSelect, Number(personID.value), (new Date()).toISOString(), Number(amount.value))
            const res= await donationService.createDonation(newDonation)
            console.log(res)
         }
@@ -52,7 +58,8 @@ const DonationForm = () => {
     return (
         <div>
             <form onSubmit={submitDonationHandler}>
-                <NumberInput inputControl={selectedEvent}/>
+                <NumberInput inputControl={eventID}/>
+                <NumberInput inputControl={personID}/>
                 <NumberInput inputControl={amount}/>
                 <select className='custom-select' id="inputGroupSelect01" value={teamSelect} onChange={teamChangeHandler}>
                     <option selected>Choose a team...</option>

@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useStoreSelector } from "../../store";
 import EventModel from "../../models/event";
 import { getEventList, setCurrentEventId } from "../../store/eventSlice";
-import EventSponsors from "../Events/EventSponsors";
 import EventTeams from "../Events/EventTeams";
 import TopDonors from "../Events/TopDonors";
 

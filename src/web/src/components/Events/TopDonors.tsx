@@ -10,10 +10,10 @@ interface Props {
 const TopDonors = ({ event }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
     const dispatch = useDispatch();
-    const [filteredTeams, setFilteredTeams] = useState(teamList)
+    const [filteredTeams] = useState(teamList)
     useEffect(() => {
         dispatch(getTeamsByEvent(event.id))
-    }, [dispatch])
+    }, [dispatch, event])
 
     // const filterHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     setFilteredTeams(event.target.value)

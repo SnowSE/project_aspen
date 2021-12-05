@@ -1,21 +1,25 @@
 export default class Donation {
-  eventID?: number;
-  teamID?: number;
-  personID?: number;
+  id?: number;
+  eventID: number;
+  teamID: number;
+  personID: number;
   date: string;
   amount: number;
+  isPending: boolean;
 
   constructor(
+    eventID: number,
+    teamID: number,
+    personID: number,
     date: string,
     amount: number,
-    eventID?: number,
-    teamID?: number,
-    personID?: number
   ) {
     this.eventID = eventID;
     this.teamID = teamID;
     this.personID = personID;
-    this.date = date ?? new Date().toString;
-    this.amount = amount ?? 0;
+    this.date = date;
+    this.amount = amount;
+    this.isPending = false;
+    this.id = undefined;
   }
 }
