@@ -17,39 +17,36 @@ export default function DonationReport() {
 
     useEffect(() => {
         async function initializeDonations() {
-            var bearer_token = ''
             if (user) {
-                bearer_token = user.access_token
+                var bearer_token = user.access_token
+                var donationsResponse = await Promise.all(events.map(async (event) => {
+                    return await donationService.getDonationsByEvent(event.id, bearer_token)
+                }))
+                var currentDonations: Donation[] = []
+                donationsResponse.forEach(donation => {
+                    currentDonations = [...currentDonations, ...donation]
+                    setDonations([...currentDonations])
+                });
             }
-            var donationsResult = await Promise.all(events.map(async (event) => {
-                var currentEventDonations = await donationService.getDonationsByEvent(event.id, bearer_token)
-                return currentEventDonations
-            }))
-            console.log(donationsResult)
-            var donationsToSet: Donation[] = []
-            donationsResult.forEach(donation => {
-                console.log(donation)
-                donationsToSet = [...donationsToSet, ...donation]
-            });
-            setDonations(donationsToSet)
+            else setDonations([])
         }
         initializeDonations()
     }, [events, user]);
     return (
-        donations.length !== 0 ? <>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Event ID</th>
-                        <th scope="col">Team ID</th>
-                        <th scope="col">Person ID</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Is Pending</th>
 
-                    </tr>
-                </thead>
-                <tbody>
+        <table className="table">
+            <thead>
+                <tr data-testid="headers">
+                    <th scope="col">Event ID</th>
+                    <th scope="col">Team ID</th>
+                    <th scope="col">Person ID</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Is Pending</th>
+                </tr>
+            </thead>
+            <tbody>
+                {donations.length !== 0 ? <>
                     {donations.map(donation => <tr key={donation.id}>
                         <th scope="row">{donation.eventID}</th>
                         <td>{donation.teamID}</td>
@@ -58,8 +55,16 @@ export default function DonationReport() {
                         <td>{donation.date}</td>
                         <td>{donation.isPending}</td>
                     </tr>)}
-                </tbody>
-            </table>
-        </> : <h4>Loading...</h4>
+                </> : <tr data-testid="loading-row">
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>}
+            </tbody>
+        </table>
+
     )
 }
