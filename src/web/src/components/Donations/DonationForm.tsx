@@ -18,20 +18,11 @@ interface Props{
 const DonationForm = ({eventid, teamid}: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
     const eventList = useStoreSelector(state => state.event.events)
-    const user = useStoreSelector(state => state.auth.user)
     const dispatch = useDispatch();
     const [teamSelect, setTeamSelect] = useState(0)
     const [eventSelect, setEventSelect] = useState(0)
 
-
-    console.log(eventid)
-    console.log(teamid)
-    console.log(teamList)
-    console.log(eventList)
-    console.log(user)
-
     useEffect(() => {
-        console.log('running useeffect')
         dispatch(getAllTeams(Number(eventid) || 1))
         dispatch(getEventList())
     },[dispatch, eventid])
