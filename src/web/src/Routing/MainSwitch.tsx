@@ -3,17 +3,6 @@ import { Home } from "../views/Home";
 import { LoginLanding } from "../views/auth/LoginLanding";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
-<<<<<<< HEAD:src/web/src/components/UI/Navigation/MainSwitch.tsx
-import { checkIfLoggedIn } from "../../../store/authSlice";
-import { useStoreSelector } from "../../../store";
-import Admin from "../../../views/Admin/Admin";
-import { AuthService } from "../../../services/authService";
-import UnAuthorized from "../../../views/UnAuthorized";
-import TeamRegistrationPage from "../../../views/TeamRegistrationPage";
-import { LogoutLanding } from "../../../views/auth/LogoutLanding";
-import JoinTeamPage from "../../../views/JoinTeamPage";
-import TeamDetailPage from "../../Team/TeamDetailPage";
-=======
 import { checkIfLoggedIn } from "../store/authSlice";
 import { useStoreSelector } from "../store";
 import Admin from "../views/Admin/Admin";
@@ -24,7 +13,6 @@ import { LogoutLanding } from "../views/auth/LogoutLanding";
 import JoinTeamPage from "../views/JoinTeamPage";
 import DonationPage from "../views/DonationPage";
 import DonationSubRouter from "./DonationSubRouter";
->>>>>>> origin/chance_dallyn:src/web/src/Routing/MainSwitch.tsx
 
 const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
   if (!isAuthorized) {
@@ -77,18 +65,10 @@ const MainSwitch = () => {
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
-<<<<<<< HEAD:src/web/src/components/UI/Navigation/MainSwitch.tsx
-        <JoinTeamPage/>
-      </AuthorizedRoute>
-      <Route path="/teamdetails">
-        <TeamDetailPage/>
-=======
         <JoinTeamPage />
       </AuthorizedRoute>
-
       <Route path="/donations">
         <DonationSubRouter />
->>>>>>> origin/chance_dallyn:src/web/src/Routing/MainSwitch.tsx
       </Route>
       <Route path="/login/landing">
         <LoginLanding />

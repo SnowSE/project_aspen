@@ -17,7 +17,7 @@ export default function DonationsEventSelector() {
     useEffect(() => {
         async function initializeDonations() {
             var eventResult = await Promise.all(events.map(async (event) => {
-                var currentEventDonations = await donationService.getEventDonations(event.id)
+                var currentEventDonations = await donationService.getDonationByEvent(event.id)
                 return { ...event, donations: currentEventDonations }
             }))
             setMyEvents(eventResult)
