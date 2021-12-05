@@ -58,8 +58,10 @@ export const AuthService = {
 
   signinRedirectCallback: async () => {
     const desiredDestination = localStorage.getItem("redirectUri");
+    const tempDestination = desiredDestination?.replace(reactAppPath, '');
     const user = await userManager.signinRedirectCallback();
-    return { desiredDestination, user };
+    
+    return { desiredDestination: tempDestination, user };
   },
 
   signinSilent: async () => {

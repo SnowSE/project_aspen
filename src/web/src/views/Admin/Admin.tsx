@@ -7,6 +7,7 @@ import { useStoreSelector } from "../../store";
 import { getEventList } from "../../store/eventSlice";
 import Demo from "../Demo";
 import PageDataPage from "../PageDataPage";
+import Donations from "./Donations";
 
 export default function Admin() {
   const history = useHistory();
@@ -43,6 +44,9 @@ export default function Admin() {
       </Route>
       <Route exact path="/admin/events">
         <AdminEvents />
+      </Route>
+      <Route exact path="/admin/donations">
+        <Donations/>
       </Route>
     </div>
   );

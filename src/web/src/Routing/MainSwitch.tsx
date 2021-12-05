@@ -12,6 +12,7 @@ import TeamRegistrationPage from "../views/TeamRegistrationPage";
 import { LogoutLanding } from "../views/auth/LogoutLanding";
 import JoinTeamPage from "../views/JoinTeamPage";
 import DonationSubRouter from "./DonationSubRouter";
+import TeamDetailPage from "../Team/TeamDetailPage";
 
 const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
   if (!isAuthorized) {
@@ -64,10 +65,11 @@ const MainSwitch = () => {
         <TeamRegistrationPage />
       </AuthorizedRoute>
       <AuthorizedRoute isAuthorized={isAuthenticated} path="/jointeam">
-        <JoinTeamPage />
+        <JoinTeamPage/>
       </AuthorizedRoute>
-
-      <DonationSubRouter/>
+      <Route path="/teamdetails">
+        <TeamDetailPage/>
+      </Route>
       <Route path="/login/landing">
         <LoginLanding />
       </Route>

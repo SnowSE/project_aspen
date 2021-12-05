@@ -16,6 +16,7 @@ namespace Api.Models.Entities
         public Person Owner { get; init; }
         public long EventID { get; init; }
         public Event Event { get; init; }
+        public decimal DonationTarget { get; init; }
     }
 
     public static class TeamExtensions
@@ -31,7 +32,24 @@ namespace Api.Models.Entities
                 OwnerID = currentTeam.OwnerID,
                 Owner = currentTeam.Owner,
                 EventID = newEventId,
-                Event = currentTeam.Event
+                Event = currentTeam.Event,
+                DonationTarget = currentTeam.DonationTarget
+            };
+        }
+
+        public static Team WithDonationTarget(this Team currentTeam, decimal donationTarget)
+        {
+            return new Team
+            {
+                ID = currentTeam.ID,
+                Name = currentTeam.Name,
+                Description = currentTeam.Description,
+                MainImage = currentTeam.MainImage,
+                OwnerID = currentTeam.OwnerID,
+                Owner = currentTeam.Owner,
+                EventID = currentTeam.ID,
+                Event = currentTeam.Event,
+                DonationTarget = donationTarget
             };
         }
     }

@@ -10,6 +10,15 @@ const getAllTeams = async (eventID: number) =>{
     return res.data;
 }
 
+const getTeamsByEventId = async (id: number) =>{
+    const res = await axios.get(url + '/event/' + id)
+    if (res.status !== 200) {
+        console.log(res);
+        throw Error("Api error getting teams by event id");
+      }
+      return res.data;
+}
+
 const createTeam = async (team :Team) =>{
     const thisTeam={
         name: team.name,
@@ -25,13 +34,13 @@ const createTeam = async (team :Team) =>{
 
 const createRegistration = async (registration: Registration) => {
     const res = await axios.post<Registration>( registrationUrl, registration)
-    console.log(res.data);
     return res.data
 }
 
 const teamService={
     getAllTeams,
     createTeam,
-    createRegistration
+    createRegistration,
+    getTeamsByEventId
 }
 export default teamService; 
