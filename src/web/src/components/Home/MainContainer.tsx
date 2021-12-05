@@ -7,6 +7,7 @@ import EventModel from "../../models/event";
 import { getEventList, setCurrentEventId } from "../../store/eventSlice";
 import EventSponsors from "../Events/EventSponsors";
 import EventTeams from "../Events/EventTeams";
+import TopDonors from "../Events/TopDonors";
 
 const MainContainer = () => {
   const events = useStoreSelector((state) => state.event.events);
@@ -53,7 +54,7 @@ const MainContainer = () => {
           <EventInfo event={event} />
         </div>
         <div className="border border-secondary col-lg-2 mt-3">
-          <EventSponsors />
+          <TopDonors event={event}/>
         </div>
       </div>
     </div>
