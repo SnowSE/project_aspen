@@ -37,6 +37,6 @@ describe("Donation Report tests", () => {
             <TestWrapper children={<DonationReport />} />
         )
         const loadingRow = screen.getByTestId("loading-row")
-        expect(loadingRow).toBeInTheDocument
+        expect(loadingRow).toBeInTheDocument()
     })
 });
