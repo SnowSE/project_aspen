@@ -78,6 +78,20 @@ public class RegistrationControllerTest
     }
 
     [Test]
+    public async Task RegistrationIsIncludedInPerson()
+    {
+        var registration = await createRegistration();
+        var personController = PersonControllerTest.GetPersonController();
+        var registrationController = GetRegistrationController();
+
+        var teamMember = (await personController.Add(new DtoPerson { Name = "Team Member" })).Value;
+        var teamMemberRegistration = (await registrationController.LinkPersonRegistration(registration.ID, teamMember.ID)).Value;
+
+        var registrations = await personController.GetRegistrationsByID(teamMember.ID);
+        registrations.First().PersonRegistrations.Any(pr => pr.PersonID == teamMember.ID).Should().BeTrue();
+    }
+
+    [Test]
     public async Task CanUpdateRegistration()
     {
         var original = await createRegistration();
