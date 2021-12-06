@@ -51,14 +51,14 @@ const DonationForm = ({ eventid, teamid }: Props) => {
         event.preventDefault();
 
         if (amount.isValid && !userLoggedIn) {
-            const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value))
+            const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(eventid), teamSelect)
             console.log(newDonation)
             console.log(eventid)
             const res = await donationService.createDonation(newDonation)
             console.log(res)
         }
         else if (amount.isValid && userLoggedIn) {
-            const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value), selectedPerson?.id)
+            const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(eventid), teamSelect, selectedPerson?.id)
             console.log(newDonation)
             const res = await donationService.createDonation(newDonation)
             console.log(res)
