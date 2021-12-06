@@ -5,6 +5,7 @@ namespace Api.Controllers;
 public class PersonController : ControllerBase
 {
     private readonly IPersonRepository personRepository;
+    private readonly IRegistrationRepository registrationRepository;
     private readonly IMapper mapper;
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -13,10 +14,11 @@ public class PersonController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public PersonController(IPersonRepository personRepository, IMapper mapper)
+    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper)
     {
         this.mapper = mapper;
         this.personRepository = personRepository;
+        this.registrationRepository = registrationRepository;
     }
 
     [HttpGet("{id}")]
@@ -81,4 +83,13 @@ public class PersonController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("{id}/registrations")]
+    public async Task<IEnumerable<DtoRegistration>> GetRegistrationsByID(long id)
+    {
+        if (await personRepository.ExistsAsync(id) is false)
+            throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
+
+        var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
+        return mapper.Map<IEnumerable<DtoRegistration>>(registrations);
+    }
 }

@@ -6,7 +6,8 @@ public class PersonControllerTest
     {
         var context = TestHelpers.CreateContext();
         var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
-        return new PersonController(personRepository, TestHelpers.AspenMapper);
+        var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
+        return new PersonController(personRepository, registrationRepository, TestHelpers.AspenMapper);
     }
 
     [Test]
