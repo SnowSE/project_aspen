@@ -1,16 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["api/api.csproj", "api/"]
+RUN dotnet restore "api/api.csproj"
+COPY . .
+WORKDIR "/src/api"
+RUN dotnet build "api.csproj" -c Release -o /app/build
 
-# Copy everything else and build
-COPY . . 
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "api.csproj" -c Release -o /app/publish
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM base AS final
 RUN apt update && apt install -y curl
 WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "aspen_api.dll"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "aspen-api.dll"]

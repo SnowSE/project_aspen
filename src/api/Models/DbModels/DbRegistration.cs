@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace Api.DbModels;
 
-namespace Api.DbModels
+public record DbRegistration
 {
-    public record DbRegistration
-    {
-        public long ID { get; init; }
+    public long ID { get; init; }
 
-        public DateTime CreationDate { get; init; }
+    public DateTime CreationDate { get; init; }
 
-        public bool IsPublic { get; init; }
+    public bool IsPublic { get; init; }
 
-        public string  Nickname { get; init; }
+    public string Nickname { get; init; }
 
-        public long OwnerID { get; init; }
-        public DbPerson Owner { get; init; }
+    public long OwnerID { get; init; }
+    public DbPerson Owner { get; init; }
 
-        public long TeamID { get; init; }
-        public DbTeam Team {get; init;}
+    public long TeamID { get; init; }
+    public DbTeam Team { get; init; }
 
-        public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; init; }
-    }
+    public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; init; }
 }
