@@ -1,125 +1,103 @@
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Api.Controllers;
-using Api.DataAccess;
-using Api.DbModels;
-using Api.DtoModels;
-using Api.Mappers;
-using Api.Models;
-using Api.Models.Entities;
-using Aspen.Api.Controllers;
-using AutoMapper;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using NUnit.Framework;
+namespace Tests.ControllerTests;
 
-namespace Tests.Controller
+public class RegistrationControllerTest
 {
-    public class RegistrationControllerTest
+    private PersonRepository GetPersonRepository()
     {
-        private PersonRepository GetPersonRepository()
+        var context = TestHelpers.CreateContext();
+        return new PersonRepository(context, TestHelpers.AspenMapper);
+    }
+    private TeamRepository GetTeamRepository()
+    {
+        var context = TestHelpers.CreateContext();
+        return new TeamRepository(context, TestHelpers.AspenMapper);
+    }
+    private EventRepository GetEventRepository()
+    {
+        var context = TestHelpers.CreateContext();
+        return new EventRepository(context, TestHelpers.AspenMapper);
+    }
+
+    public static RegistrationController GetRegistrationController()
+    {
+        var context = TestHelpers.CreateContext();
+        var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
+        var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
+        return new RegistrationController(registrationRepository, personRepository, TestHelpers.AspenMapper);
+    }
+
+    [Test]
+    public async Task CanCreateRegistration()
+    {
+        var dtoRegistration = await createRegistration();
+
+        dtoRegistration.CreationDate.Should().NotBe(null);
+    }
+
+    private async Task<DtoRegistration> createRegistration()
+    {
+        var owner = await GetPersonRepository().AddAsync("ben", null);
+        var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
+        var newEvent = await GetEventRepository().AddAsync(eventEntity);
+        var team = new Team
         {
-            var context = TestHelpers.CreateContext();
-            return new PersonRepository(context, TestHelpers.AspenMapper);
-        }
-        private TeamRepository GetTeamRepository()
+            OwnerID = owner.ID,
+            EventID = newEvent.ID,
+            Name = $"New Team {owner.ID}-{newEvent.ID}"
+        };
+
+        team = await GetTeamRepository().AddAsync(team);
+        var uncreatedDtoRegistration = new DtoRegistration
         {
-            var context = TestHelpers.CreateContext();
-            return new TeamRepository(context, TestHelpers.AspenMapper);
-        }
-        private EventRepository GetEventRepository()
-        {
-            var context = TestHelpers.CreateContext();
-            return new EventRepository(context, TestHelpers.AspenMapper);
-        }
+            OwnerID = owner.ID,
+            TeamID = team.ID
+        };
 
-        public static RegistrationController GetRegistrationController()
-        {
-            var context = TestHelpers.CreateContext();
-            var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
-            var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
-            return new RegistrationController(registrationRepository, personRepository, TestHelpers.AspenMapper);
-        }
-
-        [Test]
-        public async Task CanCreateRegistration()
-        {
-            var dtoRegistration = await createRegistration();
-
-            dtoRegistration.CreationDate.Should().NotBe(null);
-        }
-
-        private async Task<DtoRegistration> createRegistration()
-        {
-            var owner = await GetPersonRepository().AddAsync("ben", null);
-            var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
-            var newEvent = await GetEventRepository().AddAsync(eventEntity);
-            var team = new Team
-            {
-                OwnerID = owner.ID,
-                EventID = newEvent.ID,
-                Name = $"New Team {owner.ID}-{newEvent.ID}"
-            };
-
-            team = await GetTeamRepository().AddAsync(team);
-            var uncreatedDtoRegistration = new DtoRegistration
-            {
-                OwnerID = owner.ID,
-                TeamID = team.ID
-            };
-
-            var dtoRegistrationResponse = await GetRegistrationController().Add(uncreatedDtoRegistration);
-            return dtoRegistrationResponse.Value;
-        }
+        var dtoRegistrationResponse = await GetRegistrationController().Add(uncreatedDtoRegistration);
+        return dtoRegistrationResponse.Value;
+    }
 
 
-        [Test]
-        public async Task CanGetRegistrationWithParticipants()
-        {
-            var dtoRegistration = await createRegistration();
-            var personId = (await GetPersonRepository().AddAsync("Person1", "Bogus Bio")).ID;
+    [Test]
+    public async Task CanGetRegistrationWithParticipants()
+    {
+        var dtoRegistration = await createRegistration();
+        var personId = (await GetPersonRepository().AddAsync("Person1", "Bogus Bio")).ID;
 
-            var returnedRegistration = (await GetRegistrationController().LinkPersonRegistration(dtoRegistration.ID, personId)).Value;
+        var returnedRegistration = (await GetRegistrationController().LinkPersonRegistration(dtoRegistration.ID, personId)).Value;
 
-            returnedRegistration.PersonRegistrations.First().PersonID.Should().Be(personId);
-        }
+        returnedRegistration.PersonRegistrations.First().PersonID.Should().Be(personId);
+    }
 
-        [Test]
-        public async Task CanGetRegistrationById()
-        {
-            var original = await createRegistration();
-            var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
-            anotherCopy.Should().BeEquivalentTo(original);
-        }
+    [Test]
+    public async Task CanGetRegistrationById()
+    {
+        var original = await createRegistration();
+        var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
+        anotherCopy.Should().BeEquivalentTo(original);
+    }
 
-        [Test]
-        public async Task CanUpdateRegistration()
-        {
-            var original = await createRegistration();
-            var modifiedDto = original with { Nickname = "New", IsPublic = !original.IsPublic };
-            var returnedDto = (await GetRegistrationController().Edit(modifiedDto)).Value;
-            returnedDto.Should().BeEquivalentTo(modifiedDto);
+    [Test]
+    public async Task CanUpdateRegistration()
+    {
+        var original = await createRegistration();
+        var modifiedDto = original with { Nickname = "New", IsPublic = !original.IsPublic };
+        var returnedDto = (await GetRegistrationController().Edit(modifiedDto)).Value;
+        returnedDto.Should().BeEquivalentTo(modifiedDto);
 
-            var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
-            anotherCopy.Should().BeEquivalentTo(returnedDto);
-        }
+        var anotherCopy = (await GetRegistrationController().GetByID(original.ID)).Value;
+        anotherCopy.Should().BeEquivalentTo(returnedDto);
+    }
 
-        [Test]
-        public async Task CanDeleteRegistration()
-        {
-            var original = await createRegistration();
-            await GetRegistrationController().Delete(original.ID);
+    [Test]
+    public async Task CanDeleteRegistration()
+    {
+        var original = await createRegistration();
+        await GetRegistrationController().Delete(original.ID);
 
-            var badTeamRequests = await GetRegistrationController().GetByID(original.ID);
+        var badTeamRequests = await GetRegistrationController().GetByID(original.ID);
 
-            var actual = badTeamRequests.Result as NotFoundObjectResult;
-            actual.StatusCode.Should().Be(404);
-        }
+        var actual = badTeamRequests.Result as NotFoundObjectResult;
+        actual.StatusCode.Should().Be(404);
     }
 }
