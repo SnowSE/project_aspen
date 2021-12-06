@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import registrationService from "../services/registrationService";
 import Registration from "../models/registration";
 import Team from "../models/team";
 import teamService from "../services/teamService";
@@ -25,14 +26,14 @@ export const createTeam = createAsyncThunk(
     
         const team = await teamService.createTeam(args.team);
         args.registration.teamID = team.id
-        await teamService.createRegistration(args.registration)
+        await registrationService.createRegistration(args.registration)
         return team
     }
 )
 export const createRegistration = createAsyncThunk(
     "team/createRegistration",
     async(registration: Registration, ThunkAPI) => {
-        await teamService.createRegistration(registration)   
+        await registrationService.createRegistration(registration)   
     }
 )
 
