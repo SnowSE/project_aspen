@@ -5,20 +5,14 @@ type Props = {
 }
 
 const ImageCarousel: FC<Props> = (props): JSX.Element => {
-    console.log(props.imageUrls)
-
     return (
         <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-inner">
-                <div className="carousel-item active">
-                    <img src="https://wallpaperaccess.com/full/5356202.jpg" className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://wallpaperaccess.com/full/5356101.jpg" className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://wallpaperaccess.com/full/5356065.jpg" className="d-block w-100" alt="..." />
-                </div>
+                {props.imageUrls.map((src, i) => (
+                    <div className={`carousel-item ${i === 0 && 'active'}`}>
+                        <img src={src} className="d-block w-100" alt="..." />
+                    </div>
+                ))}
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
