@@ -5,6 +5,7 @@ import logo from "./tempLogo.png";
 
 const NavBar = () => {
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
+  const userName = useStoreSelector(state => state.auth.user?.profile.given_name)
 
   const logoutHandler = () => {
     AuthService.logout();
@@ -33,22 +34,22 @@ const NavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav justify-content-center container">
+          <ul className="navbar-nav justify-content-end container-fluid">
             <li className="nav-item mx-2 p-1 text-center text-light">
-              <NavLink className="text-white" to="/register">
-                Register
-              </NavLink>
+              {isLoggedIn ? (
+                <div className="d-flex align-items-center">
+                  <p className="text-black m-0 me-3">Welcome back, {userName}!</p>
+                  <button className="btn btn-primary me-2" onClick={logoutHandler}>
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button className="btn btn-primary me-2" onClick={loginHandler}>
+                  Login
+                </button>
+              )}
             </li>
           </ul>
-          {isLoggedIn ? (
-            <button className="btn btn-primary me-2" onClick={logoutHandler}>
-              Logout
-            </button>
-          ) : (
-            <button className="btn btn-primary me-2" onClick={loginHandler}>
-              Login
-            </button>
-          )}
         </div>
       </div>
     </nav>

@@ -1,6 +1,6 @@
 import { NavBar } from "../Navigation/NavBar";
 import AdminSideBar from "../Navigation/AdminSideBar";
-import MainSwitch from "../Navigation/MainSwitch";
+import MainSwitch from "../../../Routing/MainSwitch";
 import { useStoreSelector } from "../../../store";
 import Footer from "../Navigation/Footer";
 import AlertDisplay from "../AlertDisplay";
