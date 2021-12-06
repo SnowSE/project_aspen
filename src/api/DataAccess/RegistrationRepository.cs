@@ -9,6 +9,7 @@ public interface IRegistrationRepository
     Task<Registration> GetByIdAsync(long registrationID);
     Task<bool> ExistsAsync(long registrationID);
     Task<Registration> LinkPersonToRegistrationAsync(long registrationId, long personId);
+    Task<IEnumerable<Registration>> GetRegistrationsByPersonAsync(long personId);
 }
 
 public class RegistrationRepository : IRegistrationRepository
@@ -87,5 +88,14 @@ public class RegistrationRepository : IRegistrationRepository
             .ThenInclude(pr => pr.Person)
             .FirstOrDefaultAsync(r => r.ID == registrationId);
         return mapper.Map<Registration>(updatedRegistration);
+    }
+
+    public async Task<IEnumerable<Registration>> GetRegistrationsByPersonAsync(long personId)
+    {
+        var registrations = await context.Registrations
+            .Include(r=>r.PersonRegistrations)
+            .Where(r=>r.PersonRegistrations.Any(pr => pr.PersonID == personId) || r.OwnerID == personId)
+            .ToListAsync();
+        return registrations.Select(r => mapper.Map<Registration>(r));
     }
 }
