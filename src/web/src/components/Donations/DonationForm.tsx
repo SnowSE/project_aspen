@@ -3,7 +3,7 @@ import NumberInput from "../../inputs/NumberInput";
 import Donation from "../../models/donation";
 import donationService from "../../services/donationService";
 import React, { FormEvent } from "react";
-import { getAllTeams } from "../../store/teamSlice";
+import { getTeamsByEvent } from "../../store/teamSlice";
 import { getEventList } from "../../store/eventSlice";
 import { useStoreSelector } from "../../store";
 import { useDispatch } from "react-redux";
@@ -27,7 +27,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
     const [eventSelect, setEventSelect] = useState(Number(eventid) ?? 0)
 
     useEffect(() => {
-        dispatch(getAllTeams(Number(eventid) || 1))
+        dispatch(getTeamsByEvent(Number(eventid) || 1))
         dispatch(getEventList())
         dispatch(getPersonByAuthId(curUser?.profile.email ?? ""))
     }, [dispatch, eventid, curUser])
@@ -51,15 +51,12 @@ const DonationForm = ({ eventid, teamid }: Props) => {
         event.preventDefault();
 
         if (amount.isValid && !userLoggedIn) {
-            const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(eventid), teamSelect)
-            console.log(newDonation)
-            console.log(eventid)
+            const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value))
             const res = await donationService.createDonation(newDonation)
             console.log(res)
         }
         else if (amount.isValid && userLoggedIn) {
-            const newDonation = new Donation((new Date()).toISOString(), Number(amount.value), Number(eventid), teamSelect, selectedPerson?.id)
-            console.log(newDonation)
+            const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value), selectedPerson?.id)
             const res = await donationService.createDonation(newDonation)
             console.log(res)
         }
