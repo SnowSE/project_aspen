@@ -78,8 +78,15 @@ public class TeamController : ControllerBase
         if (!await teamRepository.ExistsAsync(id))
             return NotFound("Team id does not exist");
 
-        await teamRepository.DeleteTeamAsync(id);
-        return Ok();
+        try
+        {
+            await teamRepository.DeleteTeamAsync(id);
+            return Ok();
+        }
+        catch(UnableToDeleteException<Team> ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
     }
 }

@@ -66,9 +66,16 @@ public class TeamRepository : ITeamRepository
 
     public async Task DeleteTeamAsync(long id)
     {
-        var team = await context.Teams.FindAsync(id);
+        var team = await context.Teams.Include(t => t.Donations).FirstOrDefaultAsync(t => t.ID == id);
         if (team == null)
             throw new NotFoundException<Team>($"Person id does not exist");
+
+        if(team.Donations.Any())
+        {
+            var donationIds = string.Join(", ", team.Donations.Select(d => d.ID));
+            throw new UnableToDeleteException<Team>($"Unable to delete team {id}, donation(s) {donationIds} are linked to team.");
+        }
+
 
         context.Teams.Remove(team);
         await context.SaveChangesAsync();
