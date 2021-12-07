@@ -20,9 +20,17 @@ public class TeamController : ControllerBase
     }
 
     [HttpGet("event/{eventId}")]
-    public async Task<IEnumerable<DtoTeam>> GetByEventID(long eventId)
+    public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
-        return mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
+        try
+        {
+            var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
+            return new ActionResult<IEnumerable<DtoTeam>>(teams);
+        }
+        catch(NotFoundException<IEnumerable<Team>> ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet("{teamId}")]

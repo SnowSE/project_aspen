@@ -19,5 +19,13 @@ namespace Tests.Steps
             var request = new RestRequest("api/person/").AddJsonBody(person);
             return await client.PostAsync<DtoPerson>(request);
         }
+
+        public IRestResponse GetTeamsByEvent(int eventId)
+        {
+            var request = new RestRequest($"api/teams/event/{eventId}");
+            var response = client.Get(request);
+            //return await client.GetAsync<ActionResult<IEnumerable<DtoTeam>>>(request);
+            return response;
+        }
     }
 }
