@@ -14,4 +14,5 @@ public record DbTeam
     public decimal DonationTarget { get; init; }
 
     public virtual ICollection<DbRegistration> Registrations { get; init; }
+    public List<DbDonation> Donations { get; init; }
 }

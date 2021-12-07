@@ -1,4 +1,7 @@
-﻿namespace Tests.ControllerTests;
+﻿using RestSharp;
+using Tests.Steps;
+
+namespace Tests.ControllerTests;
 
 public class DonationControllerTest
 {
@@ -54,15 +57,15 @@ public class DonationControllerTest
 
         team1Donations = new[]
         {
-                createDonation(testEvent.ID, team1.ID, 100),
-                createDonation(testEvent.ID, team1.ID, 200)
-            };
+            createDonation(testEvent.ID, team1.ID, 100),
+            createDonation(testEvent.ID, team1.ID, 200)
+        };
 
         team2Donations = new[]
         {
-                createDonation(testEvent.ID, team2.ID, 300),
-                createDonation(testEvent.ID, team2.ID, 400)
-            };
+            createDonation(testEvent.ID, team2.ID, 300),
+            createDonation(testEvent.ID, team2.ID, 400)
+        };
 
         foreach (var donation in team1Donations.Union(team2Donations))
         {
@@ -80,6 +83,15 @@ public class DonationControllerTest
             TeamID = teamId,
             IsPending = true
         };
+    }
+
+    [Test]
+    public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
+    {
+        var client = new AspenApi().Client;
+        var request = new RestRequest($"api/teams/{team2.ID}");
+        var response = client.Delete(request);
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
     }
 
     [Test]
