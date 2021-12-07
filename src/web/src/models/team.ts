@@ -5,7 +5,7 @@ export default class Team {
   mainImage: string;
   ownerID: number;
   eventID: number;
-  donationTarget: number;
+  donationTarget?: number;
   constructor(
     name: string,
     description: string,
@@ -16,11 +16,11 @@ export default class Team {
     donationTarget?: number
   ) {
     this.id = id ?? -1;
-    this.name = name ?? "";
-    this.description = description ?? "";
-    this.mainImage = mainImage ?? "";
-    this.ownerID = owenerId ?? -1;
-    this.eventID = eventId ?? -1;
-    this.donationTarget = donationTarget ?? 0;
+    this.name = name;
+    this.description = description;
+    this.mainImage = mainImage;
+    this.ownerID = owenerId;
+    this.eventID = eventId;
+    this.donationTarget = donationTarget;
   }
 }

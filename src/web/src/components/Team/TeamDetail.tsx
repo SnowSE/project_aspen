@@ -8,7 +8,7 @@ import TeamMembers from "./TeamDetailElements/TeamMembers";
 //import { useParams } from "react-router-dom";
 import { FC } from "react";
 
-const TeamDetailPage: FC = (): JSX.Element =>{
+const TeamDetail: FC = (): JSX.Element =>{
     // const {teamid} = useParams();
     const team = useStoreSelector(state => state.team.currentTeam);
     // const teamID: number = parseInt(teamid ?? '-1');
@@ -34,4 +34,4 @@ const TeamDetailPage: FC = (): JSX.Element =>{
     )
 }
 
-export default TeamDetailPage;
+export default TeamDetail;
