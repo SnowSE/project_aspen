@@ -30,7 +30,7 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
     const [currTeam, setCurrTeam] = useState<Team>();
 
     useEffect(() => {
-        SetFilteredTeams(teams.filter(t => t.name.includes(filterParameter)))
+        SetFilteredTeams(teams.filter(t => t.name.toLowerCase().includes(filterParameter.toLowerCase())))
     }, [filterParameter, teams])
 
     useEffect(() => {
