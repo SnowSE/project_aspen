@@ -24,7 +24,6 @@ const AuthorizedRoute: FC<any> = ({ children, isAuthorized, ...rest }) => {
 };
 
 const AdminRoute: FC<any> = ({ children, isAdmin, ...rest }) => {
-  console.log(isAdmin);
   if (isAdmin === true) {
     return <Route {...rest}>{children}</Route>;
   } else {
@@ -45,12 +44,6 @@ const MainSwitch = () => {
   const isAdmin = useStoreSelector((state) => state.auth.isAdmin);
   return (
     <Switch>
-      {/* <AdminRoute isAdmin={isAdmin} path="/admin/events">
-        <EventDisplay />
-      </AdminRoute> */}
-      {/* <AdminRoute isAdmin={isAdmin} path="/admin/createnewevent">
-        <NewEventForm />
-      </AdminRoute> */}
       <AdminRoute isAdmin={isAdmin} path="/admin">
         <Admin />
       </AdminRoute>

@@ -23,7 +23,6 @@ const PageDataPage = () => {
   }, [dispatch]);
 
   const updatePageDataHandler = (pageData: PageData) => {
-    console.log(pageData);
     dispatch(putPageData(pageData));
   };
 

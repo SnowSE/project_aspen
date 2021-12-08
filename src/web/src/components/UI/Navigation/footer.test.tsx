@@ -24,8 +24,6 @@ describe("Footer tests", ()=>{
         );
         // Act
         const linkElement = screen.getByText(/Our Story/);
-        // Assert
-        console.log(linkElement)
         expect(linkElement).toBeInTheDocument();
       });
 
@@ -38,7 +36,6 @@ describe("Footer tests", ()=>{
         );
         // Act
         const linkElement = screen.getByText(/About Us/);
-        // Assert
         expect(linkElement).toBeInTheDocument();
       });
       test("checks for the Calendar link", () => {
@@ -63,7 +60,6 @@ describe("Footer tests", ()=>{
         );
         // Act
         const linkElement = screen.getByText(/Contact Us/);
-        // Assert
         expect(linkElement).toBeInTheDocument();
       });
 
@@ -76,7 +72,6 @@ describe("Footer tests", ()=>{
         );
         // Act
         const linkElement = screen.getByText(/© 2021 Copyright, All Rights Reserved/);
-        // Assert
         expect(linkElement).toBeInTheDocument();
       });
     

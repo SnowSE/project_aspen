@@ -15,12 +15,9 @@ type donationsByTeam = {
 }
 const TopDonors = ({ event }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
-    console.log("teamlist", teamList)
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     const [teamDonations, setTeamDonations] = useState<donationsByTeam[]>([]);
-
-
 
     useEffect(() => {
             dispatch(getTeamsByEvent(event.id))
@@ -32,9 +29,7 @@ const TopDonors = ({ event }: Props) => {
             .then(r => temp.push({team : t , donationAmount : r}))
             .then(r=> setTeamDonations(temp.sort((a,b) => (a.donationAmount < b.donationAmount ? 1: -1))))
         )
-        
     }, [teamList, event.id])
-
 
     return (
         <div className='p-2'>
@@ -43,8 +38,6 @@ const TopDonors = ({ event }: Props) => {
             <div className="text-center">
                 {teamDonations.map(t => <p>{t.team.name}</p>)}
             </div>
-
-
         </div>
     )
 };

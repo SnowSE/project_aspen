@@ -24,10 +24,10 @@ const AdminSideBar = () => {
 
   const getNavClasses = (pathString: string) => {
     if (location.pathname === pathString) {
-      return "d-flex justify-content-center py-2 bg-primary text-success border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
+      return "d-flex justify-content-center p-1 bg-primary text-success border border-black " + (isCollapsed ? `col-xxl-12 col py-3` : " text-decoration-none")
     }
     else {
-      return "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
+      return "d-flex justify-content-center p-1 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col py-3` : " text-decoration-none")
     }
   }
 

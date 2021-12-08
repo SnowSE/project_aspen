@@ -8,8 +8,6 @@ const authUrl = process.env.REACT_APP_AUTH_URL
 
 const reactAppPath = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
-console.log("my url is", window.location.origin + reactAppPath)
-
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority:
@@ -44,7 +42,6 @@ export const AuthService = {
   },
 
   signinRedirect: async () => {
-    console.log(window.location.pathname)
     if(window.location.pathname === '/aspen/' || window.location.pathname === '/aspen')
     {
       localStorage.setItem("redirectUri", '/');
@@ -68,10 +65,8 @@ export const AuthService = {
     await userManager
       .signinSilent()
       .then((user) => {
-        console.log("signed in", user);
       })
       .catch((err) => {
-        console.log(err);
       });
   },
 
@@ -101,10 +96,8 @@ export const AuthService = {
 };
 
 userManager.events.addSilentRenewError((e) => {
-  console.log("silent renew error", e.message);
 });
 
 userManager.events.addAccessTokenExpired(() => {
-  console.log("token expired");
   AuthService.signinSilent();
 });

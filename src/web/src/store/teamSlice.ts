@@ -20,10 +20,7 @@ export const getTeamsByEvent = createAsyncThunk (
 )
 export const createTeam = createAsyncThunk(
     "team/createTeam",
-    async(args:any, ThunkAPI) =>{
-        console.log(args.team)
-
-    
+    async(args:any, ThunkAPI) =>{    
         const team = await teamService.createTeam(args.team);
         args.registration.teamID = team.id
         await registrationService.createRegistration(args.registration)
@@ -58,25 +55,19 @@ const teamSlice = createSlice({
                 state.teamList= action.payload;
             })
             .addCase(getAllTeams.rejected, (state, action) => {
-                console.log('error', action.payload);
             })
             .addCase(getTeamsByEvent.fulfilled, (state, action)=>{
                 state.teamList = action.payload;
             })
             .addCase(getTeamsByEvent.rejected, (state, action)=>{
-                console.log('teams by event id error', action.payload)
             })
             .addCase(createTeam.fulfilled, (state, action) => {
-                state.currentTeam = action.payload;
             })
             .addCase(createTeam.rejected, (state, action) => {
-                console.log('error', action.payload);
             })
             .addCase(createRegistration.fulfilled, (state, action) => {
-                console.log('success')
             })
             .addCase(createRegistration.rejected, (state, action) => {
-                console.log('error', action.payload)
             })
     }
 });

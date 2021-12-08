@@ -15,7 +15,6 @@ interface Props {
     teamid?: string
 }
 
-
 const DonationForm = ({ eventid, teamid }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList)
     const eventList = useStoreSelector(state => state.event.events)
@@ -39,7 +38,6 @@ const DonationForm = ({ eventid, teamid }: Props) => {
     );
 
     const teamChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(event.target.value)
         setTeamSelect(Number(event.target.value))
     }
 
@@ -52,18 +50,13 @@ const DonationForm = ({ eventid, teamid }: Props) => {
 
         if (amount.isValid && !userLoggedIn) {
             const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value))
-            const res = await donationService.createDonation(newDonation)
-            console.log(res)
+            await donationService.createDonation(newDonation)
         }
         else if (amount.isValid && userLoggedIn) {
             const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value), selectedPerson?.id)
-            const res = await donationService.createDonation(newDonation)
-            console.log(res)
+            await donationService.createDonation(newDonation)
         }
-
-
     }
-
 
     return (
         <div className="container w-50 border p-5 my-3">

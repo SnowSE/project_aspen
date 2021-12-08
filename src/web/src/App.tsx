@@ -11,13 +11,3 @@ function App() {
 }
 
 export default App;
-
-// useEffect(() => {
-//   const events = getEvents();
-//   console.log(events);
-// }, []);
-
-// const apiClickHandler = () => {
-//   const events = getEvents();
-//   console.log(events);
-// };

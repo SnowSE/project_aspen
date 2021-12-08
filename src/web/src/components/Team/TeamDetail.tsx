@@ -1,33 +1,33 @@
 import { useStoreSelector } from "../../store";
-//import { useDispatch } from "react-redux";
-//import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import TeamDescription from "./TeamDetailElements/TeamDescription";
 import TeamGoal from "./TeamDetailElements/TeamGoal";
 import TeamMembers from "./TeamDetailElements/TeamMembers";
-//import { getTeamsByEvent } from "../../store/teamSlice";
-//import { useParams } from "react-router-dom";
-import { FC } from "react";
+import { useParams } from "react-router";
+import { getAllTeams } from "../../store/teamSlice";
 
-const TeamDetail: FC = (): JSX.Element =>{
-    // const {teamid} = useParams();
-    const team = useStoreSelector(state => state.team.currentTeam);
-    // const teamID: number = parseInt(teamid ?? '-1');
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //   dispatch(getTeamsByEvent(teamID));
-    // }, [dispatch,teamID]);
+const TeamDetail = () => {
+    const { teamid } = useParams<{ teamid?: string }>();
+    const [currentTeam] = useState<any>({})
+    const currentEventId = useStoreSelector(state => state.event.currentEventId);
+    const dispatch = useDispatch();
 
-    
-    return(
+    useEffect(() => {
+        console.log(teamid)
+        dispatch(getAllTeams(currentEventId))
+    }, [dispatch, currentEventId,teamid])
+    return (
         <div>
-            <p className="row h1 text-center border-bottom border-2 border-dark p-3"><strong>{team?.name ?? "The NONAMERS"}</strong></p>
+            <p className="row h1 text-center border-bottom border-2 border-dark p-3"><strong>{currentTeam?.name ?? "The NONAMERS"}</strong></p>
             <div className="row">
+                <p>loaded</p>
                 <div className="col-8">
-                    <TeamDescription team={team}/>
+                    <TeamDescription team={currentTeam} />
                 </div>
                 <div className="col">
-                    <TeamGoal team={team}/>
-                    <TeamMembers team={team}/>
+                    <TeamGoal team={currentTeam} />
+                    <TeamMembers team={currentTeam} />
                 </div>
             </div>
         </div>
