@@ -11,18 +11,17 @@ interface Props {
 const EventTeams = ({ event }: Props) => {
     const teamList = useStoreSelector(state => state.team.teamList);
     const dispatch = useDispatch();
-    const [filteredTeams, setFilteredTeams] = useState(teamList);
-
+    const [filterInput, setFilterInput] = useState("")
+    
     useEffect(() => {
-        if (teamList.length === 0) {
-            dispatch(getTeamsByEvent(event.id))
-        }
-        setFilteredTeams(teamList)
-    }, [dispatch, teamList, event.id])
+        
+        dispatch(getTeamsByEvent(event.id))
+      
+    }, [dispatch,  event.id])
 
+    const filteredTeams = teamList.filter(t => t.name.toLowerCase().includes(filterInput.toLowerCase()))
     const filterHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newFilter = teamList.filter(obj => obj.name.includes(event.target.value))
-        setFilteredTeams(newFilter)
+       setFilterInput(event.target.value)
 
     }
 
