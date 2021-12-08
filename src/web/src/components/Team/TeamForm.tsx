@@ -8,6 +8,7 @@ import Team from "../../models/team";
 import { createTeam } from "../../store/teamSlice";
 import { useStoreSelector } from "../../store";
 import { getEventList } from "../../store/eventSlice";
+import {useHistory} from 'react-router-dom'
 
 type Props = {
   ownerId: number;
@@ -19,7 +20,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     new EventModel()
   );
   const events = useStoreSelector((state) => state.event.events);
-
+  const history = useHistory()
   const dispatch = useDispatch();
 
   const description = useInput(
@@ -91,6 +92,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
           registration: registration,
         })
       );
+      history.replace('/jointeam')
     }
   };
 
