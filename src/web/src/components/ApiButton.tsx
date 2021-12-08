@@ -13,15 +13,12 @@ const ApiButton = () => {
           Authorization: `Bearer ${user.access_token}`,
         },
       };
-      console.log(options, user);
       axios
         .get("/api/user", options)
         .then((response) => {
-          console.log("got response from api", response);
           setApiResponse(response.data);
         })
         .catch((e) => {
-          console.log("error from api", e);
         });
     }
   }, [user]);

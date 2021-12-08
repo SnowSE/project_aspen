@@ -42,7 +42,7 @@ describe("Event Teams tests", ()=>{
            
         );
 
-        const formElement = screen.getByText(/Join Team/);
+        const formElement = screen.getByText(/View Teams/);
         expect(formElement).toBeInTheDocument();
     });
 })

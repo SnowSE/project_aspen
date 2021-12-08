@@ -24,7 +24,6 @@ export default function UpdatePersonForm({ id }: { id: number }) {
   );
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log("above");
     if (authId.isValid && name.isValid && bio.isValid) {
       const person = new Person(authId.value, name.value, bio.value);
       const updatedPerson = { ...person, id };

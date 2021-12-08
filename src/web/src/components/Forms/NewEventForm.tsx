@@ -36,7 +36,6 @@ const NewEventForm = () => {
 
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Inside event for submit handler");
     if (
       date.isValid &&
       location.isValid &&
@@ -49,12 +48,7 @@ const NewEventForm = () => {
         description.value,
         image.value
       );
-      console.log("This is the event inside of the handler:" + { ...event });
-      // if (isEditing) {
-      //   dispatch(updateExistingEvent(event));
-      // } else {
       dispatch(createNewEvent(event));
-      // }
       title.reset();
       date.reset();
       description.reset();

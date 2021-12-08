@@ -18,7 +18,6 @@ const getPageDataKeys = async () => {
 };
 
 const postPageData = async (data: PageData) => {
-  console.log(data);
   const pdResponse = await axios.post(baseUrl, data);
   return pdResponse.status;
 };

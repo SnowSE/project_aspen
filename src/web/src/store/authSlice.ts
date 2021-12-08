@@ -5,14 +5,12 @@ import { AuthService } from "../services/authService";
 export const checkIfLoggedIn = createAsyncThunk(
   "auth/checkIfLoggedIn",
   async (_, thunkAPI) => {
-    // console.log(await AuthService.getUser());
     const user = await AuthService.getUser();
     return user ? JSON.parse(JSON.stringify(user)) : null;
   }
 );
 
 const checkIfAdmin = (user: User) => {
-  // console.log(user)
   return user.profile.roles.includes("admin-aspen")
 }
 

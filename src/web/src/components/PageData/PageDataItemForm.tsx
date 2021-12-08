@@ -20,8 +20,6 @@ const PageDataItemForm = ({ pageData, onCancel, onSubmit }: Props) => {
     setData(JSON.stringify(pageData.data) ?? "")
   }, [pageData])
 
-  console.log(pageData.key, data, isDataValid);
-
   const dataChangedHandler = (event: FormEvent<HTMLTextAreaElement>) => {
     setData(event.currentTarget.value);
     try {

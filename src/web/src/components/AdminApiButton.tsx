@@ -14,16 +14,13 @@ const AdminApiButton = () => {
           Authorization: `Bearer ${user.access_token}`,
         },
       };
-      console.log(options);
       axios
         .get("/api/admin", options)
         .then((response) => {
-          console.log("got response from api", response);
           setApiResponse(response.data);
           setErrorResponse("");
         })
         .catch((e) => {
-          // console.log('error from api', e)
           setErrorResponse(e);
           setApiResponse("");
         });

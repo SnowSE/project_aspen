@@ -1,24 +1,29 @@
-import { FC } from "react";
+import EventModel from "../../models/event";
 
-type Props = {
-    imageUrls: string[]
+
+
+interface Props {
+    imageUrls: string[];
+    event: EventModel
 }
 
-const ImageCarousel: FC<Props> = (props): JSX.Element => {
-    console.log(props.imageUrls)
-
+const ImageCarousel = ({ imageUrls, event }: Props) => {
     return (
         <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-inner">
-                <div className="carousel-item active">
-                    <img src="https://wallpaperaccess.com/full/5356202.jpg" className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://wallpaperaccess.com/full/5356101.jpg" className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src="https://wallpaperaccess.com/full/5356065.jpg" className="d-block w-100" alt="..." />
-                </div>
+                {
+                    imageUrls.map((url, index) => {
+                        if (index === 0) return <div className="carousel-item active">
+                            <img src={url} className="d-block banner-image" alt="..." />
+                        </div>
+                        else return <div className="carousel-item">
+                            <img src={url} className="d-block banner-image" alt="..." />
+                        </div>
+                    })
+                }
+            </div>
+            <div className="carousel-caption">
+                <h1 className="text-shadow">{event.title}</h1>
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -21,6 +21,19 @@
   animation: 0.25s ease-out 0s 1 slideIn;
   margin: 0;
 }
+.banner-image{
+  min-height: 35vh;
+  max-height: 40vh;
+  width: 100%;
+  object-fit: cover;
+}
+.carousel-caption{
+  background: rgba(0, 0, 0, 0.35);
+  text-shadow: 2px 2px 5px black;
+  max-width: 100%;
+  width:100%;
+  left: 0;
+}
 @keyframes slideIn{
   0% {
     transform: translateY(+100%);

@@ -8,7 +8,7 @@ const EventInfo = ({ event }: Props) => {
   const donateUrl = "/donate/" + event.id
   return (
     <div className='py-2'>
-      <p>{event.description}</p>
+      <p>Event description: {event.description}</p>
       <NavLink to={donateUrl}   className="btn btn-primary me-1">Donate</NavLink>
     </div>
   );

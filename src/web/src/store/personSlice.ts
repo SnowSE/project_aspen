@@ -57,36 +57,27 @@ const personSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createPerson.fulfilled, (state, action) => {
-      console.log("success");
+
     });
     builder.addCase(createPerson.rejected, (state, action) => {
-      console.log("error", action.payload);
     });
     builder.addCase(getPersonByAuthId.fulfilled, (state, action) => {
-      console.log("success");
       state.selectedPerson= action.payload
     });
     builder.addCase(getPersonByAuthId.rejected, (state, action) => {
-      console.log("error", action.payload);
     });
     builder.addCase(getAllPersons.fulfilled, (state, action) => {
-      console.log("success", action.payload);
       state.personList = action.payload;
     });
     builder.addCase(getAllPersons.rejected, (state, action) => {
-      console.log("error ", action.payload);
     });
     builder.addCase(updatePerson.fulfilled, (state, action) => {
-      console.log("success", action.payload);
     });
     builder.addCase(updatePerson.rejected, (state, action) => {
-      console.log("error", action.payload);
     });
     builder.addCase(deletePerson.fulfilled, (state, action) => {
-      console.log("success", action.payload);
     });
     builder.addCase(deletePerson.rejected, (state, action) => {
-      console.log("error", action.payload);
     });
   },
 });

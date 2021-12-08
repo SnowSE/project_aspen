@@ -20,7 +20,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
     <div className="border container-fluid w-50 border-2 m-2 p-2">
       <div className="row">
         <div className="col-4">
-          <img className="img-fluid w-100 h-100" src={imageUrl} alt={`team ${props.team.name}`}/>
+          <img className="img-fluid w-100 h-100" src={imageUrl} alt={`team ${props.team.name}`} />
         </div>
         <div className="col">
           <Link
@@ -31,7 +31,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
           </Link>
           <p>
             {props.team.description.slice(0, 256) +
-              (props.team.description.length > 256 && "...")}
+              (props.team.description.length > 256 ? '...' : "")}
           </p>
           <Link
             to={`/teams/${props.team.id}`}

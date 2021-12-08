@@ -27,7 +27,6 @@ const CreatePersonForm: FC<Props> = (props): JSX.Element => {
   
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log("above");
     if (authId.isValid && name.isValid) {
       const person = new Person(authId.value, name.value, "");
       dispatch(createPerson(person));

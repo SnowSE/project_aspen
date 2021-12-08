@@ -55,7 +55,6 @@ const eventSlice = createSlice({
 export const createNewEvent = (event: EventModel) => {
   return async (dispatch: StoreDispatch) => {
     const response = await addEvent(event);
-    console.log("Response in thunk" + response)
     if (response.status === 200) {
       dispatch(getEventList());
     }
@@ -74,7 +73,6 @@ export const updateExistingEvent = (event: EventModel) => {
 
 export const setCurrentEventId = (eventId: number) => {
   return async (dispatch: StoreDispatch) => {
-    console.log('Setting current eventId to ', eventId);
     dispatch(eventActions.setCurrentEventId(eventId));
   }
 }
@@ -92,7 +90,6 @@ export const getSingleEvent = (id: number) => {
 export const getEventList = () => {
   return async (dispatch: StoreDispatch) => {
     const events = await getEvents();
-    console.log("Event.log", events)
     dispatch(eventActions.setEvents(events?? []));
   };
 };

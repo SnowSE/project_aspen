@@ -11,7 +11,6 @@ const getAllTeams = async (eventID: number) =>{
 const getTeamsByEventId = async (id: number) =>{
     const res = await axios.get(url + '/event/' + id)
     if (res.status !== 200) {
-        console.log(res);
         throw Error("Api error getting teams by event id");
       }
       return res.data;
@@ -27,7 +26,6 @@ const createTeam = async (team :Team) =>{
         donationTarget: team.donationTarget
     }
     const res = await axios.post<Team>(url, thisTeam)
-    console.log(res)
     return res.data;
 }
 
