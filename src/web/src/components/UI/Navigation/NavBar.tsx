@@ -1,7 +1,6 @@
 import { AuthService } from "../../../services/authService";
 import { NavLink } from "react-router-dom";
 import { useStoreSelector } from "../../../store";
-import logo from "./tempLogo.png";
 
 const NavBar = () => {
   const isLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
