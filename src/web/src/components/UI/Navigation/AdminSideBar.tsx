@@ -22,25 +22,24 @@ const AdminSideBar = () => {
     dispatch(alertActions.displayAlert({ title: "Sample alert", message: "This is how the alert looks", danger: true }));
   }
 
-  const getNavClasses = (pathString : string) => {
-      if(location.pathname === pathString)
-      {
-        return "d-flex justify-content-center py-2 bg-primary text-success border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
-      }
-      else {
-        return "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
-      }
+  const getNavClasses = (pathString: string) => {
+    if (location.pathname === pathString) {
+      return "d-flex justify-content-center py-2 bg-primary text-success border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
+    }
+    else {
+      return "d-flex justify-content-center py-2 bg-light text-black border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
+    }
   }
 
-  // const genericClasses = "d-flex justify-content-center py-2 bg-light text-primary border border-black " + (isCollapsed ? `col-xxl-12 col` : " text-decoration-none")
-  // const activeClass = "text-success bg-secondary"
   return (
-    
+
     <div className={`col-xxl-2 bg-secondary shadow test ${isCollapsed ? 'collapsed-nav' : 'extended-nav'}`}>
       <div id="admin-nav" className="container-fluid d-flex p-0 h-100 flex-column">
-        <div className="row text-center py-2 text-light bg-primary">
-          <span className="fs-4">{!isCollapsed && "Admin Tools"}</span>
-        </div>
+        {
+          !isCollapsed ? <div className="row text-center py-2 text-light bg-secondary">
+            <span className="fs-4">Admin Tools</span>
+          </div> : <></>
+        }
         <div className="row">
           <NavLink to="/" className={getNavClasses("/")} exact>
             <IoHome />
