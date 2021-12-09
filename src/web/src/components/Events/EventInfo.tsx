@@ -9,7 +9,9 @@ const EventInfo = ({ event }: Props) => {
   return (
     <div className='py-2'>
       <p>Event description: {event.description}</p>
-      <NavLink to={donateUrl}   className="btn btn-primary me-1">Donate</NavLink>
+      <div className="d-flex justify-content-center">
+        <NavLink to={donateUrl} className="btn btn-primary me-1">Donate</NavLink>
+      </div>
     </div>
   );
 };
