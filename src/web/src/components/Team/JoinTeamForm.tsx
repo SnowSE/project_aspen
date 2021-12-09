@@ -41,7 +41,7 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
                 .then(r => {
                     if (r.meta.requestStatus === 'fulfilled') {
                         dispatch(alertActions.displayAlert({ title: 'Registration Succcessful', message: 'Your registration has been processed' }));
-                        history.push(`/teams/${props.team.id}`);
+                        history.push(`/team/${props.team.id}`);
                     }
                     else {
                         dispatch(alertActions.displayAlert({ title: 'Registration Failed', message: `Your registration has been rejected.`, danger: true }));

@@ -24,7 +24,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
         </div>
         <div className="col">
           <Link
-            to={`/teams/${props.team.id}`}
+            to={`/team/${props.team.id}`}
             className="fs-4 bold text-decoration-none"
           >
             {props.team.name}
@@ -34,7 +34,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
               (props.team.description.length > 256 ? '...' : "")}
           </p>
           <Link
-            to={`/teams/${props.team.id}`}
+            to={`/team/${props.team.id}`}
             className="btn btn-outline-primary"
           >
             Learn More
