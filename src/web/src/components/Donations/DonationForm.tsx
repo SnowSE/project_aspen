@@ -53,42 +53,15 @@ const DonationForm = ({ eventid, teamid }: Props) => {
   const submitDonationHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (amount.isValid && !userLoggedIn) {
+    if (amount.isValid ) {
       const newDonation = new Donation(
         Number(eventid),
         teamSelect,
         new Date().toISOString(),
-        Number(amount.value)
-      );
-      const res = await donationService.createDonation(newDonation);
-      if (res.statusText === "OK") {
-        dispatch(
-          alertActions.displayAlert({
-            title: "Dontation Sent",
-            message: "Your donation has been sent and will be processed",
-          })
-        );
-        history.push("/");
-      } else {
-        dispatch(
-          alertActions.displayAlert({
-            title: "Donation Failed",
-            message:
-              "Something went wrong and your donation was not sent properly",
-            danger: true,
-          })
-        );
-      }
-    } else if (amount.isValid && userLoggedIn) {
-      const newDonation = new Donation(
-        Number(eventid),
-        teamSelect,
-        new Date().toISOString(),
-        Number(amount.value),
+        Number(amount.value), 
         selectedPerson?.id
       );
       const res = await donationService.createDonation(newDonation);
-      console.log(res);
       if (res.statusText === "OK") {
         dispatch(
           alertActions.displayAlert({
@@ -107,7 +80,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
           })
         );
       }
-    }
+    } 
   };
 
   return (
