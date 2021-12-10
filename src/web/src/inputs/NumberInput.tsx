@@ -15,6 +15,7 @@ export default function NumberInput({ inputControl }: Props) {
         type="number"
         id={inputControl.name}
         value={inputControl.value}
+        min = {1}
         onChange={inputControl.valueChangeHandler}
         onBlur={inputControl.inputBlurHandler}
         placeholder={inputControl.name}

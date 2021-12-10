@@ -9,6 +9,8 @@ import { useStoreSelector } from "../../store";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getPersonByAuthId } from "../../store/personSlice";
+import { alertActions } from "../../store/alertSlice";
+import { useHistory } from "react-router";
 
 interface Props {
     eventid?: string
@@ -24,21 +26,22 @@ const DonationForm = ({ eventid, teamid }: Props) => {
     const dispatch = useDispatch();
     const [teamSelect, setTeamSelect] = useState(0)
     const [eventSelect, setEventSelect] = useState(Number(eventid) ?? 0)
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(getTeamsByEvent(Number(eventid) || 1))
         dispatch(getEventList())
         dispatch(getPersonByAuthId(curUser?.profile.email ?? ""))
     }, [dispatch, eventid, curUser])
-
+    
     const amount = useInput(
         "Donation Amount",
-        "Please enter Donation Amount",
-        value => value.trim() !== ""
-    );
-
+        "Please enter a valid Donation Amount that is greater than 0",
+        value => value.trim() !== "" && Number(value.trim()) > 0
+        );
+        
     const teamChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setTeamSelect(Number(event.target.value))
+        setTeamSelect(Number(event.target.value))    
     }
 
     const eventChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,11 +53,30 @@ const DonationForm = ({ eventid, teamid }: Props) => {
 
         if (amount.isValid && !userLoggedIn) {
             const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value))
-            await donationService.createDonation(newDonation)
+            const res = await donationService.createDonation(newDonation)
+            if(res.statusText === "OK")
+            {
+                dispatch(alertActions.displayAlert({title: 'Dontation Sent', message: "Your donation has been sent and will be processed"}))
+                history.push('/');
+                
+            }
+            else {
+                dispatch(alertActions.displayAlert({title: "Donation Failed", message: "Something went wrong and your donation was not sent properly"}))
+            }
         }
         else if (amount.isValid && userLoggedIn) {
             const newDonation = new Donation(Number(eventid), teamSelect, (new Date()).toISOString(), Number(amount.value), selectedPerson?.id)
-            await donationService.createDonation(newDonation)
+            const res = await donationService.createDonation(newDonation)
+            console.log(res)
+            if(res.statusText === "OK")
+            {
+                dispatch(alertActions.displayAlert({title: 'Dontation Sent', message: "Your donation has been sent and will be processed"}))
+                history.push('/');
+                
+            }
+            else {
+                dispatch(alertActions.displayAlert({title: "Donation Failed", message: "Something went wrong and your donation was not sent properly", danger: true}))
+            }
         }
     }
 
