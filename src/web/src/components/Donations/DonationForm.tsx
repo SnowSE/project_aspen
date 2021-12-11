@@ -20,7 +20,6 @@ interface Props {
 const DonationForm = ({ eventid, teamid }: Props) => {
   const teamList = useStoreSelector((state) => state.team.teamList);
   const eventList = useStoreSelector((state) => state.event.events);
-  const userLoggedIn = useStoreSelector((state) => state.auth.isLoggedIn);
   const curUser = useStoreSelector((state) => state.auth.user);
   const selectedPerson = useStoreSelector(
     (state) => state.person.selectedPerson
@@ -53,14 +52,15 @@ const DonationForm = ({ eventid, teamid }: Props) => {
   const submitDonationHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (amount.isValid ) {
+    if (amount.isValid && teamSelect !== 0 ) {
       const newDonation = new Donation(
         Number(eventid),
-        teamSelect,
         new Date().toISOString(),
-        Number(amount.value), 
+        Number(amount.value),
+        teamSelect, 
         selectedPerson?.id
       );
+      
       const res = await donationService.createDonation(newDonation);
       if (res.statusText === "OK") {
         dispatch(
@@ -81,6 +81,35 @@ const DonationForm = ({ eventid, teamid }: Props) => {
         );
       }
     } 
+    else if(amount.isValid){
+      const newDonation = new Donation(
+        Number(eventid),
+        new Date().toISOString(),
+        Number(amount.value),
+        undefined, 
+        selectedPerson?.id
+      );
+      
+      const res = await donationService.createDonation(newDonation);
+      if (res.statusText === "OK") {
+        dispatch(
+          alertActions.displayAlert({
+            title: "Dontation Sent",
+            message: "Your donation has been sent and will be processed",
+          })
+        );
+        history.push("/");
+      } else {
+        dispatch(
+          alertActions.displayAlert({
+            title: "Donation Failed",
+            message:
+              "Something went wrong and your donation was not sent properly",
+            danger: true,
+          })
+        );
+      }
+    }
   };
 
   return (
@@ -90,7 +119,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
           <div className="form-group my-3">
             <label htmlFor="inputGroupSelect02">Which Event?</label>
             <select
-              className="btn btn-dark dropdown-toggle form-control"
+              className="btn btn-light dropdown-toggle form-control"
               id="inputGroupSelect02"
               value={eventSelect}
               onChange={eventChangeHandler}
@@ -116,7 +145,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
           <div className="form-group">
             <label htmlFor="inputGroupSelect01">Team</label>
             <select
-              className="btn btn-dark dropdown-toggle form-control"
+              className="btn btn-light dropdown-toggle form-control"
               id="inputGroupSelect01"
               value={teamSelect}
               onChange={teamChangeHandler}

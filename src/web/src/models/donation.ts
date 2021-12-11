@@ -1,7 +1,7 @@
 export default class Donation {
   id?: number;
   eventID: number;
-  teamID: number;
+  teamID?: number;
   personID?: number;
   date: string;
   amount: number;
@@ -9,9 +9,9 @@ export default class Donation {
 
   constructor(
     eventID: number,
-    teamID: number,
     date: string,
     amount: number,
+    teamID?: number,
     personID?: number
   ) {
     this.eventID = eventID;
