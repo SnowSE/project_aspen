@@ -17,10 +17,14 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
       ? defaultImageUrl
       : props.team.mainImage;
   return (
-    <div className="border container-fluid w-50 border-2 m-2 p-2">
+    <div className="border container-fluid w-75 border-2 m-2 p-2">
       <div className="row">
         <div className="col-4">
-          <img className="img-fluid w-100 h-100" src={imageUrl} alt={`team ${props.team.name}`} />
+          <img
+            className="img-fluid w-100 h-100"
+            src={imageUrl}
+            alt={`team ${props.team.name}`}
+          />
         </div>
         <div className="col">
           <Link
@@ -31,21 +35,23 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
           </Link>
           <p>
             {props.team.description.slice(0, 256) +
-              (props.team.description.length > 256 ? '...' : "")}
+              (props.team.description.length > 256 ? "..." : "")}
           </p>
-          <Link
-            to={`/team/${props.team.id}`}
-            className="btn btn-outline-primary"
-          >
-            Learn More
-          </Link>
-          <button
-            className="btn btn-primary ms-2"
-            type="button"
-            onClick={() => props.onJoinTeam(props.team)}
-          >
-            Join Now!
-          </button>
+          <div className="d-flex flex-row-reverse">
+            <Link
+              to={`/team/${props.team.id}`}
+              className="btn btn-outline-primary"
+            >
+              Learn More
+            </Link>
+            <button
+              className="btn btn-primary me-2"
+              type="button"
+              onClick={() => props.onJoinTeam(props.team)}
+            >
+              Join Now!
+            </button>
+          </div>
         </div>
       </div>
     </div>
