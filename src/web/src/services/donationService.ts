@@ -4,8 +4,11 @@ const url = `${process.env.PUBLIC_URL}/api/donations`;
 const adminUrl = `${process.env.PUBLIC_URL}/api/Admin/donation`;
 
 const createDonation = async (donation: Donation) => {
-    const res = await axios.post<Donation>(url, donation);
-    return res.data
+    const res = await axios.post<Donation>(url, donation)
+        .catch((error) => {
+            return error
+        });
+    return res
 }
 
 const getDonationsByEvent = async (eventID: number, token: string) => {

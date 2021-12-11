@@ -53,8 +53,10 @@ const MainContainer = () => {
         <div className="col-lg-2 mt-3">
           <EventTeams event={event}/>
         </div>
-        <div className="col-lg-8 p-3">
-          <EventInfo event={event} />
+        <div className="col-lg-8 p-3 ">
+          <div className="d-flex justify-content-center">
+            <EventInfo event={event} />
+          </div>
         </div>
         <div className="col-lg-2 mt-3">
           <TopDonors event={event}/>
