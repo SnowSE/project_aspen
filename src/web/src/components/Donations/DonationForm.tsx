@@ -60,7 +60,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
         teamSelect,
         selectedPerson?.id
       );
-
+      console.log(newDonation);
       const res = await donationService.createDonation(newDonation);
       if (res.statusText === "OK") {
         dispatch(
@@ -85,10 +85,11 @@ const DonationForm = ({ eventid, teamid }: Props) => {
         Number(eventid),
         new Date().toISOString(),
         Number(amount.value),
-        undefined,
+        (teamid ? Number(teamid): undefined),
         selectedPerson?.id
       );
 
+      console.log(newDonation);
       const res = await donationService.createDonation(newDonation);
       if (res.statusText === "OK") {
         dispatch(
@@ -158,7 +159,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
                 </>
               ) : (
                 <option value={teamid}>
-                  {teamList[Number(teamid) - 1].name}
+                  {teamList.find((t) => t.id === Number(teamid))?.name}
                 </option>
               )}
             </select>
@@ -170,7 +171,10 @@ const DonationForm = ({ eventid, teamid }: Props) => {
             Submit Payment
           </button>
           <div className="col-2 col-sm-4"></div>
-          <button className="btn btn-danger col-5 col-sm-4" onClick={() => history.goBack()}>
+          <button
+            className="btn btn-danger col-5 col-sm-4"
+            onClick={() => history.goBack()}
+          >
             Cancel Donation
           </button>
         </div>
