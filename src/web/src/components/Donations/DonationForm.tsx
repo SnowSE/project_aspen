@@ -52,15 +52,15 @@ const DonationForm = ({ eventid, teamid }: Props) => {
   const submitDonationHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (amount.isValid && teamSelect !== 0 ) {
+    if (amount.isValid && teamSelect !== 0) {
       const newDonation = new Donation(
         Number(eventid),
         new Date().toISOString(),
         Number(amount.value),
-        teamSelect, 
+        teamSelect,
         selectedPerson?.id
       );
-      
+
       const res = await donationService.createDonation(newDonation);
       if (res.statusText === "OK") {
         dispatch(
@@ -80,16 +80,15 @@ const DonationForm = ({ eventid, teamid }: Props) => {
           })
         );
       }
-    } 
-    else if(amount.isValid){
+    } else if (amount.isValid) {
       const newDonation = new Donation(
         Number(eventid),
         new Date().toISOString(),
         Number(amount.value),
-        undefined, 
+        undefined,
         selectedPerson?.id
       );
-      
+
       const res = await donationService.createDonation(newDonation);
       if (res.statusText === "OK") {
         dispatch(
@@ -113,7 +112,7 @@ const DonationForm = ({ eventid, teamid }: Props) => {
   };
 
   return (
-    <div className="container w-50 border p-5 my-3">
+    <div className="container w-100 border p-5 my-3">
       <form onSubmit={submitDonationHandler}>
         {eventList.length > 0 && (
           <div className="form-group my-3">
@@ -166,15 +165,14 @@ const DonationForm = ({ eventid, teamid }: Props) => {
           </div>
         )}
         <br />
-        <div>
-          <button type="submit" className="btn btn-primary">
+        <div className="row">
+          <button type="submit" className="btn btn-primary col-5 col-sm-4">
             Submit Payment
           </button>
-          <span className="float-end">
-            <button className="btn btn-danger" onClick={() => history.goBack()}>
-              Cancel Donation
-            </button>
-          </span>
+          <div className="col-2 col-sm-4"></div>
+          <button className="btn btn-danger col-5 col-sm-4" onClick={() => history.goBack()}>
+            Cancel Donation
+          </button>
         </div>
       </form>
     </div>
