@@ -9,10 +9,18 @@ import { createTeam } from "../../store/teamSlice";
 import { useStoreSelector } from "../../store";
 import { getEventList } from "../../store/eventSlice";
 import {useHistory} from 'react-router-dom'
+import {isWebUri} from 'valid-url'
 
 type Props = {
   ownerId: number;
 };
+
+const verifyImageUrl = (url: string)=>{
+    if(isWebUri(url))
+      return true
+    else
+      return false
+}
 
 const TeamForm: FC<Props> = (props): JSX.Element => {
   const [isPublic, setIsPublic] = useState(true);
@@ -35,7 +43,7 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
     (value) => value.trim() !== ""
   );
 
-  const imageURL = useInput("Image URL", "", () => true);
+  const imageURL = useInput("Image URL", "Please Provide a Valid URL", (value) => verifyImageUrl(value));
   const name = useInput(
     "Team Name",
     "Please enter a team name",
@@ -69,12 +77,18 @@ const TeamForm: FC<Props> = (props): JSX.Element => {
 
   const submitTeamHandler = (event: FormEvent) => {
     event.preventDefault();
+    if(imageURL.value === '')
+    {
+      imageURL.isValid = true
+      imageURL.value = "Image URL Here"
+    }
 
-    if (description.isValid && name.isValid) {
+
+    if (description.isValid && name.isValid && imageURL.isValid) {
       const team = new Team(
         name.value,
         description.value,
-        "url for image here",
+        imageURL.value,
         props.ownerId,
         currentEvent.id
       );
