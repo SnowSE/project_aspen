@@ -5,7 +5,7 @@ import Team from "../../models/team";
 const defaultImageUrl =
   "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F1.bp.blogspot.com%2F-7DsADfq2BX4%2FXlyf7aSybcI%2FAAAAAAABXq8%2Fut72jfLtCuo8ZvRGp1kqCYEbeQ0dOR8pgCNcBGAsYHQ%2Fs1600%2Fno_image_tate.jpg&f=1&nofb=1";
 
-type Props = {
+export type Props = {
   team: Team;
   ownerId: number;
   onJoinTeam: (team: Team) => void;
@@ -16,6 +16,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
     props.team.mainImage.trim().length === 0
       ? defaultImageUrl
       : props.team.mainImage;
+  
   return (
     <div className="border container-fluid w-50 border-2 m-2 p-2">
       <div className="row">
