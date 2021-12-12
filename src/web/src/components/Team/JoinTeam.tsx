@@ -57,14 +57,16 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
                 </div>
                 {filteredTeams.map(t => {
                     return (
-                        <div className="d-flex justify-content-center">
-                            <TeamItem key={t.id} ownerId={selectedPerson!.id} team={t} onJoinTeam={joinTeamHandler} />
-                        </div>
+                        t.id === currTeam?.id
+                            ? <JoinTeamForm team={currTeam} ownerId={selectedPerson!.id} onCancel={cancelJoinHandler} />
+                            : <div className="d-flex justify-content-center">
+                                <TeamItem key={t.id} ownerId={selectedPerson!.id} team={t} onJoinTeam={joinTeamHandler} />
+                            </div>
                     )
                 })}
             </div>
             <div className='col-4'>
-                    <p className="text-center h3">Not finding the right team?</p>
+                <p className="text-center h3">Not finding the right team?</p>
                 <p className='mt-2'>Creating a team for your Angel is a great way to involve your family, friends and community in supporting your child. It's an opportunity for the community as a whole to learn more about your child and what makes them so special. In addition to raising awareness and promoting an inclusive environment, teams have the opportunity to win fantastic prizes!</p>
                 <p className='fw-bold'>Prizes</p>
                 <ul>
@@ -77,8 +79,6 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
                     <Link className='btn btn-success' to='/teamregistration'>Create New Team</Link>
                 </div>
             </div>
-
-            {currTeam && <JoinTeamForm team={currTeam} ownerId={selectedPerson!.id} onCancel={cancelJoinHandler} />}
         </div>
     )
 }

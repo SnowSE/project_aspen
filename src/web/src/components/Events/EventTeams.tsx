@@ -23,9 +23,8 @@ const EventTeams = ({ event }: Props) => {
             <h5 className='text-center'>Registered Teams</h5>
             <hr />
             <div>
-                {teamList.map(t => <div className="border border-secondary">
-                    <NavLink to={`/team/${t.id}`} className="text-primary"><p>{t.name}</p></NavLink>
-
+                {teamList.map(t => <div className="">
+                    <NavLink to={`/team/${t.id}`} className='text-success text-decoration-none text-primary'><p>{t.name}</p></NavLink>
                 </div>)}
             </div>
 

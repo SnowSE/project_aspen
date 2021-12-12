@@ -8,6 +8,7 @@ import { createRegistration } from "../../store/teamSlice";
 import { useDispatch } from "react-redux";
 import { alertActions } from "../../store/alertSlice";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 type Props = {
     team: Team;
@@ -21,7 +22,7 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
     const history = useHistory();
 
     const nickname = useInput(
-        "Registration Nickname",
+        "Registration Name",
         "Please enter a registration nickname",
         value => value.trim() !== ""
     )
@@ -52,16 +53,19 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className='d-flex justify-content-center'>
-            <div className='border w-50 border-2 m-2 p-2'>
-                <h5 className='text-center'>{props.team.name}</h5>
+            <div className='border w-75 border-2 m-2 p-2'>
+                <Link to={`/team/${props.team.id}`} className='text-decoration-none h4 text-success'>{props.team.name}</Link>
+                <p className="mt-2">Create your registration for team {props.team.name}</p>
                 <form onSubmit={submitRegistrationHandler}>
                     <TextInput inputControl={nickname} />
                     <div className="form-check my-2">
                         <input className="form-check-input" type='checkbox' checked={isPublic} onChange={() => setIsPublic(state => !state)} />
-                        <label className="form-check-label">Is Registration Public</label>
+                        <label className="form-check-label">Make Registration Public</label>
                     </div>
-                    <button className="btn btn-outline-primary me-2" type='submit'>Join Team!</button>
-                    <button className='btn btn-outline-danger mx-2' type='button' onClick={() => props.onCancel()}>Cancel</button>
+                    <div className="d-flex justify-content-end">
+                        <button className="btn btn-primary me-2" type='submit'>Join Team!</button>
+                        <button className='btn btn-danger mx-2' type='button' onClick={() => props.onCancel()}>Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>

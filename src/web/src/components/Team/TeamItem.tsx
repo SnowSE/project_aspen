@@ -37,7 +37,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
             {props.team.description.slice(0, 256) +
               (props.team.description.length > 256 ? "..." : "")}
           </p>
-          <div className="d-flex flex-row-reverse">
+          <div className="d-flex justify-content-end">
             <Link
               to={`/team/${props.team.id}`}
               className="btn btn-outline-primary"
@@ -45,7 +45,7 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
               Learn More
             </Link>
             <button
-              className="btn btn-primary me-2"
+              className="btn btn-primary ms-2"
               type="button"
               onClick={() => props.onJoinTeam(props.team)}
             >
