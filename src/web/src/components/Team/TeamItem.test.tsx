@@ -34,7 +34,7 @@ describe("Team Form tests", () => {
             expect(itemElement).toBeInTheDocument();
             expect(itemElement).toContainHTML('<p>Test Description</p>')
     })
-    test('TeamItem renders a description that ends in an empty string', () => {
+    test('TeamItem renders a description that ends with ...', () => {
         render(
             <Router>
             <TeamItem team={testTeam2} ownerId={1} onJoinTeam={() => {}} />
