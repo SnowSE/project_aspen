@@ -1,33 +1,36 @@
-import { useStoreSelector } from "../../store";
+import { StoreDispatch, useStoreSelector } from "../../store";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import TeamDescription from "./TeamDetailElements/TeamDescription";
-import TeamGoal from "./TeamDetailElements/TeamGoal";
-import TeamMembers from "./TeamDetailElements/TeamMembers";
+import { FC, useEffect } from "react";
 import { useParams } from "react-router";
-import { getAllTeams } from "../../store/teamSlice";
+import { getDonationsByTeamId, getTeamById } from "../../store/teamSlice";
 
-const TeamDetail = () => {
-    const { teamid } = useParams<{ teamid?: string }>();
-    const [currentTeam] = useState<any>({})
+const TeamDetail: FC = (): JSX.Element => {
+    const { teamid: currentTeamId } = useParams<{ teamid: string }>();
+    const currentTeam = useStoreSelector(state => state.team.currentTeam);
+    const currentTeamDonations = useStoreSelector(state => state.team.currentTeamDonations)
     const currentEventId = useStoreSelector(state => state.event.currentEventId);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<StoreDispatch>();
 
     useEffect(() => {
-        console.log(teamid)
-        dispatch(getAllTeams(currentEventId))
-    }, [dispatch, currentEventId,teamid])
+        dispatch(getTeamById(parseInt(currentTeamId)))
+        dispatch(getDonationsByTeamId({ eventId: currentEventId, teamId: parseInt(currentTeamId) }))
+    }, [dispatch, currentEventId, currentTeamId])
     return (
         <div>
             <p className="row h1 text-center border-bottom border-2 border-dark p-3"><strong>{currentTeam?.name ?? "The NONAMERS"}</strong></p>
             <div className="row">
-                <p>loaded</p>
-                <div className="col-8">
-                    <TeamDescription team={currentTeam} />
+                <div className="col-3">
+                    <img className="w-100" src={currentTeam?.mainImage} alt='team' />
                 </div>
-                <div className="col">
-                    <TeamGoal team={currentTeam} />
-                    <TeamMembers team={currentTeam} />
+                <div className="col-6">
+                    <p className="h2 fw-bold">Meet the Team</p>
+                    <p>{currentTeam?.description ?? "No Description"}</p>
+                </div>
+                <div className="col-3">
+                    <p className="h1 text-center fw-bold border-dark border-1 border-bottom">Our Goal</p>
+                    <p className="h1 text-center">&#36;{currentTeam?.donationTarget ?? "00.00"}</p>
+                    <p className="h1 text-center fw-bold border-dark border-1 border-bottom mt-4">Raised so far</p>
+                    <p className="h1 text-center">&#36;{currentTeamDonations ?? "00.00"}</p>
                 </div>
             </div>
         </div>
