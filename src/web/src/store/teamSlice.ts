@@ -45,12 +45,22 @@ export const createRegistration = createAsyncThunk(
     }
 )
 
+export const getDonationsByTeamId = createAsyncThunk(
+    "team/getDonationsByTeamId",
+    async (args: {eventId: number, teamId: number}, ThunkAPI) => {
+        const res = await teamService.getDonationsByTeamId(args.eventId, args.teamId);
+        return res
+    }
+)
+
 interface TeamState {
     currentTeam?: Team;
+    currentTeamDonations?: number;
     teamList: Team[];
 }
 const initialTeamState: TeamState = {
     currentTeam: undefined,
+    currentTeamDonations: undefined,
     teamList: []
 }
 
@@ -83,6 +93,9 @@ const teamSlice = createSlice({
             .addCase(createRegistration.fulfilled, (state, action) => {
             })
             .addCase(createRegistration.rejected, (state, action) => {
+            })
+            .addCase(getDonationsByTeamId.fulfilled, (state, action: PayloadAction<number>) => {
+                state.currentTeamDonations = action.payload;
             })
     }
 });
