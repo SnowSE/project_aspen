@@ -48,7 +48,7 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className='row p-2'>
-            <div className='col-8'>
+            <div className='col-lg-8'>
                 <div className="text-center">
                     <h3>Current Teams</h3>
                 </div>
@@ -65,7 +65,7 @@ const JoinTeam: FC<Props> = (props): JSX.Element => {
                     )
                 })}
             </div>
-            <div className='col-4'>
+            <div className='col-lg-4'>
                 <p className="text-center h3">Not finding the right team?</p>
                 <p className='mt-2'>Creating a team for your Angel is a great way to involve your family, friends and community in supporting your child. It's an opportunity for the community as a whole to learn more about your child and what makes them so special. In addition to raising awareness and promoting an inclusive environment, teams have the opportunity to win fantastic prizes!</p>
                 <p className='fw-bold'>Prizes</p>

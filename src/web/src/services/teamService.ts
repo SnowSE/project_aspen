@@ -30,10 +30,15 @@ const createTeam = async (team: Team) => {
     return res.data;
 }
 
+const getTeamById = async (teamId: number): Promise<Team> => {
+    const res = await axios.get<Team>(url + `/${teamId}`);
+    return res.data;
+}
 
 const teamService = {
     getAllTeams,
     createTeam,
-    getTeamsByEventId
+    getTeamsByEventId,
+    getTeamById
 }
 export default teamService;

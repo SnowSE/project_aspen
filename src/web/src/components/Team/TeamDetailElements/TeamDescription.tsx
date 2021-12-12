@@ -6,14 +6,10 @@ type Props = {
 }
 
 const TeamDescription: FC<Props> = (props): JSX.Element => {
-    return(
+    return (
         <div>
-            <div className="row">
-                <p className="h2"><strong>Meet the Team</strong></p>
-            </div>
-            <div className="row">
-                <p>{props.team?.description ?? "No Description"}</p>
-            </div>
+            <p className="h2 fw-bold">Meet the Team</p>
+            <p>{props.team?.description ?? "No Description"}</p>
         </div>
     )
 }

@@ -19,9 +19,9 @@ const TeamItem: FC<Props> = (props): JSX.Element => {
   return (
     <div className="border container-fluid w-75 border-2 m-2 p-2">
       <div className="row">
-        <div className="col-4">
+        <div className="col-3">
           <img
-            className="img-fluid w-100 h-100"
+            className="img-fluid w-100"
             src={imageUrl}
             alt={`team ${props.team.name}`}
           />

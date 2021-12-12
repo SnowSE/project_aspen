@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import registrationService from "../services/registrationService";
 import Registration from "../models/registration";
 import Team from "../models/team";
@@ -19,12 +19,20 @@ export const getTeamsByEvent = createAsyncThunk(
         return teams;
     }
 )
+
+export const getTeamById = createAsyncThunk(
+    "team/getTeamById",
+    async (teamId: number, ThunkAPI) => {
+        const team = await teamService.getTeamById(teamId);
+        return team;
+    }
+)
+
 export const createTeam = createAsyncThunk(
     "team/createTeam",
     async (args: any, ThunkAPI) => {
         const team = await teamService.createTeam(args.team);
-        ThunkAPI.dispatch(alertActions.displayAlert({ title: "Success!", message: "Team has been successfully created", danger: false }
-        ))
+        ThunkAPI.dispatch(alertActions.displayAlert({ title: "Success!", message: "Team has been successfully created", danger: false }))
         args.registration.teamID = team.id
         await registrationService.createRegistration(args.registration)
         return team
@@ -59,12 +67,16 @@ const teamSlice = createSlice({
             })
             .addCase(getAllTeams.rejected, (state, action) => {
             })
+            .addCase(getTeamById.fulfilled, (state, action: PayloadAction<Team>) => {
+                state.currentTeam = action.payload
+            })
             .addCase(getTeamsByEvent.fulfilled, (state, action) => {
                 state.teamList = action.payload;
             })
             .addCase(getTeamsByEvent.rejected, (state, action) => {
             })
-            .addCase(createTeam.fulfilled, (state, action) => {
+            .addCase(createTeam.fulfilled, (state, action: PayloadAction<Team>) => {
+                state.currentTeam = action.payload
             })
             .addCase(createTeam.rejected, (state, action) => {
             })
