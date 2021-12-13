@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { alertActions } from "../../../store/alertSlice";
 import { useDispatch } from "react-redux";
-import './AdminSideBar.module.scss'
+import styles from './AdminSideBar.module.scss'
 
 const AdminSideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -41,19 +41,19 @@ const AdminSideBar = () => {
           </div> : <></>
         }
         <div className="row">
-          <NavLink to="/" className={getNavClasses("/")} exact>
+          <NavLink to="/" className={getNavClasses("/")} id={styles.adminLink} exact>
             <IoHome />
             {!isCollapsed && "Home"}
           </NavLink>
-          <NavLink to="/admin/donations" className={getNavClasses("/admin/donations")} exact>
+          <NavLink to="/admin/donations" className={getNavClasses("/admin/donations")} id={styles.adminLink} exact>
             <IoHeart />
             {!isCollapsed && "Donations"}
           </NavLink>
-          <NavLink to="/admin/events" className={getNavClasses("/admin/events")} exact>
+          <NavLink to="/admin/events" className={getNavClasses("/admin/events")} id={styles.adminLink} exact>
             <IoCalendarClear />
             {!isCollapsed && "Events"}
           </NavLink>
-          <NavLink to="/admin/pagedata" className={getNavClasses("/admin/pagedata")} exact>
+          <NavLink to="/admin/pagedata" className={getNavClasses("/admin/pagedata")} id={styles.adminLink} exact>
             <IoSettingsSharp />
             {!isCollapsed && "Page Data"}
           </NavLink>
