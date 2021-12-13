@@ -1,5 +1,8 @@
 import axios from "axios";
 import Donation from "../models/donation";
+import { store } from "../store";
+import { alertActions } from "../store/alertSlice";
+ 
 const url = `${process.env.PUBLIC_URL}/api/donations`;
 const adminUrl = `${process.env.PUBLIC_URL}/api/Admin/donation`;
 
@@ -15,7 +18,11 @@ const getDonationsByEvent = async (eventID: number, token: string) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    const res = await axios.get<Donation[]>(adminUrl+ '/' +eventID , config)
+    const res = await axios.get<Donation[]>(adminUrl+ '/' +eventID , config).catch((error) => { 
+        store.dispatch(alertActions.displayAlert({ title: error.response.status, message: "Your login credentials are invalid. Please try logging in again.", danger: true }))
+        return {data:[]}
+     })
+
     return res.data
 }
 const getDonationAmountByEvent = async (eventID: number) => {

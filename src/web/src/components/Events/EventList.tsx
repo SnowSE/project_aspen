@@ -16,7 +16,7 @@ function EventList() {
         <h1 className="text-center"><strong>Events</strong></h1>
       </div>
       {events.map((event) => {
-        return <EventCard event={event} />;
+        return <EventCard key={event.id} event={event} />;
       })}
     </div>
   );
