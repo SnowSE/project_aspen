@@ -15,7 +15,7 @@ const initialAlertState: AlertState = {
 };
 
 const alertSlice = createSlice({
-    name: "event",
+    name: "alert",
     initialState: initialAlertState,
     reducers: {
         displayAlert(state, action) {
