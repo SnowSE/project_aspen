@@ -50,10 +50,10 @@ const MainContainer = () => {
         <div className="col-12 p-0">
           <ImageCarousel event={ event} imageUrls={imgUrls}/>
         </div>
-        <div className="col-lg-2 mt-3">
+        <div className="col-lg-3 mt-3">
           <EventTeams event={event}/>
         </div>
-        <div className="col-lg-8 p-3 ">
+        <div className="col-lg-7 p-3 ">
           <div className="d-flex justify-content-center">
             <EventInfo event={event} />
           </div>

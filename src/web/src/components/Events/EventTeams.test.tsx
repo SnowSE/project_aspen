@@ -12,6 +12,16 @@ describe("Event Teams tests", ()=>{
 
         team: {
             teamList: []
+        },
+        person: {
+            selectedPerson: ''
+        },
+        auth: {
+            user: {
+                profile: {
+                    email: ''
+                }
+            }
         }
     }
     const mockStore = configureStore(middlewares);
@@ -42,7 +52,7 @@ describe("Event Teams tests", ()=>{
            
         );
 
-        const formElement = screen.getByText(/View Teams/);
+        const formElement = screen.getByText(/View All Teams/);
         expect(formElement).toBeInTheDocument();
     });
 })
