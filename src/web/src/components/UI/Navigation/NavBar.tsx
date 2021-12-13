@@ -13,7 +13,7 @@ const NavBar = () => {
     AuthService.signinRedirect();
   };
   return (
-    <nav className="navbar navbar-expand-md navbar-dark bg-primary px-3 py-3">
+    <nav className="navbar navbar-expand-md navbar-dark bg-primary px-3 py-2">
       <NavLink className="navbar-brand" to="/">PROJECT ASPEN</NavLink>
       <button
         className="navbar-toggler"

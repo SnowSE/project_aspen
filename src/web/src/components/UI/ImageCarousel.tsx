@@ -10,6 +10,14 @@ interface Props {
 const ImageCarousel = ({ imageUrls, event }: Props) => {
     return (
         <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
+            <div className="carousel-indicators">
+            {
+                    imageUrls.map((_, index) => {
+                        if (index === 0) return <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to={index} className="active" aria-current="true"></button>
+                        else return <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to={index} aria-current="false"></button>
+                    })
+                }
+            </div>    
             <div className="carousel-inner">
                 {
                     imageUrls.map((url, index) => {

@@ -53,7 +53,7 @@ const JoinTeamForm: FC<Props> = (props): JSX.Element => {
 
     return (
         <div className='d-flex justify-content-center'>
-            <div className='border w-75 border-2 m-2 p-2'>
+            <div className='border w-100 border-2 m-2 p-2'>
                 <Link to={`/team/${props.team.id}`} className='text-decoration-none h4 text-success'>{props.team.name}</Link>
                 <p className="mt-2">Create your registration for team {props.team.name}</p>
                 <form onSubmit={submitRegistrationHandler}>
