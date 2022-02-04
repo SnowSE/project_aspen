@@ -17,6 +17,7 @@ services:
     networks:
       shared:
       api:
+    restart: unless-stopped
     depends_on:
       api_db:
         condition: service_healthy
@@ -36,6 +37,7 @@ services:
       interval: 5s
       timeout: 1s
       retries: 5
+    restart: unless-stopped
     networks:
       api:
 
@@ -65,6 +67,7 @@ services:
       shared:
       keycloak:
       proxy:
+    restart: unless-stopped
     depends_on:
       keycloak_db:
         condition: service_healthy
@@ -84,7 +87,8 @@ services:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 3s
       timeout: 1s
-      retries: 15
+      retries: 15    
+    restart: unless-stopped
     networks:
       keycloak:
 
@@ -104,6 +108,7 @@ services:
     networks:
       shared:
       proxy:
+    restart: unless-stopped
     depends_on:
       keycloak:
         condition: service_healthy
