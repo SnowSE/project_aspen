@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.0 (Debian 14.0-1.pgdg110+1)
--- Dumped by pg_dump version 14.0 (Debian 14.0-1.pgdg110+1)
+-- Dumped from database version 13.4 (Debian 13.4-1.pgdg100+1)
+-- Dumped by pg_dump version 13.4 (Debian 13.4-1.pgdg100+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,358 +16,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public.identity_provider_config DROP CONSTRAINT fkdc4897cf864c4e43;
-ALTER TABLE ONLY public.policy_config DROP CONSTRAINT fkdc34197cf864c4e43;
-ALTER TABLE ONLY public.user_group_membership DROP CONSTRAINT fk_user_group_user;
-ALTER TABLE ONLY public.user_federation_config DROP CONSTRAINT fk_t13hpu1j94r2ebpekr39x5eu5;
-ALTER TABLE ONLY public.realm_supported_locales DROP CONSTRAINT fk_supported_locales_realm;
-ALTER TABLE ONLY public.role_attribute DROP CONSTRAINT fk_role_attribute_id;
-ALTER TABLE ONLY public.resource_uris DROP CONSTRAINT fk_resource_server_uris;
-ALTER TABLE ONLY public.required_action_provider DROP CONSTRAINT fk_req_act_realm;
-ALTER TABLE ONLY public.default_client_scope DROP CONSTRAINT fk_r_def_cli_scope_realm;
-ALTER TABLE ONLY public.protocol_mapper_config DROP CONSTRAINT fk_pmconfig;
-ALTER TABLE ONLY public.credential DROP CONSTRAINT fk_pfyr0glasqyl0dei3kl69r6v0;
-ALTER TABLE ONLY public.protocol_mapper DROP CONSTRAINT fk_pcm_realm;
-ALTER TABLE ONLY public.scope_mapping DROP CONSTRAINT fk_ouse064plmlr732lxjcn1q5f1;
-ALTER TABLE ONLY public.web_origins DROP CONSTRAINT fk_lojpho213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.idp_mapper_config DROP CONSTRAINT fk_idpmconfig;
-ALTER TABLE ONLY public.identity_provider_mapper DROP CONSTRAINT fk_idpm_realm;
-ALTER TABLE ONLY public.realm_events_listeners DROP CONSTRAINT fk_h846o4h0w8epx5nxev9f5y69j;
-ALTER TABLE ONLY public.realm_enabled_event_types DROP CONSTRAINT fk_h846o4h0w8epx5nwedrf5y69j;
-ALTER TABLE ONLY public.group_role_mapping DROP CONSTRAINT fk_group_role_group;
-ALTER TABLE ONLY public.group_attribute DROP CONSTRAINT fk_group_attribute_group;
-ALTER TABLE ONLY public.user_consent DROP CONSTRAINT fk_grntcsnt_user;
-ALTER TABLE ONLY public.user_consent_client_scope DROP CONSTRAINT fk_grntcsnt_clsc_usc;
-ALTER TABLE ONLY public.composite_role DROP CONSTRAINT fk_gr7thllb9lu8q4vqa4524jjy8;
-ALTER TABLE ONLY public.resource_server_scope DROP CONSTRAINT fk_frsrso213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_scope DROP CONSTRAINT fk_frsrps213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_policy DROP CONSTRAINT fk_frsrpp213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_policy DROP CONSTRAINT fk_frsrpos53xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_scope DROP CONSTRAINT fk_frsrpos13xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_server_policy DROP CONSTRAINT fk_frsrpo213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT fk_frsrpo2128cx4wnkog82ssrfy;
-ALTER TABLE ONLY public.scope_policy DROP CONSTRAINT fk_frsrpass3xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.associated_policy DROP CONSTRAINT fk_frsrpas14xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT fk_frsrho213xcx4wnkog84sspmt;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT fk_frsrho213xcx4wnkog83sspmt;
-ALTER TABLE ONLY public.resource_server_resource DROP CONSTRAINT fk_frsrho213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT fk_frsrho213xcx4wnkog82sspmt;
-ALTER TABLE ONLY public.scope_policy DROP CONSTRAINT fk_frsrasp13xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.associated_policy DROP CONSTRAINT fk_frsr5s213xcx4wnkog82ssrfy;
-ALTER TABLE ONLY public.user_federation_mapper DROP CONSTRAINT fk_fedmapperpm_realm;
-ALTER TABLE ONLY public.user_federation_mapper DROP CONSTRAINT fk_fedmapperpm_fedprv;
-ALTER TABLE ONLY public.user_federation_mapper_config DROP CONSTRAINT fk_fedmapper_cfg;
-ALTER TABLE ONLY public.realm_default_groups DROP CONSTRAINT fk_def_groups_realm;
-ALTER TABLE ONLY public.component DROP CONSTRAINT fk_component_realm;
-ALTER TABLE ONLY public.component_config DROP CONSTRAINT fk_component_config;
-ALTER TABLE ONLY public.client_initial_access DROP CONSTRAINT fk_client_init_acc_realm;
-ALTER TABLE ONLY public.protocol_mapper DROP CONSTRAINT fk_cli_scope_mapper;
-ALTER TABLE ONLY public.client_user_session_note DROP CONSTRAINT fk_cl_usr_ses_note;
-ALTER TABLE ONLY public.client_scope_role_mapping DROP CONSTRAINT fk_cl_scope_rm_scope;
-ALTER TABLE ONLY public.client_scope_attributes DROP CONSTRAINT fk_cl_scope_attr_scope;
-ALTER TABLE ONLY public.user_role_mapping DROP CONSTRAINT fk_c4fqv34p1mbylloxang7b1q3l;
-ALTER TABLE ONLY public.client_session DROP CONSTRAINT fk_b4ao2vcvat6ukau74wbwtfqo1;
-ALTER TABLE ONLY public.authenticator_config DROP CONSTRAINT fk_auth_realm;
-ALTER TABLE ONLY public.authentication_flow DROP CONSTRAINT fk_auth_flow_realm;
-ALTER TABLE ONLY public.authentication_execution DROP CONSTRAINT fk_auth_exec_realm;
-ALTER TABLE ONLY public.authentication_execution DROP CONSTRAINT fk_auth_exec_flow;
-ALTER TABLE ONLY public.composite_role DROP CONSTRAINT fk_a63wvekftu8jo1pnj81e7mce2;
-ALTER TABLE ONLY public.realm_attribute DROP CONSTRAINT fk_8shxd6l3e9atqukacxgpffptw;
-ALTER TABLE ONLY public.realm_smtp_config DROP CONSTRAINT fk_70ej8xdxgxd0b9hh6180irr0o;
-ALTER TABLE ONLY public.keycloak_role DROP CONSTRAINT fk_6vyqfe4cn4wlq8r6kt5vdsj5c;
-ALTER TABLE ONLY public.user_required_action DROP CONSTRAINT fk_6qj3w1jw9cvafhe19bwsiuvmd;
-ALTER TABLE ONLY public.user_attribute DROP CONSTRAINT fk_5hrm2vlf9ql5fu043kqepovbr;
-ALTER TABLE ONLY public.resource_attribute DROP CONSTRAINT fk_5hrm2vlf9ql5fu022kqepovbr;
-ALTER TABLE ONLY public.realm_required_credential DROP CONSTRAINT fk_5hg65lybevavkqfki3kponh9v;
-ALTER TABLE ONLY public.client_session_prot_mapper DROP CONSTRAINT fk_33a8sgqw18i532811v7o2dk89;
-ALTER TABLE ONLY public.user_federation_provider DROP CONSTRAINT fk_1fj32f6ptolw2qy60cd8n01e8;
-ALTER TABLE ONLY public.redirect_uris DROP CONSTRAINT fk_1burs8pb4ouj97h5wuppahv9f;
-ALTER TABLE ONLY public.client_session_role DROP CONSTRAINT fk_11b7sgqw18i532811v7o2dv76;
-ALTER TABLE ONLY public.user_session_note DROP CONSTRAINT fk5edfb00ff51d3472;
-ALTER TABLE ONLY public.client_session_note DROP CONSTRAINT fk5edfb00ff51c2736;
-ALTER TABLE ONLY public.client_node_registrations DROP CONSTRAINT fk4129723ba992f594;
-ALTER TABLE ONLY public.federated_identity DROP CONSTRAINT fk404288b92ef007a6;
-ALTER TABLE ONLY public.client_attributes DROP CONSTRAINT fk3c47c64beacca966;
-ALTER TABLE ONLY public.identity_provider DROP CONSTRAINT fk2b4ebc52ae5c3b34;
-ALTER TABLE ONLY public.client_session_auth_status DROP CONSTRAINT auth_status_constraint;
-DROP INDEX public.idx_web_orig_client;
-DROP INDEX public.idx_usr_fed_prv_realm;
-DROP INDEX public.idx_usr_fed_map_realm;
-DROP INDEX public.idx_usr_fed_map_fed_prv;
-DROP INDEX public.idx_user_role_mapping;
-DROP INDEX public.idx_user_reqactions;
-DROP INDEX public.idx_user_group_mapping;
-DROP INDEX public.idx_user_email;
-DROP INDEX public.idx_user_credential;
-DROP INDEX public.idx_user_consent;
-DROP INDEX public.idx_user_attribute_name;
-DROP INDEX public.idx_user_attribute;
-DROP INDEX public.idx_usconsent_clscope;
-DROP INDEX public.idx_us_sess_id_on_cl_sess;
-DROP INDEX public.idx_update_time;
-DROP INDEX public.idx_scope_policy_policy;
-DROP INDEX public.idx_scope_mapping_role;
-DROP INDEX public.idx_role_clscope;
-DROP INDEX public.idx_role_attribute;
-DROP INDEX public.idx_res_srv_scope_res_srv;
-DROP INDEX public.idx_res_srv_res_res_srv;
-DROP INDEX public.idx_res_serv_pol_res_serv;
-DROP INDEX public.idx_res_scope_scope;
-DROP INDEX public.idx_res_policy_policy;
-DROP INDEX public.idx_req_act_prov_realm;
-DROP INDEX public.idx_redir_uri_client;
-DROP INDEX public.idx_realm_supp_local_realm;
-DROP INDEX public.idx_realm_master_adm_cli;
-DROP INDEX public.idx_realm_evt_types_realm;
-DROP INDEX public.idx_realm_evt_list_realm;
-DROP INDEX public.idx_realm_def_grp_realm;
-DROP INDEX public.idx_realm_clscope;
-DROP INDEX public.idx_realm_attr_realm;
-DROP INDEX public.idx_protocol_mapper_client;
-DROP INDEX public.idx_offline_uss_preload;
-DROP INDEX public.idx_offline_uss_createdon;
-DROP INDEX public.idx_offline_uss_by_usersess;
-DROP INDEX public.idx_offline_uss_by_user;
-DROP INDEX public.idx_offline_css_preload;
-DROP INDEX public.idx_keycloak_role_realm;
-DROP INDEX public.idx_keycloak_role_client;
-DROP INDEX public.idx_ident_prov_realm;
-DROP INDEX public.idx_id_prov_mapp_realm;
-DROP INDEX public.idx_group_role_mapp_group;
-DROP INDEX public.idx_group_attr_group;
-DROP INDEX public.idx_fu_role_mapping_ru;
-DROP INDEX public.idx_fu_role_mapping;
-DROP INDEX public.idx_fu_required_action_ru;
-DROP INDEX public.idx_fu_required_action;
-DROP INDEX public.idx_fu_group_membership_ru;
-DROP INDEX public.idx_fu_group_membership;
-DROP INDEX public.idx_fu_credential_ru;
-DROP INDEX public.idx_fu_credential;
-DROP INDEX public.idx_fu_consent_ru;
-DROP INDEX public.idx_fu_consent;
-DROP INDEX public.idx_fu_cnsnt_ext;
-DROP INDEX public.idx_fu_attribute;
-DROP INDEX public.idx_fedidentity_user;
-DROP INDEX public.idx_fedidentity_feduser;
-DROP INDEX public.idx_event_time;
-DROP INDEX public.idx_defcls_scope;
-DROP INDEX public.idx_defcls_realm;
-DROP INDEX public.idx_composite_child;
-DROP INDEX public.idx_composite;
-DROP INDEX public.idx_component_realm;
-DROP INDEX public.idx_component_provider_type;
-DROP INDEX public.idx_compo_config_compo;
-DROP INDEX public.idx_clscope_role;
-DROP INDEX public.idx_clscope_protmap;
-DROP INDEX public.idx_clscope_cl;
-DROP INDEX public.idx_clscope_attrs;
-DROP INDEX public.idx_client_session_session;
-DROP INDEX public.idx_client_init_acc_realm;
-DROP INDEX public.idx_client_id;
-DROP INDEX public.idx_client_att_by_name_value;
-DROP INDEX public.idx_cl_clscope;
-DROP INDEX public.idx_auth_flow_realm;
-DROP INDEX public.idx_auth_exec_realm_flow;
-DROP INDEX public.idx_auth_exec_flow;
-DROP INDEX public.idx_auth_config_realm;
-DROP INDEX public.idx_assoc_pol_assoc_pol_id;
-ALTER TABLE ONLY public.user_entity DROP CONSTRAINT uk_ru8tt6t700s9v50bu18ws5ha6;
-ALTER TABLE ONLY public.realm DROP CONSTRAINT uk_orvsdmla56612eaefiq6wl5oi;
-ALTER TABLE ONLY public.user_consent DROP CONSTRAINT uk_jkuwuvd56ontgsuhogm8uewrt;
-ALTER TABLE ONLY public.resource_server_scope DROP CONSTRAINT uk_frsrst700s9v50bu18ws5ha6;
-ALTER TABLE ONLY public.resource_server_policy DROP CONSTRAINT uk_frsrpt700s9v50bu18ws5ha6;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT uk_frsr6t700s9v50bu18ws5pmt;
-ALTER TABLE ONLY public.resource_server_resource DROP CONSTRAINT uk_frsr6t700s9v50bu18ws5ha6;
-ALTER TABLE ONLY public.user_entity DROP CONSTRAINT uk_dykn684sl8up1crfei6eckhd7;
-ALTER TABLE ONLY public.client_scope DROP CONSTRAINT uk_cli_scope;
-ALTER TABLE ONLY public.client DROP CONSTRAINT uk_b71cjlbenv945rb6gcon438at;
-ALTER TABLE ONLY public.identity_provider DROP CONSTRAINT uk_2daelwnibji49avxsrtuf6xj33;
-ALTER TABLE ONLY public.keycloak_group DROP CONSTRAINT sibling_names;
-ALTER TABLE ONLY public.resource_attribute DROP CONSTRAINT res_attr_pk;
-ALTER TABLE ONLY public.realm_localizations DROP CONSTRAINT realm_localizations_pkey;
-ALTER TABLE ONLY public.default_client_scope DROP CONSTRAINT r_def_cli_scope_bind;
-ALTER TABLE ONLY public.client_scope_role_mapping DROP CONSTRAINT pk_template_scope;
-ALTER TABLE ONLY public.resource_server DROP CONSTRAINT pk_resource_server;
-ALTER TABLE ONLY public.databasechangeloglock DROP CONSTRAINT pk_databasechangeloglock;
-ALTER TABLE ONLY public.client_scope DROP CONSTRAINT pk_cli_template;
-ALTER TABLE ONLY public.client_scope_attributes DROP CONSTRAINT pk_cl_tmpl_attr;
-ALTER TABLE ONLY public.web_origins DROP CONSTRAINT constraint_web_origins;
-ALTER TABLE ONLY public.user_session_note DROP CONSTRAINT constraint_usn_pk;
-ALTER TABLE ONLY public.user_group_membership DROP CONSTRAINT constraint_user_group;
-ALTER TABLE ONLY public.user_attribute DROP CONSTRAINT constraint_user_attribute_pk;
-ALTER TABLE ONLY public.role_attribute DROP CONSTRAINT constraint_role_attribute_pk;
-ALTER TABLE ONLY public.resource_uris DROP CONSTRAINT constraint_resour_uris_pk;
-ALTER TABLE ONLY public.user_required_action DROP CONSTRAINT constraint_required_action;
-ALTER TABLE ONLY public.required_action_provider DROP CONSTRAINT constraint_req_act_prv_pk;
-ALTER TABLE ONLY public.required_action_config DROP CONSTRAINT constraint_req_act_cfg_pk;
-ALTER TABLE ONLY public.redirect_uris DROP CONSTRAINT constraint_redirect_uris;
-ALTER TABLE ONLY public.protocol_mapper_config DROP CONSTRAINT constraint_pmconfig;
-ALTER TABLE ONLY public.protocol_mapper DROP CONSTRAINT constraint_pcm;
-ALTER TABLE ONLY public.offline_user_session DROP CONSTRAINT constraint_offl_us_ses_pk2;
-ALTER TABLE ONLY public.offline_client_session DROP CONSTRAINT constraint_offl_cl_ses_pk3;
-ALTER TABLE ONLY public.migration_model DROP CONSTRAINT constraint_migmod;
-ALTER TABLE ONLY public.idp_mapper_config DROP CONSTRAINT constraint_idpmconfig;
-ALTER TABLE ONLY public.identity_provider_mapper DROP CONSTRAINT constraint_idpm;
-ALTER TABLE ONLY public.group_role_mapping DROP CONSTRAINT constraint_group_role;
-ALTER TABLE ONLY public.group_attribute DROP CONSTRAINT constraint_group_attribute_pk;
-ALTER TABLE ONLY public.keycloak_group DROP CONSTRAINT constraint_group;
-ALTER TABLE ONLY public.user_consent DROP CONSTRAINT constraint_grntcsnt_pm;
-ALTER TABLE ONLY public.user_consent_client_scope DROP CONSTRAINT constraint_grntcsnt_clsc_pm;
-ALTER TABLE ONLY public.fed_user_consent_cl_scope DROP CONSTRAINT constraint_fgrntcsnt_clsc_pm;
-ALTER TABLE ONLY public.user_federation_mapper DROP CONSTRAINT constraint_fedmapperpm;
-ALTER TABLE ONLY public.user_federation_mapper_config DROP CONSTRAINT constraint_fedmapper_cfg_pm;
-ALTER TABLE ONLY public.user_entity DROP CONSTRAINT constraint_fb;
-ALTER TABLE ONLY public.scope_policy DROP CONSTRAINT constraint_farsrsps;
-ALTER TABLE ONLY public.resource_scope DROP CONSTRAINT constraint_farsrsp;
-ALTER TABLE ONLY public.resource_server_scope DROP CONSTRAINT constraint_farsrs;
-ALTER TABLE ONLY public.resource_policy DROP CONSTRAINT constraint_farsrpp;
-ALTER TABLE ONLY public.associated_policy DROP CONSTRAINT constraint_farsrpap;
-ALTER TABLE ONLY public.resource_server_policy DROP CONSTRAINT constraint_farsrp;
-ALTER TABLE ONLY public.resource_server_resource DROP CONSTRAINT constraint_farsr;
-ALTER TABLE ONLY public.resource_server_perm_ticket DROP CONSTRAINT constraint_fapmt;
-ALTER TABLE ONLY public.user_federation_config DROP CONSTRAINT constraint_f9;
-ALTER TABLE ONLY public.credential DROP CONSTRAINT constraint_f;
-ALTER TABLE ONLY public.realm_smtp_config DROP CONSTRAINT constraint_e;
-ALTER TABLE ONLY public.policy_config DROP CONSTRAINT constraint_dpc;
-ALTER TABLE ONLY public.identity_provider_config DROP CONSTRAINT constraint_d;
-ALTER TABLE ONLY public.client_session_prot_mapper DROP CONSTRAINT constraint_cs_pmp_pk;
-ALTER TABLE ONLY public.composite_role DROP CONSTRAINT constraint_composite_role;
-ALTER TABLE ONLY public.user_role_mapping DROP CONSTRAINT constraint_c;
-ALTER TABLE ONLY public.client_session_auth_status DROP CONSTRAINT constraint_auth_status_pk;
-ALTER TABLE ONLY public.authenticator_config DROP CONSTRAINT constraint_auth_pk;
-ALTER TABLE ONLY public.authentication_flow DROP CONSTRAINT constraint_auth_flow_pk;
-ALTER TABLE ONLY public.authentication_execution DROP CONSTRAINT constraint_auth_exec_pk;
-ALTER TABLE ONLY public.authenticator_config_entry DROP CONSTRAINT constraint_auth_cfg_pk;
-ALTER TABLE ONLY public.admin_event_entity DROP CONSTRAINT constraint_admin_event_entity;
-ALTER TABLE ONLY public.keycloak_role DROP CONSTRAINT constraint_a;
-ALTER TABLE ONLY public.realm_required_credential DROP CONSTRAINT constraint_92;
-ALTER TABLE ONLY public.realm_attribute DROP CONSTRAINT constraint_9;
-ALTER TABLE ONLY public.client_node_registrations DROP CONSTRAINT constraint_84;
-ALTER TABLE ONLY public.scope_mapping DROP CONSTRAINT constraint_81;
-ALTER TABLE ONLY public.client_session DROP CONSTRAINT constraint_8;
-ALTER TABLE ONLY public.client DROP CONSTRAINT constraint_7;
-ALTER TABLE ONLY public.client_session_note DROP CONSTRAINT constraint_5e;
-ALTER TABLE ONLY public.user_federation_provider DROP CONSTRAINT constraint_5c;
-ALTER TABLE ONLY public.user_session DROP CONSTRAINT constraint_57;
-ALTER TABLE ONLY public.client_session_role DROP CONSTRAINT constraint_5;
-ALTER TABLE ONLY public.realm DROP CONSTRAINT constraint_4a;
-ALTER TABLE ONLY public.federated_identity DROP CONSTRAINT constraint_40;
-ALTER TABLE ONLY public.event_entity DROP CONSTRAINT constraint_4;
-ALTER TABLE ONLY public.client_attributes DROP CONSTRAINT constraint_3c;
-ALTER TABLE ONLY public.identity_provider DROP CONSTRAINT constraint_2b;
-ALTER TABLE ONLY public.realm_supported_locales DROP CONSTRAINT constr_realm_supported_locales;
-ALTER TABLE ONLY public.realm_events_listeners DROP CONSTRAINT constr_realm_events_listeners;
-ALTER TABLE ONLY public.realm_enabled_event_types DROP CONSTRAINT constr_realm_enabl_event_types;
-ALTER TABLE ONLY public.realm_default_groups DROP CONSTRAINT constr_realm_default_groups;
-ALTER TABLE ONLY public.federated_user DROP CONSTRAINT constr_federated_user;
-ALTER TABLE ONLY public.fed_user_role_mapping DROP CONSTRAINT constr_fed_user_role;
-ALTER TABLE ONLY public.fed_user_group_membership DROP CONSTRAINT constr_fed_user_group;
-ALTER TABLE ONLY public.fed_user_credential DROP CONSTRAINT constr_fed_user_cred_pk;
-ALTER TABLE ONLY public.fed_user_consent DROP CONSTRAINT constr_fed_user_consent_pk;
-ALTER TABLE ONLY public.fed_user_attribute DROP CONSTRAINT constr_fed_user_attr_pk;
-ALTER TABLE ONLY public.fed_user_required_action DROP CONSTRAINT constr_fed_required_action;
-ALTER TABLE ONLY public.component DROP CONSTRAINT constr_component_pk;
-ALTER TABLE ONLY public.component_config DROP CONSTRAINT constr_component_config_pk;
-ALTER TABLE ONLY public.client_user_session_note DROP CONSTRAINT constr_cl_usr_ses_note;
-ALTER TABLE ONLY public.broker_link DROP CONSTRAINT constr_broker_link_pk;
-ALTER TABLE ONLY public.realm_default_groups DROP CONSTRAINT con_group_id_def_groups;
-ALTER TABLE ONLY public.client_initial_access DROP CONSTRAINT cnstr_client_init_acc_pk;
-ALTER TABLE ONLY public.client_scope_client DROP CONSTRAINT c_cli_scope_bind;
-ALTER TABLE ONLY public.client_auth_flow_bindings DROP CONSTRAINT c_cli_flow_bind;
-ALTER TABLE ONLY public.keycloak_role DROP CONSTRAINT "UK_J3RWUVD56ONTGSUHOGM184WW2-2";
-ALTER TABLE ONLY public.username_login_failure DROP CONSTRAINT "CONSTRAINT_17-2";
-DROP TABLE public.web_origins;
-DROP TABLE public.username_login_failure;
-DROP TABLE public.user_session_note;
-DROP TABLE public.user_session;
-DROP TABLE public.user_role_mapping;
-DROP TABLE public.user_required_action;
-DROP TABLE public.user_group_membership;
-DROP TABLE public.user_federation_provider;
-DROP TABLE public.user_federation_mapper_config;
-DROP TABLE public.user_federation_mapper;
-DROP TABLE public.user_federation_config;
-DROP TABLE public.user_entity;
-DROP TABLE public.user_consent_client_scope;
-DROP TABLE public.user_consent;
-DROP TABLE public.user_attribute;
-DROP TABLE public.scope_policy;
-DROP TABLE public.scope_mapping;
-DROP TABLE public.role_attribute;
-DROP TABLE public.resource_uris;
-DROP TABLE public.resource_server_scope;
-DROP TABLE public.resource_server_resource;
-DROP TABLE public.resource_server_policy;
-DROP TABLE public.resource_server_perm_ticket;
-DROP TABLE public.resource_server;
-DROP TABLE public.resource_scope;
-DROP TABLE public.resource_policy;
-DROP TABLE public.resource_attribute;
-DROP TABLE public.required_action_provider;
-DROP TABLE public.required_action_config;
-DROP TABLE public.redirect_uris;
-DROP TABLE public.realm_supported_locales;
-DROP TABLE public.realm_smtp_config;
-DROP TABLE public.realm_required_credential;
-DROP TABLE public.realm_localizations;
-DROP TABLE public.realm_events_listeners;
-DROP TABLE public.realm_enabled_event_types;
-DROP TABLE public.realm_default_groups;
-DROP TABLE public.realm_attribute;
-DROP TABLE public.realm;
-DROP TABLE public.protocol_mapper_config;
-DROP TABLE public.protocol_mapper;
-DROP TABLE public.policy_config;
-DROP TABLE public.offline_user_session;
-DROP TABLE public.offline_client_session;
-DROP TABLE public.migration_model;
-DROP TABLE public.keycloak_role;
-DROP TABLE public.keycloak_group;
-DROP TABLE public.idp_mapper_config;
-DROP TABLE public.identity_provider_mapper;
-DROP TABLE public.identity_provider_config;
-DROP TABLE public.identity_provider;
-DROP TABLE public.group_role_mapping;
-DROP TABLE public.group_attribute;
-DROP TABLE public.federated_user;
-DROP TABLE public.federated_identity;
-DROP TABLE public.fed_user_role_mapping;
-DROP TABLE public.fed_user_required_action;
-DROP TABLE public.fed_user_group_membership;
-DROP TABLE public.fed_user_credential;
-DROP TABLE public.fed_user_consent_cl_scope;
-DROP TABLE public.fed_user_consent;
-DROP TABLE public.fed_user_attribute;
-DROP TABLE public.event_entity;
-DROP TABLE public.default_client_scope;
-DROP TABLE public.databasechangeloglock;
-DROP TABLE public.databasechangelog;
-DROP TABLE public.credential;
-DROP TABLE public.composite_role;
-DROP TABLE public.component_config;
-DROP TABLE public.component;
-DROP TABLE public.client_user_session_note;
-DROP TABLE public.client_session_role;
-DROP TABLE public.client_session_prot_mapper;
-DROP TABLE public.client_session_note;
-DROP TABLE public.client_session_auth_status;
-DROP TABLE public.client_session;
-DROP TABLE public.client_scope_role_mapping;
-DROP TABLE public.client_scope_client;
-DROP TABLE public.client_scope_attributes;
-DROP TABLE public.client_scope;
-DROP TABLE public.client_node_registrations;
-DROP TABLE public.client_initial_access;
-DROP TABLE public.client_auth_flow_bindings;
-DROP TABLE public.client_attributes;
-DROP TABLE public.client;
-DROP TABLE public.broker_link;
-DROP TABLE public.authenticator_config_entry;
-DROP TABLE public.authenticator_config;
-DROP TABLE public.authentication_flow;
-DROP TABLE public.authentication_execution;
-DROP TABLE public.associated_policy;
-DROP TABLE public.admin_event_entity;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -2009,6 +1657,7 @@ dae91f88-2e76-4d7a-a717-0b6ca2bc862b	t	f	account-console	0	t	\N	/realms/master/a
 3bc79df6-6e74-4f26-87ee-a01543ce4762	t	f	broker	0	f	\N	\N	t	\N	f	master	openid-connect	0	f	f	${client_broker}	f	client-secret	\N	\N	\N	t	f	f	f
 b2540a11-e1f3-4731-972a-a7d5c4ca1cd9	t	f	security-admin-console	0	t	\N	/admin/master/console/	f	\N	f	master	openid-connect	0	f	f	${client_security-admin-console}	f	client-secret	${authAdminUrl}	\N	\N	t	f	f	f
 2dc6ba7f-72e3-4db6-b9e2-d76956397212	t	f	admin-cli	0	t	\N	\N	f	\N	f	master	openid-connect	0	f	f	${client_admin-cli}	f	client-secret	\N	\N	\N	f	f	t	f
+c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	t	t	aspen-web	0	t	\N	\N	f	http://localhost/	f	aspen	openid-connect	-1	f	f	\N	f	client-secret	http://localhost/	\N	\N	t	f	t	f
 b940652c-a9b6-483a-b212-945e3d5491d7	t	f	aspen-realm	0	f	\N	\N	t	\N	f	master	\N	0	f	f	aspen Realm	f	client-secret	\N	\N	\N	t	f	f	f
 7af7268b-2ed7-464c-b50d-70ebaff119e5	t	f	account	0	t	\N	/realms/aspen/account/	f	\N	f	aspen	openid-connect	0	f	f	${client_account}	f	client-secret	${authBaseUrl}	\N	\N	t	f	f	f
 c7555935-08d9-4c93-8fea-401d7ee4ea49	t	f	account-console	0	t	\N	/realms/aspen/account/	f	\N	f	aspen	openid-connect	0	f	f	${client_account-console}	f	client-secret	${authBaseUrl}	\N	\N	t	f	f	f
@@ -2016,7 +1665,6 @@ bb9ccc82-fde1-4280-a0de-8a8dfac52885	t	f	admin-cli	0	t	\N	\N	f	\N	f	aspen	openid
 44e05627-2d1f-4910-acb9-26a8acb59196	t	f	broker	0	f	\N	\N	t	\N	f	aspen	openid-connect	0	f	f	${client_broker}	f	client-secret	\N	\N	\N	t	f	f	f
 ff62abc1-f318-4bd6-b4b0-4a7ec928adb4	t	f	realm-management	0	f	\N	\N	t	\N	f	aspen	openid-connect	0	f	f	${client_realm-management}	f	client-secret	\N	\N	\N	t	f	f	f
 855cb299-7dc3-44de-b189-075aeaa4fc69	t	f	security-admin-console	0	t	\N	/admin/aspen/console/	f	\N	f	aspen	openid-connect	0	f	f	${client_security-admin-console}	f	client-secret	${authAdminUrl}	\N	\N	t	f	f	f
-c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	t	t	aspen-web	0	t	\N	\N	f	https://engineering.snow.edu/aspen	f	aspen	openid-connect	-1	f	f	\N	f	client-secret	https://engineering.snow.edu/aspen	\N	\N	t	f	t	f
 \.
 
 
@@ -2056,7 +1704,6 @@ c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	false	saml.authnstatement
 c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	false	display.on.consent.screen
 c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	false	saml.onetimeuse.condition
 855cb299-7dc3-44de-b189-075aeaa4fc69	S256	pkce.code.challenge.method
-c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	aspen	login_theme
 \.
 
 
@@ -2369,6 +2016,7 @@ c8e1aee9-ef90-43c7-a336-dca650a6bd52	Allowed Client Scopes	aspen	allowed-client-
 d706712f-17ad-4332-806f-c6b36a0e9d33	hmac-generated	aspen	hmac-generated	org.keycloak.keys.KeyProvider	aspen	\N
 5cc93f0b-eb7b-4e9e-a8c9-6fc1cf54beb5	rsa-generated	aspen	rsa-generated	org.keycloak.keys.KeyProvider	aspen	\N
 f93806ce-3fd9-451f-80f7-aac3d58a43ee	rsa-enc-generated	aspen	rsa-generated	org.keycloak.keys.KeyProvider	aspen	\N
+29c088cb-c4a4-4224-9eb3-a1ca98156810	\N	aspen	declarative-user-profile	org.keycloak.userprofile.UserProfileProvider	aspen	\N
 \.
 
 
@@ -2545,7 +2193,6 @@ COPY public.credential (id, salt, type, user_id, created_date, user_label, secre
 26cdb7a3-413a-450e-8280-f3b6ea60d187	\N	password	06be471b-1c32-40ea-86ad-20b1914ec450	1632019951487	\N	{"value":"maoKrhi7H7NB6Gxeri/mCU2FUBktNUlSOJZ59Uu5gWarNjk3BcFuE+/9TiAteILyi1inPxoWbIu+90GWdo+oBw==","salt":"eTF+Vbeg90LnNYPku55jIQ==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
 00044d8d-fb50-4fc9-b2b3-408caf210cf7	\N	password	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de	1632020485879	\N	{"value":"To0R7HSfc28Hs2R2kg+EF+hNc+MK/4Ej7jz1ulP+OIM7EkrEjxOiaCgJyHuMJlAf67TzePfNDCDkNCAaoRIbaQ==","salt":"Pz37PHXNDo/dBbDJiQTb+w==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
 8322675c-5c9a-40a2-873e-2da5241a42e9	\N	password	3f64dbd3-a135-45eb-9d1c-afe9151082cd	1632198293032	\N	{"value":"6bSQLg6B7ScsdqpIEJcLpRSqZsm88tNf85XLQqdpna0Bw9l9kQadqVo+OtXImEG/iiKXsagv5qkGpjEPkEGsIw==","salt":"LCrH/rS1SH5SCg5AQUIXTA==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
-d800f6c5-1581-4677-af20-0ed104f8b015	\N	password	2c6b0732-e734-41f4-b3e4-bdb93d302eb5	1635398635425	\N	{"value":"96e7SzUv38yZxE/7Ms2KlmNu3Uz1T8gK/KIhcZGrDhLU9mZZyJ18n3RaxLtnb28XcYTxDM+sGGFueKkmHjlbFQ==","salt":"dYGCtcBbB69o92UvPNZVkg==","additionalParameters":{}}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}	10
 \.
 
 
@@ -3390,8 +3037,6 @@ cibaExpiresIn	aspen	120
 cibaInterval	aspen	5
 cibaAuthRequestedUserHint	aspen	login_hint
 parRequestUriLifespan	aspen	60
-userProfileEnabled	aspen	false
-frontendUrl	aspen	https://engineering.snow.edu
 bruteForceProtected	aspen	false
 permanentLockout	aspen	false
 maxFailureWaitSeconds	aspen	900
@@ -3507,7 +3152,7 @@ b2540a11-e1f3-4731-972a-a7d5c4ca1cd9	/admin/master/console/*
 7af7268b-2ed7-464c-b50d-70ebaff119e5	/realms/aspen/account/*
 c7555935-08d9-4c93-8fea-401d7ee4ea49	/realms/aspen/account/*
 855cb299-7dc3-44de-b189-075aeaa4fc69	/admin/aspen/console/*
-c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	https://engineering.snow.edu/*
+c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	http://localhost/*
 \.
 
 
@@ -3672,7 +3317,6 @@ COPY public.user_entity (id, email, email_constraint, email_verified, enabled, f
 06be471b-1c32-40ea-86ad-20b1914ec450	\N	e9d56013-0a76-486b-a167-28d34bb16db8	f	t	\N	\N	\N	master	admin	1632019951425	\N	0
 9f3ef3d5-7c23-4ba1-8138-37f7693cd5de	user@toteslegit.website	user@toteslegit.website	t	t	\N	User	Name	aspen	user	1632020474047	\N	0
 3f64dbd3-a135-45eb-9d1c-afe9151082cd	admin@projectaspen.org	admin@projectaspen.org	t	t	\N	aspen	admin	aspen	aspenadmin	1632198221032	\N	0
-2c6b0732-e734-41f4-b3e4-bdb93d302eb5	alex@snow.edu	alex@snow.edu	f	t	\N	alex	mickelson	aspen	alex	1635398635334	\N	0
 \.
 
 
@@ -3737,7 +3381,6 @@ c9b1fa63-17be-4b24-aa7c-775cebc84e29	06be471b-1c32-40ea-86ad-20b1914ec450
 526ddcda-dc7d-4c47-9730-af8180cbada4	9f3ef3d5-7c23-4ba1-8138-37f7693cd5de
 526ddcda-dc7d-4c47-9730-af8180cbada4	3f64dbd3-a135-45eb-9d1c-afe9151082cd
 441bf022-0174-4473-b4d1-92e36ddbcb73	3f64dbd3-a135-45eb-9d1c-afe9151082cd
-526ddcda-dc7d-4c47-9730-af8180cbada4	2c6b0732-e734-41f4-b3e4-bdb93d302eb5
 \.
 
 
@@ -3772,7 +3415,7 @@ COPY public.username_login_failure (realm_id, username, failed_login_not_before,
 COPY public.web_origins (client_id, value) FROM stdin;
 b2540a11-e1f3-4731-972a-a7d5c4ca1cd9	+
 855cb299-7dc3-44de-b189-075aeaa4fc69	+
-c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	*
+c3053e3e-9d90-4a2f-b7ab-232f108b2e6f	http://localhost
 \.
 
 
