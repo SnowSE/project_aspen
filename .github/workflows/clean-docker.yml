@@ -13,8 +13,8 @@ jobs:
           df /
       - name: prune
         run: |
-          docker system prune -a
-          ocker volume prune
+          docker system prune -af
+          docker volume prune
       - name: get free space (after)
         run: |
           df /
