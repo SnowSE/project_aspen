@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     
 jobs:
-  docker prune:
+  docker-prune:
     runs-on: self-hosted
     steps:
       - name: get free space (before)
