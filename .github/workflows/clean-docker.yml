@@ -1,0 +1,20 @@
+name: Clean Docker Files
+on:
+  schedule:
+  - cron: "0 0 1 * *"
+  workflow_dispatch:
+    
+jobs:
+  docker prune:
+    runs-on: self-hosted
+    steps:
+      - name: get free space (before)
+        run: |
+          df /
+      - name: prune
+        run: |
+          docker system prune -a
+          ocker volume prune
+      - name: get free space (after)
+        run: |
+          df /
