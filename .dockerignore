@@ -1,0 +1,9 @@
+**/node_modules/
+**/bin/
+**/obj/
+**/Dockerfile
+**/.gitignore
+**/.dockerignore
+**/docker-compose.yml
+**/docs/
+**/archive/

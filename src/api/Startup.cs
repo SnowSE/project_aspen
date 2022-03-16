@@ -37,20 +37,20 @@ public class Startup
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(o =>
         {
-                // o.Authority = Configuration["Jwt:Authority"];
-                // o.Audience = Configuration["Jwt:Audience"];
+            // o.Authority = Configuration["Jwt:Authority"];
+            // o.Audience = Configuration["Jwt:Audience"];
 
-                o.Authority = "https://engineering.snow.edu/aspen/auth/realms/aspen";
-                o.Audience = "aspen-web";
+            o.Authority = "https://engineering.snow.edu/aspen/auth/realms/aspen";
+            o.Audience = "aspen-web";
 
 
-                o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidAudiences = new string[] { "aspen" },
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://engineering.snow.edu/aspen/auth/realms/aspen",
-                };
+            o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidAudiences = new string[] { "aspen" },
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidIssuer = "https://engineering.snow.edu/aspen/auth/realms/aspen",
+            };
 
             o.RequireHttpsMetadata = false;
             o.Events = new JwtBearerEvents()
@@ -74,31 +74,30 @@ public class Startup
             };
         });
 
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+        services.AddControllers();
+        services.AddSwaggerGen(c =>
+        {
+            c.EnableAnnotations();
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
+            var securitySchema = new OpenApiSecurityScheme
             {
-                c.EnableAnnotations();
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet", Version = "v1" });
-                var securitySchema = new OpenApiSecurityScheme
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                Reference = new OpenApiReference
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                };
-                c.AddSecurityDefinition("Bearer", securitySchema);
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            };
+            c.AddSecurityDefinition("Bearer", securitySchema);
 
-                var securityRequirement = new OpenApiSecurityRequirement();
-                securityRequirement.Add(securitySchema, new[] { "Bearer" });
-                c.AddSecurityRequirement(securityRequirement);
-            });
+            var securityRequirement = new OpenApiSecurityRequirement();
+            securityRequirement.Add(securitySchema, new[] { "Bearer" });
+            c.AddSecurityRequirement(securityRequirement);
+        });
 
         services.AddDbContext<AspenContext>(options => options.UseNpgsql(getConnectionString()));
     }
