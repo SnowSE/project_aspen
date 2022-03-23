@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "Terraform_Practice"
+  name     = "TerraformRG"
   location = "centralus"
   tags = {
     environment = "dev"
@@ -31,8 +31,11 @@ resource "azurerm_app_service_plan" "ASP-TerraformPractice-9a01" {
   }
 }
 
+resource "random_id" "id" {
+  byte_length = 8
+}
 resource "azurerm_app_service" "TerraformAPI" {
-  name                = "${var.newName}"
+  name                = "TerraformAPI-${random_id.id.hex}"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   app_service_plan_id = azurerm_app_service_plan.ASP-TerraformPractice-9a01.id
@@ -42,7 +45,6 @@ resource "azurerm_app_service" "TerraformAPI" {
   }
 }
 
-variable "newName" {}
 
 # resource "azurerm_mysql_server" "mysql_example" {
 #   name                = "examplemysql"
