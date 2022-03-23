@@ -32,7 +32,7 @@ resource "azurerm_app_service_plan" "ASP-TerraformPractice-9a01" {
 }
 
 resource "azurerm_app_service" "TerraformAPI" {
-  name                = "TerraformAPI"
+  name                = "${var.newName}"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   app_service_plan_id = azurerm_app_service_plan.ASP-TerraformPractice-9a01.id
@@ -41,6 +41,8 @@ resource "azurerm_app_service" "TerraformAPI" {
     branch   = "main"
   }
 }
+
+variable "newName" {}
 
 # resource "azurerm_mysql_server" "mysql_example" {
 #   name                = "examplemysql"
