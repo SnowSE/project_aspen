@@ -2,13 +2,18 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>2.31.1"
+      version = "~>2.65"
     }
   }
 }
 
 provider "azurerm" {
   features {}
+}
+
+resource "random_id" "id" {
+  byte_length = 8
+  
 }
 
 resource "azurerm_resource_group" "resourcegroup" {
@@ -32,7 +37,7 @@ resource "azurerm_app_service_plan" "ASP-TerraformPractice-9a01" {
 }
 
 resource "azurerm_app_service" "TerraformAPI" {
-  name                = "TerraformAPI"
+  name                = "TerraformAPI-${random_id.id.hex}"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   app_service_plan_id = azurerm_app_service_plan.ASP-TerraformPractice-9a01.id
