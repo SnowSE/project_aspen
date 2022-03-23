@@ -379,3 +379,11 @@ MigrationBackup/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.l
+
+# Terraform generated files
+# local .terraform directories
+**/.terraform/*
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
