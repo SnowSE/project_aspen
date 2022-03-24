@@ -1,16 +1,17 @@
+using Api.Mappers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Api.Mappers;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 
 namespace Api;
 
 public class Startup
 {
+    private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -31,6 +32,16 @@ public class Startup
         services.AddScoped<IPersonRepository, PersonRepository>();
         services.AddScoped<IDonationRepository, DonationRepository>();
         services.AddScoped<IAssetFileService, AssetFileService>();
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: myAllowSpecificOrigins,
+                            builder =>
+                            {
+                                builder.AllowAnyMethod()
+                                       .AllowAnyHeader()
+                                       .AllowAnyOrigin();
+                            });
+        });
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -142,6 +153,7 @@ public class Startup
         });
 
         app.UseRouting();
+        app.UseCors(myAllowSpecificOrigins);
 
         app.UseAuthentication();
         app.UseAuthorization();
