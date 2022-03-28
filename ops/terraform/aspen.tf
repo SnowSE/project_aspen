@@ -1,14 +1,18 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
     }
   }
-required_version = ">= 1.1.0"
+  required_version = ">= 1.1.0"
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
 }
 
 ##############################################################################
@@ -23,26 +27,26 @@ resource "azurerm_resource_group" "aspenrg" {
 }
 
 resource "azurerm_postgresql_server" "keycloak" {
-  name                         = "keycloak-db-${random_id.id.hex}"
-  resource_group_name          = azurerm_resource_group.aspenrg.name
-  location                     = azurerm_resource_group.aspenrg.location
-  version                      = "11"
-  administrator_login          = "adm1n157r470r"
-  administrator_login_password = "4-v3ry-53cr37-p455w0rd"
-  sku_name                     = "B_Gen5_1"
-  ssl_enforcement_enabled      = true
+  name                             = "keycloak-db-${random_id.id.hex}"
+  resource_group_name              = azurerm_resource_group.aspenrg.name
+  location                         = azurerm_resource_group.aspenrg.location
+  version                          = "11"
+  administrator_login              = "adm1n157r470r"
+  administrator_login_password     = "4-v3ry-53cr37-p455w0rd"
+  sku_name                         = "B_Gen5_1"
+  ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
 resource "azurerm_postgresql_server" "api" {
-  name                         = "api-db-${random_id.id.hex}"
-  resource_group_name          = azurerm_resource_group.aspenrg.name
-  location                     = azurerm_resource_group.aspenrg.location
-  version                      = "11"
-  administrator_login          = "adm1n157r470r"
-  administrator_login_password = "4-v3ry-53cr37-p455w0rd"
-  sku_name                     = "B_Gen5_1"
-  ssl_enforcement_enabled      = true
+  name                             = "api-db-${random_id.id.hex}"
+  resource_group_name              = azurerm_resource_group.aspenrg.name
+  location                         = azurerm_resource_group.aspenrg.location
+  version                          = "11"
+  administrator_login              = "adm1n157r470r"
+  administrator_login_password     = "4-v3ry-53cr37-p455w0rd"
+  sku_name                         = "B_Gen5_1"
+  ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
@@ -73,4 +77,25 @@ resource "azurerm_container_group" "keycloak" {
   }
  }
 
- 
+resource "azurerm_container_group" "api" {
+  name                = "aspen-api-${random_id.id.hex}"
+  location            = azurerm_resource_group.aspenrg.location
+  resource_group_name = azurerm_resource_group.aspenrg.name
+  ip_address_type     = "Public"
+  dns_name_label      = "aspen-api-${random_id.id.hex}"
+  os_type             = "Linux"
+
+  container {
+    name   = "aspenapi"
+    image  = "sanpetepantry/web:beta"
+    cpu    = "0.5"
+    memory = "1.5"
+    ports {
+      port     = 80
+      protocol = "TCP"
+    }
+    environment_variables = {
+      ASPNETCOREURLS = "http://aspen-api-${random_id.id.hex}.${azurerm_resource_group.aspenrg.location}.azurecontainer.io"
+    }
+  }
+}
