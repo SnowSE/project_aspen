@@ -58,29 +58,18 @@ resource "azurerm_container_group" "keycloak" {
 
   container {
     name   = "keycloakapi"
-    image  = "quay.io/keycloak/keycloak:17.0.1"
+    image  = "snowjallen/keycloak"
     cpu    = "0.5"
     memory = "1.5"
     ports {
-        port     = 8080
+        port     = 443
         protocol = "TCP"
     }
     environment_variables = {
-        KEYCLOAK_ADMIN = "keycloakadmin"
-        KEYCLOAK_ADMIN_PASSWORD = "-${random_id.id.hex}-admin-${random_id.id.hex}"
+        KEYCLOAK_ADMIN = "admin"
+        KEYCLOAK_ADMIN_PASSWORD = "change_me"
+        KC_HOSTNAME = "aspen-keycloak-${random_id.id.hex}.${azurerm_resource_group.aspenrg.location}.azurecontainer.io:443"
     }
-  }
-
-  container {
-      name = "caddy"
-      image = "caddy:latest"
-      cpu = "0.5"
-      memory = "1.5"
-      ports {
-          port = 443
-          protocol = "TCP"
-      }
-      commands = ["caddy reverse-proxy --from aspen-keycloak-${random_id.id.hex}.${azurerm_resource_group.aspenrg.location}.azurecontainer.io --to localhost:8080 "]
   }
  }
 
