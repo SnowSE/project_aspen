@@ -99,3 +99,36 @@ resource "azurerm_container_group" "api" {
     }
   }
 }
+
+resource "azurerm_app_service_plan" "main" {
+  name                = "appservice-${random_id.id.hex}"
+  location            = azurerm_resource_group.aspenrg.location
+  resource_group_name = azurerm_resource_group.aspenrg.name
+  kind                = "Linux"
+  reserved            = true
+
+  sku {
+    tier = "Standard"
+    size = "S1"
+  }
+}
+
+resource "azurerm_app_service" "testappservice" {
+  name                = "appservice-${random_id.id.hex}"
+  location            = azurerm_resource_group.aspenrg.location
+  resource_group_name = azurerm_resource_group.aspenrg.name
+  app_service_plan_id = azurerm_app_service_plan.main.id
+
+  site_config {
+    app_command_line = ""
+    linux_fx_version = "DOCKER|snowjallen/keycloak"
+  }
+
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
+    KEYCLOAK_ADMIN = "admin"
+    KEYCLOAK_ADMIN_PASSWORD = "change_me"
+    KC_HOSTNAME = "appservice-${random_id.id.hex}.azurewebsites.net:443"
+  }
+}
