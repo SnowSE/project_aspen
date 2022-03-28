@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "TerraformRG"
+  name     = "TerraformRG3"
   location = "centralus"
   tags = {
     environment = "dev"
@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "resourcegroup" {
 }
 
 resource "azurerm_app_service_plan" "ASP-TerraformPractice-9a01" {
-  name                = "appserviceplan"
+  name                = "appserviceplan3"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   sku {
@@ -40,10 +40,11 @@ resource "azurerm_app_service" "TerraformAPI" {
   resource_group_name = azurerm_resource_group.resourcegroup.name
   app_service_plan_id = azurerm_app_service_plan.ASP-TerraformPractice-9a01.id
   source_control {
-    repo_url = "https://github.com/sergio-ayala123/Terraform"
+    repo_url = "https://github.com/SnowSE/Terraform"
     branch   = "main"
   }
 }
+
 
 
 # resource "azurerm_mysql_server" "mysql_example" {
