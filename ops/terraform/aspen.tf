@@ -70,8 +70,8 @@ resource "azurerm_container_group" "keycloak" {
         protocol = "TCP"
     }
     environment_variables = {
-        KEYCLOAK_ADMIN = "admin"
-        KEYCLOAK_ADMIN_PASSWORD = "change_me"
+        KEYCLOAK_ADMIN = var.keycloak_admin_username
+        KEYCLOAK_ADMIN_PASSWORD = var.keycloak_admin_password
         KC_HOSTNAME = "aspen-keycloak-${random_id.id.hex}.${azurerm_resource_group.aspenrg.location}.azurecontainer.io:443"
     }
   }
@@ -127,8 +127,8 @@ resource "azurerm_app_service" "testappservice" {
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
-    KEYCLOAK_ADMIN = "admin"
-    KEYCLOAK_ADMIN_PASSWORD = "change_me"
+    KEYCLOAK_ADMIN = var.keycloak_admin_username
+    KEYCLOAK_ADMIN_PASSWORD = var.keycloak_admin_password
     KC_HOSTNAME = "appservice-${random_id.id.hex}.azurewebsites.net:443"
   }
 }
