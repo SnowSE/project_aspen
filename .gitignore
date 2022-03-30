@@ -387,3 +387,4 @@ yarn-error.l
 *.tfstate
 *.tfstate.*
 *.tfvars
+variables.tf

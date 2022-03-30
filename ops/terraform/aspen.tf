@@ -31,8 +31,8 @@ resource "azurerm_postgresql_server" "keycloak" {
   resource_group_name              = azurerm_resource_group.aspenrg.name
   location                         = azurerm_resource_group.aspenrg.location
   version                          = "11"
-  administrator_login              = "adm1n157r470r"
-  administrator_login_password     = "4-v3ry-53cr37-p455w0rd"
+  administrator_login              = var.api_dbuser
+  administrator_login_password     = var.api_dbpassword
   sku_name                         = "B_Gen5_1"
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
@@ -43,8 +43,8 @@ resource "azurerm_postgresql_server" "api" {
   resource_group_name              = azurerm_resource_group.aspenrg.name
   location                         = azurerm_resource_group.aspenrg.location
   version                          = "11"
-  administrator_login              = "adm1n157r470r"
-  administrator_login_password     = "4-v3ry-53cr37-p455w0rd"
+  administrator_login              = var.keycloak_dbuser
+  administrator_login_password     = var.keycloak_dbpassword
   sku_name                         = "B_Gen5_1"
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
