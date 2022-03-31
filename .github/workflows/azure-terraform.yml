@@ -25,14 +25,16 @@ env:
   DOTNET_VERSION: '6'                 # set this to the .NET Core version to use
 
 on:
-  push:
-    branches:
-      - mobile
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "what environment should this build use?"
+        required: true        
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ github.events.inputs.environment}}
 
     steps:
       - uses: actions/checkout@v3
