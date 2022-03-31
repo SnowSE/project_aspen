@@ -44,6 +44,14 @@ jobs:
         with:
           path: mobile
 
+      - name: check current directory
+        run: |
+          pwd
+          ls
+          ls src/api
+          ls /home/runner/work/project_aspen
+          ls /home/runner/work/project_aspen/project_aspen
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
         with:
