@@ -1,7 +1,6 @@
 terraform {
   backend "azurerm" {
     resource_group_name = "terraform-resources"
-    storage_account_name = "jallenaspenstorage"
     container_name = "terraform"
     key = "aspen.tfstate"
   }
