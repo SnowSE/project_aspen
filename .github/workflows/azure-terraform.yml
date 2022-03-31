@@ -35,9 +35,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: ${{ github.events.inputs.environment}}
-    defaults:
-      run:
-        working-directory: src/api
+    # defaults:
+    #   run:
+    #     working-directory: src/api
 
     steps:
       - uses: actions/checkout@v3
