@@ -41,8 +41,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: mobile
+        # with:
+        #   path: mobile
 
       - name: check current directory
         run: |
