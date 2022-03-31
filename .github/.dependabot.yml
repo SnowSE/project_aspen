@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # --- GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  
+  # --- Front-end
+  - package-ecosystem: "npm"
+    directory: "/src/web"
+    schedule:
+      interval: "daily"
+
+  # --- API
+  - package-ecosystem: "nuget"
+    directory: "/src/api"
+    schedule:
+      interval: "daily"
