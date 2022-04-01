@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"    
       
     }
   }
@@ -22,10 +22,7 @@ resource "random_id" "id" {
   byte_length = 4
 }
 
-resource "azurerm_resource_group" "aspenrg" {
-  name     = "aspen-${random_id.id.hex}"
-  location = "centralus"
-}
+
 
 resource "azurerm_postgresql_server" "keycloak" {
   name                             = "keycloak-db-${random_id.id.hex}"
