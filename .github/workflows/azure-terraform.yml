@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Development'
+      name: ${{ github.events.inputs.environment}}
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
