@@ -12,6 +12,8 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
             db.Database.Migrate();  //Whenever I try to run this against the already existing db, it gives error, but we need this line for testing
         }
         host.Run();
