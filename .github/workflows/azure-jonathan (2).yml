@@ -1,4 +1,4 @@
-name: Deploy to 'jesse'
+name: Deploy to 'jonathan'
 
 env:
   AZURE_WEBAPP_NAME: ${{secrets.AZURE_API_WEBAPP_NAME}} 
@@ -7,13 +7,13 @@ env:
 on:
   push:
     branches:
-      - jesse
+      - jonathan
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: 
-      name: jesse
+      name: jonathan
     steps:
       - uses: actions/checkout@v3
       
