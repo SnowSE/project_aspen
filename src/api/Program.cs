@@ -12,16 +12,21 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            foreach (var configItem in config.AsEnumerable())
-            {
-                logger.LogInformation($"{configItem.Key} {configItem.Value}");
-            }
-            logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
-            db.Database.Migrate();  //Whenever I try to run this against the already existing db, it gives error, but we need this line for testing
+            //dumpLogs(scope, db);
+            db.Database.Migrate();
         }
         host.Run();
+    }
+
+    private static void dumpLogs(IServiceScope scope, AspenContext db)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
+        foreach (var configItem in config.AsEnumerable())
+        {
+            logger.LogInformation($"{configItem.Key} {configItem.Value}");
+        }
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>

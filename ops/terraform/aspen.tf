@@ -82,15 +82,22 @@ resource "azurerm_linux_web_app" "api_appservice" {
       dotnet_version = "6.0"
     }
   }
-  connection_string {
-    name        = "ASPEN_CONNECTION_STRING"
-    value       = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword};"
-    type        = "PostgreSQL"
-  }
   app_settings = {
     ASPNETCOREURLS            = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
     WEBSITE_WEBDEPLOY_USE_SCM = true
     SwaggerBasePath           = ""
+    ASPEN_CONNECTION_STRING   = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword};SSL Mode=Require; Trust Server Certificate=true;"
+  }
+  logs {
+    detailed_error_messages = false
+    failed_request_tracing  = false
+
+    http_logs {
+      file_system {
+        retention_in_days = 5
+        retention_in_mb   = 35
+      }
+    }
   }
 }
 
