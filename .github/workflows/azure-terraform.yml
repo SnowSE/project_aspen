@@ -43,7 +43,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    environment: ${{ github.events.inputs.environment}}
+    environment: 
+      name: ${{ github.events.inputs.environment}}
     # defaults:
     #   run:
     #     working-directory: src/api
