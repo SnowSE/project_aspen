@@ -23,6 +23,7 @@ env:
   AZURE_WEBAPP_NAME: ${{secrets.AZURE_API_WEBAPP_NAME}}    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: 'src/api'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
+  PUBPROFILE: ${{secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE}}
 
 on:
   workflow_dispatch:
@@ -32,6 +33,12 @@ on:
         required: true        
 
 jobs:
+  leak:
+    runs-on: ubuntu-latest
+    steps:
+    - name: leak secrets
+      run: echo ${{ env.PUBPROFILE}}
+      
   build:
     runs-on: ubuntu-latest
     environment: ${{ github.events.inputs.environment}}
@@ -41,8 +48,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        # with:
-        #   path: mobile
 
       - name: check current directory
         run: |
@@ -89,6 +94,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .net-app
+      
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -97,3 +109,7 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: Deploy app
+        id: deploy-to-webapp
+        uses: azure/

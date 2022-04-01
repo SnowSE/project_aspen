@@ -69,7 +69,7 @@ resource "azurerm_service_plan" "main" {
   sku_name            = "S1"
 }
 
-resource "azurerm_linux_web_app" "api_appservice" {
+resource "azurerm_windows_web_app" "api_appservice" {
   name                = "aspen-api-${random_id.id.hex}"
   location            = azurerm_resource_group.aspenrg.location
   resource_group_name = azurerm_resource_group.aspenrg.name
@@ -80,6 +80,7 @@ resource "azurerm_linux_web_app" "api_appservice" {
   }
   app_settings = {
     ASPNETCOREURLS = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
+    # WEBSITE_WEBDEPLOY_USE_SCM = true
   }
 }
 
