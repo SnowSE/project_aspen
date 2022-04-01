@@ -1,8 +1,8 @@
 terraform {
   backend "azurerm" {
     resource_group_name = "terraform-resources"
-    container_name = "terraform"
-    key = "aspen.tfstate"
+    container_name      = "terraform"
+    key                 = "aspen.tfstate"
   }
   required_providers {
     azurerm = {
@@ -69,7 +69,7 @@ resource "azurerm_service_plan" "main" {
   sku_name            = "S1"
 }
 
-resource "azurerm_windows_web_app" "api_appservice" {
+resource "azurerm_linux_web_app" "api_appservice" {
   name                = "aspen-api-${random_id.id.hex}"
   location            = azurerm_resource_group.aspenrg.location
   resource_group_name = azurerm_resource_group.aspenrg.name
@@ -77,10 +77,19 @@ resource "azurerm_windows_web_app" "api_appservice" {
   site_config {
     app_command_line = ""
     always_on        = true
+    application_stack {
+      dotnet_version = "6.0"
+    }
+  }
+  connection_string {
+    name        = "ASPEN_CONNECTION_STRING"
+    value       = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword}};"
+    type        = "PostgreSQL"
   }
   app_settings = {
-    ASPNETCOREURLS = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
-    # WEBSITE_WEBDEPLOY_USE_SCM = true
+    ASPNETCOREURLS            = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
+    WEBSITE_WEBDEPLOY_USE_SCM = true
+    SwaggerBasePath           = ""
   }
 }
 
