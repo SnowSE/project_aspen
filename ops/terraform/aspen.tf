@@ -6,7 +6,8 @@ terraform {
   }
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"    
+      
     }
   }
   required_version = ">= 1.1.0"
@@ -21,11 +22,9 @@ provider "azurerm" {
 }
 
 ##############################################################################
-# Databases
-##############################################################################
 
 resource "random_id" "id" {
-  byte_length = 3
+  byte_length = 4
 }
 
 resource "azurerm_resource_group" "aspenrg" {
@@ -58,18 +57,33 @@ resource "azurerm_postgresql_server" "api" {
 }
 
 ##############################################################################
-# App Services
-##############################################################################
 
-resource "azurerm_service_plan" "main" {
-  name                = "appserviceplan-${random_id.id.hex}"
+resource "azurerm_container_group" "keycloak" {
+  name                = "aspen-keycloak-${random_id.id.hex}"
   location            = azurerm_resource_group.aspenrg.location
   resource_group_name = azurerm_resource_group.aspenrg.name
+  ip_address_type     = "Public"
+  dns_name_label      = "aspen-keycloak-${random_id.id.hex}"
   os_type             = "Linux"
-  sku_name            = "S1"
-}
 
-resource "azurerm_linux_web_app" "api_appservice" {
+  container {
+    name   = "keycloakapi"
+    image  = "snowjallen/keycloak"
+    cpu    = "0.5"
+    memory = "1.5"
+    ports {
+        port     = 443
+        protocol = "TCP"
+    }
+    environment_variables = {
+        KEYCLOAK_ADMIN = "admin"
+        KEYCLOAK_ADMIN_PASSWORD = "change_me"
+        KC_HOSTNAME = "aspen-keycloak-${random_id.id.hex}.${azurerm_resource_group.aspenrg.location}.azurecontainer.io:443"
+    }
+  }
+ }
+
+resource "azurerm_container_group" "api" {
   name                = "aspen-api-${random_id.id.hex}"
   location            = azurerm_resource_group.aspenrg.location
   resource_group_name = azurerm_resource_group.aspenrg.name
@@ -93,21 +107,35 @@ resource "azurerm_linux_web_app" "api_appservice" {
   }
 }
 
-resource "azurerm_linux_web_app" "keycloak_appservice" {
-  name                = "keycloak-${random_id.id.hex}"
+resource "azurerm_app_service_plan" "main" {
+  name                = "appservice-${random_id.id.hex}"
   location            = azurerm_resource_group.aspenrg.location
   resource_group_name = azurerm_resource_group.aspenrg.name
-  service_plan_id     = azurerm_service_plan.main.id
+  kind                = "Linux"
+  reserved            = true
+
+  sku {
+    tier = "Standard"
+    size = "S1"
+  }
+}
+
+resource "azurerm_app_service" "testappservice" {
+  name                = "appservice-${random_id.id.hex}"
+  location            = azurerm_resource_group.aspenrg.location
+  resource_group_name = azurerm_resource_group.aspenrg.name
+  app_service_plan_id = azurerm_app_service_plan.main.id
+
   site_config {
     app_command_line = ""
-    always_on        = true
-    #linux_fx_version = "DOCKER|snowjallen/keycloak"
+    linux_fx_version = "DOCKER|snowjallen/keycloak"
   }
+
   app_settings = {
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
-    DOCKER_REGISTRY_SERVER_URL          = "https://index.docker.io"
-    KEYCLOAK_ADMIN                      = var.keycloak_admin_username
-    KEYCLOAK_ADMIN_PASSWORD             = var.keycloak_admin_password
-    KC_HOSTNAME                         = "appservice-${random_id.id.hex}.azurewebsites.net:443"
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
+    KEYCLOAK_ADMIN = "admin"
+    KEYCLOAK_ADMIN_PASSWORD = "change_me"
+    KC_HOSTNAME = "appservice-${random_id.id.hex}.azurewebsites.net:443"
   }
 }
