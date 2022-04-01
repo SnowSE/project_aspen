@@ -37,7 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: leak secrets
-      run: echo $PUBPROFILE
+      run: |
+        echo "Publish profile is"
+        echo $PUBPROFILE
 
   build:
     runs-on: ubuntu-latest
