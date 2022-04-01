@@ -36,7 +36,7 @@ jobs:
   leak:
     runs-on: ubuntu-latest
     environment: 
-      name: ${{ github.events.inputs.environment}}
+      name: jonathan
     steps:
     - name: leak secrets
       run: |
@@ -46,7 +46,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: 
-      name: ${{ github.events.inputs.environment}}
+      name: jonathan
     # defaults:
     #   run:
     #     working-directory: src/api
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: ${{ github.events.inputs.environment}}
+      name: jonathan
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
