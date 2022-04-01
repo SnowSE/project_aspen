@@ -11,8 +11,6 @@
 # 2. Create a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE, paste the publish profile contents as the value of the secret.
 #    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
 #
-# 3. Change the value for the AZURE_WEBAPP_NAME. Optionally, change the AZURE_WEBAPP_PACKAGE_PATH and DOTNET_VERSION environment variables below.
-#
 # For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
@@ -21,11 +19,13 @@ name: Deploy to Azure (environment-based)
 
 env:
   AZURE_WEBAPP_NAME: ${{secrets.AZURE_API_WEBAPP_NAME}}    # set this to the name of your Azure Web App
-  AZURE_WEBAPP_PACKAGE_PATH: 'src/api'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
   PUBPROFILE: ${{secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE}}
 
 on:
+  push:
+    branches:
+      - jonathan
   workflow_dispatch:
     inputs:
       environment:
@@ -109,6 +109,5 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE }}
-          #package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          package: .net-app
+          package: ${{env.DOTNET_ROOT}}/myapp
       
