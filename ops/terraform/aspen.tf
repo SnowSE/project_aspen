@@ -83,7 +83,7 @@ resource "azurerm_linux_web_app" "api_appservice" {
   }
   connection_string {
     name        = "ASPEN_CONNECTION_STRING"
-    value       = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword}};"
+    value       = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword};"
     type        = "PostgreSQL"
   }
   app_settings = {
