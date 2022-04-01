@@ -35,6 +35,8 @@ on:
 jobs:
   leak:
     runs-on: ubuntu-latest
+    environment: 
+      name: jonathan
     steps:
     - name: leak secrets
       run: |
