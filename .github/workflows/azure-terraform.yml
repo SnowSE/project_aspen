@@ -42,6 +42,9 @@ jobs:
       run: |
         echo "Publish profile is"
         echo $PUBPROFILE
+        echo "Environment is"
+        echo ${{ github.events.inputs.environment}}
+        echo $github.events.inputs.environment
 
   build:
     runs-on: ubuntu-latest
