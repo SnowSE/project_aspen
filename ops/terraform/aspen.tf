@@ -77,6 +77,7 @@ resource "azurerm_linux_web_app" "api_appservice" {
   site_config {
     app_command_line = ""
     always_on        = true
+    health_check_path = "/health"
     application_stack {
       dotnet_version = "6.0"
     }
