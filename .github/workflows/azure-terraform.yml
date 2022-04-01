@@ -20,8 +20,7 @@ name: Deploy to Azure (environment-based)
 env:
   AZURE_WEBAPP_NAME: ${{secrets.AZURE_API_WEBAPP_NAME}}    # set this to the name of your Azure Web App
   DOTNET_VERSION: '6.0.x'                 # set this to the .NET Core version to use
-  PUBPROFILE: ${{secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE}}
-
+  
 on:
   push:
     branches:
@@ -38,16 +37,50 @@ jobs:
     environment: 
       name: jonathan
     steps:
+    - uses: nelonoel/branch-name@v1.0.1
     - name: leak secrets
       run: |
         echo "Publish profile is"
-        echo $PUBPROFILE
+        echo ${{secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE}}
         echo "Environment is"
         echo ${{ github.events.inputs.environment}}
         echo $github.events.inputs.environment
+        echo ${github.events.inputs.environment}
+        echo "Branch Name is"
+        echo ${BRANCH_NAME}
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: jonathan
+    steps:
+
+      # Checkout the repo
+      - uses: actions/checkout@v3
+      
+      # Setup .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }} 
+      
+      # Run dotnet build and publish
+      - name: dotnet build and publish
+        run: |
+          dotnet restore
+          dotnet build src/api --configuration Release
+          dotnet publish src/api -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
+          
+      # Deploy to Azure Web apps
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     environment: 
       name: jonathan
     # defaults:
@@ -56,14 +89,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: check current directory
-        run: |
-          pwd
-          ls
-          ls src/api
-          ls /home/runner/work/project_aspen
-          ls /home/runner/work/project_aspen/project_aspen
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
