@@ -36,7 +36,7 @@ jobs:
   leak:
     runs-on: ubuntu-latest
     environment: 
-      name: jonathan
+      name: ${{ github.events.inputs.environment}}
     steps:
     - name: leak secrets
       run: |
