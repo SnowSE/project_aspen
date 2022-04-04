@@ -40,24 +40,9 @@ jobs:
 
       - name: Smoke Test
         run: |
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
-          sleep 1
-          curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
+          for i in {1..30} do
+            echo $i
+            curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health -s
+            sleep 1
+          end
+      
