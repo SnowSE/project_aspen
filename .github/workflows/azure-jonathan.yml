@@ -16,6 +16,8 @@ jobs:
       name: jesse
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: jonathan
       
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
@@ -34,3 +36,5 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE  }}
           package: '${{ env.DOTNET_ROOT }}/myapp'
+          slot-name: warmup
+      
