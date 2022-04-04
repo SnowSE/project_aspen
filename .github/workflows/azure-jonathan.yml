@@ -40,9 +40,10 @@ jobs:
 
       - name: Smoke Test
         run: |
-          for i in {1..30} do
-            echo $i
-            curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health -s
+          for value in {1..30} 
+          do
+            echo "Request $value"
+            curl https://***.azurewebsites.net/health -s
             sleep 1
-          end
+          done
       
