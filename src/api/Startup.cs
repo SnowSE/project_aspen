@@ -160,7 +160,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGet("/health", c => c.Response.WriteAsync("ur good (durli)"));
+            endpoints.MapGet("/health", c => c.Response.WriteAsync("ur good (durli made it)"));
             endpoints.MapControllers();
         });
     }
