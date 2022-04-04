@@ -42,8 +42,8 @@ jobs:
         run: |
           for value in {1..30} 
           do
-            echo "Request $value"
-            curl https://***.azurewebsites.net/health -s
+            echo -e "\nRequest $value"
+            curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
             sleep 1
           done
       
