@@ -20,10 +20,6 @@ provider "azurerm" {
   }
 }
 
-##############################################################################
-# Databases
-##############################################################################
-
 resource "random_id" "id" {
   byte_length = 3
 }
@@ -33,17 +29,9 @@ resource "azurerm_resource_group" "aspenrg" {
   location = "centralus"
 }
 
-resource "azurerm_postgresql_server" "keycloak" {
-  name                             = "keycloak-db-${random_id.id.hex}"
-  resource_group_name              = azurerm_resource_group.aspenrg.name
-  location                         = azurerm_resource_group.aspenrg.location
-  version                          = "11"
-  administrator_login              = var.api_dbuser
-  administrator_login_password     = var.api_dbpassword
-  sku_name                         = "B_Gen5_1"
-  ssl_enforcement_enabled          = true
-  ssl_minimal_tls_version_enforced = "TLS1_2"
-}
+##############################################################################
+# Database
+##############################################################################
 
 resource "azurerm_postgresql_server" "api" {
   name                             = "api-db-${random_id.id.hex}"
@@ -57,8 +45,16 @@ resource "azurerm_postgresql_server" "api" {
   ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
+resource "azurerm_postgresql_firewall_rule" "api_db_access" {
+  name = "api_db_access-${random_id.id.hex}"
+  resource_group_name = azurerm_resource_group.aspenrg.name
+  server_name = azurerm_postgresql_server.api.name
+  start_ip_address = "0.0.0.0"
+  end_ip_address = "0.0.0.0"
+}
+
 ##############################################################################
-# App Services
+# App Service
 ##############################################################################
 
 resource "azurerm_service_plan" "main" {
@@ -101,21 +97,12 @@ resource "azurerm_linux_web_app" "api_appservice" {
   }
 }
 
-resource "azurerm_linux_web_app" "keycloak_appservice" {
-  name                = "keycloak-${random_id.id.hex}"
-  location            = azurerm_resource_group.aspenrg.location
-  resource_group_name = azurerm_resource_group.aspenrg.name
-  service_plan_id     = azurerm_service_plan.main.id
+resource "azurerm_linux_web_app_slot" "api_appservice_slot" {
+  name = "warmup"
+  app_service_id = azurerm_linux_web_app.api_appservice.id
   site_config {
-    app_command_line = ""
-    always_on        = true
-    #linux_fx_version = "DOCKER|snowjallen/keycloak"
+    auto_swap_slot_name = "production"
+    health_check_path = "/health"
   }
-  app_settings = {
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
-    DOCKER_REGISTRY_SERVER_URL          = "https://index.docker.io"
-    KEYCLOAK_ADMIN                      = var.keycloak_admin_username
-    KEYCLOAK_ADMIN_PASSWORD             = var.keycloak_admin_password
-    KC_HOSTNAME                         = "appservice-${random_id.id.hex}.azurewebsites.net:443"
-  }
+  app_settings = azurerm_linux_web_app.api_appservice.app_settings
 }
