@@ -54,7 +54,7 @@ resource "azurerm_postgresql_firewall_rule" "api_db_access" {
 }
 
 ##############################################################################
-# App Service
+# App Services
 ##############################################################################
 
 resource "azurerm_service_plan" "main" {
