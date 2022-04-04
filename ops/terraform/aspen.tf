@@ -96,3 +96,13 @@ resource "azurerm_linux_web_app" "api_appservice" {
     }
   }
 }
+
+resource "azurerm_linux_web_app_slot" "api_appservice_slot" {
+  name = "warmup"
+  app_service_id = azurerm_linux_web_app.api_appservice.id
+  site_config {
+    auto_swap_slot_name = "production"
+    health_check_path = "/health"
+  }
+  app_settings = azurerm_linux_web_app.api_appservice.app_settings
+}
