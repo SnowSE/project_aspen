@@ -16,6 +16,8 @@ jobs:
       name: jonathan
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: jonathan
       
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
