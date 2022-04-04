@@ -42,8 +42,7 @@ jobs:
         run: |
           for value in {1..90} 
           do
-            echo -e "\nRequest $value"
-            curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
+            /usr/bin/time --format="\t%E elapsed ($value)" curl https://${{env.AZURE_WEBAPP_NAME}}.azurewebsites.net/health
             sleep 1
           done
       
