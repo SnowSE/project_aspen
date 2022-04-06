@@ -1,15 +1,17 @@
-namespace Api.DtoModels;
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace shared.DtoModels;
 
 public record DtoPerson
 {
     [SwaggerSchema(ReadOnly = true)]
-    public long ID { get; init; }
+    public long ID { get; set; }
 
-    public string AuthID { get; init; }
+    public string AuthID { get; set; }
 
-    public string Name { get; init; }
+    public string Name { get; set; }
 
-    public string Bio { get; init; }
+    public string Bio { get; set; }
 }
 public static class DtoPersonHelpers
 {
