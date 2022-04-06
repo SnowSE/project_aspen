@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using shared.DtoModels;
+
+namespace Api.Controllers;
 
 [ApiController]
 [Authorize]
@@ -10,12 +12,12 @@ public class AdminController : ControllerBase
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
 
-        public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper)
-        {
-            this.donationRepository = donationRepository;
-            this.eventRepository = eventRepository;
-            this.mapper = mapper;
-        }
+    public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper)
+    {
+        this.donationRepository = donationRepository;
+        this.eventRepository = eventRepository;
+        this.mapper = mapper;
+    }
 
     [HttpGet, Authorize(Roles = AspenAdminRole)]
     public IEnumerable<UserClaim> Get() =>

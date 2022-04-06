@@ -38,8 +38,8 @@ resource "azurerm_postgresql_server" "api" {
   resource_group_name              = azurerm_resource_group.aspenrg.name
   location                         = azurerm_resource_group.aspenrg.location
   version                          = "11"
-  administrator_login              = var.keycloak_dbuser
-  administrator_login_password     = var.keycloak_dbpassword
+  administrator_login              = var.api_dbuser
+  administrator_login_password     = var.api_dbpassword
   sku_name                         = "B_Gen5_1"
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
