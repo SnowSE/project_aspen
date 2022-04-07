@@ -25,5 +25,8 @@
                 Command="{Binding LogoutCommand}"
                 IsVisible="{Binding CanLogOut}"
                 Padding="20" />
+        <Button Text="Do admin stuff"
+                IsVisible="{Binding IsAdmin}"
+                Padding="20" />
     </StackLayout>
 </ContentPage>

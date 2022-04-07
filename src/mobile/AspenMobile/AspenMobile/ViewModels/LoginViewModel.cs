@@ -31,12 +31,14 @@ namespace AspenMobile.ViewModels
                 RedirectUri = "xamarinformsclients://callback",
                 PostLogoutRedirectUri = "xamarinformsclients://callback",
                 Browser = browser
+
             };
 
             client = new OidcClient(options);
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
 
-           // OutputText = "Ready to go!";
+
+            IsAdmin = Preferences.Get("is_admin", false);
         }
 
         public OidcClient client;
@@ -66,7 +68,8 @@ namespace AspenMobile.ViewModels
                 throw;
             }
             CanLogIn = true;
-            isAdmin = false;
+            IsAdmin = false;
+            Preferences.Set("is_admin", IsAdmin);
         }
 
 
@@ -85,12 +88,11 @@ namespace AspenMobile.ViewModels
                         OutputText = _result.Error;
                         return;
                     }
-
                     accessToken = _result.AccessToken;
 
                     await SecureStorage.SetAsync("accessToken", accessToken);
-                    isAdmin = IsAdminJWTDecode(accessToken);
-
+                    IsAdmin = IsAdminJWTDecode(accessToken);
+                    Preferences.Set("is_admin", IsAdmin);
                     //OutputText = sb.ToString();
                 }
 
