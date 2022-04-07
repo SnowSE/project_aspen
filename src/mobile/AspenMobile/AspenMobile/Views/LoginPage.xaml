@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AspenMobile.Views.LoginPage"
+             Shell.NavBarIsVisible="False"
+             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+   
+    <StackLayout Padding="20">
+        <Button Text="Log In Aspen"
+                Command="{Binding LoginCommand}"
+                IsVisible="{Binding CanLogIn}"
+                Padding="20" />
+        <Button Text="Log Out"
+                Command="{Binding LogoutCommand}"
+                IsVisible="{Binding CanLogOut}"
+                Padding="20" />
+        <Button Text="Do admin stuff"
+                IsVisible="{Binding IsAdmin}"
+                Padding="20" />
+    </StackLayout>
+</ContentPage>
