@@ -19,7 +19,7 @@
     <StackLayout Padding="20">
         <Button Text="Log In Aspen"
                 Command="{Binding LoginCommand}"
-                IsVisible="{Binding CanLogin}"
+                IsVisible="{Binding CanLogIn}"
                 Padding="20" />
         <Button Text="Log Out"
                 Command="{Binding LogoutCommand}"

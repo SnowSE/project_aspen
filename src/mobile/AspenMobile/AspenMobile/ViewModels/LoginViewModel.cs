@@ -5,11 +5,13 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+
 
 namespace AspenMobile.ViewModels
 {
@@ -44,8 +46,12 @@ namespace AspenMobile.ViewModels
 
         [ObservableProperty] private string title;
         [ObservableProperty] private string outputText;
+
         [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))] private bool canLogIn;
         public bool CanLogOut => !CanLogIn;
+
+        [ObservableProperty]
+        public bool isAdmin;
 
         [ICommand]
         private async Task Logout()
@@ -60,6 +66,7 @@ namespace AspenMobile.ViewModels
                 throw;
             }
             CanLogIn = true;
+            isAdmin = false;
         }
 
 
@@ -82,6 +89,7 @@ namespace AspenMobile.ViewModels
                     accessToken = _result.AccessToken;
 
                     await SecureStorage.SetAsync("accessToken", accessToken);
+                    isAdmin = IsAdminJWTDecode(accessToken);
 
                     //OutputText = sb.ToString();
                 }
@@ -97,6 +105,12 @@ namespace AspenMobile.ViewModels
             {
                 //OutputText = ex.ToString();
             }
+        }
+        private bool IsAdminJWTDecode(string jwt)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(jwt);
+            return jwtSecurityToken.ToString().Contains("\"family_name\":\"admin\"");
         }
     }
 }
