@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using shared.DtoModels;
 using Tests.Steps;
 
 namespace Tests.ControllerTests;
