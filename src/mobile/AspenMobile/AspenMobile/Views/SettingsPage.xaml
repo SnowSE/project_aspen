@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AspenMobile.Views.SettingsPage"
+             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
+             xmlns:model="clr-namespace:AspenMobile.Models">
+
+    <ContentPage.BindingContext>
+        <vm:SettingsViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Margin="0,10,0,0"
+                    Text="Add New Server"
+                    Command="{Binding EnterNewServerCommand}"
+                    BackgroundColor="teal"
+                    TextColor="White"
+                    IsVisible="{Binding ShowAddButton}" />
+            <Button Margin="0,10,0,0"
+                    Text="Clear all Servers"
+                    Command="{Binding ClearServersCommand}"
+                    BackgroundColor="teal"
+                    TextColor="White"
+                    IsVisible="{Binding ShowAddButton}" />
+            <Label Text="Server Alias"
+                   IsVisible="{Binding ShowAddControls }" />
+            <Entry Text="{Binding ServerAlias}"
+                   IsVisible="{Binding ShowAddControls }" />
+            <Label Text="Server Address"
+                   IsVisible="{Binding ShowAddControls }" />
+            <Entry Text="{Binding ServerAddress}"
+                   IsVisible="{Binding ShowAddControls }" />
+            <Button Margin="0,10,0,0"
+                    Text="Add New Server"
+                    Command="{Binding AddNewServerCommand}"
+                    BackgroundColor="teal"
+                    TextColor="White"
+                    IsVisible="{Binding ShowAddControls}" />
+            <Button Margin="0,10,0,0"
+                    Text="Cancel"
+                    Command="{Binding OnCancelCommand}"
+                    BackgroundColor="teal"
+                    TextColor="White"
+                    IsVisible="{Binding ShowAddControls}" />
+
+            <CollectionView x:Name="ServerListView"
+                            ItemsSource="{Binding Servers}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10"
+                                     x:DataType="model:Server">
+
+                                <Label Text="{Binding Alias}"
+                                       LineBreakMode="NoWrap"
+                                       FontSize="16" />
+
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

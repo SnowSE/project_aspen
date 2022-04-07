@@ -12,11 +12,12 @@ namespace AspenMobile
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
 
-        private async void OnMenuItemClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
-        }
+       //private async void OnMenuItemClicked(object sender, EventArgs e)
+       //{
+       //    await Shell.Current.GoToAsync("//LoginPage");
+       //}
     }
 }
