@@ -1,6 +1,4 @@
-﻿using Api.DtoModels;
-using RestSharp;
-using System.Threading.Tasks;
+﻿using RestSharp;
 
 namespace Tests.Steps
 {
@@ -15,7 +13,7 @@ namespace Tests.Steps
         public RestClient Client { get; }
 
         public async Task<DtoPerson> CreatePersonAsync(DtoPerson person)
-         {
+        {
             var request = new RestRequest("api/person/").AddJsonBody(person);
             return await Client.PostAsync<DtoPerson>(request);
         }

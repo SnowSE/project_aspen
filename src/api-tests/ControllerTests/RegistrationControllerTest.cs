@@ -1,3 +1,5 @@
+using shared.DtoModels;
+
 namespace Tests.ControllerTests;
 
 public class RegistrationControllerTest
