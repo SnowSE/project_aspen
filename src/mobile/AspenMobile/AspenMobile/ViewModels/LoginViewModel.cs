@@ -11,13 +11,23 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-
+using System.Linq;
 
 namespace AspenMobile.ViewModels
 {
     //Made from Johnthan's template https://github.com/snow-jallen/Authorized.git
     public partial class LoginViewModel : ObservableObject
     {
+        public async Task CheckTokenIsLiveAsync()
+        {
+            accessToken = await SecureStorage.GetAsync("accessToken");
+            //Also set check time token
+            if (accessToken != null)
+            {
+                IsAdmin = IsAdminJWTDecode(accessToken);
+            }
+        }
+
         public LoginViewModel()
         {
             Title = "Aspen Login!";
@@ -36,9 +46,7 @@ namespace AspenMobile.ViewModels
 
             client = new OidcClient(options);
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
-
-
-            IsAdmin = Preferences.Get("is_admin", false);
+            _ = CheckTokenIsLiveAsync();
         }
 
         public OidcClient client;
@@ -69,7 +77,6 @@ namespace AspenMobile.ViewModels
             }
             CanLogIn = true;
             IsAdmin = false;
-            Preferences.Set("is_admin", IsAdmin);
         }
 
 
@@ -112,7 +119,11 @@ namespace AspenMobile.ViewModels
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(jwt);
-            return jwtSecurityToken.ToString().Contains("\"family_name\":\"admin\"");
+            var realm_access = jwtSecurityToken.Claims.Single(c => c.Type == "realm_access").Value;
+            using var doc = JsonDocument.Parse(realm_access);
+            var roles = doc.RootElement.GetProperty("roles");
+            IsAdmin = roles.EnumerateArray().Any(i => i.GetString() == "admin-aspen");
+            return IsAdmin;
         }
     }
 }
