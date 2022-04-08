@@ -39,6 +39,9 @@ namespace AspenMobile.ViewModels
         private string alias;
         [ObservableProperty]
         private string address;
+        [ObservableProperty]
+        private string selectedServer;
+
 
         [ICommand]
         public void EnterNewServer()
@@ -76,9 +79,15 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public void SetServer()
         {
-            ///we need make changes
-            Preferences.Clear("use_server");
-            Preferences.Set("use_server", Address);
+            ///if ewe know what server then
+            foreach( var server in Servers)
+            {
+                if (nameof(SettingsViewModel.Alias)==server.Alias)
+                {
+                    Preferences.Set("use_server", server.Address);
+
+                }
+            }
         }
         private void loadServers()
         {
@@ -93,6 +102,15 @@ namespace AspenMobile.ViewModels
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
+
+        //[ICommand]
+
+        //public void AliasTapped ()
+        //{
+        //    Preferences.Get("use_server", true);
+
+        //}
+
 
 
     }
