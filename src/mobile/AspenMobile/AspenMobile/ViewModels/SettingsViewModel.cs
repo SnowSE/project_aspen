@@ -1,7 +1,7 @@
 ﻿using AspenMobile.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.VisualStudio.PlatformUI;
+//using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -82,8 +82,12 @@ namespace AspenMobile.ViewModels
         }
         private void loadServers()
         {
-            var listServers = Preferences.Get("servers", "");
-            var temp = JsonConvert.DeserializeObject<List<Server>>(listServers);
+            var listServers = Preferences.Get("servers", null);
+            if (listServers== null)
+            {
+                return;
+            }
+                var temp = JsonConvert.DeserializeObject<List<Server>>(listServers);
             foreach (var server in temp)
             {
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
