@@ -75,7 +75,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public void SetServer()
         {
-            
+            ///we need make changes
             Preferences.Clear("use_server");
             Preferences.Set("use_server", Address);
         }
