@@ -1,4 +1,5 @@
-﻿using AspenMobile.Models;
+﻿using AspenMobile.GlobalConstants;
+using AspenMobile.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
@@ -74,29 +75,39 @@ namespace AspenMobile.ViewModels
         public void ClearServers()
         {
             Servers.Clear();
-            Preferences.Clear("servers");
+            Preferences.Clear(Constants.RecentlyUsedServers);
         }
-        [ICommand]
-        public void SetServer()
-        {
-            ///if ewe know what server then
-            foreach( var server in Servers)
-            {
-                if (nameof(SettingsViewModel.Alias)==server.Alias)
-                {
-                    Preferences.Set("use_server", server.Address);
 
-                }
-            }
+        [ICommand]
+        public void SetServer(Server s)
+        {
+
+            //if (nameof(SettingsViewModel.Alias) == null)
+            //  return;
+
+
+
+            Preferences.Set(Constants.CurrentServer, s.Address);
+            ///if ewe know what server then
+            //else              
+            //foreach (var server in Servers)
+            //{
+            //    if (nameof(SettingsViewModel.Alias) == server.Alias)
+            //    {
+                    
+
+            //    }
+            //}
         }
         private void loadServers()
         {
-            var listServers = Preferences.Get("servers", null);
+            var listServers = Preferences.Get(Constants.RecentlyUsedServers, null);
             if (listServers== null)
             {
                 return;
             }
-                var temp = JsonConvert.DeserializeObject<List<Server>>(listServers);
+
+            var temp = JsonConvert.DeserializeObject<List<Server>>(listServers);
             foreach (var server in temp)
             {
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
