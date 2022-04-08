@@ -4,6 +4,7 @@
 [ApiController]
 public class EventController : ControllerBase
 {
+    public const string AspenAdminRole = "admin-aspen";
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
     private string getModelStateErrorMessage() =>
@@ -34,7 +35,7 @@ public class EventController : ControllerBase
         return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = AspenAdminRole)]
     public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
     {
         if (!ModelState.IsValid)
@@ -47,7 +48,7 @@ public class EventController : ControllerBase
         return mapper.Map<DtoEvent>(newEvent);
     }
 
-    [HttpPut()]
+    [HttpPut(), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
     {
         if (!ModelState.IsValid)
@@ -59,7 +60,7 @@ public class EventController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Delete(long id)
     {
         if (!await eventRepository.ExistsAsync(id))
