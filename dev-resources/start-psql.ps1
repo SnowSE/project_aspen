@@ -1,0 +1,1 @@
+docker exec -it aspen_api_db psql -U postgres

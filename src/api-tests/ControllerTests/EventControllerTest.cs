@@ -1,4 +1,6 @@
-﻿namespace Tests.ControllerTests;
+﻿using Microsoft.Extensions.Logging;
+
+namespace Tests.ControllerTests;
 
 public class EventControllerTest
 {
@@ -6,7 +8,8 @@ public class EventControllerTest
     {
         var context = TestHelpers.CreateContext();
         var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
-        return new EventController(eventRepository, TestHelpers.AspenMapper);
+        var loggerMock = new Mock<ILogger<EventController>>();
+        return new EventController(eventRepository, TestHelpers.AspenMapper, loggerMock.Object);
     }
 
     [Test]
