@@ -13,12 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-<<<<<<< .merge_file_a39824
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="6.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-=======
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
->>>>>>> .merge_file_a10524
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="npgsql.entityframeworkcore.postgresql" Version="5.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
