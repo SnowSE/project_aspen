@@ -1,5 +1,4 @@
-﻿using AspenMobile.Services;
-using AspenMobile.Views;
+﻿using AspenMobile.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,7 +12,7 @@ namespace AspenMobile
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            //DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
