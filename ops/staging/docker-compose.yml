@@ -114,6 +114,27 @@ services:
         condition: service_healthy
       api:
         condition: service_healthy
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - es-net
+    ports:
+      - 9200:9200
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:8.1.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-container:9200
+    networks:
+      - es-net
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
 
 volumes:
   keycloak_db:
@@ -125,5 +146,6 @@ networks:
   shared:
   keycloak:
   api:
+  es-net:
   proxy:
     external: true

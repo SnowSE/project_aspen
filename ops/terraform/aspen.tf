@@ -54,6 +54,53 @@ resource "azurerm_postgresql_firewall_rule" "api_db_access" {
 }
 
 ##############################################################################
+# ElasticSearch and Kibana
+##############################################################################
+
+# Create virtual machine
+resource "azurerm_linux_virtual_machine" "myterraformvm" {
+    name                  = "myVM"
+    location              = azurerm_resource_group.aspenrg.location
+    resource_group_name   = azurerm_resource_group.aspenrg.name
+    network_interface_ids = [azurerm_network_interface.myterraformnic.id]
+    size                  = "Standard_DS1_v2"
+
+    os_disk {
+      name                 = "myOsDisk"
+      caching              = "ReadWrite"
+      storage_account_type = "Premium_LRS"
+    }
+
+    source_image_reference {
+      publisher = "Canonical"
+      offer     = "UbuntuServer"
+      sku       = "18.04-LTS"
+      version   = "latest"
+    }
+
+    computer_name                   = "myvm"
+    admin_username                  = "azureuser"
+    disable_password_authentication = true
+
+    admin_ssh_key {
+      username   = "azureuser"
+      public_key = tls_private_key.example_ssh.public_key_openssh
+    }
+
+    boot_diagnostics {
+      storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
+    }
+
+  resource "azurerm_postgresql_firewall_rule" "api_db_access" {
+    name = "api_db_access-${random_id.id.hex}"
+    resource_group_name = azurerm_resource_group.aspenrg.name
+    server_name = azurerm_postgresql_server.api.name
+    start_ip_address = "0.0.0.0"
+    end_ip_address = "0.0.0.0"
+  }
+}
+
+##############################################################################
 # App Service
 ##############################################################################
 
