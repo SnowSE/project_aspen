@@ -10,23 +10,20 @@
                         <StackLayout HorizontalOptions="Center">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="40" />
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="70" />
+                                    <RowDefinition Height="60"/>
+                                    <RowDefinition Height="60"/>
                                     <RowDefinition Height="100"/>
-                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="80"/>
                                 </Grid.RowDefinitions>
+                                
+                                
 
-                                <Label Text="{Binding Title}" Grid.Row="0" HorizontalOptions="Center" FontSize="Large"/>
-                                <Label Text="{Binding Date}" Grid.Row="1" HorizontalOptions="Center"/>
-                                <Label Text="{Binding Location}" Grid.Row="2" HorizontalOptions="Center"/>
-                                <Label Text="{Binding Description}" Grid.Row="3" HorizontalOptions="Center"/>
-                                <Label Text="{Binding DonationTarget}" Grid.Row="4" HorizontalOptions="Center" FontSize="Medium"/>
-
-
-
-
-
+                                <Label Text="{Binding Title}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
+                                <Label Text="{Binding Date}" Grid.Row="1"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Location}" Grid.Row="2"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Description}" Grid.Row="3"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding DonationTarget}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
 
                             </Grid>
                         </StackLayout>
@@ -34,6 +31,10 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+
+            
+            
+            <Label Text="Teams" HorizontalOptions="Center" FontSize="Large"/>
             <CollectionView ItemsSource="{Binding Teams}" HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

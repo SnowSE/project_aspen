@@ -26,14 +26,9 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-            Test = "chef";
         }
 
         public ObservableCollection<DtoEvent> Events { get; set; } = new();
-
-
-        [ObservableProperty]
-        public string test;
 
         [ICommand]
         public async Task GetAllEvents()
@@ -47,14 +42,14 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        public async void SelectEvent(DtoEvent item)
+        public async void SelectEvent(DtoEvent selectedEvent)
         {
-            if (item == null)
+            if (selectedEvent == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(EventPage)}?{nameof(EventPageViewModel.ItemId)}={item.ID}");
-            await Shell.Current.GoToAsync("/EventPage");
+            await Shell.Current.GoToAsync($"{nameof(EventPage)}?{nameof(EventPageViewModel.EventId)}={selectedEvent.ID}");
+            //await Shell.Current.GoToAsync($"{nameof(TaskDetailPage)}?{nameof(EventViewModel.ItemId)}={item.ID}");
 
         }
     }

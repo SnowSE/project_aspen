@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AspenMobile.GlobalConstants;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
 using System;
@@ -8,32 +9,45 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    [QueryProperty(nameof(ItemId), nameof(ItemId))]
+    [QueryProperty(nameof(EventId), nameof(EventId))]
 
     public partial class EventPageViewModel : ObservableObject
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient httpClient = new();
         public EventPageViewModel()
         {
 
         }
-        /*[ObservableProperty]
-        public string itemId;*/
 
-        public string ItemId { get; set; }
+        public int eventId;
+        public int EventId
+        {
+            get
+            {
+                return eventId;
+            }
+            set
+            {
+                eventId = value;
+                Preferences.Set(Constants.CurrentEventId, value.ToString());
+                DisplayEventAsync(value);
+            }
+        }
+
+
+
         public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
 
-
-        [ICommand]
-        public async Task DisplayEventAsync()
+        public async void DisplayEventAsync(int eventId)
         {
-            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"https://engineering.snow.edu/aspen/api/events/{ItemId}");
+            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"https://engineering.snow.edu/aspen/api/events/{eventId}");
             Event.Add(currentEvent);
 
             var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"https://engineering.snow.edu/aspen/api/teams/event/{currentEvent.ID}");
@@ -42,6 +56,8 @@ namespace AspenMobile.ViewModels
             {
                 Teams.Add(team);
             }
+            var test = Preferences.Get(Constants.CurrentEventId, null);
+
         }
     }
 }
