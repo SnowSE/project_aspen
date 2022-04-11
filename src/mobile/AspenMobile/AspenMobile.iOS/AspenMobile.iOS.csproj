@@ -135,12 +135,9 @@
     <PackageReference Include="Microsoft.Toolkit.Mvvm">
       <Version>7.1.2</Version>
     </PackageReference>
-<<<<<<< HEAD
-=======
     <PackageReference Include="System.IdentityModel.Tokens.Jwt">
       <Version>6.17.0</Version>
     </PackageReference>
->>>>>>> mobile
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
   </ItemGroup>
