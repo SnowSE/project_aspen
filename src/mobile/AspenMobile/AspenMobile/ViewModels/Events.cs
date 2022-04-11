@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-   /* public partial class Events : ObservableObject
+    /*public partial class Events : ObservableObject
     {
         public Events()
         {
@@ -37,6 +37,9 @@ namespace AspenMobile.ViewModels
         OidcClient _client;
         LoginResult _result;
         Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(() => new HttpClient());
+
+        [ObservableProperty]
+        private string outputText;
 
         [ICommand]
         [Authorize]
@@ -68,7 +71,8 @@ namespace AspenMobile.ViewModels
         private async Task PostEvent()
         {
             var result = await _apiClient.Value.GetAsync("api/events");
-                "date": "2022-04-08T20:29:01.315Z",
+
+            "date": "2022-04-08T20:29:01.315Z",
                 "title": "string",
                 "location": "string",
                 "description": "string",
