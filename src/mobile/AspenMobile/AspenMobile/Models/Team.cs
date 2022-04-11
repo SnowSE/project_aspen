@@ -6,18 +6,18 @@ namespace AspenMobile.Models
 {
     public class Team
     {
-        public string teamName;
+        public string TeamName;
         
-        public int teamId;
+        public int TeamId;
         
-        public string teamDescription;
+        public string TeamDescription;
        
-        public string mainImage;
+        public string MainImage;
         
-        public int ownerID;
+        public int OwnerID;
        
-        public int eventID;
+        public int EventID;
        
-        public double donationTarget;
+        public double DonationTarget;
     }
 }

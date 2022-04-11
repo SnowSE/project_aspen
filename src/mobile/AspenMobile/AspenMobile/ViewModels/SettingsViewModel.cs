@@ -81,10 +81,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public void SetServer(Server s)
         {
-
-
-            Preferences.Set(Constants.CurrentServer, s.Address);
-           
+            Preferences.Set(Constants.CurrentServer, s.Address);           
         }
         private void loadServers()
         {
