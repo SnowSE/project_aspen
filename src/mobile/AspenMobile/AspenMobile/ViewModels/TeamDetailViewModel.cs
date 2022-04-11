@@ -1,6 +1,8 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AspenMobile.Models;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +12,8 @@ namespace AspenMobile.ViewModels
 {
     public class TeamDetailViewModel : ObservableObject
     {
+        public ObservableCollection<Team> TeamDetailsList { get; }
+
         public TeamDetailViewModel()
         {
            
