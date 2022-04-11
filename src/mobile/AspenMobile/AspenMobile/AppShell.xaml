@@ -121,6 +121,10 @@
                 Icon="icon_about.png">
         <ShellContent Route="TeamPage"
                       ContentTemplate="{DataTemplate local:TeamPage}" />
+    <FlyoutItem Title="Event"
+                Icon="icon_about.png">
+        <ShellContent Route="EventPage"
+                      ContentTemplate="{DataTemplate local:EventPage}" />
     </FlyoutItem>
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->

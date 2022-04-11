@@ -1,11 +1,5 @@
 ﻿using Api;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace Tests.Hooks
@@ -24,8 +18,10 @@ namespace Tests.Hooks
             host = Program.CreateHostBuilder(new[] {
                 "--urls", "http://127.0.0.1:0",
                 inDocker ? "--ASPEN_CONNECTION_STRING" : "",
-                inDocker ? Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") : ""
+                inDocker ? Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") : "",
+                "--SwaggerBasePath", ""
             }).Build();
+
             host.Start();
             foreach (var address in Startup.HostedAddresses)
             {
