@@ -3,19 +3,18 @@ using IdentityModel.OidcClient.Browser;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Linq;
 
 namespace AspenMobile.ViewModels
 {
-    //Made from Johnthan's template https://github.com/snow-jallen/Authorized.git
+    //Made from Jonathan's template https://github.com/snow-jallen/Authorized.git
     public partial class LoginViewModel : ObservableObject
     {
 
@@ -37,7 +36,11 @@ namespace AspenMobile.ViewModels
 
             client = new OidcClient(options);
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
-            _ = CheckTokenIsLiveAsync();
+        }
+
+        internal async Task OnAppearingAsync()
+        {
+            await CheckTokenIsLiveAsync();
         }
 
         public OidcClient client;
@@ -48,7 +51,8 @@ namespace AspenMobile.ViewModels
         [ObservableProperty] private string title;
         [ObservableProperty] private string outputText;
 
-        [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))] private bool canLogIn;
+        [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))]
+        private bool canLogIn;
         public bool CanLogOut => !CanLogIn;
 
         [ObservableProperty]
@@ -130,6 +134,10 @@ namespace AspenMobile.ViewModels
                 {
                     await Logout();
                 }
+            }
+            else
+            {
+                await Logout();
             }
         }
     }
