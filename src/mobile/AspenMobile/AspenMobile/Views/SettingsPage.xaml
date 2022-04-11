@@ -51,7 +51,6 @@
                     <DataTemplate>
                         <StackLayout Padding="10"
                                      x:DataType="model:Server">
-
                                 <Label Text="{Binding Alias}"
                                        LineBreakMode="NoWrap"
                                        FontSize="16" />
@@ -64,9 +63,11 @@
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer NumberOfTapsRequired="1"
                                       Command="{Binding SetServerCommand }"
-                                      CommandParameter="{Binding .}">
-                </TapGestureRecognizer>
+                                      CommandParameter="{Binding .}">                   
+                </TapGestureRecognizer>               
+
             </StackLayout.GestureRecognizers>
+           
 
         </StackLayout>
         
