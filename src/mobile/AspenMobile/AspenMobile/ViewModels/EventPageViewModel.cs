@@ -1,14 +1,11 @@
 ﻿using AspenMobile.GlobalConstants;
+using AspenMobile.Views;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -25,6 +22,8 @@ namespace AspenMobile.ViewModels
         }
 
         public int eventId;
+        private string current;
+
         public int EventId
         {
             get
@@ -47,12 +46,18 @@ namespace AspenMobile.ViewModels
 
         public async void DisplayEventAsync(int eventId)
         {
-            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"https://engineering.snow.edu/aspen/api/events/{eventId}");
+            current = Preferences.Get(Constants.CurrentServer, null);
+            if (current == null)
+            {
+                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+            }
+
+            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
             Event.Add(currentEvent);
 
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"https://engineering.snow.edu/aspen/api/teams/event/{currentEvent.ID}");
+            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{currentEvent.ID}");
 
-            foreach(var team in teams)
+            foreach (var team in teams)
             {
                 Teams.Add(team);
             }

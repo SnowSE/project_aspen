@@ -1,27 +1,27 @@
-﻿using System;
+﻿using AspenMobile.GlobalConstants;
+using AspenMobile.Views;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using shared.DtoModels;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using AspenMobile.Models;
-using AspenMobile.GlobalConstants;
-using AspenMobile.Views;
-using Microsoft.Toolkit.Mvvm.Input;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
-using System.Collections.Generic;
-using shared.DtoModels;
-using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace AspenMobile.ViewModels
 {
     public partial class AboutViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
+        private string current;
+
         public AboutViewModel()
         {
-            var current = Preferences.Get(Constants.CurrentServer, null);
+            current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
@@ -33,7 +33,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async Task GetAllEvents()
         {
-            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>("https://engineering.snow.edu/aspen/api/events");
+            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             foreach (var item in allEvents)
             {
