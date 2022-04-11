@@ -18,15 +18,6 @@ namespace AspenMobile.ViewModels
     //Made from Johnthan's template https://github.com/snow-jallen/Authorized.git
     public partial class LoginViewModel : ObservableObject
     {
-        public async Task CheckTokenIsLiveAsync()
-        {
-            accessToken = await SecureStorage.GetAsync("accessToken");
-            //Also set check time token
-            if (accessToken != null)
-            {
-                IsAdmin = IsAdminJWTDecode(accessToken);
-            }
-        }
 
         public LoginViewModel()
         {
@@ -98,9 +89,8 @@ namespace AspenMobile.ViewModels
                     accessToken = _result.AccessToken;
 
                     await SecureStorage.SetAsync("accessToken", accessToken);
-                    IsAdmin = IsAdminJWTDecode(accessToken);
-                    Preferences.Set("is_admin", IsAdmin);
-                    //OutputText = sb.ToString();
+                    IsAdmin = IsTokenAdmin(accessToken);
+
                 }
 
                 CanLogIn = false;
@@ -115,7 +105,7 @@ namespace AspenMobile.ViewModels
                 //OutputText = ex.ToString();
             }
         }
-        private bool IsAdminJWTDecode(string jwt)
+        private bool IsTokenAdmin(string jwt)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(jwt);
@@ -124,6 +114,23 @@ namespace AspenMobile.ViewModels
             var roles = doc.RootElement.GetProperty("roles");
             IsAdmin = roles.EnumerateArray().Any(i => i.GetString() == "admin-aspen");
             return IsAdmin;
+        }
+        public async Task CheckTokenIsLiveAsync()
+        {
+            accessToken = await SecureStorage.GetAsync("accessToken");
+            if (accessToken != null)
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+                if ((jwtSecurityToken.ValidTo - DateTime.Now.ToUniversalTime()) > TimeSpan.Zero)
+                {
+                    IsAdmin = IsTokenAdmin(accessToken);
+                }
+                else
+                {
+                    await Logout();
+                }
+            }
         }
     }
 }
