@@ -1,11 +1,11 @@
 version: "3.7"
 services:
-  # web_test:
-  #   build:
-  #     dockerfile: ../../ops/testing/webTests.Dockerfile
-  #     context: ../../src/web/
-  #   networks:
-  #     shared_test:
+  web_test:
+    build:
+      dockerfile: ../../ops/testing/webTests.Dockerfile
+      context: ../../src/web/
+    networks:
+      shared_test:
 
   api_test:
     build:
