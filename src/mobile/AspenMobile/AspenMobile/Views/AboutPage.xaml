@@ -16,14 +16,10 @@
     </ContentPage.Resources>
 
     <StackLayout Padding="20">
-        <Button Text="Login" Command="{Binding LoginCommand}" Padding="20" />
-        <Button Text="Call Api" Command="{Binding CallApiCommand}" Padding="20" />
-        <Button Text="Health Check" Command="{Binding HealthCheck}" Padding="20" />
-        <Button Text="Events" Command="{Binding CallEvents}" Padding="20" />
+        <Button Text="Donation Info" Command="{Binding GetDonationInfo}" Padding="20" />
         <Label Text="{Binding OutputText}"
                VerticalOptions="EndAndExpand"
                HorizontalOptions="FillAndExpand" />
-        <Button Text="Copy JWT" Command="{Binding CopyJwtCommand}" Padding="20" />
     </StackLayout>
 
 </ContentPage>
