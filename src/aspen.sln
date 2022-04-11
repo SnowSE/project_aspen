@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFC16E7B-A9D7-4158-B558-43E0479C5151}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\..\aspencopy\mobile\AspenMobile\AspenMobile\Views\AboutPage.xaml = ..\..\aspencopy\mobile\AspenMobile\AspenMobile\Views\AboutPage.xaml
+		..\..\aspencopy\mobile\AspenMobile\AspenMobile\ViewModels\AboutViewModel.cs = ..\..\aspencopy\mobile\AspenMobile\AspenMobile\ViewModels\AboutViewModel.cs
 		..\ops\testing\docker-compose.yml = ..\ops\testing\docker-compose.yml
 		README.md = README.md
 	EndProjectSection
@@ -28,9 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspenMobile.Android", "mobi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspenMobile.iOS", "mobile\AspenMobile\AspenMobile.iOS\AspenMobile.iOS.csproj", "{52962BCF-0612-49E6-B43C-9203798E4C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspenMobile", "mobile\AspenMobile\AspenMobile\AspenMobile.csproj", "{073047DB-133E-452C-95BD-36001A097424}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspenMobile", "mobile\AspenMobile\AspenMobile\AspenMobile.csproj", "{073047DB-133E-452C-95BD-36001A097424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shared", "shared\shared.csproj", "{2A8E367E-F1FA-4F7C-B269-E376119B36F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shared", "shared\shared.csproj", "{2A8E367E-F1FA-4F7C-B269-E376119B36F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

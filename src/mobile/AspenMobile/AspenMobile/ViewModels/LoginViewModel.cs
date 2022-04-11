@@ -3,21 +3,21 @@ using IdentityModel.OidcClient.Browser;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-
 namespace AspenMobile.ViewModels
 {
-    //Made from Johnthan's template https://github.com/snow-jallen/Authorized.git
+    //Made from Jonathan's template https://github.com/snow-jallen/Authorized.git
     public partial class LoginViewModel : ObservableObject
     {
+
         public LoginViewModel()
         {
             Title = "Aspen Login!";
@@ -36,9 +36,11 @@ namespace AspenMobile.ViewModels
 
             client = new OidcClient(options);
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
+        }
 
-
-            IsAdmin = Preferences.Get("is_admin", false);
+        internal async Task OnAppearingAsync()
+        {
+            await CheckTokenIsLiveAsync();
         }
 
         public OidcClient client;
@@ -49,7 +51,8 @@ namespace AspenMobile.ViewModels
         [ObservableProperty] private string title;
         [ObservableProperty] private string outputText;
 
-        [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))] private bool canLogIn;
+        [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))]
+        private bool canLogIn;
         public bool CanLogOut => !CanLogIn;
 
         [ObservableProperty]
@@ -69,7 +72,6 @@ namespace AspenMobile.ViewModels
             }
             CanLogIn = true;
             IsAdmin = false;
-            Preferences.Set("is_admin", IsAdmin);
         }
 
 
@@ -91,9 +93,8 @@ namespace AspenMobile.ViewModels
                     accessToken = _result.AccessToken;
 
                     await SecureStorage.SetAsync("accessToken", accessToken);
-                    IsAdmin = IsAdminJWTDecode(accessToken);
-                    Preferences.Set("is_admin", IsAdmin);
-                    //OutputText = sb.ToString();
+                    IsAdmin = IsTokenAdmin(accessToken);
+
                 }
 
                 CanLogIn = false;
@@ -108,11 +109,36 @@ namespace AspenMobile.ViewModels
                 //OutputText = ex.ToString();
             }
         }
-        private bool IsAdminJWTDecode(string jwt)
+        private bool IsTokenAdmin(string jwt)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(jwt);
-            return jwtSecurityToken.ToString().Contains("\"family_name\":\"admin\"");
+            var realm_access = jwtSecurityToken.Claims.Single(c => c.Type == "realm_access").Value;
+            using var doc = JsonDocument.Parse(realm_access);
+            var roles = doc.RootElement.GetProperty("roles");
+            IsAdmin = roles.EnumerateArray().Any(i => i.GetString() == "admin-aspen");
+            return IsAdmin;
+        }
+        public async Task CheckTokenIsLiveAsync()
+        {
+            accessToken = await SecureStorage.GetAsync("accessToken");
+            if (accessToken != null)
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+                if ((jwtSecurityToken.ValidTo - DateTime.Now.ToUniversalTime()) > TimeSpan.Zero)
+                {
+                    IsAdmin = IsTokenAdmin(accessToken);
+                }
+                else
+                {
+                    await Logout();
+                }
+            }
+            else
+            {
+                await Logout();
+            }
         }
     }
 }
