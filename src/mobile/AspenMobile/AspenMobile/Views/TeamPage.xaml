@@ -7,4 +7,7 @@
     <ContentPage.BindingContext>
         <vm:TeamDetailViewModel />
     </ContentPage.BindingContext>
+    
+    
+    
 </ContentPage>

@@ -14,5 +14,20 @@ namespace AspenMobile.ViewModels
         {
            
         }
+
+        [ObservableProperty]
+        private string teamName;
+        [ObservableProperty]
+        private int teamId;
+        [ObservableProperty]
+        private string teamDescription;
+        [ObservableProperty]
+        private string mainImage;
+        [ObservableProperty]
+        private int ownerID;
+        [ObservableProperty]
+        private int eventID;
+        [ObservableProperty]
+        private double donationTarget;
     }
 }

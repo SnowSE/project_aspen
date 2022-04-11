@@ -101,15 +101,7 @@ namespace AspenMobile.ViewModels
             }
         }
 
-        //[ICommand]
-
-        //public void AliasTapped ()
-        //{
-        //    Preferences.Get("use_server", true);
-
-        //}
-
-
+       
 
     }
 }
