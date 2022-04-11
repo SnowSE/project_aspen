@@ -1,6 +1,8 @@
-﻿using AspenMobile.Models;
+﻿using AspenMobile.GlobalConstants;
+using AspenMobile.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+//using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,6 +40,9 @@ namespace AspenMobile.ViewModels
         private string alias;
         [ObservableProperty]
         private string address;
+        [ObservableProperty]
+        private string selectedServer;
+
 
         [ICommand]
         public void EnterNewServer()
@@ -70,24 +75,53 @@ namespace AspenMobile.ViewModels
         public void ClearServers()
         {
             Servers.Clear();
-            Preferences.Clear("servers");
+            Preferences.Clear(Constants.RecentlyUsedServers);
         }
+
         [ICommand]
-        public void SetServer()
+        public void SetServer(Server s)
         {
-            
-            Preferences.Clear("use_server");
-            Preferences.Set("use_server", Address);
+
+            //if (nameof(SettingsViewModel.Alias) == null)
+            //  return;
+
+
+
+            Preferences.Set(Constants.CurrentServer, s.Address);
+            ///if ewe know what server then
+            //else              
+            //foreach (var server in Servers)
+            //{
+            //    if (nameof(SettingsViewModel.Alias) == server.Alias)
+            //    {
+                    
+
+            //    }
+            //}
         }
         private void loadServers()
         {
-            var listServers = Preferences.Get("servers", "");
+            var listServers = Preferences.Get(Constants.RecentlyUsedServers, null);
+            if (listServers== null)
+            {
+                return;
+            }
+
             var temp = JsonConvert.DeserializeObject<List<Server>>(listServers);
             foreach (var server in temp)
             {
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
+
+        //[ICommand]
+
+        //public void AliasTapped ()
+        //{
+        //    Preferences.Get("use_server", true);
+
+        //}
+
 
 
     }

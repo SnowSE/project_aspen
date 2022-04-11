@@ -6,6 +6,8 @@ public class EventController : ControllerBase
 {
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
+    private readonly ILogger<EventController> logger;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -13,15 +15,17 @@ public class EventController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public EventController(IEventRepository eventRepository, IMapper mapper)
+    public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> logger)
     {
         this.eventRepository = eventRepository;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     [HttpGet]
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
+        logger.LogInformation("Getting all events");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }
 

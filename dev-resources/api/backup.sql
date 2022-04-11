@@ -16,35 +16,37 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "FK_Teams_Persons_OwnerID";
-ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "FK_Teams_Events_EventID";
-ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "FK_Registrations_Teams_TeamID";
-ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "FK_Registrations_Persons_OwnerID";
-ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "FK_PersonRegistrations_Registrations_RegistrationID";
-ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "FK_PersonRegistrations_Persons_PersonID";
-DROP INDEX public."IX_Teams_OwnerID";
-DROP INDEX public."IX_Teams_EventID";
-DROP INDEX public."IX_Registrations_TeamID";
-DROP INDEX public."IX_Registrations_OwnerID";
-DROP INDEX public."IX_PersonRegistrations_RegistrationID";
-DROP INDEX public."IX_PersonRegistrations_PersonID";
-ALTER TABLE ONLY public."__EFMigrationsHistory" DROP CONSTRAINT "PK___EFMigrationsHistory";
-ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "PK_Teams";
-ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "PK_Registrations";
-ALTER TABLE ONLY public."Persons" DROP CONSTRAINT "PK_Persons";
-ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "PK_PersonRegistrations";
-ALTER TABLE ONLY public."PageData" DROP CONSTRAINT "PK_PageData";
-ALTER TABLE ONLY public."Events" DROP CONSTRAINT "PK_Events";
-DROP TABLE public."__EFMigrationsHistory";
-DROP TABLE public."Teams";
-DROP TABLE public."Registrations";
-DROP TABLE public."Persons";
-DROP TABLE public."PersonRegistrations";
-DROP TABLE public."PageData";
-DROP TABLE public."Events";
+-- ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "FK_Teams_Persons_OwnerID";
+-- ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "FK_Teams_Events_EventID";
+-- ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "FK_Registrations_Teams_TeamID";
+-- ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "FK_Registrations_Persons_OwnerID";
+-- ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "FK_PersonRegistrations_Registrations_RegistrationID";
+-- ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "FK_PersonRegistrations_Persons_PersonID";
+-- DROP INDEX public."IX_Teams_OwnerID";
+-- DROP INDEX public."IX_Teams_EventID";
+-- DROP INDEX public."IX_Registrations_TeamID";
+-- DROP INDEX public."IX_Registrations_OwnerID";
+-- DROP INDEX public."IX_PersonRegistrations_RegistrationID";
+-- DROP INDEX public."IX_PersonRegistrations_PersonID";
+-- ALTER TABLE ONLY public."__EFMigrationsHistory" DROP CONSTRAINT "PK___EFMigrationsHistory";
+-- ALTER TABLE ONLY public."Teams" DROP CONSTRAINT "PK_Teams";
+-- ALTER TABLE ONLY public."Registrations" DROP CONSTRAINT "PK_Registrations";
+-- ALTER TABLE ONLY public."Persons" DROP CONSTRAINT "PK_Persons";
+-- ALTER TABLE ONLY public."PersonRegistrations" DROP CONSTRAINT "PK_PersonRegistrations";
+-- ALTER TABLE ONLY public."PageData" DROP CONSTRAINT "PK_PageData";
+-- ALTER TABLE ONLY public."Events" DROP CONSTRAINT "PK_Events";
+-- DROP TABLE public."__EFMigrationsHistory";
+-- DROP TABLE public."Teams";
+-- DROP TABLE public."Registrations";
+-- DROP TABLE public."Persons";
+-- DROP TABLE public."PersonRegistrations";
+-- DROP TABLE public."PageData";
+-- DROP TABLE public."Events";
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+CREATE USER aspen;
 
 --
 -- Name: Events; Type: TABLE; Schema: public; Owner: aspen
