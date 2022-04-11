@@ -4,7 +4,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Essentials;
@@ -87,14 +86,16 @@ namespace AspenMobile.ViewModels
 
 
 
+
+
             Preferences.Set(Constants.CurrentServer, s.Address);
             ///if ewe know what server then
-            //else              
+            //else
             //foreach (var server in Servers)
             //{
             //    if (nameof(SettingsViewModel.Alias) == server.Alias)
             //    {
-                    
+
 
             //    }
             //}
@@ -102,7 +103,7 @@ namespace AspenMobile.ViewModels
         private void loadServers()
         {
             var listServers = Preferences.Get(Constants.RecentlyUsedServers, null);
-            if (listServers== null)
+            if (listServers == null)
             {
                 return;
             }
