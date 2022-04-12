@@ -2,6 +2,8 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:AspenMobile.Views"
+       xmlns:viewmodels="clr-namespace:AspenMobile.ViewModels"
+       x:DataType="viewmodels:LoginViewModel"
        Title="AspenMobile"
        x:Class="AspenMobile.AppShell">
 
@@ -107,10 +109,12 @@
         <ShellContent Route="AboutPage"
                       ContentTemplate="{DataTemplate local:AboutPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Login"
+
+    <FlyoutItem Title="{Binding LoginStatus}"
                 Icon="icon_about.png">
         <ShellContent Route="LoginPage"
-                      ContentTemplate="{DataTemplate local:LoginPage}" />
+                      ContentTemplate="{DataTemplate local:LoginPage}"
+/>
     </FlyoutItem>
     <FlyoutItem Title="Settings"
                 Icon="icon_about.png">

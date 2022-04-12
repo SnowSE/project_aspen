@@ -20,7 +20,7 @@ namespace AspenMobile.ViewModels
 
         public LoginViewModel()
         {
-            Title = "Aspen Login!";
+            //Title = "Aspen Login!";
 
             var browser = DependencyService.Get<IBrowser>();
             var options = new OidcClientOptions
@@ -48,8 +48,12 @@ namespace AspenMobile.ViewModels
         public Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(() => new HttpClient());
         public string accessToken;
 
-        [ObservableProperty] private string title;
-        [ObservableProperty] private string outputText;
+        [ObservableProperty]
+        public string loginStatus;
+        [ObservableProperty]
+        public string title;
+        [ObservableProperty]
+        private string outputText;
 
         [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))]
         private bool canLogIn;
@@ -72,6 +76,7 @@ namespace AspenMobile.ViewModels
             }
             CanLogIn = true;
             IsAdmin = false;
+            LoginStatus = "Login";
         }
 
 
@@ -98,7 +103,7 @@ namespace AspenMobile.ViewModels
                 }
 
                 CanLogIn = false;
-
+                LoginStatus = "Logout";
                 if (_apiClient.Value.DefaultRequestHeaders.Authorization == null)
                 {
                     _apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
@@ -129,6 +134,7 @@ namespace AspenMobile.ViewModels
                 if ((jwtSecurityToken.ValidTo - DateTime.Now.ToUniversalTime()) > TimeSpan.Zero)
                 {
                     IsAdmin = IsTokenAdmin(accessToken);
+                    LoginStatus = "Login";
                 }
                 else
                 {
