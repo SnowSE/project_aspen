@@ -18,4 +18,6 @@ usermod -aG docker ubuntu
 # Add PATH
 printf "\nexport PATH=\$PATH:$MY_HOME/.local/bin\n" >> $MY_HOME/.bashrc
 
+docker run -d -p 9200:9200 -p 5601:5601 nshou/elasticsearch-kibana
+
 exit 0

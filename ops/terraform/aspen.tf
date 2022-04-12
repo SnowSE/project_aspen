@@ -191,8 +191,6 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     admin_password                  = "Password1234!"
     # custom_data                     = file("scripts/install.sh")
 
-    
-
     disable_password_authentication = false
 
     boot_diagnostics {
@@ -206,8 +204,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
     provisioner "remote-exec" {
       inline = [
-        "chmod +x /tmp/install.sh",
-        "/tmp/install.sh args",
+        "/tmp/install.sh"
       ]
     }
 }
