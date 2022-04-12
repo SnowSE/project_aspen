@@ -109,13 +109,7 @@
         <ShellContent Route="AboutPage"
                       ContentTemplate="{DataTemplate local:AboutPage}" />
     </FlyoutItem>
-
-    <FlyoutItem Title="{Binding LoginStatus}"
-                Icon="icon_about.png">
-        <ShellContent Route="LoginPage"
-                      ContentTemplate="{DataTemplate local:LoginPage}"
-/>
-    </FlyoutItem>
+    
     <FlyoutItem Title="Settings"
                 Icon="icon_about.png">
         <ShellContent Route="SettingsPage"
@@ -128,10 +122,10 @@
     </FlyoutItem>
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-    <!--<MenuItem Text="Logout"
+    <MenuItem Text="{Binding LoginStatus}"
               StyleClass="MenuItemLayoutStyle"
               Clicked="OnMenuItemClicked">
-    </MenuItem>-->
+    </MenuItem>
 
     <!--
         TabBar lets you define content that won't show up in a flyout menu. When this content is active

@@ -76,7 +76,7 @@ namespace AspenMobile.ViewModels
             }
             CanLogIn = true;
             IsAdmin = false;
-            LoginStatus = "Login";
+            LoginStatus = "Log In";
         }
 
 
@@ -103,7 +103,7 @@ namespace AspenMobile.ViewModels
                 }
 
                 CanLogIn = false;
-                LoginStatus = "Logout";
+                LoginStatus = "Log Out";
                 if (_apiClient.Value.DefaultRequestHeaders.Authorization == null)
                 {
                     _apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
@@ -134,7 +134,7 @@ namespace AspenMobile.ViewModels
                 if ((jwtSecurityToken.ValidTo - DateTime.Now.ToUniversalTime()) > TimeSpan.Zero)
                 {
                     IsAdmin = IsTokenAdmin(accessToken);
-                    LoginStatus = "Login";
+                    LoginStatus = "Log Out";
                 }
                 else
                 {

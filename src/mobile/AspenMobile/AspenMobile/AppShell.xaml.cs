@@ -8,11 +8,10 @@ namespace AspenMobile
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
-        private readonly LoginViewModel viewModel;
+        private LoginViewModel viewModel;
         public AppShell()
         {
             BindingContext = viewModel = new LoginViewModel();
-            _ = viewModel.CheckTokenIsLiveAsync();
             InitializeComponent();
             Routing.RegisterRoute(nameof(EventsPage), typeof(EventsPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
@@ -20,13 +19,14 @@ namespace AspenMobile
             Routing.RegisterRoute(nameof(EventPage), typeof(EventPage));
 
         }
-        protected override async void OnAppearing()
+        protected override async void OnBindingContextChanged()
         {
             await viewModel.OnAppearingAsync();
         }
-        //private async void OnMenuItemClicked(object sender, EventArgs e)
-        //{
-        //    await Shell.Current.GoToAsync("//LoginPage");
-        //}
+        private async void OnMenuItemClicked(object sender, EventArgs e)
+        {
+
+            await Shell.Current.GoToAsync("LoginPage");
+        }
     }
 }
