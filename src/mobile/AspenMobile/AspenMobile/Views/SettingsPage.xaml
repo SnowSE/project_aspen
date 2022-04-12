@@ -10,6 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
+
         <StackLayout>
             <Button Margin="0,10,0,0"
                     Text="Add New Server"

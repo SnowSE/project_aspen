@@ -15,7 +15,7 @@ namespace AspenMobile.Views
 
         protected override async void OnAppearing()
         {
-            await viewModel.OnAppearingAsync();
+            await viewModel.CheckTokenIsLiveAsync();
         }
     }
 }

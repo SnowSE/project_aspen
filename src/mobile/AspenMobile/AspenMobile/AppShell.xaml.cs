@@ -21,7 +21,7 @@ namespace AspenMobile
         }
         protected override async void OnBindingContextChanged()
         {
-            await viewModel.OnAppearingAsync();
+            await viewModel.CheckTokenIsLiveAsync();
         }
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {

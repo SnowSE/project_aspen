@@ -38,10 +38,6 @@ namespace AspenMobile.ViewModels
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
         }
 
-        internal async Task OnAppearingAsync()
-        {
-            await CheckTokenIsLiveAsync();
-        }
 
         public OidcClient client;
         public LoginResult _result;

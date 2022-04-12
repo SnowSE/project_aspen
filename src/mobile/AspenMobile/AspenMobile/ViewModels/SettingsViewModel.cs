@@ -4,8 +4,10 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -13,7 +15,6 @@ namespace AspenMobile.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
-
         public ObservableCollection<Server> Servers { get; }
         public SettingsViewModel()
         {
@@ -50,24 +51,27 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public void AddNewServer()
+        public async void AddNewServer()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
             newserver.Address = serverAddress;
             Servers.Add(newserver);
 
-            ShowAddControls = false;
-            ShowAddButton = true;
+            ResetPage();
             var json = JsonConvert.SerializeObject(Servers);
-            Preferences.Set("servers", json);
+            Preferences.Set(Constants.RecentlyUsedServers, json);
+            if(Servers.Count == 1)
+            {
+                Preferences.Set(Constants.CurrentServer, Servers[0].Address);
+                await Shell.Current.GoToAsync("//HomePage");
+            }
 
         }
         [ICommand]
-        private async void OnCancel()
+        private void OnCancel()
         {
-            // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            ResetPage();
         }
 
         [ICommand]
@@ -78,27 +82,11 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        public void SetServer(Server s)
+        public async void SetServer(Server s)
         {
-
-            //if (nameof(SettingsViewModel.Alias) == null)
-            //  return;
-
-
-
-
-
             Preferences.Set(Constants.CurrentServer, s.Address);
-            ///if ewe know what server then
-            //else
-            //foreach (var server in Servers)
-            //{
-            //    if (nameof(SettingsViewModel.Alias) == server.Alias)
-            //    {
-
-
-            //    }
-            //}
+            await Shell.Current.GoToAsync("//HomePage");
+            
         }
         private void loadServers()
         {
@@ -114,15 +102,20 @@ namespace AspenMobile.ViewModels
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
-
-        //[ICommand]
-
-        //public void AliasTapped ()
-        //{
-        //    Preferences.Get("use_server", true);
-
-        //}
-
+        private void ResetPage()
+        {
+            ShowAddControls = false;
+            ShowAddButton = true;
+            ServerAlias = null;
+            ServerAddress = null;
+        }
+        internal async Task OnAppearingAsync()
+        {
+            if(Servers.Count == 0)
+            {
+            await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
+            }
+        }
 
 
     }
