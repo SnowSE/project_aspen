@@ -54,7 +54,7 @@ resource "azurerm_postgresql_firewall_rule" "api_db_access" {
 }
 
 ##############################################################################
-# ElasticSearch and Kibana
+# ElasticSearch and Kibana VM
 ##############################################################################
 
 # Create virtual network
@@ -146,28 +146,37 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
-  name                     = "diag${random_id.randomId.hex}"
+  name                     = "diag${random_id.id.hex}"
   location                 = azurerm_resource_group.aspenrg.location
   resource_group_name      = azurerm_resource_group.aspenrg.name
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
+# module "container-server" {
+#   source = "../.."
+
+#   domain = "app.${var.domain}"
+#   email  = var.email
+
+#   container = {
+#     image = "nginxdemos/hello"
+#   }
+# }
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "Aspen-Telemetry${random_id.randomId.hex}"
+    name                  = "Aspen-Telemetry${random_id.id.hex}"
     location              = azurerm_resource_group.aspenrg.location
     resource_group_name   = azurerm_resource_group.aspenrg.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B2s"
 
     os_disk {
-      name                 = "myOsDisk${random_id.randomId.hex}"
-      osType               ="Linux"
+      name                 = "myOsDisk${random_id.id.hex}"
       caching              = "ReadWrite"
-      diskSizeGB           = 30
-      storage_account_type = "Premium_LRS"
+      disk_size_gb         = "30"
+      storage_account_type = "StandardSSD_LRS"
     }
 
     source_image_reference {
@@ -180,24 +189,30 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     computer_name                   = "aspen-telemetry-vm"
     admin_username                  = "azureuser"
     admin_password                  = "Password1234!"
-    disablePasswordAuthentication   = false
+    # custom_data                     = file("scripts/install.sh")
+
+    
+
+    disable_password_authentication = false
 
     boot_diagnostics {
       storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 
-    # provisioner "file" {
-    #   source      = "staging/"
-    #   destination = "/app"
-    # }
+    provisioner "file" {
+      source      = "/scripts/install.sh"
+      destination = "/tmp/install.sh"
+    }
 
-    # provisioner "remote-exec" {
-    #   inline = [
-    #     "cd /app",
-    #     "docker-compose up",
-    #   ]
-    # }
+    provisioner "remote-exec" {
+      inline = [
+        "chmod +x /tmp/install.sh",
+        "/tmp/install.sh args",
+      ]
+    }
 }
+
+##https://github.com/pershoot/terraform_azure_myweb/blob/master/vm.tf
 
 ##############################################################################
 # App Service
