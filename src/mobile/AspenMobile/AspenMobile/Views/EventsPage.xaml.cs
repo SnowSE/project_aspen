@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AspenMobile.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +19,7 @@ namespace AspenMobile.Views
         public EventsPage()
         {
             InitializeComponent();
+            BindingContext = new Events();
         }
     }
 }

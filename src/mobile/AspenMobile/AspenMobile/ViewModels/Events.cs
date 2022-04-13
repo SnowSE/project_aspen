@@ -1,92 +1,93 @@
-﻿using IdentityModel.OidcClient;
+﻿using AspenMobile.GlobalConstants;
+using AspenMobile.Views;
+using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using shared.DtoModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    /*public partial class Events : ObservableObject
+    public partial class Events : ObservableObject
     {
+        private readonly HttpClient httpClient = new();
+        private string current;
+
+
         public Events()
         {
+            current = Preferences.Get(Constants.CurrentServer, null);
+            if (current == null)
+            {
+                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+            }
 
             var browser = DependencyService.Get<IBrowser>();
             var options = new OidcClientOptions
             {
-                Authority = "https://engineering.snow.edu/aspen/auth/realms/aspen",
+                Authority = $"{current}/aspen/auth/realms/aspen",
                 ClientId = "aspen-web",
                 Scope = "profile email api-use",
                 RedirectUri = "xamarinformsclients://callback",
                 Browser = browser
             };
 
-            _client = new OidcClient(options);
-            _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
+            client = new OidcClient(options);
+            apiClient.Value.BaseAddress = new Uri($"{current}/aspen/");
 
             OutputText = "Ready to go!";
         }
 
-        OidcClient _client;
-        LoginResult _result;
-        Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(() => new HttpClient());
+        private OidcClient client;
+        private LoginResult result;
+        private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
 
         [ObservableProperty]
         private string outputText;
 
-        [ICommand]
-        [Authorize]
-        private async Task GetEvent()
-        {
-            try
-            {
-                //var result = await _apiClient.Value.GetAsync("https://aspen-api-082f35.azurewebsites.net/api/events");
-                //var result = await _apiClient.Value.GetAsync("https://aspen-api-29ed48.azurewebsites.net/api/events");
-                var result = await _apiClient.Value.GetAsync("api/events");
+        public ObservableCollection<DtoEvent> AllEvents { get; set; } = new();
 
-                if (result.IsSuccessStatusCode)
-                {
-                    OutputText = JsonDocument.Parse(await result.Content.ReadAsStringAsync()).RootElement.ToString();
-                }
-                else
-                {
-                    OutputText = result.ToString();
-                }
-            }
-            catch (Exception ex)
+        [ICommand]
+        public async Task GetAllEvents()
+        {
+            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
+
+            foreach (var item in allEvents)
             {
-                OutputText = ex.ToString();
+                AllEvents.Add(item);
             }
         }
 
         [ICommand]
-        [Authorize]
-        private async Task PostEvent()
+        public async Task CreateNewEvent()
         {
-            var result = await _apiClient.Value.GetAsync("api/events");
-
-            "date": "2022-04-08T20:29:01.315Z",
-                "title": "string",
-                "location": "string",
-                "description": "string",
-                "primaryImageUrl": "string",
-                "donationTarget": 0
+            await Shell.Current.GoToAsync($"{nameof(CreateNewEventPage)}");
         }
 
         [ICommand]
         [Authorize]
-        private async Task DeleteEvent(int id)
+        private async Task EditEvent()
         {
-            var result = await _apiClient.Value.GetAsync("api/events/{id}");
-            result.Content.Dispose();
+            await Shell.Current.GoToAsync($"{nameof(EditEventPage)}");
         }
 
-    }*/
+        [ICommand]
+        [Authorize]
+        private async Task DeleteEvent()
+        {
+
+        }
+
+    }
 }

@@ -1,32 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AspenMobile.Views.TeamPage"
-             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
-             xmlns:model="clr-namespace:AspenMobile.Models">
-    <ContentPage.BindingContext>
-        <vm:TeamDetailViewModel />
-    </ContentPage.BindingContext>
+             x:Class="AspenMobile.Views.TeamPage">
+    <ContentPage.Content>
 
-    <CollectionView >
-        <CollectionView.ItemTemplate>
-        <DataTemplate>
-            <StackLayout Padding="10">
-                <Label Text="{Binding TeamName}"
-                       LineBreakMode="NoWrap"
-                       FontSize="16" />
-
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                              Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TeamDetailViewModel }}, Path=GetTeamInfoCommand}"
-                                          CommandParameter="{Binding . }">
-                    </TapGestureRecognizer>
-                </StackLayout.GestureRecognizers>
-
-            </StackLayout>
-        </DataTemplate>
-    </CollectionView.ItemTemplate>
-    </CollectionView>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding TeamInfoList}"
+                            HorizontalOptions="Center">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Center">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="70" />
+                                    <RowDefinition Height="60" />
+                                    <RowDefinition Height="60" />
+                                    <RowDefinition Height="100" />
+                                    <RowDefinition Height="80" />
+                                </Grid.RowDefinitions>
 
 
+
+                                <Label Text="{Binding Name}"
+                                       Grid.Row="0"
+                                       HorizontalOptions="Center"
+                                       FontSize="Large" />
+                                <Label Text="{Binding ID}"
+                                       Grid.Row="1"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding Description}"
+                                       Grid.Row="2"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding }"
+                                       Grid.Row="3"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding DonationTarget}"
+                                       Grid.Row="4"
+                                       HorizontalOptions="Center"
+                                       FontSize="Medium" />
+
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+
+    </ContentPage.Content>
 </ContentPage>
