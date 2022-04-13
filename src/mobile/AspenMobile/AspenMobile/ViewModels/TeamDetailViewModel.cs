@@ -71,8 +71,8 @@ namespace AspenMobile.ViewModels
                     team.EventID = eventID;
                     team.DonationTarget = donationTarget;
                     team.ID = teamId;
-                            
 
+                    TeamInfoList.Add(team);
                 }
             }
              
@@ -85,7 +85,7 @@ namespace AspenMobile.ViewModels
             //team.DonationTarget = donationTarget;
             ////team.TeamDescription = teamDescription;
             //team.MainImage = mainImage;
-            //TeamInfoList.Add(team);
+           
 
             //var theTeam = Preferences.Get(Constants.TeamInfo, TeamInfoList);
 
