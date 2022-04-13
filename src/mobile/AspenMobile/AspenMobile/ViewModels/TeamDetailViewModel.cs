@@ -14,12 +14,12 @@ namespace AspenMobile.ViewModels
 {
     public partial class TeamDetailViewModel : ObservableObject
     {
-        public ObservableCollection<Team> TeamList { get; }
+        public ObservableCollection<Team> TeamInfoList { get; }
 
         public TeamDetailViewModel()
         {
             // var teams = new ObservableCollection<Team>();
-            TeamList = new ObservableCollection<Team>();
+            TeamInfoList = new ObservableCollection<Team>();
 
         }
 
@@ -39,13 +39,26 @@ namespace AspenMobile.ViewModels
         private double donationTarget;
 
         [ICommand]
-        public void GetTeamInfo(Team teamInfo)
+        public async void GetTeamInfo(Team teamInfo)
         {
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetStringAsync()
+            var team = JsonConvert.SerializeObject(TeamInfoList);
+
             // var TeamInfo = Preferences.Get("TheTeam", null);
-            var team = new Team();
+           // var team = new Team();
 
 
             team.TeamName = teamName;
+            team.TeamDescription = teamDescription;
+            team.OwnerID = ownerID;
+            team.EventID = eventID;
+            team.DonationTarget = donationTarget;
+            team.TeamInfo = teamInfo;
+            team.MainImage = mainImage;
+            team.TeamId=teamId;
+            TeamInfoList.Add(team);
+
             //if (teamInfo == null)
             //{
             //    return;
@@ -66,7 +79,7 @@ namespace AspenMobile.ViewModels
             //{
             //    return;
             //}
-            //Preferences.Get("MyTeam",{(teamInfo.teamName = teamName), (teamInfo.teamId=teamId }))
+          //  Preferences.Get("MyTeam",{(teamInfo.teamName = teamName), (teamInfo.teamId=teamId) })
 
         }
 
