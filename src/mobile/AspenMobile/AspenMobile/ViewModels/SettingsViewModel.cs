@@ -78,6 +78,7 @@ namespace AspenMobile.ViewModels
         public void ClearServers()
         {
             Servers.Clear();
+
             Preferences.Clear(Constants.CurrentServer);
             Preferences.Clear(Constants.RecentlyUsedServers);
         }
