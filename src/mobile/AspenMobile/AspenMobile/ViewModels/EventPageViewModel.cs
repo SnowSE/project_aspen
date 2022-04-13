@@ -11,32 +11,18 @@ using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    [QueryProperty(nameof(EventId), nameof(EventId))]
 
     public partial class EventPageViewModel : ObservableObject
     {
-        private readonly HttpClient httpClient = new();
+        /*private readonly HttpClient httpClient = new();
+        private string current;
         public EventPageViewModel()
         {
-
+            Preferences.Set(Constants.CurrentEventId, "4");
+            DisplayEventAsync(4);
         }
 
-        public int eventId;
-        private string current;
-
-        public int EventId
-        {
-            get
-            {
-                return eventId;
-            }
-            set
-            {
-                eventId = value;
-                Preferences.Set(Constants.CurrentEventId, value.ToString());
-                DisplayEventAsync(value);
-            }
-        }
+            
 
 
 
@@ -63,6 +49,6 @@ namespace AspenMobile.ViewModels
             }
             var test = Preferences.Get(Constants.CurrentEventId, null);
 
-        }
+        }*/
     }
 }
