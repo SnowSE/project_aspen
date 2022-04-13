@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AspenMobile.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,12 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace AspenMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EventsPage : ContentPage
+    public partial class CreateNewEventPage : ContentPage
     {
-        public EventsPage()
+        public CreateNewEventPage()
         {
             InitializeComponent();
-            BindingContext = new Events();
         }
     }
 }

@@ -1,25 +1,30 @@
 ﻿using AspenMobile.GlobalConstants;
 using AspenMobile.Models;
+using AspenMobile.Views;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Net;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System;
 
 namespace AspenMobile.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
-
+        private readonly HttpClient httpClient = new();
         public ObservableCollection<Server> Servers { get; }
         public SettingsViewModel()
         {
             Title = "Settings";
             ShowAddControls = false;
             ShowAddButton = true;
+            ShowAddServerError = false;
             Servers = new ObservableCollection<Server>();
             loadServers();
 
@@ -42,6 +47,8 @@ namespace AspenMobile.ViewModels
         [ObservableProperty]
         private string selectedServer;
 
+        [ObservableProperty]
+        private bool showAddServerError;
 
         [ICommand]
         public void EnterNewServer()
@@ -78,27 +85,26 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        public void SetServer(Server s)
+        public async void SetServerAsync(Server s)
         {
+            
+            var test = await httpClient.GetAsync($"{s.Address}/api/events");
+            if (test.StatusCode == HttpStatusCode.OK)
+            {
+                Preferences.Set(Constants.CurrentServer, s.Address);
+                ShowAddServerError = false;
 
-            //if (nameof(SettingsViewModel.Alias) == null)
-            //  return;
+                Shell.Current.GoToAsync($"{nameof(HomePage)}");
+            }
+            else
+            {
+                ShowAddServerError = true;
+                
+            }
 
+            
+            
 
-
-
-
-            Preferences.Set(Constants.CurrentServer, s.Address);
-            ///if ewe know what server then
-            //else
-            //foreach (var server in Servers)
-            //{
-            //    if (nameof(SettingsViewModel.Alias) == server.Alias)
-            //    {
-
-
-            //    }
-            //}
         }
         private void loadServers()
         {
@@ -114,14 +120,6 @@ namespace AspenMobile.ViewModels
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
-
-        //[ICommand]
-
-        //public void AliasTapped ()
-        //{
-        //    Preferences.Get("use_server", true);
-
-        //}
 
 
 
