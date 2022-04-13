@@ -4,19 +4,12 @@
              x:Class="AspenMobile.Views.HomePage"
              xmlns:vm="clr-namespace:AspenMobile.ViewModels"
              Title="{Binding Title}">
-
-
     <StackLayout>
-
-        <Label Text="{Binding Test}"/>
-        <Button  Command="{Binding GetAllEventsCommand}" Text="All Events"/>
         <Button Command="{Binding CreateATeamCommand}" Text="Create A New Team"/>
-        <CollectionView ItemsSource="{Binding Events}" HorizontalOptions="Center">
+        <CollectionView ItemsSource="{Binding Event}" HorizontalOptions="Center">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout HorizontalOptions="Center">
-                        
-
                             <Label Text="{Binding Title}"  HorizontalOptions="Center" FontSize="Large"/>
                             <Label Text="{Binding Date}"  HorizontalOptions="Center"/>
                             <Label Text="{Binding Location}"  HorizontalOptions="Center"/>
@@ -24,13 +17,12 @@
                             <Label Text="{Binding DonationTarget}"  HorizontalOptions="Center" FontSize="Medium"/>
 
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer 
+                                <TapGestureRecognizer
                                 NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectEventCommand}"		
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectEventCommand}"
                                 CommandParameter="{Binding .}">
                                 </TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
-
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -56,6 +48,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
     </StackLayout>
-    
+
 
 </ContentPage>
