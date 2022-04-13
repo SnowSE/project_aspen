@@ -10,7 +10,8 @@
 
 
         <Label Text="{Binding Test}"/>
-        <Button  Command="{Binding GetAllEventsCommand}"/>
+        <Button  Command="{Binding GetAllEventsCommand}" Text="All Events"/>
+        <Button Command="{Binding CreateATeamCommand}" Text="Create A New Team"/>
         <CollectionView ItemsSource="{Binding Events}" HorizontalOptions="Center">
             <CollectionView.ItemTemplate>
                 <DataTemplate>

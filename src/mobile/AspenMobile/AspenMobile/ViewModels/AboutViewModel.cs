@@ -52,5 +52,11 @@ namespace AspenMobile.ViewModels
             //await Shell.Current.GoToAsync($"{nameof(TaskDetailPage)}?{nameof(EventViewModel.ItemId)}={item.ID}");
 
         }
+
+        [ICommand]
+        public async void CreateATeam()
+        {
+            await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+        }
     }
 }

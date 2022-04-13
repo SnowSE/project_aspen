@@ -117,10 +117,10 @@
         <ShellContent Route="SettingsPage"
                       ContentTemplate="{DataTemplate local:SettingsPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Event"
+    <FlyoutItem Title="Events"
                 Icon="icon_about.png">
-        <ShellContent Route="EventPage"
-                      ContentTemplate="{DataTemplate local:EventPage}" />
+        <ShellContent Route="EventsPage"
+                      ContentTemplate="{DataTemplate local:EventsPage}" />
     </FlyoutItem>
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
