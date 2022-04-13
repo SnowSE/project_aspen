@@ -37,6 +37,8 @@
   <ItemGroup>
     <Compile Update="Views\EventsPage.xaml.cs">
       <DependentUpon>EventsPage.xaml</DependentUpon>
+    <Compile Update="Views\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
