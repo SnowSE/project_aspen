@@ -48,7 +48,7 @@ namespace AspenMobile.ViewModels
             Event.Add(closestEvent);
 
 
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"https://aspen-api-a24a3b.azurewebsites.net/api/teams/event/{closestEvent.ID}");
+            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
 
             foreach (var team in teams)
             {
@@ -58,7 +58,7 @@ namespace AspenMobile.ViewModels
 
         public async Task<DtoEvent> GetClosestEventAsync()
         {
-            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"https://aspen-api-a24a3b.azurewebsites.net/api/events");
+            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             DtoEvent closestEvent = new DtoEvent();
             double prev = 0;
