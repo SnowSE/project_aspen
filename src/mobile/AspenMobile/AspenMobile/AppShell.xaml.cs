@@ -1,4 +1,6 @@
-﻿using AspenMobile.Views;
+﻿using AspenMobile.ViewModels;
+using AspenMobile.Views;
+using System;
 using Xamarin.Forms;
 
 namespace AspenMobile

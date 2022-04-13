@@ -107,20 +107,15 @@ Custom Style you can apply to any Flyout Item
         </ResourceDictionary>
     </Shell.Resources>
 
-    <!-- 
+    <!--
         When the Flyout is visible this defines the content to display in the flyout.
-        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
+        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
     <FlyoutItem Title="Home"
                 Icon="icon_about.png">
         <ShellContent Route="HomePage"
                       ContentTemplate="{DataTemplate local:HomePage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Login"
-                Icon="icon_about.png">
-        <ShellContent Route="LoginPage"
-                      ContentTemplate="{DataTemplate local:LoginPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Events"
                 Icon="icon_about.png">
