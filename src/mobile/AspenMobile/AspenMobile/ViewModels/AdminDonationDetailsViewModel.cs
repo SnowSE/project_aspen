@@ -1,22 +1,22 @@
 ﻿using AspenMobile.GlobalConstants;
-using AspenMobile.Views;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
     [QueryProperty(nameof(EventId), nameof(EventId))]
-
-    public partial class EventPageViewModel : ObservableObject
+    public class AdminDonationDetailsViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
-        public EventPageViewModel()
+        public AdminDonationDetailsViewModel()
         {
 
         }
@@ -37,31 +37,26 @@ namespace AspenMobile.ViewModels
                 DisplayEventAsync(value);
             }
         }
+        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
 
+        private void DisplayEventAsync(int value)
+        {
+            throw new NotImplementedException();
+        }
 
-
-        public ObservableCollection<DtoEvent> Event { get; set; } = new();
-        public ObservableCollection<DtoTeam> Teams { get; set; } = new();
-
-
-        public async void DisplayEventAsync(int eventId)
+        public async void DisplayDonationAsync(int eventId)
         {
             current = Preferences.Get(Constants.CurrentServer, null);
-            if (current == null)
-            {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            }
 
             var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
-            Event.Add(currentEvent);
 
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{currentEvent.ID}");
+            var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
 
-            foreach (var team in teams)
-            {
-                Teams.Add(team);
-            }
-            var test = Preferences.Get(Constants.CurrentEventId, null);
+             foreach (var donation in donationDetails)
+             {
+                 Donations.Add(donation);
+             }
+            // var test = Preferences.Get(Constants.CurrentEventId, null);
 
         }
     }
