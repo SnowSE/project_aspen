@@ -43,7 +43,7 @@ namespace AspenMobile.ViewModels
 
         public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
-        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
+        
 
 
         public async void DisplayEventAsync(int eventId)

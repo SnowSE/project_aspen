@@ -3,6 +3,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -36,6 +37,7 @@ namespace AspenMobile.ViewModels
                 DisplayEventAsync(value);
             }
         }
+        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
 
         private void DisplayEventAsync(int value)
         {
@@ -50,10 +52,10 @@ namespace AspenMobile.ViewModels
 
             var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
 
-            // foreach (var donation in donationDetails)
-            // {
-            //     Donations.Add(donation);
-            // }
+             foreach (var donation in donationDetails)
+             {
+                 Donations.Add(donation);
+             }
             // var test = Preferences.Get(Constants.CurrentEventId, null);
 
         }
