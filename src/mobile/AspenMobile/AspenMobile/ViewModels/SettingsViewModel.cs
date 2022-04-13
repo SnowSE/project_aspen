@@ -5,10 +5,12 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System;
@@ -57,30 +59,35 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public void AddNewServer()
+        public async void AddNewServer()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
             newserver.Address = serverAddress;
             Servers.Add(newserver);
 
-            ShowAddControls = false;
-            ShowAddButton = true;
+            ResetPage();
             var json = JsonConvert.SerializeObject(Servers);
-            Preferences.Set("servers", json);
+            Preferences.Set(Constants.RecentlyUsedServers, json);
+            if(Servers.Count == 1)
+            {
+                Preferences.Set(Constants.CurrentServer, Servers[0].Address);
+                await Shell.Current.GoToAsync("//HomePage");
+            }
 
         }
         [ICommand]
-        private async void OnCancel()
+        private void OnCancel()
         {
-            // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            ResetPage();
         }
 
         [ICommand]
         public void ClearServers()
         {
             Servers.Clear();
+
+            Preferences.Clear(Constants.CurrentServer);
             Preferences.Clear(Constants.RecentlyUsedServers);
         }
 
@@ -120,7 +127,20 @@ namespace AspenMobile.ViewModels
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
-
+        private void ResetPage()
+        {
+            ShowAddControls = false;
+            ShowAddButton = true;
+            ServerAlias = null;
+            ServerAddress = null;
+        }
+        internal async Task OnAppearingAsync()
+        {
+            if(Servers.Count == 0)
+            {
+            await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
+            }
+        }
 
 
     }
