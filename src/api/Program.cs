@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using System.Reflection;
 
 namespace Api;
 
@@ -39,14 +39,6 @@ public class Program
                     optional: true)
                 .Build();
 
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Debug()
-                .WriteTo.Console()
-                .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment))
-                .Enrich.WithProperty("Environment", environment)
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
         }
 
     private static void dumpLogs(IServiceScope scope, AspenContext db)
