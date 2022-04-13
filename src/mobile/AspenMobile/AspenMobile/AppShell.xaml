@@ -105,40 +105,36 @@ Custom Style you can apply to any Flyout Item
         </ResourceDictionary>
     </Shell.Resources>
 
-
-
-    <!--
-When the Flyout is visible this defines the content to display in the flyout.
-FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element
-https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
--->
-    <FlyoutItem Title="About"
+    <!-- 
+        When the Flyout is visible this defines the content to display in the flyout.
+        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
+        https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
+    -->
+    <FlyoutItem Title="Home"
                 Icon="icon_about.png">
-        <ShellContent Route="AboutPage"
-                      ContentTemplate="{DataTemplate local:AboutPage}" />
+        <ShellContent Route="HomePage"
+                      ContentTemplate="{DataTemplate local:HomePage}" />
     </FlyoutItem>
     <FlyoutItem Title="Login"
                 Icon="icon_about.png">
         <ShellContent Route="LoginPage"
                       ContentTemplate="{DataTemplate local:LoginPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Settings"
+    <FlyoutItem Title="Events"
+                Icon="icon_about.png">
+        <ShellContent Route="EventsPage"
+                      ContentTemplate="{DataTemplate local:EventsPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Server Settings"
                 Icon="icon_about.png">
         <ShellContent Route="SettingsPage"
                       ContentTemplate="{DataTemplate local:SettingsPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Event"
-                Icon="icon_about.png">
-        <ShellContent Route="EventPage"
-                      ContentTemplate="{DataTemplate local:EventPage}" />
-    </FlyoutItem>
     <FlyoutItem Title="TeamDetail"
-                Icon="icon_about.png">
-        <ShellContent Route="TeamPage"
-                      ContentTemplate="{DataTemplate local:TeamPage}" />
+            Icon="icon_about.png">
+    <ShellContent Route="TeamPage"
+                    ContentTemplate="{DataTemplate local:TeamPage}" />
     </FlyoutItem>
-
-
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to -->
     <!--<MenuItem Text="Logout"
