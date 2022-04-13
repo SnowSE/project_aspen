@@ -6,15 +6,31 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using System.Reflection;
 
 namespace Api;
 
 public class Startup
 {
+    private readonly IConfiguration config;
     private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration config)
     {
-        Configuration = configuration;
+        this.config = config ?? throw new ArgumentNullException(nameof(config));
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+        Log.Logger = (Serilog.ILogger)new LoggerConfiguration()
+        .WriteTo.Console()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:uri"]))
+        {
+            AutoRegisterTemplate = true,
+            IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
+        })
+        .WriteTo.File("Logs/LogInfo.txt")
+        .CreateLogger();
     }
 
     public IConfiguration Configuration { get; }
