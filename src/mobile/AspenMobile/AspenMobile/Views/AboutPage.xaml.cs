@@ -11,6 +11,7 @@ namespace AspenMobile.Views
         public AboutPage()
         {
             InitializeComponent();
+            BindingContext = new AboutViewModel();
         }
     }
 }

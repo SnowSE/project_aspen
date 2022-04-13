@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -42,6 +43,7 @@ namespace AspenMobile.ViewModels
 
         public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
+        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
 
 
         public async void DisplayEventAsync(int eventId)
@@ -64,5 +66,12 @@ namespace AspenMobile.ViewModels
             var test = Preferences.Get(Constants.CurrentEventId, null);
 
         }
+
+        public async Task GetDonationDetails()
+        {
+            Shell.Current.GoToAsync($"{nameof(AdminDonationDetailsPage)}");
+        }
+
+        
     }
 }

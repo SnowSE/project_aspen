@@ -122,7 +122,11 @@
         <ShellContent Route="EventPage"
                       ContentTemplate="{DataTemplate local:EventPage}" />
     </FlyoutItem>
-
+    <FlyoutItem Title="Donation Details"
+                Icon="icon_about.png">
+        <ShellContent Route="AdminDonationDetailsPage"
+                      ContentTemplate="{DataTemplate local:AdminDonationDetailsPage}" />
+    </FlyoutItem>
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
     <!--<MenuItem Text="Logout"
               StyleClass="MenuItemLayoutStyle"

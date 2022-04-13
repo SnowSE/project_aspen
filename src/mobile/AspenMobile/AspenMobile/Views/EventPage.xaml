@@ -24,6 +24,7 @@
                                 <Label Text="{Binding Location}" Grid.Row="2"  HorizontalOptions="Center"/>
                                 <Label Text="{Binding Description}" Grid.Row="3"  HorizontalOptions="Center"/>
                                 <Label Text="{Binding DonationTarget}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Button Text="Donation Details" Command="{Binding GetDonationDetails}"/>
 
                             </Grid>
                         </StackLayout>
