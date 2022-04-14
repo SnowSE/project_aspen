@@ -44,15 +44,22 @@ namespace AspenMobile.ViewModels
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
 
+            try
+            {
             var closestEvent = await GetClosestEventAsync();
             Event.Add(closestEvent);
-
-
             var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
 
             foreach (var team in teams)
             {
                 Teams.Add(team);
+            }
+
+            }
+            catch (Exception)
+            {
+
+                
             }
         }
 
