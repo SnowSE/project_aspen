@@ -35,7 +35,12 @@ namespace AspenMobile.ViewModels
         public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
-
+        [ICommand]
+        public async Task RefeshEvents()
+        {
+            await Application.Current.MainPage.DisplayAlert("You have been Swiped", "", "Ok");
+            //await GetClosestEventAsync();
+        }
         public async void DisplayEventAsync()
         {
             current = Preferences.Get(Constants.CurrentServer, null);
@@ -46,9 +51,9 @@ namespace AspenMobile.ViewModels
 
             try
             {
-            var closestEvent = await GetClosestEventAsync();
-            Event.Add(closestEvent);
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
+                 var closestEvent = await GetClosestEventAsync();
+                 Event.Add(closestEvent);
+                 var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
 
             foreach (var team in teams)
             {
