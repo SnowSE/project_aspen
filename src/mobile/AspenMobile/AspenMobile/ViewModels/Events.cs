@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -24,6 +25,7 @@ namespace AspenMobile.ViewModels
         private readonly HttpClient httpClient = new();
         private string current;
         private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
+        private string accessToken;
 
 
         public Events()
@@ -35,6 +37,17 @@ namespace AspenMobile.ViewModels
             }
             apiClient.Value.BaseAddress = new Uri($"{current}/aspen/");
 
+            OnAppearingAsync();
+
+            if (apiClient.Value.DefaultRequestHeaders.Authorization == null)
+            {
+                apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
+            }
+
+        }
+        internal async Task OnAppearingAsync()
+        {
+            accessToken = await SecureStorage.GetAsync("accessToken");
         }
 
         [ObservableProperty]

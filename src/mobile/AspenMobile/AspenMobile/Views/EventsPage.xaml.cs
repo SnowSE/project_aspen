@@ -16,10 +16,16 @@ namespace AspenMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EventsPage : ContentPage
     {
+        private readonly EventsPage viewModel;
         public EventsPage()
         {
             InitializeComponent();
             BindingContext = new Events();
         }
+
+/*        protected override async void OnAppearing()
+        {
+            await viewModel.OnAppearingAsync();
+        }*/
     }
 }
