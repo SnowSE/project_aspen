@@ -2,7 +2,6 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -46,8 +45,6 @@ namespace AspenMobile.ViewModels
         public async Task GetTeamInfoAsync(int teamId)
         {
             var httpClient = new HttpClient();
-
-            //Need to ask a Jonathan which string to use
             try
             {
                 var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");

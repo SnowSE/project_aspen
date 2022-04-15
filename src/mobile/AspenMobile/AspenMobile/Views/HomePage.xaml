@@ -8,6 +8,12 @@
 
     <ScrollView>
     <StackLayout>
+        <StackLayout.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Up"
+                                    Command="{Binding RefeshEventsCommand}" />
+            <SwipeGestureRecognizer Direction="Down"
+                                    Command="{Binding RefeshEventsCommand}" />
+        </StackLayout.GestureRecognizers>
         <Button Command="{Binding CreateATeamAsyncCommand}" Text="Create A New Team"/>
 
 

@@ -1,12 +1,16 @@
-﻿using AspenMobile.Views;
+﻿using AspenMobile.ViewModels;
+using AspenMobile.Views;
+using System;
 using Xamarin.Forms;
 
 namespace AspenMobile
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
+        private LoginViewModel viewModel;
         public AppShell()
         {
+            BindingContext = viewModel = new LoginViewModel();
             InitializeComponent();
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
@@ -19,10 +23,14 @@ namespace AspenMobile
 
 
         }
+        protected override async void OnBindingContextChanged()
+        {
+            await viewModel.CheckTokenIsLiveAsync();
+        }
+        private async void OnMenuItemClicked(object sender, EventArgs e)
+        {
 
-        //private async void OnMenuItemClicked(object sender, EventArgs e)
-        //{
-        //    await Shell.Current.GoToAsync("//LoginPage");
-        //}
+            await viewModel.ToggleLoginLogoutAsync();
+        }
     }
 }

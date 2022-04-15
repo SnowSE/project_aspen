@@ -10,6 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
+
         <StackLayout>
             <Label Text="Server Not Valid URI" FontSize="Large" TextColor="Red" HorizontalOptions="Center" IsVisible="{Binding ShowInvalidUriError}"/>
             <Button Margin="0,10,0,0"

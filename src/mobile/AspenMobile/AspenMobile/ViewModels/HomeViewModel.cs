@@ -21,11 +21,6 @@ namespace AspenMobile.ViewModels
         private string current;
         public HomeViewModel()
         {
-            current = Preferences.Get(Constants.CurrentServer, null);
-            if (current == null)
-            {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            }
             DisplayEventAsync();
         }
 
@@ -34,13 +29,18 @@ namespace AspenMobile.ViewModels
         public DtoEvent currentEvent;
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
+        [ICommand]
+        public async Task RefeshEventsAsync()
+        {
+            await DisplayEventAsync();
+        }
 
-        public async void DisplayEventAsync()
+        public async Task DisplayEventAsync()
         {
             current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)
             {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+                await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
             try
             {

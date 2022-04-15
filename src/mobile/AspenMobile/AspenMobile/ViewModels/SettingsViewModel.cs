@@ -60,7 +60,7 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public async Task AddNewServer()
+        public async Task AddNewServerAsync()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
@@ -97,24 +97,29 @@ namespace AspenMobile.ViewModels
 
             Servers.Add(newserver);
 
-            ShowAddControls = false;
-            ShowAddButton = true;
+            ResetPage();
             var json = JsonConvert.SerializeObject(Servers);
-            Preferences.Set("servers", json);
+            Preferences.Set(Constants.RecentlyUsedServers, json);
+            if (Servers.Count == 1)
+            {
+                Preferences.Set(Constants.CurrentServer, Servers[0].Address);
+                await Shell.Current.GoToAsync("//HomePage");
+            }
 
         }
         [ICommand]
-        private async void OnCancel()
+        private void OnCancel()
         {
-            // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            ResetPage();
         }
 
         [ICommand]
         public void ClearServers()
         {
             Servers.Clear();
-            Preferences.Clear(Constants.RecentlyUsedServers);
+
+            Preferences.Remove(Constants.CurrentServer);
+            Preferences.Remove(Constants.RecentlyUsedServers);
         }
 
         [ICommand]
@@ -140,7 +145,20 @@ namespace AspenMobile.ViewModels
                 Servers.Add(new Server() { Alias = server.Alias, Address = server.Address });
             }
         }
-
+        private void ResetPage()
+        {
+            ShowAddControls = false;
+            ShowAddButton = true;
+            ServerAlias = null;
+            ServerAddress = null;
+        }
+        internal async Task OnAppearingAsync()
+        {
+            if (Servers.Count == 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
+            }
+        }
 
 
     }

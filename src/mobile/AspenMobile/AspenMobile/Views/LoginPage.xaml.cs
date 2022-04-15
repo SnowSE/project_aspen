@@ -10,12 +10,12 @@ namespace AspenMobile.Views
         public LoginPage()
         {
             InitializeComponent();
-            BindingContext = viewModel = new LoginViewModel();
+            BindingContext = viewModel = (LoginViewModel)AppShell.Current.BindingContext;
         }
 
         protected override async void OnAppearing()
         {
-            await viewModel.OnAppearingAsync();
+            await viewModel.CheckTokenIsLiveAsync();
         }
     }
 }
