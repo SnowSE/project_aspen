@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/teams")]
 [ApiController]
@@ -22,6 +24,8 @@ public class TeamController : ControllerBase
     [HttpGet("event/{eventId}")]
     public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
+        Log.Debug("HttpGet GetByEventID");
+        Log.Information("Getting Team by event {eventId}", eventId);
         try
         {
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
@@ -36,6 +40,8 @@ public class TeamController : ControllerBase
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
+        Log.Debug("HttpGet GetByID");
+        Log.Information("Getting team by teamId {teamId}", teamId);
         if (!await teamRepository.ExistsAsync(teamId))
             return NotFound("Team id does not exist");
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
@@ -44,6 +50,8 @@ public class TeamController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
     {
+        Log.Debug("HttpPost Add dtoTeam");
+        Log.Information("Adding new dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -59,6 +67,8 @@ public class TeamController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
+        Log.Debug("HttpPut Edit dtoTeam");
+        Log.Information("Editing dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -75,6 +85,8 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
+        Log.Debug("HttpDelete Delete Team");
+        Log.Information("Deleteting team {id}", id);
         if (!await teamRepository.ExistsAsync(id))
             return NotFound("Team id does not exist");
 

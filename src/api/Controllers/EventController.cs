@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/events")]
 [ApiController]
@@ -26,6 +28,8 @@ public class EventController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
+        Log.Debug("HttpGet({eventID})");
+        Log.Information("Getting the total donations for {eventID}", eventID);
         logger.LogInformation("Getting all events");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }
@@ -33,6 +37,8 @@ public class EventController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<DtoEvent>> GetByID(long id)
     {
+        Log.Debug("HttpGet({id})");
+        Log.Information("Getting the event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 
@@ -42,6 +48,8 @@ public class EventController : ControllerBase
     [HttpPost, Authorize(Roles = AspenAdminRole)]
     public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
     {
+        Log.Debug("HttpPost dtoEvent");
+        Log.Information("Adding the new dtoEvent {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
         if (dtoEvent.ID != 0)
@@ -55,6 +63,8 @@ public class EventController : ControllerBase
     [HttpPut(), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
     {
+        Log.Debug("HttpPut Edit dtoEvent");
+        Log.Information("Editing the event {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -67,6 +77,8 @@ public class EventController : ControllerBase
     [HttpDelete("{id}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Delete(long id)
     {
+        Log.Debug("HttpDelete({id})");
+        Log.Information("Deleteting event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 

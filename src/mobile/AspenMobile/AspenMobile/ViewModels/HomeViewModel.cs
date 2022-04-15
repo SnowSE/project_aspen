@@ -80,7 +80,7 @@ namespace AspenMobile.ViewModels
         }
                 
         [ICommand]
-        public async void CreateATeam()
+        public async void CreateATeamAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
         }

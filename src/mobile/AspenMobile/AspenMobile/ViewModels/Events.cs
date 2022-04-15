@@ -23,6 +23,7 @@ namespace AspenMobile.ViewModels
     {
         private readonly HttpClient httpClient = new();
         private string current;
+        private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
 
 
         public Events()
@@ -32,26 +33,9 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-
-            var browser = DependencyService.Get<IBrowser>();
-            var options = new OidcClientOptions
-            {
-                Authority = $"{current}/aspen/auth/realms/aspen",
-                ClientId = "aspen-web",
-                Scope = "profile email api-use",
-                RedirectUri = "xamarinformsclients://callback",
-                Browser = browser
-            };
-
-            client = new OidcClient(options);
             apiClient.Value.BaseAddress = new Uri($"{current}/aspen/");
 
-            OutputText = "Ready to go!";
         }
-
-        private OidcClient client;
-        private LoginResult result;
-        private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
 
         [ObservableProperty]
         private string outputText;
@@ -59,7 +43,7 @@ namespace AspenMobile.ViewModels
         public ObservableCollection<DtoEvent> AllEvents { get; set; } = new();
 
         [ICommand]
-        public async Task GetAllEvents()
+        public async Task GetAllEventsAsync()
         {
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
@@ -70,21 +54,21 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        public async Task CreateNewEvent()
+        public async Task CreateNewEventAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateNewEventPage)}");
         }
 
         [ICommand]
         [Authorize]
-        private async Task EditEvent()
+        private async Task EditEventAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(EditEventPage)}");
         }
 
         [ICommand]
         [Authorize]
-        private async Task DeleteEvent()
+        private async Task DeleteEventAsync()
         {
 
         }

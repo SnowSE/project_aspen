@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Api.Controllers;
 
 public record Response<T> { public T Data { get; init; } }
@@ -18,6 +20,8 @@ public class AssetController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Response<string>>> PostAsync([FromForm] IFormFile asset)
     {
+        Log.Debug("HttpPost asset");
+        Log.Information("Posted {asset}", asset);
         var newId = await assetsFileService.StoreAsset(asset);
 
         return Ok(new Response<string> { Data = newId });

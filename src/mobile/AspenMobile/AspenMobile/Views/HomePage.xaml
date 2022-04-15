@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AspenMobile.Views.HomePage"
-             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
-             Title="{Binding Title}">
+             xmlns:vm="clr-namespace:AspenMobile.ViewModels">
     <StackLayout>
         <Button Command="{Binding CreateATeamCommand}" Text="Create A New Team"/>
         <CollectionView ItemsSource="{Binding Event}" HorizontalOptions="Center">

@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
@@ -25,6 +27,8 @@ public class RegistrationController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<DtoRegistration>> GetByID(long id)
     {
+        Log.Debug("HttpGet GetByID");
+        Log.Information("Getting Registration {id}", id);
         if (!await registrationRepository.ExistsAsync(id))
             return NotFound("Registration id does not exist");
 
@@ -36,6 +40,8 @@ public class RegistrationController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoRegistration>> Add([FromBody] DtoRegistration dtoRegistration)
     {
+        Log.Debug("HttpPost Add dtoRegistration");
+        Log.Information("Adding new dtoRegistration {dtoRegistration}", dtoRegistration);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -50,6 +56,8 @@ public class RegistrationController : ControllerBase
     [HttpPost("/link/{registrationId}/{personId}")]
     public async Task<ActionResult<DtoRegistration>> LinkPersonRegistration(long registrationId, long personId)
     {
+        Log.Debug("HttpPost LinkPersonRegistration");
+        Log.Information("Linking registration {registrationId} to person {personId}", registrationId, personId);
         var registration = await registrationRepository.GetByIdAsync(registrationId);
         if (registration == null)
             return NotFound("Invalid registration id");
@@ -65,6 +73,8 @@ public class RegistrationController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<DtoRegistration>> Edit([FromBody] DtoRegistration dtoRegistration)
     {
+        Log.Debug("HttpPut Edit dtoRegistration");
+        Log.Information("Editing dtoRegistration {dtoRegstration}", dtoRegistration);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -79,6 +89,8 @@ public class RegistrationController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
+        Log.Debug("HttpDelete Delete registration");
+        Log.Information("Deleteting registration {id}", id);
         if (!await registrationRepository.ExistsAsync(id))
             return NotFound("Registration id does not exist");
 

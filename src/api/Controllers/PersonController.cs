@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
@@ -24,6 +26,8 @@ public class PersonController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<DtoPerson>> GetByID(long id)
     {
+        Log.Debug("HttpGet GetByID");
+        Log.Information("Getting person {id}", id);
         if (!await personRepository.ExistsAsync(id))
             return NotFound("Person id does not exist");
         var person = await personRepository.GetByIDAsync(id);
@@ -33,6 +37,8 @@ public class PersonController : ControllerBase
     [HttpGet("authid/{authId}")]
     public async Task<ActionResult<DtoPerson>> GetByAuthId(string authId)
     {
+        Log.Debug("HttpGet GetByAuthId");
+        Log.Information("Getting person {authId}", authId);
         var person = await personRepository.GetByAuthIdAsync(authId);
         if (person == null)
             return NotFound("AuthID does not exist");
@@ -42,6 +48,8 @@ public class PersonController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
     {
+        Log.Debug("HttpPost Add dtoPerson");
+        Log.Information("Adding person {dtoPerson}", dtoPerson);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -63,6 +71,8 @@ public class PersonController : ControllerBase
     [HttpPut()]
     public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
     {
+        Log.Debug("HttpPut Edit dtoPerson");
+        Log.Information("Editing person {dtoPerson}", dtoPerson);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
         if (!await personRepository.ExistsAsync(dtoPerson.ID))
@@ -76,6 +86,8 @@ public class PersonController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
+        Log.Debug("HttpDelete Delete Person");
+        Log.Information("Deleteting person {id}", id);
         if (!await personRepository.ExistsAsync(id))
             return NotFound("Person id does not exist");
 
@@ -86,6 +98,8 @@ public class PersonController : ControllerBase
     [HttpGet("{id}/registrations")]
     public async Task<IEnumerable<DtoRegistration>> GetRegistrationsByID(long id)
     {
+        Log.Debug("HttpGet GetRegistrationsByID");
+        Log.Information("Getting registered person {id}", id);
         if (await personRepository.ExistsAsync(id) is false)
             throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
 

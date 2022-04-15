@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/donations")]
 [ApiController]
@@ -22,6 +24,8 @@ public class DonationController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
     {
+        Log.Debug("HttpPost Add dtoDonation");
+        Log.Information("Added {dtoDonation}", dtoDonation);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -36,6 +40,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}/{teamID}")]
     public async Task<ActionResult<decimal>> GetTeamDonationSum(long eventID, long teamID)
     {
+        Log.Debug("HttpGet({eventID}/{teamID})");
+        Log.Information("Getting the total donations for {eventID} from team {teamID}", eventID, teamID);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -46,6 +52,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
+        Log.Debug("HttpGet({eventID})");
+        Log.Information("Getting the total donations for {eventID}", eventID);
         var sum = await donationRepository.GetEventDonationSum(eventID);
         return sum;
     }

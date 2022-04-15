@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [ApiController]
 [Authorize]
@@ -15,6 +17,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public string Get()
     {
+        Log.Debug("HttpGet User");
         foreach (var claim in User.Claims)
         {
             Console.WriteLine(claim.Type + " - " + claim.Value + " - " + claim.ToString());
