@@ -8,14 +8,52 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var host = CreateHostBuilder(args).Build();
-        using (var scope = host.Services.CreateScope())
+
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .Build();
+
+        ConfigureLogging(environment, configuration);
+
+        try
         {
-            var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
-            //dumpLogs(scope, db);
-            db.Database.Migrate();
+            Log.Information("Starting host.");
+            var host = CreateHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
+                //dumpLogs(scope, db);
+                db.Database.Migrate();
+            }
+            host.Run();
         }
-        host.Run();
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Host failure.");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
+
+    private static void ConfigureLogging(string environment, IConfigurationRoot configuration)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.Debug()
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://20.115.165.179:9200"))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
+            })
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
     }
 
     private static void dumpLogs(IServiceScope scope, AspenContext db)
@@ -31,6 +69,7 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+        .UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();

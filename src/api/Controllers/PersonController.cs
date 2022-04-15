@@ -7,6 +7,8 @@ public class PersonController : ControllerBase
     private readonly IPersonRepository personRepository;
     private readonly IRegistrationRepository registrationRepository;
     private readonly IMapper mapper;
+    private readonly Logger<PersonController> logger;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -14,11 +16,12 @@ public class PersonController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper)
+    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper, Logger<PersonController> logger)
     {
-        this.mapper = mapper;
         this.personRepository = personRepository;
         this.registrationRepository = registrationRepository;
+        this.mapper = mapper;
+        this.logger = logger;
     }
 
     [HttpGet("{id}")]
@@ -51,6 +54,7 @@ public class PersonController : ControllerBase
         if (string.IsNullOrEmpty(dtoPerson.AuthID))
         {
             var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
+            logger.LogInformation($"Adding person: {person.ID}");
             return mapper.Map<DtoPerson>(person);
         }
         else
@@ -70,6 +74,8 @@ public class PersonController : ControllerBase
 
         var person = mapper.Map<Person>(dtoPerson);
         var updatedPerson = await personRepository.EditAsync(person);
+
+        logger.LogInformation($"Editing person: {updatedPerson.ID}");
         return mapper.Map<DtoPerson>(updatedPerson);
     }
 
@@ -80,6 +86,7 @@ public class PersonController : ControllerBase
             return NotFound("Person id does not exist");
 
         await personRepository.DeleteAsync(id);
+        logger.LogInformation($"Deleting person: {id}");
         return Ok();
     }
 
@@ -90,6 +97,8 @@ public class PersonController : ControllerBase
             throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
 
         var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
+
+        logger.LogInformation($"Getting registrations for person: {id}");
         return mapper.Map<IEnumerable<DtoRegistration>>(registrations);
     }
 }

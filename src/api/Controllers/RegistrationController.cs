@@ -5,6 +5,7 @@ namespace Api.Controllers;
 public class RegistrationController : ControllerBase
 {
     private readonly IPersonRepository personRepository;
+    private readonly Logger<RegistrationController> logger;
 
     private IRegistrationRepository registrationRepository { get; }
     public IMapper mapper { get; }
@@ -15,11 +16,12 @@ public class RegistrationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public RegistrationController(IRegistrationRepository registrationRepository, IPersonRepository personRepository, IMapper mapper)
+    public RegistrationController(IRegistrationRepository registrationRepository, IPersonRepository personRepository, IMapper mapper, Logger<RegistrationController> logger)
     {
         this.registrationRepository = registrationRepository;
         this.personRepository = personRepository;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     [HttpGet("{id}")]
@@ -29,6 +31,7 @@ public class RegistrationController : ControllerBase
             return NotFound("Registration id does not exist");
 
         var registration = await registrationRepository.GetByIdAsync(id);
+        logger.LogInformation($"Getting registration by id: {registration.ID}");
         return mapper.Map<DtoRegistration>(registration);
 
     }
@@ -44,6 +47,9 @@ public class RegistrationController : ControllerBase
 
         var registrationToAdd = mapper.Map<Registration>(dtoRegistration);
         var updatedRegistration = await registrationRepository.AddAsync(registrationToAdd);
+
+        logger.LogInformation($"Adding registration: {updatedRegistration.ID}");
+
         return mapper.Map<DtoRegistration>(updatedRegistration);
     }
 
@@ -57,6 +63,8 @@ public class RegistrationController : ControllerBase
         var person = await personRepository.GetByIDAsync(personId);
         if (person == null)
             return NotFound("Invalid person id");
+
+        logger.LogInformation($"Linking person {person.ID} to registration {registration.ID}");
 
         var updatedRegistration = await registrationRepository.LinkPersonToRegistrationAsync(registrationId, personId);
         return mapper.Map<DtoRegistration>(updatedRegistration);
@@ -73,6 +81,9 @@ public class RegistrationController : ControllerBase
 
         var registrationToEdit = mapper.Map<Registration>(dtoRegistration);
         var editedRegistration = await registrationRepository.EditAsync(registrationToEdit);
+
+        logger.LogInformation($"Editing registration: {editedRegistration.ID}");
+
         return mapper.Map<DtoRegistration>(editedRegistration);
     }
 
@@ -83,6 +94,7 @@ public class RegistrationController : ControllerBase
             return NotFound("Registration id does not exist");
 
         await registrationRepository.DeleteAsync(id);
+        logger.LogInformation($"Deleting registration: {id}");
         return Ok();
     }
 }

@@ -46,11 +46,11 @@ resource "azurerm_postgresql_server" "api" {
 }
 
 resource "azurerm_postgresql_firewall_rule" "api_db_access" {
-  name = "api_db_access-${random_id.id.hex}"
+  name                = "api_db_access-${random_id.id.hex}"
   resource_group_name = azurerm_resource_group.aspenrg.name
-  server_name = azurerm_postgresql_server.api.name
-  start_ip_address = "0.0.0.0"
-  end_ip_address = "0.0.0.0"
+  server_name         = azurerm_postgresql_server.api.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
 
 ##############################################################################
@@ -99,7 +99,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     destination_address_prefix = "*"
   }
 
-   security_rule {
+  security_rule {
     name                       = "ElasticSearch"
     priority                   = 1002
     direction                  = "Inbound"
@@ -111,7 +111,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     destination_address_prefix = "*"
   }
 
-   security_rule {
+  security_rule {
     name                       = "Kibana"
     priority                   = 1003
     direction                  = "Inbound"
@@ -153,60 +153,57 @@ resource "azurerm_storage_account" "mystorageaccount" {
   account_replication_type = "LRS"
 }
 
-# module "container-server" {
-#   source = "../.."
-
-#   domain = "app.${var.domain}"
-#   email  = var.email
-
-#   container = {
-#     image = "nginxdemos/hello"
-#   }
-# }
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "Aspen-Telemetry${random_id.id.hex}"
-    location              = azurerm_resource_group.aspenrg.location
-    resource_group_name   = azurerm_resource_group.aspenrg.name
-    network_interface_ids = [azurerm_network_interface.myterraformnic.id]
-    size                  = "Standard_B2s"
+  name                  = "Aspen-Telemetry${random_id.id.hex}"
+  location              = azurerm_resource_group.aspenrg.location
+  resource_group_name   = azurerm_resource_group.aspenrg.name
+  network_interface_ids = [azurerm_network_interface.myterraformnic.id]
+  size                  = "Standard_B2s"
 
-    os_disk {
-      name                 = "myOsDisk${random_id.id.hex}"
-      caching              = "ReadWrite"
-      disk_size_gb         = "30"
-      storage_account_type = "StandardSSD_LRS"
+  os_disk {
+    name                 = "myOsDisk${random_id.id.hex}"
+    caching              = "ReadWrite"
+    disk_size_gb         = "30"
+    storage_account_type = "StandardSSD_LRS"
+  }
+
+  source_image_reference {
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts-gen2"
+    version   = "latest"
+  }
+
+  computer_name  = "aspen-telemetry-vm"
+  admin_username = "azureuser"
+  admin_password = "Password1234!"
+  # custom_data                     = file("scripts/install.sh")
+
+  disable_password_authentication = false
+
+  boot_diagnostics {
+    storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
+  }
+
+  provisioner "file" {
+    source      = "/scripts/install.sh"
+    destination = "/tmp/install.sh"
+
+    connection {
+      type     = "ssh"
+      user     = "azureuser"
+      password = "Password1234!"
+      host     = azurerm_public_ip.myterraformpublicip.name
     }
+  }
 
-    source_image_reference {
-       publisher            = "canonical"
-        offer               = "0001-com-ubuntu-server-focal"
-        sku                 = "20_04-lts-gen2"
-        version             = "latest"
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "/tmp/install.sh"
+    ]
 
-    computer_name                   = "aspen-telemetry-vm"
-    admin_username                  = "azureuser"
-    admin_password                  = "Password1234!"
-    # custom_data                     = file("scripts/install.sh")
-
-    disable_password_authentication = false
-
-    boot_diagnostics {
-      storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
-    }
-
-    provisioner "file" {
-      source      = "/scripts/install.sh"
-      destination = "/tmp/install.sh"
-    }
-
-    provisioner "remote-exec" {
-      inline = [
-        "/tmp/install.sh"
-      ]
-    }
+  }
 }
 
 ##https://github.com/pershoot/terraform_azure_myweb/blob/master/vm.tf
@@ -229,8 +226,8 @@ resource "azurerm_linux_web_app" "api_appservice" {
   resource_group_name = azurerm_resource_group.aspenrg.name
   service_plan_id     = azurerm_service_plan.main.id
   site_config {
-    app_command_line = ""
-    always_on        = true
+    app_command_line  = ""
+    always_on         = true
     health_check_path = "/health"
     application_stack {
       dotnet_version = "6.0"
@@ -256,11 +253,11 @@ resource "azurerm_linux_web_app" "api_appservice" {
 }
 
 resource "azurerm_linux_web_app_slot" "api_appservice_slot" {
-  name = "warmup"
+  name           = "warmup"
   app_service_id = azurerm_linux_web_app.api_appservice.id
   site_config {
     auto_swap_slot_name = "production"
-    health_check_path = "/health"
+    health_check_path   = "/health"
   }
   app_settings = azurerm_linux_web_app.api_appservice.app_settings
 }

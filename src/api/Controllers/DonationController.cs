@@ -6,6 +6,8 @@ public class DonationController : ControllerBase
 {
     private readonly IDonationRepository donationRepository;
     private readonly IMapper mapper;
+    private readonly Logger<DonationController> logger;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -13,11 +15,13 @@ public class DonationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public DonationController(IDonationRepository donationRepository, IMapper mapper)
+    public DonationController(IDonationRepository donationRepository, IMapper mapper, Logger<DonationController> logger)
     {
         this.donationRepository = donationRepository;
         this.mapper = mapper;
+        this.logger = logger;
     }
+
 
     [HttpPost]
     public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
@@ -30,6 +34,8 @@ public class DonationController : ControllerBase
 
         var donation = mapper.Map<Donation>(dtoDonation);
         var newDonation = await donationRepository.AddAsync(donation);
+
+        logger.LogInformation($"Adding donation: {newDonation.ID}");
         return mapper.Map<DtoDonation>(newDonation);
     }
 
@@ -40,6 +46,8 @@ public class DonationController : ControllerBase
             return BadRequest(getModelStateErrorMessage());
 
         var sum = await donationRepository.GetTeamDonationSum(eventID, teamID);
+
+        logger.LogInformation($"Getting team donation sum: {sum}");
         return sum;
     }
 
@@ -47,6 +55,8 @@ public class DonationController : ControllerBase
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         var sum = await donationRepository.GetEventDonationSum(eventID);
+
+        logger.LogInformation($"Getting event donation sum: {sum}");
         return sum;
     }
 }

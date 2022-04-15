@@ -6,6 +6,8 @@ public class TeamController : ControllerBase
 {
     private readonly ITeamRepository teamRepository;
     private readonly IMapper mapper;
+    private readonly ILogger<TeamController> logger;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -13,10 +15,11 @@ public class TeamController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public TeamController(ITeamRepository teamRepository, IMapper mapper)
+    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> logger )
     {
         this.teamRepository = teamRepository;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     [HttpGet("event/{eventId}")]
@@ -25,6 +28,7 @@ public class TeamController : ControllerBase
         try
         {
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
+            logger.LogInformation($"GetByEventID: {teams.Count()} teams found for event {eventId}");
             return new ActionResult<IEnumerable<DtoTeam>>(teams);
         }
         catch(NotFoundException<IEnumerable<Team>> ex)
@@ -36,6 +40,7 @@ public class TeamController : ControllerBase
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
+        logger.LogInformation($"GetByEventID: {teamId}");
         if (!await teamRepository.ExistsAsync(teamId))
             return NotFound("Team id does not exist");
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
@@ -45,6 +50,7 @@ public class TeamController : ControllerBase
     public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
     {
         if (!ModelState.IsValid)
+            logger.LogError($"Error adding team: {getModelStateErrorMessage()}");
             return BadRequest(getModelStateErrorMessage());
 
         if (dtoTeam.ID != 0)
@@ -52,6 +58,7 @@ public class TeamController : ControllerBase
 
         var team = mapper.Map<Team>(dtoTeam);
         var newTeam = await teamRepository.AddAsync(team);
+        logger.LogInformation($"Added new team {newTeam.ID}");
         return mapper.Map<DtoTeam>(newTeam);
 
     }
@@ -67,6 +74,8 @@ public class TeamController : ControllerBase
         if (!await teamRepository.ExistsAsync(team.ID))
             return NotFound("Team id does not exist");
 
+        logger.LogInformation($"Editing team {team.ID}");
+
         await teamRepository.EditTeamAsync(team);
         return Ok("Team edit was successful");
 
@@ -81,6 +90,7 @@ public class TeamController : ControllerBase
         try
         {
             await teamRepository.DeleteTeamAsync(id);
+            logger.LogInformation($"Deleted team {id}");
             return Ok();
         }
         catch(UnableToDeleteException<Team> ex)

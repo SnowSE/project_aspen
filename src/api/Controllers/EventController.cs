@@ -6,6 +6,8 @@ public class EventController : ControllerBase
 {
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
+    private readonly Logger<EventController> logger;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -13,10 +15,11 @@ public class EventController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public EventController(IEventRepository eventRepository, IMapper mapper)
+    public EventController(IEventRepository eventRepository, IMapper mapper, Logger<EventController> logger)
     {
         this.eventRepository = eventRepository;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     [HttpGet]
@@ -31,6 +34,7 @@ public class EventController : ControllerBase
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 
+        logger.LogInformation($"Getting event by id: {id}");
         return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
     }
 
@@ -44,6 +48,8 @@ public class EventController : ControllerBase
 
         var @event = mapper.Map<Event>(dtoEvent);
         var newEvent = await eventRepository.AddAsync(@event);
+
+        logger.LogInformation($"Adding event: {newEvent.ID}");
         return mapper.Map<DtoEvent>(newEvent);
     }
 
@@ -55,6 +61,8 @@ public class EventController : ControllerBase
 
         var e = mapper.Map<Event>(dtoEvent);
         await eventRepository.EditAsync(e);
+
+        logger.LogInformation($"Editing event: {e.ID}");
         return Ok("Event edit was successful");
     }
 
@@ -64,7 +72,8 @@ public class EventController : ControllerBase
     {
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
-
+        
+        logger.LogInformation($"Deleting event: {id}");
         await eventRepository.DeleteAsync(id);
         return Ok();
     }
