@@ -128,7 +128,7 @@ namespace AspenMobile.ViewModels
 
 
             Preferences.Set(Constants.CurrentServer, s.Address);
-            await Shell.Current.GoToAsync($"{nameof(HomePage)}");
+            await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
 
         }
         private void loadServers()

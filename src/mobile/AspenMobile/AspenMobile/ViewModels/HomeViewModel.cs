@@ -49,19 +49,22 @@ namespace AspenMobile.ViewModels
                 Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
 
                 CurrentEvent = closestEvent;
+                var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
+                Teams.Clear();
+                foreach (var team in teams)
+                {
+                    Teams.Add(team);
+                }
             }
             catch (Exception ex)
             {
+                await Application.Current.MainPage.DisplayAlert("Can't connect to server", "Make sure you are connected to a server, conectar a un server verificar que sus credentials son validas", "Ok");
+                await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+
 
             }
 
 
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
-
-            foreach (var team in teams)
-            {
-                Teams.Add(team);
-            }
         }
 
         public async Task<DtoEvent> GetClosestEventAsync()
