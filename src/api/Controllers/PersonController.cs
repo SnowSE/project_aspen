@@ -1,5 +1,5 @@
 namespace Api.Controllers;
-
+using Microsoft.Extensions.Logging;
 [Route("api/[controller]")]
 [ApiController]
 public class PersonController : ControllerBase
@@ -7,7 +7,7 @@ public class PersonController : ControllerBase
     private readonly IPersonRepository personRepository;
     private readonly IRegistrationRepository registrationRepository;
     private readonly IMapper mapper;
-    private readonly Logger<PersonController> logger;
+    private readonly ILogger<PersonController> logger;
 
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -16,7 +16,7 @@ public class PersonController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper, Logger<PersonController> logger)
+    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper, ILogger<PersonController> logger)
     {
         this.personRepository = personRepository;
         this.registrationRepository = registrationRepository;

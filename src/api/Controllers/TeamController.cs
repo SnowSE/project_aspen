@@ -1,5 +1,5 @@
 ﻿namespace Api.Controllers;
-
+using Microsoft.Extensions.Logging;
 [Route("api/teams")]
 [ApiController]
 public class TeamController : ControllerBase

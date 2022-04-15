@@ -1,11 +1,11 @@
 namespace Api.Controllers;
-
+using Microsoft.Extensions.Logging;
 [Route("api/[controller]")]
 [ApiController]
 public class RegistrationController : ControllerBase
 {
     private readonly IPersonRepository personRepository;
-    private readonly Logger<RegistrationController> logger;
+    private readonly ILogger<RegistrationController> logger;
 
     private IRegistrationRepository registrationRepository { get; }
     public IMapper mapper { get; }
@@ -16,7 +16,7 @@ public class RegistrationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public RegistrationController(IRegistrationRepository registrationRepository, IPersonRepository personRepository, IMapper mapper, Logger<RegistrationController> logger)
+    public RegistrationController(IRegistrationRepository registrationRepository, IPersonRepository personRepository, IMapper mapper, ILogger<RegistrationController> logger)
     {
         this.registrationRepository = registrationRepository;
         this.personRepository = personRepository;

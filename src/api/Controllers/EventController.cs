@@ -1,12 +1,12 @@
 ﻿namespace Api.Controllers;
-
+using Microsoft.Extensions.Logging;
 [Route("api/events")]
 [ApiController]
 public class EventController : ControllerBase
 {
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
-    private readonly Logger<EventController> logger;
+    private readonly ILogger<EventController> logger;
 
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -15,7 +15,7 @@ public class EventController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public EventController(IEventRepository eventRepository, IMapper mapper, Logger<EventController> logger)
+    public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> logger)
     {
         this.eventRepository = eventRepository;
         this.mapper = mapper;

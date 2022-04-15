@@ -1,4 +1,5 @@
 ﻿namespace Api.Controllers;
+using Microsoft.Extensions.Logging;
 
 [Route("api/donations")]
 [ApiController]
@@ -6,7 +7,7 @@ public class DonationController : ControllerBase
 {
     private readonly IDonationRepository donationRepository;
     private readonly IMapper mapper;
-    private readonly Logger<DonationController> logger;
+    private readonly ILogger<DonationController> logger;
 
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -15,7 +16,7 @@ public class DonationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public DonationController(IDonationRepository donationRepository, IMapper mapper, Logger<DonationController> logger)
+    public DonationController(IDonationRepository donationRepository, IMapper mapper, ILogger<DonationController> logger)
     {
         this.donationRepository = donationRepository;
         this.mapper = mapper;

@@ -1,5 +1,5 @@
 ﻿namespace Api.Controllers;
-
+using Microsoft.Extensions.Logging;
 [ApiController]
 [Authorize]
 [Route("/api/[controller]")]
