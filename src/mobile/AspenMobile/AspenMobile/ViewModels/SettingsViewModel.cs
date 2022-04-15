@@ -8,12 +8,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System;
 
 namespace AspenMobile.ViewModels
 {
@@ -50,6 +49,8 @@ namespace AspenMobile.ViewModels
         private string selectedServer;
 
         [ObservableProperty]
+        private bool showInvalidUriError;
+        [ObservableProperty]
         private bool showAddServerError;
 
         [ICommand]
@@ -59,17 +60,47 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public async void AddNewServer()
+        public async Task AddNewServerAsync()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
             newserver.Address = serverAddress;
+            try
+            {
+                Uri uriTest = new Uri(newserver.Address);
+
+            }
+            catch (Exception ex)
+            {
+                ShowInvalidUriError = true;
+                return;
+            }
+
+
+            try
+            {
+                var test = await httpClient.GetAsync($"{newserver.Address}/api/events");
+                if (test.StatusCode == HttpStatusCode.OK)
+                {
+                    ShowAddServerError = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowAddServerError = true;
+                return;
+            }
+
+
+
+            ShowInvalidUriError = false;
+
             Servers.Add(newserver);
 
             ResetPage();
             var json = JsonConvert.SerializeObject(Servers);
             Preferences.Set(Constants.RecentlyUsedServers, json);
-            if(Servers.Count == 1)
+            if (Servers.Count == 1)
             {
                 Preferences.Set(Constants.CurrentServer, Servers[0].Address);
                 await Shell.Current.GoToAsync("//HomePage");
@@ -94,23 +125,10 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void SetServerAsync(Server s)
         {
-            
-            var test = await httpClient.GetAsync($"{s.Address}/api/events");
-            if (test.StatusCode == HttpStatusCode.OK)
-            {
-                Preferences.Set(Constants.CurrentServer, s.Address);
-                ShowAddServerError = false;
 
-                Shell.Current.GoToAsync($"{nameof(HomePage)}");
-            }
-            else
-            {
-                ShowAddServerError = true;
-                
-            }
 
-            
-            
+            Preferences.Set(Constants.CurrentServer, s.Address);
+            await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
 
         }
         private void loadServers()
@@ -136,9 +154,9 @@ namespace AspenMobile.ViewModels
         }
         internal async Task OnAppearingAsync()
         {
-            if(Servers.Count == 0)
+            if (Servers.Count == 0)
             {
-            await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
+                await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
             }
         }
 

@@ -2,7 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AspenMobile.Views.HomePage"
-             xmlns:vm="clr-namespace:AspenMobile.ViewModels">
+             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
+             x:Name="HomeView">
+
+
+    <ScrollView>
     <StackLayout>
         <StackLayout.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Up"
@@ -10,55 +14,30 @@
             <SwipeGestureRecognizer Direction="Down"
                                     Command="{Binding RefeshEventsCommand}" />
         </StackLayout.GestureRecognizers>
-        <Button Command="{Binding CreateATeamCommand}"
-                Text="Create A New Team" />
-        <CollectionView ItemsSource="{Binding Event}"
-                        HorizontalOptions="Center">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout HorizontalOptions="Center">
-                        <Label Text="{Binding Title}"
-                               HorizontalOptions="Center"
-                               FontSize="Large" />
-                        <Label Text="{Binding Date}"
-                               HorizontalOptions="Center" />
-                        <Label Text="{Binding Location}"
-                               HorizontalOptions="Center" />
-                        <Label Text="{Binding Description}"
-                               HorizontalOptions="Center" />
-                        <Label Text="{Binding DonationTarget}"
-                               HorizontalOptions="Center"
-                               FontSize="Medium" />
+        <Button Command="{Binding CreateATeamAsyncCommand}" Text="Create A New Team"/>
 
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectEventCommand}"
-                                                  CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
 
-        <CollectionView ItemsSource="{Binding Teams}"
-                        HorizontalOptions="Center">
+                            <Label Text="{Binding CurrentEvent.Title}"  HorizontalOptions="Center" FontSize="Large" />
+                            <Label Text="{Binding CurrentEvent.Date}"  HorizontalOptions="Center"/>
+                            <Label Text="{Binding CurrentEvent.Location}"  HorizontalOptions="Center"/>
+                            <Label Text="{Binding CurrentEvent.Description}"  HorizontalOptions="Center"/>
+                            <Label Text="{Binding CurrentEvent.DonationTarget}"  HorizontalOptions="Center" FontSize="Medium"/>
+                            <Label Text="{Binding CurrentEvent.ID}"  HorizontalOptions="Center" FontSize="Medium"/>
+
+        <CollectionView ItemsSource="{Binding Teams}" HorizontalOptions="Center" >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="80" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <StackLayout HorizontalOptions="Center">
-                            <Label Text="{Binding Name}"
-                                   Grid.Row="0"
-                                   HorizontalOptions="Center"
-                                   FontSize="Medium" />
-                            <Label Text="{Binding Description}"
-                                   Grid.Row="1"
-                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding Name}" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
+                            <Label Text="{Binding Description}" Grid.Row="1" HorizontalOptions="Center"/>
+                            <Button Command="{Binding BindingContext.OnTeamSelectedAsyncCommand, Source={x:Reference HomeView}}" CommandParameter="{Binding .}" Text="View Team"/>
+
 
                         </StackLayout>
 
@@ -66,5 +45,9 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
     </StackLayout>
+
+    </ScrollView>
+
 </ContentPage>

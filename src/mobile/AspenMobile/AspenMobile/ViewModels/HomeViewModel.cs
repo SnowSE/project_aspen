@@ -24,7 +24,9 @@ namespace AspenMobile.ViewModels
             DisplayEventAsync();
         }
 
-        public ObservableCollection<DtoEvent> Event { get; set; } = new();
+
+        [ObservableProperty]
+        public DtoEvent currentEvent;
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
         [ICommand]
@@ -40,28 +42,34 @@ namespace AspenMobile.ViewModels
             {
                 await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-
             try
             {
                 var closestEvent = await GetClosestEventAsync();
-                Event.Add(closestEvent);
-                var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
 
+                Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
+
+                CurrentEvent = closestEvent;
+                var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
+                Teams.Clear();
                 foreach (var team in teams)
                 {
                     Teams.Add(team);
                 }
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await Application.Current.MainPage.DisplayAlert("Can't connect to server", "Make sure you are connected to a server, conectar a un server verificar que sus credentials son validas", "Ok");
+                await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
 
 
             }
+
+
         }
 
         public async Task<DtoEvent> GetClosestEventAsync()
         {
+
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             DtoEvent closestEvent = new DtoEvent();
@@ -87,6 +95,12 @@ namespace AspenMobile.ViewModels
         public async void CreateATeamAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+        }
+
+        [ICommand]
+        public async void OnTeamSelectedAsync(DtoTeam team)
+        {
+            await Shell.Current.GoToAsync($"{nameof(TeamPage)}?{nameof(TeamDetailViewModel.TeamId)}={team.ID}");
         }
     }
 }
