@@ -5,15 +5,13 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System;
 
 namespace AspenMobile.ViewModels
 {
@@ -59,7 +57,7 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public async void AddNewServerAsync()
+        public async Task AddNewServerAsync()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
@@ -69,7 +67,7 @@ namespace AspenMobile.ViewModels
             ResetPage();
             var json = JsonConvert.SerializeObject(Servers);
             Preferences.Set(Constants.RecentlyUsedServers, json);
-            if(Servers.Count == 1)
+            if (Servers.Count == 1)
             {
                 Preferences.Set(Constants.CurrentServer, Servers[0].Address);
                 await Shell.Current.GoToAsync("//HomePage");
@@ -94,7 +92,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void SetServerAsync(Server s)
         {
-            
+
             var test = await httpClient.GetAsync($"{s.Address}/api/events");
             if (test.StatusCode == HttpStatusCode.OK)
             {
@@ -106,11 +104,11 @@ namespace AspenMobile.ViewModels
             else
             {
                 ShowAddServerError = true;
-                
+
             }
 
-            
-            
+
+
 
         }
         private void loadServers()
@@ -136,9 +134,9 @@ namespace AspenMobile.ViewModels
         }
         internal async Task OnAppearingAsync()
         {
-            if(Servers.Count == 0)
+            if (Servers.Count == 0)
             {
-            await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
+                await Application.Current.MainPage.DisplayAlert("No Server Set", "There needs to be a server set in format\n\nAlias: Any Name \nAddress: https://my-server-address", "Ok");
             }
         }
 
