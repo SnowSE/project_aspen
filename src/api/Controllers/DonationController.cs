@@ -53,6 +53,7 @@ public class DonationController : ControllerBase
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         var sum = await donationRepository.GetEventDonationSum(eventID);
+        log.LogInformation("donation: the donation sum from event is {sum}", sum);
         return sum;
     }
 }
