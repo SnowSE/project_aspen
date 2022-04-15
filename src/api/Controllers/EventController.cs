@@ -29,7 +29,7 @@ public class EventController : ControllerBase
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
         Log.Debug("HttpGet({eventID})");
-        Log.Information("Getting the total donations for {eventID}", eventID);
+        Log.Information("Getting the total donations for events ");
         logger.LogInformation("Getting all events");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }

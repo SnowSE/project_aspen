@@ -68,9 +68,9 @@ namespace AspenMobile.ViewModels
 
         [ICommand]
         [Authorize]
-        private async Task DeleteEventAsync()
+        private async Task DeleteEventByIDAsync(int id)
         {
-
+            await httpClient.DeleteAsync($"{current}/api/events/{id}");
         }
 
     }
