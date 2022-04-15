@@ -1,4 +1,4 @@
-name: Deploy to 'jonathan'
+name: Deploy to 'jayse'
 
 env:
   AZURE_WEBAPP_NAME: ${{secrets.AZURE_API_WEBAPP_NAME}} 
@@ -7,16 +7,17 @@ env:
 on:
   push:
     branches:
-      - jonathan
+      - jayse
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: 
-      name: jonathan
+      name: jayse
     steps:
       - uses: actions/checkout@v3
-      
+        with:
+          ref: jayse      
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
@@ -34,3 +35,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_API_WEBAPP_PUBLISH_PROFILE  }}
           package: '${{ env.DOTNET_ROOT }}/myapp'
+          slot-name: warmup

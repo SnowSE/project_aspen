@@ -11,12 +11,13 @@ using Xamarin.Forms.Xaml;
 namespace AspenMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EventPage : ContentPage
+    public partial class TeamPage : ContentPage
     {
-        public EventPage()
+        public TeamPage()
         {
             InitializeComponent();
-            BindingContext = new EventPageViewModel();
+            BindingContext = new TeamDetailViewModel();
+
         }
     }
 }
