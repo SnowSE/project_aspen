@@ -1,4 +1,5 @@
-﻿using IdentityModel.OidcClient;
+﻿using AspenMobile.GlobalConstants;
+using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
+
 namespace AspenMobile.ViewModels
 {
     //Made from Jonathan's template https://github.com/snow-jallen/Authorized.git
@@ -20,7 +22,7 @@ namespace AspenMobile.ViewModels
 
         public LoginViewModel()
         {
-            Title = "Aspen Login!";
+            //Title = "Aspen Login!";
 
             var browser = DependencyService.Get<IBrowser>();
             var options = new OidcClientOptions
@@ -38,18 +40,18 @@ namespace AspenMobile.ViewModels
             _apiClient.Value.BaseAddress = new Uri("https://engineering.snow.edu/aspen/");
         }
 
-        internal async Task OnAppearingAsync()
-        {
-            await CheckTokenIsLiveAsync();
-        }
 
         public OidcClient client;
         public LoginResult _result;
         public Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(() => new HttpClient());
         public string accessToken;
 
-        [ObservableProperty] private string title;
-        [ObservableProperty] private string outputText;
+        [ObservableProperty]
+        public string loginStatus;
+        [ObservableProperty]
+        public string title;
+        [ObservableProperty]
+        private string outputText;
 
         [ObservableProperty, AlsoNotifyChangeFor(nameof(CanLogOut))]
         private bool canLogIn;
@@ -58,10 +60,13 @@ namespace AspenMobile.ViewModels
         [ObservableProperty]
         public bool isAdmin;
 
+        [ObservableProperty]
+        public string userName;
+
         [ICommand]
         private async Task Logout()
         {
-            SecureStorage.Remove("accessToken");
+            SecureStorage.Remove(Constants.AccessToken);
             try
             {
                 await client.LogoutAsync();
@@ -72,6 +77,8 @@ namespace AspenMobile.ViewModels
             }
             CanLogIn = true;
             IsAdmin = false;
+            LoginStatus = "Log In";
+            UserName = null;
         }
 
 
@@ -80,7 +87,7 @@ namespace AspenMobile.ViewModels
         {
             try
             {
-                accessToken = await SecureStorage.GetAsync("accessToken");
+                accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
                 if (accessToken == null)
                 {
                     _result = await client.LoginAsync(new LoginRequest());
@@ -92,13 +99,14 @@ namespace AspenMobile.ViewModels
                     }
                     accessToken = _result.AccessToken;
 
-                    await SecureStorage.SetAsync("accessToken", accessToken);
+                    await SecureStorage.SetAsync(Constants.AccessToken, accessToken);
                     IsAdmin = IsTokenAdmin(accessToken);
+                    await SetUserNameFromToken();
 
                 }
 
                 CanLogIn = false;
-
+                LoginStatus = "Log Out " + UserName;
                 if (_apiClient.Value.DefaultRequestHeaders.Authorization == null)
                 {
                     _apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
@@ -121,7 +129,7 @@ namespace AspenMobile.ViewModels
         }
         public async Task CheckTokenIsLiveAsync()
         {
-            accessToken = await SecureStorage.GetAsync("accessToken");
+            accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
             if (accessToken != null)
             {
                 var handler = new JwtSecurityTokenHandler();
@@ -129,6 +137,8 @@ namespace AspenMobile.ViewModels
                 if ((jwtSecurityToken.ValidTo - DateTime.Now.ToUniversalTime()) > TimeSpan.Zero)
                 {
                     IsAdmin = IsTokenAdmin(accessToken);
+                    await SetUserNameFromToken();
+                    LoginStatus = "Log Out " + UserName;
                 }
                 else
                 {
@@ -138,6 +148,25 @@ namespace AspenMobile.ViewModels
             else
             {
                 await Logout();
+            }
+        }
+        private async Task SetUserNameFromToken()
+        {
+            accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+            UserName = jwtSecurityToken.Claims.Single(c => c.Type == "preferred_username").Value;
+
+        }
+        public async Task ToggleLoginLogout()
+        {
+            if(LoginStatus == "Log In")
+            {
+                Login();
+            }
+            else
+            {
+                Logout();
             }
         }
     }

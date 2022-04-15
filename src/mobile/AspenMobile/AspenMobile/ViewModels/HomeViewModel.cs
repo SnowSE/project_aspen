@@ -4,7 +4,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
@@ -22,37 +21,42 @@ namespace AspenMobile.ViewModels
         private string current;
         public HomeViewModel()
         {
-            current = Preferences.Get(Constants.CurrentServer, null);
-            if (current == null)
-            {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            }
             DisplayEventAsync();
         }
-
-
 
         public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
+        [ICommand]
+        public async Task RefeshEvents()
+        {
+            await DisplayEventAsync();
+        }
 
-        public async void DisplayEventAsync()
+        public async Task DisplayEventAsync()
         {
             current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)
             {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+                await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
 
-            var closestEvent = await GetClosestEventAsync();
-            Event.Add(closestEvent);
-
-
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
-
-            foreach (var team in teams)
+            try
             {
-                Teams.Add(team);
+                var closestEvent = await GetClosestEventAsync();
+                Event.Add(closestEvent);
+                var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
+
+                foreach (var team in teams)
+                {
+                    Teams.Add(team);
+                }
+
+            }
+            catch (Exception)
+            {
+
+
             }
         }
 
@@ -78,7 +82,7 @@ namespace AspenMobile.ViewModels
             }
             return closestEvent;
         }
-                
+
         [ICommand]
         public async void CreateATeamAsync()
         {
