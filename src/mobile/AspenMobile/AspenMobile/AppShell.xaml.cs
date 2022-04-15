@@ -1,7 +1,6 @@
 ﻿using AspenMobile.ViewModels;
 using AspenMobile.Views;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AspenMobile
@@ -13,10 +12,13 @@ namespace AspenMobile
         {
             BindingContext = viewModel = new LoginViewModel();
             InitializeComponent();
-            Routing.RegisterRoute(nameof(EventsPage), typeof(EventsPage));
+            Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
-            Routing.RegisterRoute(nameof(EventPage), typeof(EventPage));
+            Routing.RegisterRoute(nameof(AdminDonationDetailsPage), typeof(AdminDonationDetailsPage));
+            Routing.RegisterRoute(nameof(CreateATeamPage), typeof(CreateATeamPage));
+            Routing.RegisterRoute(nameof(CreateNewEventPage), typeof(CreateNewEventPage));
+            Routing.RegisterRoute(nameof(EditEventPage), typeof(EditEventPage));
 
         }
         protected override async void OnBindingContextChanged()
@@ -26,7 +28,7 @@ namespace AspenMobile
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {
 
-            await Shell.Current.GoToAsync("LoginPage");
+            await viewModel.ToggleLoginLogout();
         }
     }
 }
