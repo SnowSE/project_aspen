@@ -51,16 +51,16 @@ namespace AspenMobile.ViewModels
                 var uri = new Uri("https://engineering.snow.edu/aspen/api/teams/25");
 
                // var dtoTeamInfos = JsonConvert.DeserializeObject<List<DtoTeam>>(uri);
-                var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>(uri);
+                var teams = await httpClient.GetFromJsonAsync<DtoTeam>(uri);
                // var content = await teams.Content.ReadAsStringAsync();
                 //string json = content.ToString();
                 //var jsonList = JArray.Parse(teams.ToString());
 
 
-                foreach (var team in teams)
-                {
-                    TeamInfoList.Add(team);
-                }
+                    TeamInfoList.Add(teams);
+                //foreach (var team in teams)
+                //{
+                //}
             }
             catch (Exception ex)
             {
