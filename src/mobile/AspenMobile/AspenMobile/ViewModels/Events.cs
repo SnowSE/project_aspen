@@ -1,8 +1,5 @@
 ﻿using AspenMobile.GlobalConstants;
 using AspenMobile.Views;
-using IdentityModel.OidcClient;
-using IdentityModel.OidcClient.Browser;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
@@ -12,8 +9,6 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -35,19 +30,16 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-            apiClient.Value.BaseAddress = new Uri($"{current}/aspen/");
-
-            OnAppearingAsync();
-
-            if (apiClient.Value.DefaultRequestHeaders.Authorization == null)
-            {
-                apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
-            }
+            apiClient.Value.BaseAddress = new Uri($"{current}/api/");
 
         }
         internal async Task OnAppearingAsync()
         {
-            accessToken = await SecureStorage.GetAsync("accessToken");
+            accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+            if (apiClient.Value.DefaultRequestHeaders.Authorization == null)
+            {
+                apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
+            }
         }
 
         [ObservableProperty]
@@ -58,6 +50,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async Task GetAllEventsAsync()
         {
+            AllEvents.Clear();
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             foreach (var item in allEvents)
@@ -73,15 +66,13 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        [Authorize]
         private async Task EditEventAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(EditEventPage)}");
         }
 
         [ICommand]
-        [Authorize]
-        private async Task DeleteEventByIDAsync(int id)
+        private async Task DeleteEventByIDAsync(long id)
         {
             await httpClient.DeleteAsync($"{current}/api/events/{id}");
         }

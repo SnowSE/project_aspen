@@ -1,5 +1,4 @@
-﻿using Serilog;
-
+﻿
 namespace Api.Controllers;
 
 [Route("api/teams")]
@@ -8,6 +7,8 @@ public class TeamController : ControllerBase
 {
     private readonly ITeamRepository teamRepository;
     private readonly IMapper mapper;
+    private readonly ILogger<TeamController> log;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -15,23 +16,24 @@ public class TeamController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public TeamController(ITeamRepository teamRepository, IMapper mapper)
+    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> log)
     {
         this.teamRepository = teamRepository;
         this.mapper = mapper;
+        this.log = log;
     }
 
     [HttpGet("event/{eventId}")]
     public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
-        Log.Debug("HttpGet GetByEventID");
-        Log.Information("Getting Team by event {eventId}", eventId);
+        log.LogDebug("HttpGet GetByEventID");
+        log.LogInformation("Getting Team by event {eventId}", eventId);
         try
         {
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
             return new ActionResult<IEnumerable<DtoTeam>>(teams);
         }
-        catch(NotFoundException<IEnumerable<Team>> ex)
+        catch (NotFoundException<IEnumerable<Team>> ex)
         {
             return NotFound(ex.Message);
         }
@@ -40,8 +42,8 @@ public class TeamController : ControllerBase
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
-        Log.Debug("HttpGet GetByID");
-        Log.Information("Getting team by teamId {teamId}", teamId);
+        log.LogDebug("HttpGet GetByID");
+        log.LogInformation("Getting team by teamId {teamId}", teamId);
         if (!await teamRepository.ExistsAsync(teamId))
             return NotFound("Team id does not exist");
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
@@ -50,8 +52,8 @@ public class TeamController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
     {
-        Log.Debug("HttpPost Add dtoTeam");
-        Log.Information("Adding new dtoTeam {dtoTeam}", dtoTeam);
+        log.LogDebug("HttpPost Add dtoTeam");
+        log.LogInformation("Adding new dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -67,8 +69,8 @@ public class TeamController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
-        Log.Debug("HttpPut Edit dtoTeam");
-        Log.Information("Editing dtoTeam {dtoTeam}", dtoTeam);
+        log.LogDebug("HttpPut Edit dtoTeam");
+        log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -85,8 +87,8 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        Log.Debug("HttpDelete Delete Team");
-        Log.Information("Deleteting team {id}", id);
+        log.LogDebug("HttpDelete Delete Team");
+        log.LogInformation("Deleteting team {id}", id);
         if (!await teamRepository.ExistsAsync(id))
             return NotFound("Team id does not exist");
 
@@ -95,7 +97,7 @@ public class TeamController : ControllerBase
             await teamRepository.DeleteTeamAsync(id);
             return Ok();
         }
-        catch(UnableToDeleteException<Team> ex)
+        catch (UnableToDeleteException<Team> ex)
         {
             return BadRequest(ex.Message);
         }

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Tests.ControllerTests;
 
 public class PageDataControllerTest
@@ -9,7 +11,8 @@ public class PageDataControllerTest
     {
         var context = TestHelpers.CreateContext();
         var pageDataRepository = new PageDataRepository(context, TestHelpers.AspenMapper);
-        pageDataController = new PageDataController(pageDataRepository);
+        var loggerMock = new Mock<ILogger<PageDataController>>();
+        pageDataController = new PageDataController(pageDataRepository, loggerMock.Object);
     }
 
     [Test]

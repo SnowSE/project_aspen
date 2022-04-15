@@ -1,5 +1,4 @@
-﻿using Serilog;
-
+﻿
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
@@ -8,6 +7,8 @@ namespace Api.Controllers;
 public class PageDataController : ControllerBase
 {
     private readonly IPageDataRepository pageDataRepository;
+    private readonly ILogger<PageDataController> log;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -15,31 +16,32 @@ public class PageDataController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public PageDataController(IPageDataRepository pageDataRepository)
+    public PageDataController(IPageDataRepository pageDataRepository, ILogger<PageDataController> log)
     {
         this.pageDataRepository = pageDataRepository;
+        this.log = log;
     }
 
     // GET: api/PageData
     [HttpGet]
     public async Task<IEnumerable<DtoPageData>> GetAll()
     {
-        Log.Debug("HttpGet GetAll DtoPageData");
+        log.LogDebug("HttpGet GetAll DtoPageData");
         return await pageDataRepository.GetAllAsync();
     }
 
     [HttpGet("keys")]
     public async Task<IEnumerable<string>> GetKeys()
     {
-        Log.Debug("HttpGet GetKeys");
+        log.LogDebug("HttpGet GetKeys");
         return (await pageDataRepository.GetAllAsync()).Select(pd => pd.Key);
     }
 
     [HttpGet("{key}")]
     public async Task<ActionResult<DtoPageData>> GetByKey(string key)
     {
-        Log.Debug("HttpGet GetByKey");
-        Log.Information("Getting key {key}", key);
+        log.LogDebug("HttpGet GetByKey");
+        log.LogInformation("Getting key {key}", key);
         var pageData = await pageDataRepository.GetAsync(key);
         if (pageData == null)
             return NotFound("Page Data key does not exist");
@@ -52,8 +54,8 @@ public class PageDataController : ControllerBase
     /*[Authorize(Roles = "admin-aspen")]*/
     public async Task<IActionResult> Edit(string key, DtoPageData pageData)
     {
-        Log.Debug("HttpPut Edit Key");
-        Log.Information("Editing key {key} for page {pageData}", key, pageData);
+        log.LogDebug("HttpPut Edit Key");
+        log.LogInformation("Editing key {key} for page {pageData}", key, pageData);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
         if (!await pageDataRepository.ExistsAsync(key))
@@ -75,8 +77,8 @@ public class PageDataController : ControllerBase
     /*[Authorize(Roles = "admin-aspen")]*/
     public async Task<ActionResult<DtoPageData>> Post(DtoPageData pageData)
     {
-        Log.Debug("HttpPost Post PageData");
-        Log.Information("Posting PageData for {PageData}", pageData);
+        log.LogDebug("HttpPost Post PageData");
+        log.LogInformation("Posting PageData for {PageData}", pageData);
         if (!ModelState.IsValid || string.IsNullOrWhiteSpace(pageData.Key) || pageData.Data == null)
             return BadRequest(getModelStateErrorMessage());
         var createdPageData = await pageDataRepository.AddAsync(pageData);
@@ -90,8 +92,8 @@ public class PageDataController : ControllerBase
     /*[Authorize(Roles = "admin-aspen")]*/
     public async Task<IActionResult> Delete(string key)
     {
-        Log.Debug("HttpDelete Deleteting Key");
-        Log.Information("Deleteting key {key}", key);
+        log.LogDebug("HttpDelete Deleteting Key");
+        log.LogInformation("Deleteting key {key}", key);
         if (!await pageDataRepository.ExistsAsync(key))
             return NotFound("Page Data key does not exist");
         await pageDataRepository.DeleteAsync(key);
