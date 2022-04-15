@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
+
 namespace Api;
 
 public class Program
@@ -9,10 +13,11 @@ public class Program
     public static void Main(string[] args)
     {
 
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        // var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var environment = "Development";
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            // .AddJsonFile($"appsettings.{environment}.json", optional: true)
             .Build();
 
         ConfigureLogging(environment, configuration);
@@ -31,11 +36,11 @@ public class Program
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Host failure.");
+            // Log.Fatal(ex, "Host failure.");
         }
         finally
         {
-            Log.CloseAndFlush();
+            // Log.CloseAndFlush();
         }
     }
 
