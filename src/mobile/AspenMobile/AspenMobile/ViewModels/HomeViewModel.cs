@@ -27,62 +27,62 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-            DisplayEventAsync();
+          //  DisplayEventAsync();
         }
 
 
 
-        public ObservableCollection<DtoEvent> Event { get; set; } = new();
-        public ObservableCollection<DtoTeam> Teams { get; set; } = new();
+        //public ObservableCollection<DtoEvent> Event { get; set; } = new();
+        //public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
 
-        public async void DisplayEventAsync()
-        {
-            current = Preferences.Get(Constants.CurrentServer, null);
-            if (current == null)
-            {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            }
+        //public async void DisplayEventAsync()
+        //{
+        //    current = Preferences.Get(Constants.CurrentServer, null);
+        //    if (current == null)
+        //    {
+        //        Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+        //    }
 
-            var closestEvent = await GetClosestEventAsync();
-            Event.Add(closestEvent);
+        //    var closestEvent = await GetClosestEventAsync();
+        //    Event.Add(closestEvent);
 
 
-            var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
+        //    var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
 
-            foreach (var team in teams)
-            {
-                Teams.Add(team);
-            }
-        }
+        //    foreach (var team in teams)
+        //    {
+        //        Teams.Add(team);
+        //    }
+        //}
 
-        public async Task<DtoEvent> GetClosestEventAsync()
-        {
-            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
+        //public async Task<DtoEvent> GetClosestEventAsync()
+        //{
+        //    var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
-            DtoEvent closestEvent = new DtoEvent();
-            double prev = 0;
-            double smallestTime = 0;
-            foreach (var item in allEvents)
-            {
-                var seconds = item.Date - DateTime.Now;
-                if (seconds.TotalSeconds > 0)
-                {
-                    smallestTime = seconds.TotalSeconds;
-                    if (smallestTime < prev || prev == 0)
-                    {
-                        closestEvent = item;
-                    }
-                    prev = smallestTime;
-                }
-            }
-            return closestEvent;
-        }
+        //    DtoEvent closestEvent = new DtoEvent();
+        //    double prev = 0;
+        //    double smallestTime = 0;
+        //    foreach (var item in allEvents)
+        //    {
+        //        var seconds = item.Date - DateTime.Now;
+        //        if (seconds.TotalSeconds > 0)
+        //        {
+        //            smallestTime = seconds.TotalSeconds;
+        //            if (smallestTime < prev || prev == 0)
+        //            {
+        //                closestEvent = item;
+        //            }
+        //            prev = smallestTime;
+        //        }
+        //    }
+        //    return closestEvent;
+        //}
                 
-        [ICommand]
-        public async void CreateATeam()
-        {
-            await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
-        }
+        //[ICommand]
+        //public async void CreateATeamAsync()
+        //{
+        //    await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+        //}
     }
 }

@@ -4,7 +4,8 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Event}" HorizontalOptions="Center">
+            <Label Text="This is the test"/>
+            <CollectionView ItemsSource="{Binding Donations}" HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout HorizontalOptions="Center">

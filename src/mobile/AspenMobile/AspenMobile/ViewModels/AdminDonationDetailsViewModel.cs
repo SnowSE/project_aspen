@@ -7,57 +7,105 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    [QueryProperty(nameof(EventId), nameof(EventId))]
-    public class AdminDonationDetailsViewModel : ObservableObject
+    public partial class AdminDonationDetailsViewModel : ObservableObject
     {
-        private readonly HttpClient httpClient = new();
+        //private readonly HttpClient httpClient = new();
+        public ObservableCollection<DtoDonation> Donations { get; set; } = new();
+
         public AdminDonationDetailsViewModel()
         {
-
+            current = Preferences.Get(Constants.CurrentServer, null);
+            DisplayDonationAsync();
         }
 
         public int eventId;
         private string current;
 
-        public int EventId
+       [ObservableProperty]
+        private string errorMessage; 
+
+        public async void DisplayDonationAsync()
         {
-            get
+
+
+
+            var httpClient = new HttpClient();
+            var testUri = "https://engineering.snow.edu/aspen/api/donations/2";
+           // var currentEvent = await GetClosestEventAsync();
+           // var donationDetails = await httpClient.GetFromJsonAsync<List<DtoDonation>>($"{current}/api/donations/{currentEvent.ID}");
+
+            //foreach (var donation in donationDetails)
+            //{
+            //    Donations.Add(donation);
+            //}
+            try
             {
-                return eventId;
+                var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
+                var uri = new Uri($"{testUri}");
+
+
+
+                var donation = await httpClient.GetFromJsonAsync<DtoDonation>(uri);
+
+                Donations.Add(donation);
+
             }
-            set
+            catch (Exception ex)
             {
-                eventId = value;
-                Preferences.Set(Constants.CurrentEventId, value.ToString());
-                DisplayEventAsync(value);
+                ErrorMessage = ex.Message;
             }
-        }
-        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
 
-        private void DisplayEventAsync(int value)
+        }
+        //need to uncomment this after testing
+        //public async Task<DtoEvent> GetClosestEventAsync()
+        //{
+        //    var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
+
+        //    DtoEvent closestEvent = new DtoEvent();
+        //    double prev = 0;
+        //    double smallestTime = 0;
+        //    foreach (var item in allEvents)
+        //    {
+        //        var seconds = item.Date - DateTime.Now;
+        //        if (seconds.TotalSeconds > 0)
+        //        {
+        //            smallestTime = seconds.TotalSeconds;
+        //            if (smallestTime < prev || prev == 0)
+        //            {
+        //                closestEvent = item;
+        //            }
+        //            prev = smallestTime;
+        //        }
+        //    }
+        //    return closestEvent;
+        //}
+        /*public async Task<DtoEvent> GetDonatinInfoAsync()
         {
-            throw new NotImplementedException();
-        }
+            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
-        public async void DisplayDonationAsync(int eventId)
-        {
-            current = Preferences.Get(Constants.CurrentServer, null);
-
-            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
-
-            var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
-
-             foreach (var donation in donationDetails)
-             {
-                 Donations.Add(donation);
-             }
-            // var test = Preferences.Get(Constants.CurrentEventId, null);
-
-        }
+            DtoEvent closestEvent = new DtoEvent();
+            double prev = 0;
+            double smallestTime = 0;
+            foreach (var item in allEvents)
+            {
+                var seconds = item.Date - DateTime.Now;
+                if (seconds.TotalSeconds > 0)
+                {
+                    smallestTime = seconds.TotalSeconds;
+                    if (smallestTime < prev || prev == 0)
+                    {
+                        closestEvent = item;
+                    }
+                    prev = smallestTime;
+                }
+            }
+            return closestEvent;
+        }*/
     }
 }
