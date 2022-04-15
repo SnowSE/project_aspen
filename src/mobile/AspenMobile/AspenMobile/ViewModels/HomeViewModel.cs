@@ -27,12 +27,12 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-            DisplayEventAsync();
+            //DisplayEventAsync();
         }
 
 
 
-        public ObservableCollection<DtoEvent> Event { get; set; } = new();
+        /*public ObservableCollection<DtoEvent> Event { get; set; } = new();
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
 
@@ -41,7 +41,7 @@ namespace AspenMobile.ViewModels
             current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)
             {
-                Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
+                await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
 
             var closestEvent = await GetClosestEventAsync();
@@ -80,9 +80,9 @@ namespace AspenMobile.ViewModels
         }
                 
         [ICommand]
-        public async void CreateATeam()
+        public async void CreateATeamAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
-        }
+        }*/
     }
 }

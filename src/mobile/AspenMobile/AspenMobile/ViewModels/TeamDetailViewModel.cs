@@ -17,7 +17,7 @@ namespace AspenMobile.ViewModels
 
         public TeamDetailViewModel()
         {
-            GetTeamInfoAsync();
+            
         }
 
         [ObservableProperty]
@@ -25,15 +25,30 @@ namespace AspenMobile.ViewModels
 
         private int teamId;//needs to be set by naviagation parameter
 
-        public async Task GetTeamInfoAsync()
+        public int TeamId
+        {
+            get
+            {
+                return teamId;
+            }
+            set
+            {
+                teamId = value;
+                Preferences.Set(Constants.CurrentEventId, value.ToString());
+                GetTeamInfoAsync(value);
+            }
+        }
+
+        public async Task GetTeamInfoAsync(int teamId)
         {
             var httpClient = new HttpClient();
 
-            //Need to ask a Jonathan which string to use
+           
             try
             {
-                var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
-                var uri = new Uri($"{server}/api/teams/{teamId}");
+               // var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
+                //var uri = https://engineering.snow.edu/aspen/api/teams/25
+                var uri = new Uri("https://engineering.snow.edu/aspen/api/teams/25/api/teams/{teamId}");
                 var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>(uri);
                 foreach (var team in teams)
                 {
