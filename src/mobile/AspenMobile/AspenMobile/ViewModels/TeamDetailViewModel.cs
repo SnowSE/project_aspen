@@ -25,6 +25,7 @@ namespace AspenMobile.ViewModels
 
         private int teamId;//needs to be set by naviagation parameter
 
+       
         public int TeamId
         {
             get
