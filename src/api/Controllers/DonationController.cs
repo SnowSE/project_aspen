@@ -6,6 +6,8 @@ public class DonationController : ControllerBase
 {
     private readonly IDonationRepository donationRepository;
     private readonly IMapper mapper;
+    private readonly ILogger<DonationController> log;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -13,10 +15,11 @@ public class DonationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public DonationController(IDonationRepository donationRepository, IMapper mapper)
+    public DonationController(IDonationRepository donationRepository, IMapper mapper, ILogger<DonationController> log)
     {
         this.donationRepository = donationRepository;
         this.mapper = mapper;
+        this.log = log;
     }
 
     [HttpPost]
@@ -30,6 +33,7 @@ public class DonationController : ControllerBase
 
         var donation = mapper.Map<Donation>(dtoDonation);
         var newDonation = await donationRepository.AddAsync(donation);
+        log.LogInformation("donation: Added new donation {amount}", newDonation);
         return mapper.Map<DtoDonation>(newDonation);
     }
 
@@ -40,6 +44,8 @@ public class DonationController : ControllerBase
             return BadRequest(getModelStateErrorMessage());
 
         var sum = await donationRepository.GetTeamDonationSum(eventID, teamID);
+        log.LogInformation("donation: event id {eventID} got this team {teamId}",eventID, teamID);
+
         return sum;
     }
 
