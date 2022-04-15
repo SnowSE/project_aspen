@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    public partial class Events : ObservableObject
+    public partial class AdminEventsViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
         private string current;
@@ -23,7 +23,7 @@ namespace AspenMobile.ViewModels
         private string accessToken;
 
 
-        public Events()
+        public AdminEventsViewModel()
         {
             current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)

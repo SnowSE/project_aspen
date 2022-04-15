@@ -28,7 +28,7 @@ namespace AspenMobile
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {
 
-            await viewModel.ToggleLoginLogout();
+            await viewModel.ToggleLoginLogoutAsync();
         }
     }
 }

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:AspenMobile.ViewModels"
-             x:Class="AspenMobile.Views.EventsPage">
+             x:Class="AspenMobile.Views.AdminEventsPage">
     <ContentPage.Content>
         <StackLayout>
             <Button Command="{Binding CreateNewEventCommand}"
@@ -32,13 +32,13 @@
                                        Grid.Row="4"
                                        HorizontalOptions="Center"
                                        FontSize="Medium" />
-                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:Events }}, Path=EditEventCommand}"
+                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminEventsViewModel }}, Path=EditEventCommand}"
                                         Text="Edit Event"
                                         HorizontalOptions="End"
                                         TextColor="Yellow"
                                         Grid.Row="0"
                                         Grid.Column="5" />
-                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:Events }}, Path=DeleteEventByIDCommand}"
+                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminEventsViewModel }}, Path=DeleteEventByIDCommand}"
                                         CommandParameter="{Binding ID}"
                                         Text="Delete Event"
                                         HorizontalOptions="Start"
