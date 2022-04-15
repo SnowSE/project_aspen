@@ -31,8 +31,8 @@ namespace AspenMobile.ViewModels
         }
 
 
-
-        public ObservableCollection<DtoEvent> Event { get; set; } = new();
+        [ObservableProperty]
+        public DtoEvent currentEvent;
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
 
@@ -45,7 +45,8 @@ namespace AspenMobile.ViewModels
             }
 
             var closestEvent = await GetClosestEventAsync();
-            Event.Add(closestEvent);
+
+            CurrentEvent = closestEvent;
 
 
             var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
@@ -58,6 +59,7 @@ namespace AspenMobile.ViewModels
 
         public async Task<DtoEvent> GetClosestEventAsync()
         {
+
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             DtoEvent closestEvent = new DtoEvent();
@@ -78,11 +80,17 @@ namespace AspenMobile.ViewModels
             }
             return closestEvent;
         }
-                
+
         [ICommand]
-        public async void CreateATeam()
+        public async void CreateATeamAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+        }
+
+        [ICommand]
+        public async void OnTeamSelectedAsync(DtoTeam team)
+        {
+            await Shell.Current.GoToAsync($"{nameof(TeamPage)}?{nameof(TeamDetailViewModel.TeamId)}={team.ID}");
         }
     }
 }

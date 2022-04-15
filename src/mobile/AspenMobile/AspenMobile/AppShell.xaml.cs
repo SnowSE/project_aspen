@@ -15,6 +15,8 @@ namespace AspenMobile
             Routing.RegisterRoute(nameof(CreateATeamPage), typeof(CreateATeamPage));
             Routing.RegisterRoute(nameof(CreateNewEventPage), typeof(CreateNewEventPage));
             Routing.RegisterRoute(nameof(EditEventPage), typeof(EditEventPage));
+            Routing.RegisterRoute(nameof(TeamPage), typeof(TeamPage));
+
 
         }
 

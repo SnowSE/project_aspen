@@ -12,6 +12,7 @@ using System.Net;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System;
+using System.Threading.Tasks;
 
 namespace AspenMobile.ViewModels
 {
@@ -48,6 +49,8 @@ namespace AspenMobile.ViewModels
         private string selectedServer;
 
         [ObservableProperty]
+        private bool showInvalidUriError;
+        [ObservableProperty]
         private bool showAddServerError;
 
         [ICommand]
@@ -57,11 +60,29 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public void AddNewServer()
+        public async Task AddNewServer()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;
             newserver.Address = serverAddress;
+            try
+            {
+                Uri uriTest = new Uri(newserver.Address);
+
+            }
+            catch (Exception ex)
+            {
+                ShowInvalidUriError = true;
+                return; 
+            }
+
+
+
+
+
+
+            ShowInvalidUriError = false;
+
             Servers.Add(newserver);
 
             ShowAddControls = false;
@@ -87,23 +108,22 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void SetServerAsync(Server s)
         {
-            
-            var test = await httpClient.GetAsync($"{s.Address}/api/events");
-            if (test.StatusCode == HttpStatusCode.OK)
+            try
             {
-                Preferences.Set(Constants.CurrentServer, s.Address);
-                ShowAddServerError = false;
-
-                Shell.Current.GoToAsync($"{nameof(HomePage)}");
+                var test = await httpClient.GetAsync($"{s.Address}/api/events");
+                if (test.StatusCode == HttpStatusCode.OK)
+                {
+                    ShowAddServerError = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
                 ShowAddServerError = true;
-                
+                return;
             }
 
-            
-            
+            Preferences.Set(Constants.CurrentServer, s.Address);
+            await Shell.Current.GoToAsync($"{nameof(HomePage)}");
 
         }
         private void loadServers()
