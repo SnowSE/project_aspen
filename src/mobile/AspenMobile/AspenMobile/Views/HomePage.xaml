@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AspenMobile.Views.HomePage"
              xmlns:vm="clr-namespace:AspenMobile.ViewModels"
-             x:Name="HomeView"
-             Title="{Binding Title}">
+             x:Name="HomeView">
+
         
     <ScrollView>
     <StackLayout>

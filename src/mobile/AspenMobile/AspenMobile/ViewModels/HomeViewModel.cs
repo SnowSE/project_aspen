@@ -45,6 +45,7 @@ namespace AspenMobile.ViewModels
             }
 
             var closestEvent = await GetClosestEventAsync();
+            Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
 
             CurrentEvent = closestEvent;
 
