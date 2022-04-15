@@ -59,7 +59,7 @@ namespace AspenMobile.ViewModels
             ShowAddButton = false;
         }
         [ICommand]
-        public async void AddNewServer()
+        public async void AddNewServerAsync()
         {
             var newserver = new Server();
             newserver.Alias = serverAlias;

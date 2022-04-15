@@ -5,6 +5,7 @@
     <ContentPage.Content>
 
         <StackLayout>
+            <Label Text="Test"/>
             <CollectionView ItemsSource="{Binding TeamInfoList}"
                             HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
@@ -19,20 +20,24 @@
                                     <RowDefinition Height="80" />
                                 </Grid.RowDefinitions>
 
-
-
-                                <Label Text="{Binding Name}"
+                                <Label Text="{Binding TeamId}"
                                        Grid.Row="0"
                                        HorizontalOptions="Center"
                                        FontSize="Large" />
-                                <Label Text="{Binding ID}"
+                                <Label Text="{Binding Name}"
                                        Grid.Row="1"
                                        HorizontalOptions="Center" />
                                 <Label Text="{Binding Description}"
                                        Grid.Row="2"
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding }"
+                                <Label Text="{Binding mainImage}"
                                        Grid.Row="3"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding ownerId}"
+                                       Grid.Row="3"                                      
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding eventId}"
+                                       Grid.Row="3"                                      
                                        HorizontalOptions="Center" />
                                 <Label Text="{Binding DonationTarget}"
                                        Grid.Row="4"
