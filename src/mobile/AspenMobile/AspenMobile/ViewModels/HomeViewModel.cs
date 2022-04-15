@@ -28,7 +28,7 @@ namespace AspenMobile.ViewModels
         public ObservableCollection<DtoTeam> Teams { get; set; } = new();
 
         [ICommand]
-        public async Task RefeshEvents()
+        public async Task RefeshEventsAsync()
         {
             await DisplayEventAsync();
         }

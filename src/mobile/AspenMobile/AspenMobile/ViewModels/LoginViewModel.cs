@@ -158,9 +158,9 @@ namespace AspenMobile.ViewModels
             UserName = jwtSecurityToken.Claims.Single(c => c.Type == "preferred_username").Value;
 
         }
-        public async Task ToggleLoginLogout()
+        public async Task ToggleLoginLogoutAsync()
         {
-            if(LoginStatus == "Log In")
+            if (LoginStatus == "Log In")
             {
                 Login();
             }

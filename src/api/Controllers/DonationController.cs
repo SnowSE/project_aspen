@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Api.Controllers;
+﻿namespace Api.Controllers;
 
 [Route("api/donations")]
 [ApiController]
@@ -8,6 +6,8 @@ public class DonationController : ControllerBase
 {
     private readonly IDonationRepository donationRepository;
     private readonly IMapper mapper;
+    private readonly ILogger<DonationController> log;
+
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
             ModelState.Values
@@ -15,17 +15,18 @@ public class DonationController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public DonationController(IDonationRepository donationRepository, IMapper mapper)
+    public DonationController(IDonationRepository donationRepository, IMapper mapper, ILogger<DonationController> log)
     {
         this.donationRepository = donationRepository;
         this.mapper = mapper;
+        this.log = log;
     }
 
     [HttpPost]
     public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
     {
-        Log.Debug("HttpPost Add dtoDonation");
-        Log.Information("Added {dtoDonation}", dtoDonation);
+        log.LogDebug("HttpPost Add dtoDonation");
+        log.LogInformation("Added {dtoDonation}", dtoDonation);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -40,8 +41,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}/{teamID}")]
     public async Task<ActionResult<decimal>> GetTeamDonationSum(long eventID, long teamID)
     {
-        Log.Debug("HttpGet({eventID}/{teamID})");
-        Log.Information("Getting the total donations for {eventID} from team {teamID}", eventID, teamID);
+        log.LogDebug("HttpGet({eventID}/{teamID})");
+        log.LogInformation("Getting the total donations for {eventID} from team {teamID}", eventID, teamID);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -52,8 +53,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
-        Log.Debug("HttpGet({eventID})");
-        Log.Information("Getting the total donations for {eventID}", eventID);
+        log.LogDebug("HttpGet({eventID})");
+        log.LogInformation("Getting the total donations for {eventID}", eventID);
         var sum = await donationRepository.GetEventDonationSum(eventID);
         return sum;
     }

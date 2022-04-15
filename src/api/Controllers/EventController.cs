@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Api.Controllers;
+﻿namespace Api.Controllers;
 
 [Route("api/events")]
 [ApiController]
@@ -9,7 +7,7 @@ public class EventController : ControllerBase
     public const string AspenAdminRole = "admin-aspen";
     private readonly IEventRepository eventRepository;
     private readonly IMapper mapper;
-    private readonly ILogger<EventController> logger;
+    private readonly ILogger<EventController> log;
 
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -18,27 +16,27 @@ public class EventController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> logger)
+    public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> log)
     {
         this.eventRepository = eventRepository;
         this.mapper = mapper;
-        this.logger = logger;
+        this.log = log;
     }
 
     [HttpGet]
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
-        Log.Debug("HttpGet({eventID})");
-        Log.Information("Getting the total donations for events ");
-        logger.LogInformation("Getting all events");
+        log.LogDebug("HttpGet({eventID})");
+        log.LogInformation("Getting the total donations for events ");
+        log.LogInformation("Getting all events");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<DtoEvent>> GetByID(long id)
     {
-        Log.Debug("HttpGet({id})");
-        Log.Information("Getting the event {id}", id);
+        log.LogDebug("HttpGet({id})");
+        log.LogInformation("Getting the event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 
@@ -48,8 +46,8 @@ public class EventController : ControllerBase
     [HttpPost, Authorize(Roles = AspenAdminRole)]
     public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
     {
-        Log.Debug("HttpPost dtoEvent");
-        Log.Information("Adding the new dtoEvent {dtoEvent}", dtoEvent);
+        log.LogDebug("HttpPost dtoEvent");
+        log.LogInformation("Adding the new dtoEvent {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
         if (dtoEvent.ID != 0)
@@ -63,8 +61,8 @@ public class EventController : ControllerBase
     [HttpPut(), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
     {
-        Log.Debug("HttpPut Edit dtoEvent");
-        Log.Information("Editing the event {dtoEvent}", dtoEvent);
+        log.LogDebug("HttpPut Edit dtoEvent");
+        log.LogInformation("Editing the event {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -77,8 +75,8 @@ public class EventController : ControllerBase
     [HttpDelete("{id}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Delete(long id)
     {
-        Log.Debug("HttpDelete({id})");
-        Log.Information("Deleteting event {id}", id);
+        log.LogDebug("HttpDelete({id})");
+        log.LogInformation("Deleteting event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 

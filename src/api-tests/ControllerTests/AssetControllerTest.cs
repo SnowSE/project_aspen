@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Tests.ControllerTests;
 
 public class AssetControllerTest
@@ -26,7 +28,8 @@ public class AssetControllerTest
           .Build();
 
         assetFileService = new AssetFileService(new NullLogger<AssetFileService>(), configuration);
-        assetController = new AssetController(assetFileService);
+        var loggerMock = new Mock<ILogger<AssetController>>();
+        assetController = new AssetController(assetFileService, loggerMock.Object);
     }
 
     [Test]

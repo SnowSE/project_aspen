@@ -1,5 +1,4 @@
-﻿using Serilog;
-
+﻿
 namespace Api.Controllers;
 
 [ApiController]
@@ -7,17 +6,17 @@ namespace Api.Controllers;
 [Route("/api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly ILogger<UserController> logger;
+    private readonly ILogger<UserController> log;
 
     public UserController(ILogger<UserController> logger)
     {
-        this.logger = logger;
+        log = logger;
     }
 
     [HttpGet]
     public string Get()
     {
-        Log.Debug("HttpGet User");
+        log.LogDebug("HttpGet User");
         foreach (var claim in User.Claims)
         {
             Console.WriteLine(claim.Type + " - " + claim.Value + " - " + claim.ToString());

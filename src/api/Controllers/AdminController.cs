@@ -1,7 +1,4 @@
-﻿using Serilog;
-using shared.DtoModels;
-
-namespace Api.Controllers;
+﻿namespace Api.Controllers;
 
 [ApiController]
 [Authorize]
@@ -29,8 +26,8 @@ public class AdminController : ControllerBase
     [HttpGet("donation/{eventID}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
     {
-        Log.Debug("HttpGet donation/{eventID}");
-        Log.Information("Looking at a donation for {eventID}", eventID);
+        log.LogDebug("HttpGet donation/{eventID}");
+        log.LogInformation("Looking at a donation for {eventID}", eventID);
         var donations = await donationRepository.GetByEventIdAsync(eventID);
         log.LogInformation("AdminController: GetEventDonations eventID: {id}", eventID);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
@@ -39,8 +36,8 @@ public class AdminController : ControllerBase
     [HttpGet("donation/{eventID}/{teamID}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IEnumerable<DtoDonation>> GetTeamDonations(long eventID, long teamID)
     {
-        Log.Debug("HttpGet donation/{eventID}/{teamID}");
-        Log.Information("Looking at a donation for {eventID} with the team {teamID}", eventID, teamID);
+        log.LogDebug("HttpGet donation/{eventID}/{teamID}");
+        log.LogInformation("Looking at a donation for {eventID} with the team {teamID}", eventID, teamID);
         var donations = await donationRepository.GetByTeamIdAsync(eventID, teamID);
         log.LogInformation("AdminController: GetTeamDonations eventID: {eventid}, teamID: {teamid}", eventID, teamID);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
