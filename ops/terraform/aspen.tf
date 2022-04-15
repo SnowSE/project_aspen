@@ -240,9 +240,12 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
       storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 }
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> c9e06d2207a870bc0fb0c52c1e18151fb9ffc630
