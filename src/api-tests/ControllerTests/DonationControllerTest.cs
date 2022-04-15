@@ -1,5 +1,5 @@
-﻿using RestSharp;
-using shared.DtoModels;
+﻿using Microsoft.Extensions.Logging;
+using RestSharp;
 using Tests.Steps;
 
 namespace Tests.ControllerTests;
@@ -22,7 +22,8 @@ public class DonationControllerTest
     {
         var context = TestHelpers.CreateContext();
         var eventRepository = new DonationRepository(context, TestHelpers.AspenMapper);
-        return new DonationController(eventRepository, TestHelpers.AspenMapper);
+        var loggerMock = new Mock<ILogger<DonationController>>();
+        return new DonationController(eventRepository, TestHelpers.AspenMapper, loggerMock.Object);
     }
 
     [SetUp]

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Tests.ControllerTests;
 
 public class PersonControllerTest
@@ -7,7 +9,8 @@ public class PersonControllerTest
         var context = TestHelpers.CreateContext();
         var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
         var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
-        return new PersonController(personRepository, registrationRepository, TestHelpers.AspenMapper);
+        var loggerMock = new Mock<ILogger<PersonController>>();
+        return new PersonController(personRepository, registrationRepository, TestHelpers.AspenMapper, loggerMock.Object);
     }
 
     [Test]
