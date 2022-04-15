@@ -4,7 +4,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
@@ -43,11 +42,18 @@ namespace AspenMobile.ViewModels
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
+            try
+            {
+                var closestEvent = await GetClosestEventAsync();
 
-            var closestEvent = await GetClosestEventAsync();
-            Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
+                Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
 
-            CurrentEvent = closestEvent;
+                CurrentEvent = closestEvent;
+            }
+            catch (Exception ex)
+            {
+
+            }
 
 
             var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");

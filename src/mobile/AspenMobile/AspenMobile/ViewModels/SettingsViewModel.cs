@@ -5,14 +5,14 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 //using Microsoft.VisualStudio.PlatformUI;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System;
-using System.Threading.Tasks;
 
 namespace AspenMobile.ViewModels
 {
@@ -73,11 +73,23 @@ namespace AspenMobile.ViewModels
             catch (Exception ex)
             {
                 ShowInvalidUriError = true;
-                return; 
+                return;
             }
 
 
-
+            try
+            {
+                var test = await httpClient.GetAsync($"{newserver.Address}/api/events");
+                if (test.StatusCode == HttpStatusCode.OK)
+                {
+                    ShowAddServerError = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowAddServerError = true;
+                return;
+            }
 
 
 
@@ -108,19 +120,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void SetServerAsync(Server s)
         {
-            try
-            {
-                var test = await httpClient.GetAsync($"{s.Address}/api/events");
-                if (test.StatusCode == HttpStatusCode.OK)
-                {
-                    ShowAddServerError = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowAddServerError = true;
-                return;
-            }
+
 
             Preferences.Set(Constants.CurrentServer, s.Address);
             await Shell.Current.GoToAsync($"{nameof(HomePage)}");

@@ -5,11 +5,11 @@
              xmlns:vm="clr-namespace:AspenMobile.ViewModels"
              x:Name="HomeView">
 
-        
+
     <ScrollView>
     <StackLayout>
         <Button Command="{Binding CreateATeamAsyncCommand}" Text="Create A New Team"/>
-                
+
 
                             <Label Text="{Binding CurrentEvent.Title}"  HorizontalOptions="Center" FontSize="Large" />
                             <Label Text="{Binding CurrentEvent.Date}"  HorizontalOptions="Center"/>
@@ -23,8 +23,8 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <StackLayout HorizontalOptions="Center">
@@ -32,14 +32,14 @@
                             <Label Text="{Binding Description}" Grid.Row="1" HorizontalOptions="Center"/>
                             <Button Command="{Binding BindingContext.OnTeamSelectedAsyncCommand, Source={x:Reference HomeView}}" CommandParameter="{Binding .}" Text="View Team"/>
 
-                               
+
                         </StackLayout>
 
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
+
     </StackLayout>
 
     </ScrollView>
