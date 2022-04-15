@@ -59,7 +59,7 @@ namespace AspenMobile.ViewModels
         public ObservableCollection<DtoEvent> AllEvents { get; set; } = new();
 
         [ICommand]
-        public async Task GetAllEvents()
+        public async Task GetAllEventsAsync()
         {
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
@@ -70,7 +70,7 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        public async Task CreateNewEvent()
+        public async Task CreateNewEventAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(CreateNewEventPage)}");
         }

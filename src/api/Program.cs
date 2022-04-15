@@ -10,8 +10,21 @@ public class Program
 {
     public static void Main(string[] args)
     {
-
-       var host = CreateHostBuilder(args)
+        //var configuration = new ConfigurationBuilder()
+        //.AddJsonFile("appsettings.json")
+        //.Build();
+        //Log.Logger = (Serilog.ILogger)new LoggerConfiguration()
+        //.WriteTo.Console()
+        //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+        //{
+        //    AutoRegisterTemplate = true,
+        //    IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
+        //})
+        //.WriteTo.File("Logs/LogInfo.txt")
+        //.WriteTo.Seq("http://localhost:5341",
+        //apiKey: "yeEZyL3SMcxEKUijBjN")
+        //.CreateLogger();
+        var host = CreateHostBuilder(args)
            .ConfigureLogging(logging =>
            {
                logging.ClearProviders();
