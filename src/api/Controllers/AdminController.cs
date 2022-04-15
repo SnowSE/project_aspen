@@ -1,4 +1,5 @@
-﻿using shared.DtoModels;
+﻿using Serilog;
+using shared.DtoModels;
 
 namespace Api.Controllers;
 
@@ -27,6 +28,7 @@ public class AdminController : ControllerBase
     public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
     {
         var donations = await donationRepository.GetByEventIdAsync(eventID);
+        Log.Logger.Information("Team Donations: {event} recieved {donations}", eventID, donations);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
     }
 
@@ -34,6 +36,7 @@ public class AdminController : ControllerBase
     public async Task<IEnumerable<DtoDonation>> GetTeamDonations(long eventID, long teamID)
     {
         var donations = await donationRepository.GetByTeamIdAsync(eventID, teamID);
+        Log.Logger.Information("Team Donations: {team} donated to {event}", teamID, eventID);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
     }
 }

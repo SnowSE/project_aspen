@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/events")]
 [ApiController]
@@ -34,7 +36,10 @@ public class EventController : ControllerBase
     public async Task<ActionResult<DtoEvent>> GetByID(long id)
     {
         if (!await eventRepository.ExistsAsync(id))
+        {
+            Log.Logger.Error("Events: Event ID does not exist");
             return NotFound("Event id does not exist");
+        }
 
         return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
     }
@@ -43,12 +48,19 @@ public class EventController : ControllerBase
     public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
     {
         if (!ModelState.IsValid)
+        {
+            Log.Logger.Error("Events: Event is not valid");
             return BadRequest(getModelStateErrorMessage());
+        }
         if (dtoEvent.ID != 0)
+        {
+            Log.Logger.Error("Events: cannot add event with a valid id");
             return BadRequest("Cannot add event with a valid id");
+        }
 
         var @event = mapper.Map<Event>(dtoEvent);
         var newEvent = await eventRepository.AddAsync(@event);
+        Log.Logger.Information("Events: a new event has been added");
         return mapper.Map<DtoEvent>(newEvent);
     }
 
@@ -56,7 +68,10 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
     {
         if (!ModelState.IsValid)
+        {
+            Log.Logger.Error("Events: cannot get event");
             return BadRequest(getModelStateErrorMessage());
+        }
 
         var e = mapper.Map<Event>(dtoEvent);
         await eventRepository.EditAsync(e);
@@ -68,7 +83,10 @@ public class EventController : ControllerBase
     public async Task<IActionResult> Delete(long id)
     {
         if (!await eventRepository.ExistsAsync(id))
+        {
+            Log.Logger.Error("Events: event does not exist");
             return NotFound("Event id does not exist");
+        }
 
         await eventRepository.DeleteAsync(id);
         return Ok();

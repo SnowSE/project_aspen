@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/[controller]")]
 /*[Authorize]*/
@@ -36,7 +38,10 @@ public class PageDataController : ControllerBase
     {
         var pageData = await pageDataRepository.GetAsync(key);
         if (pageData == null)
+        {
+            Log.Logger.Error("Page Data: Data key does not exist");
             return NotFound("Page Data key does not exist");
+        }
         return pageData;
     }
 
@@ -47,9 +52,15 @@ public class PageDataController : ControllerBase
     public async Task<IActionResult> Edit(string key, DtoPageData pageData)
     {
         if (!ModelState.IsValid)
+        {
+            Log.Logger.Error("Page Data: Model state is invalid");
             return BadRequest(getModelStateErrorMessage());
+        }
         if (!await pageDataRepository.ExistsAsync(key))
+        {
+            Log.Logger.Error("Page Data: Data key does not exist");
             return NotFound("Page Data key does not exist");
+        }
         try
         {
             await pageDataRepository.EditAsync(key, pageData);
@@ -68,7 +79,10 @@ public class PageDataController : ControllerBase
     public async Task<ActionResult<DtoPageData>> Post(DtoPageData pageData)
     {
         if (!ModelState.IsValid || string.IsNullOrWhiteSpace(pageData.Key) || pageData.Data == null)
+        {
+            Log.Logger.Error("Page Data: Model state is invalid, page data is null, or has a white space");
             return BadRequest(getModelStateErrorMessage());
+        }
         var createdPageData = await pageDataRepository.AddAsync(pageData);
 
         return CreatedAtAction(nameof(GetByKey), new { key = createdPageData.Key }, createdPageData);
@@ -81,7 +95,10 @@ public class PageDataController : ControllerBase
     public async Task<IActionResult> Delete(string key)
     {
         if (!await pageDataRepository.ExistsAsync(key))
+        {
+            Log.Logger.Error("Page Data: Data key does not exist");
             return NotFound("Page Data key does not exist");
+        }
         await pageDataRepository.DeleteAsync(key);
         return NoContent();
     }

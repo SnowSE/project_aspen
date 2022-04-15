@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using System.Reflection;
 
 namespace Api;
 
@@ -15,6 +18,15 @@ public class Startup
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
+        Log.Logger = (Serilog.ILogger)new LoggerConfiguration()
+        .WriteTo.Console()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+        {
+            AutoRegisterTemplate = true,
+            IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
+        })
+        .WriteTo.File("Logs/LogInfo.txt")
+        .CreateLogger();
     }
 
     public IConfiguration Configuration { get; }

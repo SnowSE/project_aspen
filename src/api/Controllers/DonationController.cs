@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using Serilog;
+
+namespace Api.Controllers;
 
 [Route("api/donations")]
 [ApiController]
@@ -40,6 +42,7 @@ public class DonationController : ControllerBase
             return BadRequest(getModelStateErrorMessage());
 
         var sum = await donationRepository.GetTeamDonationSum(eventID, teamID);
+        Log.Logger.Information("Donations: {team} donated a total of ${donation}", teamID, sum);
         return sum;
     }
 
@@ -47,6 +50,7 @@ public class DonationController : ControllerBase
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         var sum = await donationRepository.GetEventDonationSum(eventID);
+        Log.Logger.Information("Donations: {event} has received total of ${donation} in donations", eventID, sum);
         return sum;
     }
 }

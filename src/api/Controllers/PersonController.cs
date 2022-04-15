@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
@@ -77,8 +79,12 @@ public class PersonController : ControllerBase
     public async Task<IActionResult> Delete(long id)
     {
         if (!await personRepository.ExistsAsync(id))
+        {
+            Log.Logger.Error("Person: Person ID does not exist");
             return NotFound("Person id does not exist");
+        }
 
+        Log.Logger.Error("Person: {person} was deleted", personRepository);
         await personRepository.DeleteAsync(id);
         return Ok();
     }
@@ -87,7 +93,10 @@ public class PersonController : ControllerBase
     public async Task<IEnumerable<DtoRegistration>> GetRegistrationsByID(long id)
     {
         if (await personRepository.ExistsAsync(id) is false)
+        {
+            Log.Logger.Error("Person: Person ID does not exist");
             throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
+        }
 
         var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
         return mapper.Map<IEnumerable<DtoRegistration>>(registrations);
