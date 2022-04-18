@@ -2,30 +2,27 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
+    [QueryProperty(nameof(TeamId), nameof(TeamId))]
+
     public partial class TeamDetailViewModel : ObservableObject
     {
-        public ObservableCollection<DtoTeam> TeamInfoList { get; }
+        [ObservableProperty]
+        public DtoTeam team;
 
         public TeamDetailViewModel()
         {
-            GetTeamInfoAsync();
         }
 
-        [ObservableProperty]
-        private string errorMessage;
-
         private int teamId;//needs to be set by naviagation parameter
-
-
         public int TeamId
         {
             get
@@ -35,24 +32,26 @@ namespace AspenMobile.ViewModels
             set
             {
                 teamId = value;
-                Preferences.Set(Constants.CurrentEventId, value.ToString());
+                GetTeamInfoAsync(value);
 
             }
         }
 
-        public async Task GetTeamInfoAsync()
+
+        [ObservableProperty]
+        private string errorMessage;
+
+
+        public async Task GetTeamInfoAsync(int teamId)
         {
             var httpClient = new HttpClient();
             try
             {
-                var testUri = "https://engineering.snow.edu/aspen/api/teams/25";
                 var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
-                var uri = new Uri($"{testUri}");
+                var uri = new Uri($"{server}/api/teams/{teamId}");
+                var team = await httpClient.GetFromJsonAsync<DtoTeam>(uri);
 
-                var teamInfo = await httpClient.GetFromJsonAsync<DtoTeam>(uri);
-               
-                    TeamInfoList.Add(teamInfo);
-                
+                Team = team;
             }
             catch (Exception ex)
             {

@@ -13,5 +13,10 @@ namespace AspenMobile.Views
             InitializeComponent();
             BindingContext = new HomeViewModel(); 
         }
+
+        private void CollectionView_Scrolled(object sender, ItemsViewScrolledEventArgs e)
+        {
+
+        }
     }
 }
