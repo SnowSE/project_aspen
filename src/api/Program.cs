@@ -19,7 +19,21 @@ public class Program
             .AddJsonFile($"appsettings.{environment}.json", optional: true)
             .Build();
 
-        ConfigureLogging(environment, configuration);
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithMachineName()
+            .WriteTo.Console()
+            .WriteTo.Debug()
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://104.43.240.156:9200"))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
+            })
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
 
         try
         {
@@ -41,25 +55,6 @@ public class Program
         {
             Log.CloseAndFlush();
         }
-    }
-
-    private static void ConfigureLogging(string environment, IConfigurationRoot configuration)
-    {
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .Enrich.FromLogContext()
-            .Enrich.WithEnvironmentName()
-            .Enrich.WithMachineName()
-            .WriteTo.Console()
-            .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://104.43.240.156:9200/"))
-            {
-                AutoRegisterTemplate = true,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
-            })
-            .ReadFrom.Configuration(configuration)
-            .CreateLogger();
     }
 
 

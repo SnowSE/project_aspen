@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Api;
 
@@ -154,6 +155,8 @@ public class Startup
 
         app.UseRouting();
         app.UseCors(myAllowSpecificOrigins);
+
+        app.UseSerilogRequestLogging(); // <-- Add this line
 
         app.UseAuthentication();
         app.UseAuthorization();
