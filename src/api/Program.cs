@@ -8,6 +8,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+
         var host = CreateHostBuilder(args)
             .ConfigureLogging(logging =>
             {
@@ -25,16 +26,6 @@ public class Program
         host.Run();
     }
 
-    private static void dumpLogs(IServiceScope scope, AspenContext db)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
-        foreach (var configItem in config.AsEnumerable())
-        {
-            logger.LogInformation($"{configItem.Key} {configItem.Value}");
-        }
-    }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)

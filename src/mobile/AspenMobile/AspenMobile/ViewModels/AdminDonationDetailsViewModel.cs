@@ -13,15 +13,16 @@ using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
+    [QueryProperty(nameof(EventId), nameof(EventId))]
     public partial class AdminDonationDetailsViewModel : ObservableObject
     {
         //private readonly HttpClient httpClient = new();
-        public ObservableCollection<DtoDonation> Donations { get; set; } = new();
-
+        [ObservableProperty]
+        public int donation;
         public AdminDonationDetailsViewModel()
         {
-            current = Preferences.Get(Constants.CurrentServer, null);
-            DisplayDonationAsync();
+           DisplayDonationAsync();
+
         }
 
         public int eventId;
@@ -58,54 +59,41 @@ namespace AspenMobile.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                eventId = value;
+                Preferences.Set(Constants.CurrentEventId, value.ToString());
+               // DisplayDonationAsync(value);
             }
 
         }
-        //need to uncomment this after testing
-        //public async Task<DtoEvent> GetClosestEventAsync()
-        //{
-        //    var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
+        public ObservableCollection<DtoDonation> Donations;
 
-        //    DtoEvent closestEvent = new DtoEvent();
-        //    double prev = 0;
-        //    double smallestTime = 0;
-        //    foreach (var item in allEvents)
-        //    {
-        //        var seconds = item.Date - DateTime.Now;
-        //        if (seconds.TotalSeconds > 0)
-        //        {
-        //            smallestTime = seconds.TotalSeconds;
-        //            if (smallestTime < prev || prev == 0)
-        //            {
-        //                closestEvent = item;
-        //            }
-        //            prev = smallestTime;
-        //        }
-        //    }
-        //    return closestEvent;
-        //}
-        /*public async Task<DtoEvent> GetDonatinInfoAsync()
+
+
+
+        public async void DisplayDonationAsync()
         {
-            var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
+            //current = Preferences.Get(Constants.CurrentServer, null);
+            var httpClient = new HttpClient();
 
-            DtoEvent closestEvent = new DtoEvent();
-            double prev = 0;
-            double smallestTime = 0;
-            foreach (var item in allEvents)
-            {
-                var seconds = item.Date - DateTime.Now;
-                if (seconds.TotalSeconds > 0)
-                {
-                    smallestTime = seconds.TotalSeconds;
-                    if (smallestTime < prev || prev == 0)
-                    {
-                        closestEvent = item;
-                    }
-                    prev = smallestTime;
-                }
-            }
-            return closestEvent;
-        }*/
+
+            // var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
+
+            var testServer = "https://engineering.snow.edu/aspen/api/donations/2";
+
+            var uri = new Uri($"{testServer}");
+            var donation = await httpClient.GetFromJsonAsync<int>(uri);
+           // Console.WriteLine(donation.ToString());
+            //Donations.Add(donation);
+            Donation=donation;
+
+          //  var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
+
+             //foreach (var donation in donationDetails)
+             //{
+             //    Donations.Add(donation);
+             //}
+            // var test = Preferences.Get(Constants.CurrentEventId, null);
+
+        }
     }
 }

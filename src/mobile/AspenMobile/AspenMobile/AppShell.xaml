@@ -2,6 +2,8 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:AspenMobile.Views"
+       xmlns:viewmodels="clr-namespace:AspenMobile.ViewModels"
+       x:DataType="viewmodels:LoginViewModel"
        Title="AspenMobile"
        x:Class="AspenMobile.AppShell">
 
@@ -105,9 +107,9 @@ Custom Style you can apply to any Flyout Item
         </ResourceDictionary>
     </Shell.Resources>
 
-    <!-- 
+    <!--
         When the Flyout is visible this defines the content to display in the flyout.
-        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
+        FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
     <FlyoutItem Title="Home"
@@ -115,15 +117,10 @@ Custom Style you can apply to any Flyout Item
         <ShellContent Route="HomePage"
                       ContentTemplate="{DataTemplate local:HomePage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Login"
+    <FlyoutItem Title="Admin Events"
                 Icon="icon_about.png">
-        <ShellContent Route="LoginPage"
-                      ContentTemplate="{DataTemplate local:LoginPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Events"
-                Icon="icon_about.png">
-        <ShellContent Route="EventsPage"
-                      ContentTemplate="{DataTemplate local:EventsPage}" />
+        <ShellContent Route="AdminEventsPage"
+                      ContentTemplate="{DataTemplate local:AdminEventsPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Server Settings"
                 Icon="icon_about.png">
@@ -141,12 +138,10 @@ Custom Style you can apply to any Flyout Item
                       ContentTemplate="{DataTemplate local:AdminDonationDetailsPage}" />
     </FlyoutItem>
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-    <!--<MenuItem Text="Logout"
-StyleClass="MenuItemLayoutStyle"
-Clicked="OnMenuItemClicked">
-</MenuItem>-->
-
-
+    <MenuItem Text="{Binding LoginStatus}"
+              StyleClass="MenuItemLayoutStyle"
+              Clicked="OnMenuItemClicked">
+    </MenuItem>
 
     <!--
 TabBar lets you define content that won't show up in a flyout menu. When this content is active
