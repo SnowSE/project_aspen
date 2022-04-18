@@ -33,6 +33,7 @@ public class TeamController : ControllerBase
         }
         catch(NotFoundException<IEnumerable<Team>> ex)
         {
+            logger.LogError(ex.Message);
             return NotFound(ex.Message);
         }
     }
@@ -42,6 +43,7 @@ public class TeamController : ControllerBase
     {
         logger.LogInformation($"GetByEventID: {teamId}");
         if (!await teamRepository.ExistsAsync(teamId))
+            logger.LogError($"GetByID: Team {teamId} does not exist");
             return NotFound("Team id does not exist");
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
     }
@@ -54,6 +56,7 @@ public class TeamController : ControllerBase
             return BadRequest(getModelStateErrorMessage());
 
         if (dtoTeam.ID != 0)
+            logger.LogError($"Error adding team: Cannot add team with a valid id");
             return BadRequest("Cannot add with a valid id");
 
         var team = mapper.Map<Team>(dtoTeam);
@@ -72,6 +75,7 @@ public class TeamController : ControllerBase
         var team = mapper.Map<Team>(dtoTeam);
 
         if (!await teamRepository.ExistsAsync(team.ID))
+            logger.LogError($"Error editing team: Team {team.ID} does not exist");
             return NotFound("Team id does not exist");
 
         logger.LogInformation($"Editing team {team.ID}");

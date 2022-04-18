@@ -13,10 +13,10 @@ public class Program
     public static void Main(string[] args)
     {
 
-        //var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        var environment = "Development";
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
             .Build();
 
         ConfigureLogging(environment, configuration);
@@ -48,34 +48,37 @@ public class Program
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithMachineName()
             .WriteTo.Console()
             .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://104.43.240.156:9200/"))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Url"]))
             {
                 AutoRegisterTemplate = true,
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
             })
             .ReadFrom.Configuration(configuration)
             .CreateLogger();
     }
 
- /*   private static void dumpLogs(IServiceScope scope, AspenContext db)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
-        foreach (var configItem in config.AsEnumerable())
-        {
-            logger.LogInformation($"{configItem.Key} {configItem.Value}");
-        }
-    }*/
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-        .UseSerilog()
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+    /*   private static void dumpLogs(IServiceScope scope, AspenContext db)
+       {
+           var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+           var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+           logger.LogInformation("*#*#*#*  Connection String: " + db.Database.GetConnectionString());
+           foreach (var configItem in config.AsEnumerable())
+           {
+               logger.LogInformation($"{configItem.Key} {configItem.Value}");
+           }
+       }*/
+
+    private static IHostBuilder CreateHostBuilder(string[] args) =>
+             Host.CreateDefaultBuilder(args)
+                 .UseSerilog()
+                 .ConfigureWebHostDefaults(webBuilder =>
+                 {
+                     webBuilder.UseStartup<Startup>();
+                 });
 }

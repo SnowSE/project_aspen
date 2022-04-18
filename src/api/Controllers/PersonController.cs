@@ -28,8 +28,10 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<DtoPerson>> GetByID(long id)
     {
         if (!await personRepository.ExistsAsync(id))
+            logger.LogError($"Person id does not exist: {id}");
             return NotFound("Person id does not exist");
         var person = await personRepository.GetByIDAsync(id);
+        logger.LogInformation($"Getting person by id: {person.ID}");
         return mapper.Map<DtoPerson>(person);
     }
 
@@ -37,9 +39,10 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<DtoPerson>> GetByAuthId(string authId)
     {
         var person = await personRepository.GetByAuthIdAsync(authId);
-        logger.LogInformation($"Getting person by authId: {authId}");
         if (person == null)
+            logger.LogError($"Person authId does not exist: {authId}");
             return NotFound("AuthID does not exist");
+        logger.LogInformation($"Getting person by authId: {person.ID}");
         return mapper.Map<DtoPerson>(person);
     }
 
@@ -47,9 +50,11 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
     {
         if (!ModelState.IsValid)
+            logger.LogError($"ModelState is not valid: {getModelStateErrorMessage()}");
             return BadRequest(getModelStateErrorMessage());
 
         if (dtoPerson.ID != 0)
+            logger.LogError($"Cannot add with a valid id: {dtoPerson.ID}");
             return BadRequest("Cannot add with a valid id");
 
         if (string.IsNullOrEmpty(dtoPerson.AuthID))
@@ -72,6 +77,7 @@ public class PersonController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
         if (!await personRepository.ExistsAsync(dtoPerson.ID))
+            logger.LogError($"Person id does not exist: {dtoPerson.ID}");
             return NotFound("Person id does not exist");
 
         var person = mapper.Map<Person>(dtoPerson);
@@ -96,6 +102,7 @@ public class PersonController : ControllerBase
     public async Task<IEnumerable<DtoRegistration>> GetRegistrationsByID(long id)
     {
         if (await personRepository.ExistsAsync(id) is false)
+            logger.LogError($"Person id does not exist: {id}");
             throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
 
         var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
