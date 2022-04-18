@@ -52,11 +52,11 @@ public class Program
             .Enrich.WithMachineName()
             .WriteTo.Console()
             .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Url"]))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://104.43.240.156:9200/"))
             {
                 AutoRegisterTemplate = true,
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
             })
             .ReadFrom.Configuration(configuration)
             .CreateLogger();
