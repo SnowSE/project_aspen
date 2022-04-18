@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using shared.DtoModels;
 
 namespace Tests.ControllerTests;
@@ -25,7 +26,11 @@ public class RegistrationControllerTest
         var context = TestHelpers.CreateContext();
         var registrationRepository = new RegistrationRepository(context, TestHelpers.AspenMapper);
         var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
-        return new RegistrationController(registrationRepository, personRepository, TestHelpers.AspenMapper);
+
+        var mock = new Mock<ILogger<RegistrationController>>();
+        var logger = mock.Object;
+
+        return new RegistrationController(registrationRepository, personRepository, TestHelpers.AspenMapper, logger);
     }
 
     [Test]
