@@ -1,4 +1,5 @@
 ﻿using AspenMobile.GlobalConstants;
+using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
 using System;
@@ -17,8 +18,8 @@ namespace AspenMobile.ViewModels
     public partial class AdminDonationDetailsViewModel : ObservableObject
     {
         //private readonly HttpClient httpClient = new();
-        [ObservableProperty]
-        public int donation;
+        //[ObservableProperty]
+        //public int donation;
         public AdminDonationDetailsViewModel()
         {
            DisplayDonationAsync();
@@ -29,46 +30,9 @@ namespace AspenMobile.ViewModels
         private string current;
 
        [ObservableProperty]
-        private string errorMessage; 
-
-        public async void DisplayDonationAsync()
-        {
-
-
-
-            var httpClient = new HttpClient();
-            var testUri = "https://engineering.snow.edu/aspen/api/donations/2";
-           // var currentEvent = await GetClosestEventAsync();
-           // var donationDetails = await httpClient.GetFromJsonAsync<List<DtoDonation>>($"{current}/api/donations/{currentEvent.ID}");
-
-            //foreach (var donation in donationDetails)
-            //{
-            //    Donations.Add(donation);
-            //}
-            try
-            {
-                var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
-                var uri = new Uri($"{testUri}");
-
-
-
-                var donation = await httpClient.GetFromJsonAsync<DtoDonation>(uri);
-
-                Donations.Add(donation);
-
-            }
-            catch (Exception ex)
-            {
-                eventId = value;
-                Preferences.Set(Constants.CurrentEventId, value.ToString());
-               // DisplayDonationAsync(value);
-            }
-
-        }
-        public ObservableCollection<DtoDonation> Donations;
-
-
-
+        private string errorMessage;
+        [ObservableProperty]
+        public ObservableCollection<DtoDonation> donations;
 
         public async void DisplayDonationAsync()
         {
@@ -81,10 +45,10 @@ namespace AspenMobile.ViewModels
             var testServer = "https://engineering.snow.edu/aspen/api/donations/2";
 
             var uri = new Uri($"{testServer}");
-            var donation = await httpClient.GetFromJsonAsync<int>(uri);
+            var donation = await httpClient.GetFromJsonAsync<DtoDonation>(uri);
            // Console.WriteLine(donation.ToString());
-            //Donations.Add(donation);
-            Donation=donation;
+            Donations.Add(donation);
+           // Donations=donation;
 
           //  var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
 
