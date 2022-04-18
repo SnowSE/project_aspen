@@ -12,9 +12,11 @@ namespace Api;
 public class Startup
 {
     private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration config)
     {
-        Configuration = configuration;
+
+        Configuration = config;
+
     }
 
     public IConfiguration Configuration { get; }

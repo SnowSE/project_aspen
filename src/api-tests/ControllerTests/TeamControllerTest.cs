@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Tests.ControllerTests;
 
 public class TeamControllerTest
@@ -6,7 +8,8 @@ public class TeamControllerTest
     {
         var context = TestHelpers.CreateContext();
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
-        return new TeamController(TeamRepository, TestHelpers.AspenMapper);
+        var loggerMock = new Mock<ILogger<TeamController>>();
+        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object);
     }
 
     [Test]

@@ -5,11 +5,7 @@
     <ContentPage.Content>
 
         <StackLayout>
-            <Label Text="Test"/>
-            <CollectionView ItemsSource="{Binding TeamInfoList}"
-                            HorizontalOptions="Center">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
+            
                         <StackLayout HorizontalOptions="Center">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -20,35 +16,29 @@
                                     <RowDefinition Height="80" />
                                 </Grid.RowDefinitions>
 
-                                <Label Text="{Binding TeamId}"
+
+
+                                <Label Text="{Binding Name}"
                                        Grid.Row="0"
                                        HorizontalOptions="Center"
                                        FontSize="Large" />
-                                <Label Text="{Binding Name}"
+                                <Label Text="{Binding ID}"
                                        Grid.Row="1"
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding Description}"
+                                <Label Text="{Binding Team.Description}"
                                        Grid.Row="2"
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding mainImage}"
+                                <Label Text="{Binding }"
                                        Grid.Row="3"
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding ownerId}"
-                                       Grid.Row="3"                                      
-                                       HorizontalOptions="Center" />
-                                <Label Text="{Binding eventId}"
-                                       Grid.Row="3"                                      
-                                       HorizontalOptions="Center" />
-                                <Label Text="{Binding DonationTarget}"
+                                <Label Text="{Binding Team.DonationTarget}"
                                        Grid.Row="4"
                                        HorizontalOptions="Center"
                                        FontSize="Medium" />
 
                             </Grid>
                         </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    
         </StackLayout>
 
 

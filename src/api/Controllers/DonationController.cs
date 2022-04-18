@@ -25,6 +25,8 @@ public class DonationController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
     {
+        log.LogDebug("HttpPost Add dtoDonation");
+        log.LogInformation("Added {dtoDonation}", dtoDonation);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -40,6 +42,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}/{teamID}")]
     public async Task<ActionResult<decimal>> GetTeamDonationSum(long eventID, long teamID)
     {
+        log.LogDebug("HttpGet({eventID}/{teamID})");
+        log.LogInformation("Getting the total donations for {eventID} from team {teamID}", eventID, teamID);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
@@ -52,6 +56,8 @@ public class DonationController : ControllerBase
     [HttpGet("{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
+        log.LogDebug("HttpGet({eventID})");
+        log.LogInformation("Getting the total donations for {eventID}", eventID);
         var sum = await donationRepository.GetEventDonationSum(eventID);
         log.LogInformation("donation: the donation sum from event is {sum}", sum);
         return sum;

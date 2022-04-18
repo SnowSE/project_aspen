@@ -117,10 +117,10 @@ Custom Style you can apply to any Flyout Item
         <ShellContent Route="HomePage"
                       ContentTemplate="{DataTemplate local:HomePage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Events"
+    <FlyoutItem Title="Admin Events"
                 Icon="icon_about.png">
-        <ShellContent Route="EventsPage"
-                      ContentTemplate="{DataTemplate local:EventsPage}" />
+        <ShellContent Route="AdminEventsPage"
+                      ContentTemplate="{DataTemplate local:AdminEventsPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Server Settings"
                 Icon="icon_about.png">

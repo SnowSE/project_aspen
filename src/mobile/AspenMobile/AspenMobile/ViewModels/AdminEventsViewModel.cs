@@ -1,8 +1,5 @@
 ﻿using AspenMobile.GlobalConstants;
 using AspenMobile.Views;
-using IdentityModel.OidcClient;
-using IdentityModel.OidcClient.Browser;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
@@ -10,48 +7,40 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    public partial class Events : ObservableObject
+    public partial class AdminEventsViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
         private string current;
+        private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
+        private string accessToken;
 
 
-        public Events()
+        public AdminEventsViewModel()
         {
             current = Preferences.Get(Constants.CurrentServer, null);
             if (current == null)
             {
                 Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
+            apiClient.Value.BaseAddress = new Uri($"{current}/api/");
 
-            var browser = DependencyService.Get<IBrowser>();
-            var options = new OidcClientOptions
-            {
-                Authority = $"{current}/aspen/auth/realms/aspen",
-                ClientId = "aspen-web",
-                Scope = "profile email api-use",
-                RedirectUri = "xamarinformsclients://callback",
-                Browser = browser
-            };
-
-            client = new OidcClient(options);
-            apiClient.Value.BaseAddress = new Uri($"{current}/aspen/");
-
-            OutputText = "Ready to go!";
         }
-
-        private OidcClient client;
-        private LoginResult result;
-        private Lazy<HttpClient> apiClient = new Lazy<HttpClient>(() => new HttpClient());
+        internal async Task OnAppearingAsync()
+        {
+            accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+            if (apiClient.Value.DefaultRequestHeaders.Authorization == null)
+            {
+                apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
+            }
+        }
 
         [ObservableProperty]
         private string outputText;
@@ -61,6 +50,7 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async Task GetAllEventsAsync()
         {
+            AllEvents.Clear();
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
 
             foreach (var item in allEvents)
@@ -76,17 +66,15 @@ namespace AspenMobile.ViewModels
         }
 
         [ICommand]
-        [Authorize]
-        private async Task EditEvent()
+        private async Task EditEventAsync()
         {
             await Shell.Current.GoToAsync($"{nameof(EditEventPage)}");
         }
 
         [ICommand]
-        [Authorize]
-        private async Task DeleteEvent()
+        private async Task DeleteEventByIDAsync(long id)
         {
-
+            await httpClient.DeleteAsync($"{current}/api/events/{id}");
         }
 
     }
