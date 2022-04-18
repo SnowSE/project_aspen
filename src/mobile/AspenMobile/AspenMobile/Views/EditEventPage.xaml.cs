@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspenMobile.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace AspenMobile.Views
         public EditEventPage()
         {
             InitializeComponent();
+            BindingContext = new EditEventViewModel();
         }
     }
 }

@@ -4,8 +4,9 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Event}" HorizontalOptions="Center">
-                <CollectionView.ItemTemplate>
+            <!--<CollectionView ItemsSource="{Binding Event}" HorizontalOptions="Center">-->
+                <Label Text="{Binding Donation}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
+                <!--<CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout HorizontalOptions="Center">
                             <Grid>
@@ -16,17 +17,17 @@
                                     <RowDefinition Height="100"/>
                                     <RowDefinition Height="80"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding EventID}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
-                                <Label Text="{Binding TeamID}" Grid.Row="1"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Donation}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
+                                --><!--<Label Text="{Binding TeamID}" Grid.Row="1"  HorizontalOptions="Center"/>
                                 <Label Text="{Binding PersonID}" Grid.Row="2"  HorizontalOptions="Center"/>
                                 <Label Text="{Binding Date}" Grid.Row="3"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Label Text="{Binding Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>--><!--
 
                             </Grid>
                         </StackLayout>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </CollectionView.ItemTemplate>-->
+            <!--</CollectionView>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -31,14 +31,11 @@
     <EmbeddedResource Update="Views\EditEventPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EventsPage.xaml">
+    <EmbeddedResource Update="Views\AdminEventsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-      <Compile Update="Views\EventsPage.xaml.cs">
-          <DependentUpon>EventsPage.xaml</DependentUpon>
-      </Compile>
     <Compile Update="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>

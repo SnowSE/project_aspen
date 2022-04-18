@@ -13,11 +13,14 @@ using Xamarin.Forms;
 namespace AspenMobile.ViewModels
 {
     [QueryProperty(nameof(EventId), nameof(EventId))]
-    public class AdminDonationDetailsViewModel : ObservableObject
+    public partial class AdminDonationDetailsViewModel : ObservableObject
     {
-        private readonly HttpClient httpClient = new();
+        //private readonly HttpClient httpClient = new();
+        [ObservableProperty]
+        public int donation;
         public AdminDonationDetailsViewModel()
         {
+           DisplayDonationAsync();
 
         }
 
@@ -34,28 +37,36 @@ namespace AspenMobile.ViewModels
             {
                 eventId = value;
                 Preferences.Set(Constants.CurrentEventId, value.ToString());
-                DisplayEventAsync(value);
+               // DisplayDonationAsync(value);
             }
         }
-        public ObservableCollection<DtoTeam> Donations { get; set; } = new();
+        public ObservableCollection<DtoDonation> Donations;
 
-        private void DisplayEventAsync(int value)
+
+
+
+        public async void DisplayDonationAsync()
         {
-            throw new NotImplementedException();
-        }
+            //current = Preferences.Get(Constants.CurrentServer, null);
+            var httpClient = new HttpClient();
 
-        public async void DisplayDonationAsync(int eventId)
-        {
-            current = Preferences.Get(Constants.CurrentServer, null);
 
-            var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
+            // var currentEvent = await httpClient.GetFromJsonAsync<DtoEvent>($"{current}/api/events/{eventId}");
 
-            var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
+            var testServer = "https://engineering.snow.edu/aspen/api/donations/2";
 
-             foreach (var donation in donationDetails)
-             {
-                 Donations.Add(donation);
-             }
+            var uri = new Uri($"{testServer}");
+            var donation = await httpClient.GetFromJsonAsync<int>(uri);
+           // Console.WriteLine(donation.ToString());
+            //Donations.Add(donation);
+            Donation=donation;
+
+          //  var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
+
+             //foreach (var donation in donationDetails)
+             //{
+             //    Donations.Add(donation);
+             //}
             // var test = Preferences.Get(Constants.CurrentEventId, null);
 
         }
