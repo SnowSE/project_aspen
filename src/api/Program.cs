@@ -19,7 +19,7 @@ public class Program
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://40.78.141.219:9200/"))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://10.0.1.4:9200/"))
             {
                 AutoRegisterTemplate = true,
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
