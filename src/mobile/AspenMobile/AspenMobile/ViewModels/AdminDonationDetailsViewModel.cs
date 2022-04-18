@@ -17,7 +17,7 @@ namespace AspenMobile.ViewModels
     {
         //private readonly HttpClient httpClient = new();
         [ObservableProperty]
-        public int donation;
+        public long donation;
         public AdminDonationDetailsViewModel()
         {
            DisplayDonationAsync();
@@ -56,7 +56,7 @@ namespace AspenMobile.ViewModels
             var testServer = "https://engineering.snow.edu/aspen/api/donations/2";
 
             var uri = new Uri($"{testServer}");
-            var donation = await httpClient.GetFromJsonAsync<int>(uri);
+            var donation = await httpClient.GetFromJsonAsync<long>(uri);
            // Console.WriteLine(donation.ToString());
             //Donations.Add(donation);
             Donation=donation;
