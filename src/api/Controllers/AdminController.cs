@@ -12,11 +12,12 @@ public class AdminController : ControllerBase
     private readonly ILogger<AdminController> log;
 
 
-    public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper)
+    public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper, ILogger<AdminController> log)
     {
         this.donationRepository = donationRepository;
         this.eventRepository = eventRepository;
         this.mapper = mapper;
+        this.log = log;
     }
 
     [HttpGet, Authorize(Roles = AspenAdminRole)]
