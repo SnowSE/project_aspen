@@ -25,4 +25,41 @@ namespace AspenMobile.ViewModels
 
         private int teamId;//needs to be set by naviagation parameter
 
-       
+
+        public int TeamId
+        {
+            get
+            {
+                return teamId;
+            }
+            set
+            {
+                teamId = value;
+                Preferences.Set(Constants.CurrentEventId, value.ToString());
+
+            }
+        }
+
+        public async Task GetTeamInfoAsync()
+        {
+            var httpClient = new HttpClient();
+            try
+            {
+                var testUri = "https://engineering.snow.edu/aspen/api/teams/25";
+                var server = Preferences.Get(Constants.CurrentServer, null) ?? throw new Exception("No server address set");
+                var uri = new Uri($"{testUri}");
+
+                var teamInfo = await httpClient.GetFromJsonAsync<DtoTeam>(uri);
+               
+                    TeamInfoList.Add(teamInfo);
+                
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
+
+
+    }
+}
