@@ -25,6 +25,7 @@ public class EventController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
+        logger.LogInformation("GetAllEvents was called");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }
 

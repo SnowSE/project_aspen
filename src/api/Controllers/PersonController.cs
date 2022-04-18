@@ -37,6 +37,7 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<DtoPerson>> GetByAuthId(string authId)
     {
         var person = await personRepository.GetByAuthIdAsync(authId);
+        logger.LogInformation($"Getting person by authId: {authId}");
         if (person == null)
             return NotFound("AuthID does not exist");
         return mapper.Map<DtoPerson>(person);
@@ -60,6 +61,7 @@ public class PersonController : ControllerBase
         else
         {
             var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
+            logger.LogInformation($"Person already exists person: {person.ID}");
             return mapper.Map<DtoPerson>(person);
         }
     }

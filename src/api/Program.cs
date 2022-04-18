@@ -13,11 +13,10 @@ public class Program
     public static void Main(string[] args)
     {
 
-        // var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        //var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         var environment = "Development";
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            // .AddJsonFile($"appsettings.{environment}.json", optional: true)
             .Build();
 
         ConfigureLogging(environment, configuration);
@@ -36,11 +35,11 @@ public class Program
         }
         catch (Exception ex)
         {
-            // Log.Fatal(ex, "Host failure.");
+            Log.Fatal(ex, "Host failure.");
         }
         finally
         {
-            // Log.CloseAndFlush();
+            Log.CloseAndFlush();
         }
     }
 
@@ -51,7 +50,7 @@ public class Program
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://10.1.0.4:9200/"))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://104.43.240.156:9200/"))
             {
                 AutoRegisterTemplate = true,
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
@@ -61,7 +60,7 @@ public class Program
             .CreateLogger();
     }
 
-    private static void dumpLogs(IServiceScope scope, AspenContext db)
+ /*   private static void dumpLogs(IServiceScope scope, AspenContext db)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
@@ -70,7 +69,7 @@ public class Program
         {
             logger.LogInformation($"{configItem.Key} {configItem.Value}");
         }
-    }
+    }*/
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
