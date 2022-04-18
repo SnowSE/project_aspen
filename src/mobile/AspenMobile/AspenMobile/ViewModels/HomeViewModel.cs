@@ -84,8 +84,8 @@ namespace AspenMobile.ViewModels
                     if (smallestTime < prev || prev == 0)
                     {
                         closestEvent = item;
+                        prev = smallestTime;
                     }
-                    prev = smallestTime;
                 }
             }
             return closestEvent;
