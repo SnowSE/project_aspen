@@ -46,7 +46,7 @@ namespace AspenMobile.ViewModels
             {
                 var closestEvent = await GetClosestEventAsync();
 
-                Preferences.Set(Constants.CurrentEventId, closestEvent.ID);
+                Preferences.Set(Constants.CurrentEventId, closestEvent.ID.ToString());
 
                 CurrentEvent = closestEvent;
                 var teams = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/teams/event/{closestEvent.ID}");
