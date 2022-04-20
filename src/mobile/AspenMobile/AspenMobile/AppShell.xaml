@@ -120,7 +120,8 @@ Custom Style you can apply to any Flyout Item
     <FlyoutItem Title="Admin Events"
                 Icon="icon_about.png">
         <ShellContent Route="AdminEventsPage"
-                      ContentTemplate="{DataTemplate local:AdminEventsPage}" />
+                      ContentTemplate="{DataTemplate local:AdminEventsPage}"
+                      IsVisible="{Binding IsAdmin}"/>
     </FlyoutItem>
     <FlyoutItem Title="Server Settings"
                 Icon="icon_about.png">

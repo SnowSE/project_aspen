@@ -69,7 +69,11 @@ public class DonationRepository : IDonationRepository
 
     public async Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId)
     {
-        var donations = await context.Donations.Where(d => d.EventID == eventId).ToListAsync();
+        var donations = await context.Donations
+            .Include(d => d.Team)
+            .Include(d => d.Person)
+            .Where(d => d.EventID == eventId).ToListAsync();
+
         return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
     }
 
