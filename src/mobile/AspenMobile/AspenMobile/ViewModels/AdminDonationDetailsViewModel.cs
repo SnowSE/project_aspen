@@ -67,16 +67,7 @@ namespace AspenMobile.ViewModels
                 Donations.Add(donation);
                 Console.WriteLine(Donations.Count);
             }
-            // Donations=donation;
-
-            //  var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
-
-            //foreach (var donation in donationDetails)
-            //{
-            //    Donations.Add(donation);
-            //}
-            // var test = Preferences.Get(Constants.CurrentEventId, null);
-
+           
         }
     }
 }
