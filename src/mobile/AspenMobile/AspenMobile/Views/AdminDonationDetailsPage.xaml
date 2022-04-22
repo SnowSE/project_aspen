@@ -4,7 +4,7 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Donation}" HorizontalOptions="Center">
+            <CollectionView ItemsSource="{Binding Donations}" HorizontalOptions="Center">
                 <!--<Label Text="{Binding Donations}" Grid.Row="3"  HorizontalOptions="Center"/>-->
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -17,11 +17,18 @@
                                     <RowDefinition Height="100"/>
                                     <RowDefinition Height="80"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding Donation}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
-                                <Label Text="{Binding TeamID}" Grid.Row="1"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding PersonID}" Grid.Row="2"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Date}" Grid.Row="3"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding ID}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
+                                <Label Text="{Binding EventID}" Grid.Row="1"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding TeamID}" Grid.Row="2"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding PersonID}" Grid.Row="3"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Date}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
                                 <Label Text="{Binding Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Label Text="{Binding IsPending}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Label Text="{Binding TeamName}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Label Text="{Binding PersonName}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+
+
+
 
                             </Grid>
                         </StackLayout>

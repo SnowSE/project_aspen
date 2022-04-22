@@ -1,4 +1,5 @@
 ﻿using AspenMobile.GlobalConstants;
+using IdentityModel.OidcClient;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
@@ -30,27 +31,41 @@ namespace AspenMobile.ViewModels
 
         public long eventId;
         private string current;
+        public LoginResult _result;
+
+        public OidcClient client;
 
         [ObservableProperty]
         private string errorMessage;
         [ObservableProperty]
-        public ObservableCollection<DtoDonation> donations;
+        public ObservableCollection<DtoDonation> donations = new ObservableCollection<DtoDonation>();
 
         public async void DisplayDonationAsync()
         {
             var httpClient = new HttpClient();
             var accessToken = await SecureStorage.GetAsync(Constants.AccessToken) ?? throw new Exception("Access token not found");
-
+            if(accessToken == null)
+            {
+                _result= await client.LoginAsync(new LoginRequest());
+                if (_result.IsError)
+                {
+                    ErrorMessage = _result.Error;
+                    return;
+                }
+                accessToken = _result.AccessToken;
+                await SecureStorage.SetAsync(Constants.AccessToken, accessToken);
+            }
             if (httpClient.DefaultRequestHeaders.Authorization == null)
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }
 
-            var uri = new Uri($"{current}/api/Admin/donation/{eventId}");
+            var uri = new Uri($"{current}/api/Admin/donation/5");
             var donations = await httpClient.GetFromJsonAsync<IEnumerable<DtoDonation>>(uri);
             foreach (var donation in donations)
             {
                 Donations.Add(donation);
+                Console.WriteLine(Donations.Count);
             }
             // Donations=donation;
 
