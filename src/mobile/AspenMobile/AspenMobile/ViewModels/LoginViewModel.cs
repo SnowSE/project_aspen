@@ -3,11 +3,13 @@ using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using shared.DtoModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -62,6 +64,8 @@ namespace AspenMobile.ViewModels
 
         [ObservableProperty]
         public string userName;
+        [ObservableProperty]
+        public long personID;
 
         [ICommand]
         private async Task Logout()
@@ -102,6 +106,7 @@ namespace AspenMobile.ViewModels
                     await SecureStorage.SetAsync(Constants.AccessToken, accessToken);
                     IsAdmin = IsTokenAdmin(accessToken);
                     await SetUserNameFromToken();
+                    await GetPersonIDAsync();
 
                 }
 
@@ -160,14 +165,29 @@ namespace AspenMobile.ViewModels
         }
         public async Task ToggleLoginLogoutAsync()
         {
-            if (LoginStatus == "Log In")
+            _ = (LoginStatus == "Log In") ? Login() : Logout();
+
+        }
+        public async Task GetPersonIDAsync()
+        {
+
+            accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(accessToken);
+
+            try
             {
-                Login();
+                HttpClient httpClient = new();
+                var personID = await httpClient.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/person/  authid/{jwtSecurityToken.Claims.Single(c => c.Type == "email").Value}");
+
+                PersonID = personID.ID;
+
             }
-            else
+            catch (Exception)
             {
-                Logout();
+                return;
             }
         }
+
     }
 }
