@@ -11,6 +11,7 @@ namespace AspenMobile.GlobalConstants
         public const string CurrentEventId = "CurrentEventId";
         public const string TeamInfo = "TeamInfo";
         public const string AccessToken = "AccessToken";
+        public const string UserID = "UserID";
 
     }
 }

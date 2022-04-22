@@ -71,6 +71,7 @@ namespace AspenMobile.ViewModels
         private async Task Logout()
         {
             SecureStorage.Remove(Constants.AccessToken);
+            Preferences.Remove(Constants.UserID);
             try
             {
                 await client.LogoutAsync();
@@ -181,6 +182,7 @@ namespace AspenMobile.ViewModels
                 var personID = await httpClient.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/person/  authid/{jwtSecurityToken.Claims.Single(c => c.Type == "email").Value}");
 
                 PersonID = personID.ID;
+                Preferences.Set(Constants.UserID, personID.ID);
 
             }
             catch (Exception)
