@@ -12,4 +12,6 @@ public record DtoDonation
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
     public bool IsPending { get; set; } = false;
+    public string? TeamName { get; set; }
+    public string? PersonName { get; set; }
 }
