@@ -14,10 +14,26 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Label Text="Title" TextColor="Red" />
-                                </Grid>
-                                <Label VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0" Text="{Binding Title, FallbackValue='Default', TargetNullValue='TargetNulll'}"/>
+                                <!--<Grid Margin="10">
+                                    <Label Text="Title" Grid.Row="0" Grid.Column="1" TextColor="Red" />
+                                    <Label Text="EventID" Grid.Row="0" Grid.Column="2" TextColor="Red" />
+
+                                </Grid>-->
+                                <!--<Label VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0" Text="{Binding Title, FallbackValue='Default', TargetNullValue='TargetNulll'}"/>-->
+                                <Label Text="Title" Grid.Row="0" Grid.Column="1" TextColor="Red" />
+                                <Label Text="EventID" Grid.Row="0" Grid.Column="2" TextColor="Red" />
+                                <Label Text="Team Id" Grid.Row="0" Grid.Column="3" TextColor="Red" />
+                                <Label Text="Person Id" Grid.Row="0" Grid.Column="4" TextColor="Red" />
+                                <Label Text="Date" Grid.Row="0" Grid.Column="5" TextColor="Red" />
+                                <Label Text="Amount" Grid.Row="0" Grid.Column="6" TextColor="Red" />
+                                <Label Text="IsPending" Grid.Row="0" Grid.Column="7" TextColor="Red" />
+                                <Label Text="Team Name" Grid.Row="0" Grid.Column="8" TextColor="Red" />
+                                <Label Text="Person Name" Grid.Row="0" Grid.Column="9" TextColor="Red" />
+
+
+
+
+
                                 <Label Text="{Binding ID}" Grid.Row="1" Grid.Column="1" />
                                 <Label Text="{Binding EventID}" Grid.Row="1" Grid.Column="2" />
                                 <Label Text="{Binding TeamID}" Grid.Row="1" Grid.Column="3" />
