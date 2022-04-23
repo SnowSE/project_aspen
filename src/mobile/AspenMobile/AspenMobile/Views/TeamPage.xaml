@@ -14,7 +14,9 @@
                                     <RowDefinition Height="60" />
                                     <RowDefinition Height="100" />
                                     <RowDefinition Height="80" />
-                                </Grid.RowDefinitions>
+                                    <RowDefinition Height="80" />
+
+                    </Grid.RowDefinitions>
 
 
 
@@ -35,8 +37,13 @@
                                        Grid.Row="4"
                                        HorizontalOptions="Center"
                                        FontSize="Medium" />
+                                <Label Text="{Binding  CurrentDonatedAmount}"
+                                       Grid.Row="5"
+                                       HorizontalOptions="Center"
+                                       FontSize="Medium" />
 
-                            </Grid>
+
+                </Grid>
                         </StackLayout>
                     
         </StackLayout>
