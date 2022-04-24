@@ -179,10 +179,10 @@ namespace AspenMobile.ViewModels
             try
             {
                 HttpClient httpClient = new();
-                var personID = await httpClient.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/person/  authid/{jwtSecurityToken.Claims.Single(c => c.Type == "email").Value}");
+                var personID = await httpClient.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/person/authid/{jwtSecurityToken.Claims.Single(c => c.Type == "email").Value}");
 
                 PersonID = personID.ID;
-                Preferences.Set(Constants.UserID, personID.ID);
+                Preferences.Set(Constants.UserID, personID.ID.ToString());
 
             }
             catch (Exception)

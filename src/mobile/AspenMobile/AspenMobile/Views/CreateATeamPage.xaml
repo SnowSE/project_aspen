@@ -4,9 +4,14 @@
              x:Class="AspenMobile.Views.CreateATeamPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Create A New Team Page!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            
+            <Label Text="Enter Name" HorizontalOptions="Center"/>
+            <Entry Text="{Binding Name}" HorizontalOptions="Center"/>
+            <Label Text="Enter Description" HorizontalOptions="Center"/>
+            <Entry Text="{Binding Description}" HorizontalOptions="Center"/>
+            <Label Text="Enter Donation Target" HorizontalOptions="Center"/>
+            <Entry Text="{Binding DonationTarget}" HorizontalOptions="Center"/>
+            <Button Command="{Binding CreateTeamAsyncCommand}" Text="Create Team" HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
