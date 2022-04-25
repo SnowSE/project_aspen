@@ -36,7 +36,12 @@ namespace AspenMobile.ViewModels
             try
             {
                 var httpClient = new HttpClient();
-                var personid = Preferences.Get(Constants.UserID, 0L);
+                var personid = Preferences.Get(Constants.UserID, -1L);
+                if(personid == -1)
+                {
+                    throw new Exception("No User Set");
+                }
+
                 foreach (var e in Events)
                 {
                     var uri = new Uri($"{currentServer}/api/donations/{e.ID}");
