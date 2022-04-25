@@ -44,9 +44,9 @@ namespace AspenMobile.ViewModels
         {
             var httpClient = new HttpClient();
             var accessToken = await SecureStorage.GetAsync(Constants.AccessToken) ?? throw new Exception("Access token not found");
-            if(accessToken == null)
+            if (accessToken == null)
             {
-                _result= await client.LoginAsync(new LoginRequest());
+                _result = await client.LoginAsync(new LoginRequest());
                 if (_result.IsError)
                 {
                     ErrorMessage = _result.Error;
@@ -60,14 +60,14 @@ namespace AspenMobile.ViewModels
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }
 
-            var uri = new Uri($"{current}/api/Admin/donation/5");
+            var uri = new Uri($"{current}/api/Admin/donation/{eventId}");
             var donations = await httpClient.GetFromJsonAsync<IEnumerable<DtoDonation>>(uri);
             foreach (var donation in donations)
             {
                 Donations.Add(donation);
                 Console.WriteLine(Donations.Count);
             }
-           
+
         }
     }
 }

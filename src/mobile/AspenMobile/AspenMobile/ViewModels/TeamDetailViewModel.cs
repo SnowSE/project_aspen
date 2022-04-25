@@ -2,7 +2,6 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
 using System;
-using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -22,26 +21,17 @@ namespace AspenMobile.ViewModels
 
         public TeamDetailViewModel()
         {
-            GetTeamInfoAsync(36,5);
+            eventId = Preferences.Get(Constants.CurrentEventId, -1L);
+            if (eventId < 0)
+                throw new ArgumentNullException(nameof(eventId));
+
         }
 
-        private int teamId;//needs to be set by naviagation parameter
-        private int eventId;
+        private long teamId;//needs to be set by naviagation parameter
+        private long eventId;
 
-        public int EventId
-        {
-            get
-            {
-                return eventId;
-            }
-            set
-            {
-                eventId = value;
-                
 
-            }
-        }
-        public int TeamId
+        public long TeamId
         {
             get
             {
@@ -50,7 +40,7 @@ namespace AspenMobile.ViewModels
             set
             {
                 teamId = value;
-                
+                GetTeamInfoAsync(teamId, eventId);
 
             }
         }
@@ -60,7 +50,7 @@ namespace AspenMobile.ViewModels
         private string errorMessage;
 
 
-        public async Task GetTeamInfoAsync(int teamId, int eventId)
+        public async Task GetTeamInfoAsync(long teamId, long eventId)
         {
             var httpClient = new HttpClient();
             try
@@ -73,7 +63,7 @@ namespace AspenMobile.ViewModels
                 Team = team;
                 var dtoDonation = await httpClient.GetFromJsonAsync<decimal>(currentDonationUri);
 
-                
+
                 CurrentDonatedAmount = dtoDonation;
             }
             catch (Exception ex)
