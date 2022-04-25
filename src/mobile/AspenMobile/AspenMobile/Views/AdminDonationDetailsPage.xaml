@@ -4,30 +4,54 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Donation}" HorizontalOptions="Center">
-                <!--<Label Text="{Binding Donations}" Grid.Row="3"  HorizontalOptions="Center"/>-->
-                <CollectionView.ItemTemplate>
+
+            <ListView x:Name="MyList" SeparatorVisibility="None" HasUnevenRows="True" ItemsSource= "{Binding Donations}" Footer="" BackgroundColor="Aquamarine" >
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout HorizontalOptions="Center">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="70" />
-                                    <RowDefinition Height="60"/>
-                                    <RowDefinition Height="60"/>
-                                    <RowDefinition Height="100"/>
-                                    <RowDefinition Height="80"/>
-                                </Grid.RowDefinitions>
-                                <Label Text="{Binding Donation}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
-                                <Label Text="{Binding TeamID}" Grid.Row="1"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding PersonID}" Grid.Row="2"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Date}" Grid.Row="3"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                        <ViewCell>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<Grid Margin="10">
+                                    <Label Text="Title" Grid.Row="0" Grid.Column="1" TextColor="Red" />
+                                    <Label Text="EventID" Grid.Row="0" Grid.Column="2" TextColor="Red" />
+
+                                </Grid>-->
+                                <!--<Label VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0" Text="{Binding Title, FallbackValue='Default', TargetNullValue='TargetNulll'}"/>-->
+                                <Label Text="Title" Grid.Row="0" Grid.Column="1" TextColor="Red" />
+                                <Label Text="EventID" Grid.Row="0" Grid.Column="2" TextColor="Red" />
+                                <Label Text="Team Id" Grid.Row="0" Grid.Column="3" TextColor="Red" />
+                                <Label Text="Person Id" Grid.Row="0" Grid.Column="4" TextColor="Red" />
+                                <Label Text="Date" Grid.Row="0" Grid.Column="5" TextColor="Red" />
+                                <Label Text="Amount" Grid.Row="0" Grid.Column="6" TextColor="Red" />
+                                <Label Text="IsPending" Grid.Row="0" Grid.Column="7" TextColor="Red" />
+                                <Label Text="Team Name" Grid.Row="0" Grid.Column="8" TextColor="Red" />
+                                <Label Text="Person Name" Grid.Row="0" Grid.Column="9" TextColor="Red" />
+
+
+
+
+
+                                <Label Text="{Binding ID}" Grid.Row="1" Grid.Column="1" />
+                                <Label Text="{Binding EventID}" Grid.Row="1" Grid.Column="2" />
+                                <Label Text="{Binding TeamID}" Grid.Row="1" Grid.Column="3" />
+                                <Label Text="{Binding PersonID}" Grid.Row="1" Grid.Column="4" />
+                                <Label Text="{Binding Date}" Grid.Row="1" Grid.Column="5" />
+                                <Label Text="{Binding Amount}" Grid.Row="1" Grid.Column="6"/>
+                                <Label Text="{Binding IsPending}" Grid.Row="1"  Grid.Column="7"/>
+                                <Label Text="{Binding TeamName}" Grid.Row="4"  Grid.Column="8"/>
+                                <Label Text="{Binding PersonName}" Grid.Row="4"  Grid.Column="9"/>
 
                             </Grid>
-                        </StackLayout>
+
+                        </ViewCell>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
+
+
     </ContentPage.Content>
 </ContentPage>

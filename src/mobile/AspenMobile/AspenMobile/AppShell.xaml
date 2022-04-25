@@ -128,11 +128,7 @@ Custom Style you can apply to any Flyout Item
         <ShellContent Route="SettingsPage"
                       ContentTemplate="{DataTemplate local:SettingsPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="TeamDetail"
-            Icon="icon_about.png">
-    <ShellContent Route="TeamPage"
-                    ContentTemplate="{DataTemplate local:TeamPage}" />
-    </FlyoutItem>
+
     <FlyoutItem Title="Donation Details"
                 Icon="icon_about.png">
         <ShellContent Route="AdminDonationDetailsPage"

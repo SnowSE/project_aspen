@@ -9,7 +9,51 @@
                     Text="Create new Event" />
             <Button Command="{Binding GetAllEventsCommand}"
                     Text="See All Events" />
-            <CollectionView ItemsSource="{Binding AllEvents}"
+
+            <ListView x:Name="MyList" SeparatorVisibility="None" HasUnevenRows="True" ItemsSource= "{Binding AllEvents}" Footer="" BackgroundColor="Aquamarine" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Label Text="Title" TextColor="Red" Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="Date" TextColor="Red" Grid.Row="0" Grid.Column="2" />
+                                </Grid>
+                                <Label VerticalOptions="CenterAndExpand" Grid.Row="1" Grid.Column="0" Text="{Binding Title, FallbackValue='Default', TargetNullValue='TargetNulll'}"/>
+                                <Label Text="{Binding Date}" Grid.Row="1" Grid.Column="1" />
+                                <Label Text="{Binding Location}" Grid.Row="1" Grid.Column="2" />
+                                <Label Text="{Binding Description}" Grid.Row="1" Grid.Column="3" />
+                                <Label Text="{Binding DonationTarget}" Grid.Row="1"  Grid.Column="4" FontSize="Medium" />
+                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminEventsViewModel }}, Path=EditEventCommand}"
+                                        Text="Edit Event"
+                                        HorizontalOptions="End"
+                                        TextColor="Yellow"
+                                        Grid.Row="1"
+                                        Grid.Column="5" />
+                                <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminEventsViewModel }}, Path=DeleteEventByIDCommand}"
+                                        CommandParameter="{Binding ID}"
+                                        Text="Delete Event"
+                                        HorizontalOptions="Start"
+                                        TextColor="Red"
+                                        Grid.Column="6"
+                                        Grid.Row="1" />
+                         
+                            </Grid>                    
+
+
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+           
+
+            <!--<CollectionView ItemsSource="{Binding AllEvents}"
                             HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -50,7 +94,7 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
+            </CollectionView>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
