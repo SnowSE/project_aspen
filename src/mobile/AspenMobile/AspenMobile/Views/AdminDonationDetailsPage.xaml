@@ -4,7 +4,7 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Donation}" HorizontalOptions="Center">
+            <CollectionView>
                 <!--<Label Text="{Binding Donations}" Grid.Row="3"  HorizontalOptions="Center"/>-->
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -17,12 +17,12 @@
                                     <RowDefinition Height="100"/>
                                     <RowDefinition Height="80"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding Donation}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
-                                <Label Text="{Binding TeamID}" Grid.Row="1"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding PersonID}" Grid.Row="2"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Date}" Grid.Row="3"  HorizontalOptions="Center"/>
-                                <Label Text="{Binding Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
-
+                                <Label Text="{Binding Donations.Event}" Grid.Row="0"  HorizontalOptions="Center" FontSize="Large"/>
+                                <Label Text="{Binding Donations.Team}" Grid.Row="1"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Donations.Person}" Grid.Row="2"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Donations.Date}" Grid.Row="3"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Donation.Amount}" Grid.Row="4"  HorizontalOptions="Center" FontSize="Medium"/>
+                                <Label Text="{Binding Donation.IsPending}" Grid.Row="5"  HorizontalOptions="Center" FontSize="Medium"/>
                             </Grid>
                         </StackLayout>
                     </DataTemplate>
