@@ -36,14 +36,14 @@ namespace AspenMobile.ViewModels
             try
             {
                 var httpClient = new HttpClient();
-                var personid = Preferences.Get(Constants.UserID, null);
+                var personid = Preferences.Get(Constants.UserID, 0L);
                 foreach (var e in Events)
                 {
                     var uri = new Uri($"{currentServer}/api/donations/{e.ID}");
                     var allDons = await httpClient.GetFromJsonAsync<IEnumerable<DtoDonation>>(uri);
                     foreach (var don in allDons)
                     {
-                        if(don.PersonID == long.Parse(personid))
+                        if(don.PersonID == personid)
                         {
                             Donations.Add(don);
                         }
