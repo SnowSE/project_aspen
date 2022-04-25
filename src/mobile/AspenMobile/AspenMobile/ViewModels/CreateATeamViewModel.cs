@@ -14,9 +14,6 @@ namespace AspenMobile.ViewModels
 {
     public partial class CreateATeamViewModel : ObservableObject
     {
-<<<<<<< HEAD
-        
-=======
         [ObservableProperty]
         public string name;
         [ObservableProperty]
@@ -67,6 +64,5 @@ namespace AspenMobile.ViewModels
             await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
 
         }
->>>>>>> mobile
     }
 }

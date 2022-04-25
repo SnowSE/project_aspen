@@ -1,5 +1,6 @@
 ﻿using AspenMobile.GlobalConstants;
 using AspenMobile.Views;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Xamarin.Forms;
 
 namespace AspenMobile.ViewModels
 {
-    internal class CreateNewEventViewModel
+    public partial class CreateNewEventViewModel : ObservableObject
     {
         public int id { get; set; }
         public string date { get; set; }
