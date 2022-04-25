@@ -76,7 +76,6 @@ namespace AspenMobile.ViewModels
                 return;
             }
 
-
             try
             {
                 var test = await httpClient.GetAsync($"{newserver.Address}/api/events");
@@ -90,7 +89,6 @@ namespace AspenMobile.ViewModels
                 ShowAddServerError = true;
                 return;
             }
-
 
 
             ShowInvalidUriError = false;
