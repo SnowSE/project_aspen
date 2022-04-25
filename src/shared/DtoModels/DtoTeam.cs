@@ -14,5 +14,4 @@ public record DtoTeam
     public long OwnerID { get; set; }
     public long EventID { get; set; }
     public decimal DonationTarget { get; set; }
-    public decimal Amount { get; set; }
 }
