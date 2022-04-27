@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -19,7 +18,7 @@ namespace AspenMobile.ViewModels
         //Donations not coming back correctly, maybe wrong api endpoint??
         public ObservableCollection<DtoEvent> Events = new ObservableCollection<DtoEvent>();
         public ObservableCollection<DtoDonation> Donations = new ObservableCollection<DtoDonation>();
-        private string currentServer = Preferences.Get(Constants.CurrentServer, null);
+
         public AccountViewModel()
         {
 
@@ -36,19 +35,24 @@ namespace AspenMobile.ViewModels
             try
             {
                 var httpClient = new HttpClient();
+                var accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+                if (httpClient.DefaultRequestHeaders.Authorization == null)
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
+                }
                 var personid = Preferences.Get(Constants.UserID, -1L);
-                if(personid == -1)
+                if (personid == -1)
                 {
                     throw new Exception("No User Set");
                 }
 
                 foreach (var e in Events)
                 {
-                    var uri = new Uri($"{currentServer}/api/Admin/donation/{e.ID}");
+                    var uri = new Uri($"{Constants.CurrentServer}/api/Admin/donation/{e.ID}");
                     var allDons = await httpClient.GetFromJsonAsync<IEnumerable<DtoDonation>>(uri);
                     foreach (var don in allDons)
                     {
-                        if(don.PersonID == personid)
+                        if (don.PersonID == personid)
                         {
                             Donations.Add(don);
                         }

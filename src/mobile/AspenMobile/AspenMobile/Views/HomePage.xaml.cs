@@ -1,8 +1,5 @@
 ﻿using AspenMobile.ViewModels;
-using System;
-using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace AspenMobile.Views
 {
@@ -11,7 +8,8 @@ namespace AspenMobile.Views
         public HomePage()
         {
             InitializeComponent();
-            BindingContext = new HomeViewModel(); 
+            var loginViewModel = (LoginViewModel)AppShell.Current.BindingContext;
+            BindingContext = new HomeViewModel(loginViewModel);
         }
 
         private void CollectionView_Scrolled(object sender, ItemsViewScrolledEventArgs e)

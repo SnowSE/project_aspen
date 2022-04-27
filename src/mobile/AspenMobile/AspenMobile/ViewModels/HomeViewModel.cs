@@ -18,12 +18,15 @@ namespace AspenMobile.ViewModels
     public partial class HomeViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
+        private readonly LoginViewModel loginViewModel;
         private string current;
         [ObservableProperty]
         private bool canCreateTeam;
-        public HomeViewModel()
+        public HomeViewModel(LoginViewModel loginViewModel)
         {
+
             DisplayEventAsync();
+            this.loginViewModel = loginViewModel;
         }
 
 
@@ -97,16 +100,16 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void CreateATeamAsync()
         {
-            var viewModel = (LoginViewModel)AppShell.Current.BindingContext;
 
-            if (viewModel.CanLogOut)
+
+            if (loginViewModel.CanLogOut)
             {
                 await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
             }
             else
             {
                 await Application.Current.MainPage.DisplayAlert("Can't create Team", "You must be logged in to create team", "Ok");
-                await  viewModel.ToggleLoginLogoutAsync();
+                await loginViewModel.ToggleLoginLogoutAsync();
             }
         }
 
