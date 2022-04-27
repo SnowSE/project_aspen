@@ -166,7 +166,7 @@ namespace AspenMobile.ViewModels
         }
         public async Task ToggleLoginLogoutAsync()
         {
-            _ = (LoginStatus == "Log In") ? Login() : Logout();
+            _ = (LoginStatus == "Log In" || (LoginStatus == null)) ? Login() : Logout();
 
         }
         public async Task GetPersonIDAsync()

@@ -134,6 +134,12 @@ Custom Style you can apply to any Flyout Item
         <ShellContent Route="AdminDonationDetailsPage"
                       ContentTemplate="{DataTemplate local:AdminDonationDetailsPage}" />
     </FlyoutItem>
+    <FlyoutItem Title="Account"
+                Icon="icon_about.png">
+        <ShellContent Route="AccountPage"
+                      ContentTemplate="{DataTemplate local:AccountPage}"
+                      IsVisible="{Binding CanLogOut}"/>
+    </FlyoutItem>
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
     <MenuItem Text="{Binding LoginStatus}"
               StyleClass="MenuItemLayoutStyle"

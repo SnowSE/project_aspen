@@ -18,12 +18,15 @@ namespace AspenMobile.ViewModels
     public partial class HomeViewModel : ObservableObject
     {
         private readonly HttpClient httpClient = new();
+        private readonly LoginViewModel loginViewModel;
         private string current;
         [ObservableProperty]
         private bool canCreateTeam;
-        public HomeViewModel()
+        public HomeViewModel(LoginViewModel loginViewModel)
         {
+
             DisplayEventAsync();
+            this.loginViewModel = loginViewModel;
         }
 
 
@@ -44,7 +47,7 @@ namespace AspenMobile.ViewModels
             {
                 await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
-            CanCreateTeam = (Preferences.Get(Constants.UserID, -1L) != -1L);
+            //CanCreateTeam = (Preferences.Get(Constants.UserID, -1L) != -1L);
 
             try
             {
@@ -64,7 +67,6 @@ namespace AspenMobile.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Can't connect to server", "Make sure you are connected to a server, conectar a un server verificar que sus credentials son validas", "Ok");
                 await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-
 
             }
 
@@ -98,16 +100,16 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void CreateATeamAsync()
         {
-            if (CanCreateTeam)
+
+
+            if (loginViewModel.CanLogOut)
             {
                 await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
-
             }
             else
             {
                 await Application.Current.MainPage.DisplayAlert("Can't create Team", "You must be logged in to create team", "Ok");
-                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
-
+                await loginViewModel.ToggleLoginLogoutAsync();
             }
         }
 
