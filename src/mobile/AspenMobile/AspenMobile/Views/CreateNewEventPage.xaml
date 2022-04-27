@@ -21,13 +21,13 @@
             <Entry Text="{Binding DonationTarget}" HorizontalOptions="FillAndExpand"
                                                    Placeholder="Ex: $1000"/>
             <Label Text="Event Description" HorizontalOptions="CenterAndExpand"/>
-            <Editor Text="{Binding Description}" HorizontalOptions="FillAndExpand" 
+            <Editor Text="{Binding Description}" HorizontalOptions="FillAndExpand"
                                                  IsSpellCheckEnabled="True"
                                                  VerticalOptions="FillAndExpand"
                                                  Placeholder="Ex: Coolest Work Party Ever"/>
 
-            <Button Command="{Binding Source ={RelativeSource AncestorType={x:Type vm:CreateNewEventViewModel}}, Path=SubmitNewEventCommand}" 
-                    Text="Create New Event" 
+            <Button Command="{Binding SubmitNewEventCommand}"
+                    Text="Create New Event"
                     HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>
