@@ -4,7 +4,6 @@
              x:Class="AspenMobile.Views.AdminDonationDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-
             <ListView x:Name="MyList" SeparatorVisibility="None" HasUnevenRows="True" ItemsSource= "{Binding Donations}" Footer="" BackgroundColor="Aquamarine" >
                 <ListView.ItemTemplate>
                     <DataTemplate>

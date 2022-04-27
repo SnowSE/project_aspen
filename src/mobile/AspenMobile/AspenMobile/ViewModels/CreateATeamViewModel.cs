@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -20,6 +21,11 @@ namespace AspenMobile.ViewModels
         public string description;
         [ObservableProperty]
         public decimal donationTarget;
+        [ObservableProperty]
+        public string labelInfo;
+        //[ObservableProperty]
+        //public string text;
+
 
         private readonly HttpClient httpClient = new();
         private string current;
@@ -43,6 +49,23 @@ namespace AspenMobile.ViewModels
             if (currentEventId == -1 || currentUserId == -1)
             {
                 throw new Exception("Unable to locate current event or you are not logged in");
+            }
+        }
+        [ICommand]
+        public async void PickImageAsync()
+        {
+            try
+            {
+                var file = await FilePicker.PickAsync();
+                if (file == null)
+                {
+                    return;
+                }
+                LabelInfo = file.FileName;
+            }
+            catch (Exception ex)
+            {
+                // The user canceled or something went wrong
             }
         }
 
