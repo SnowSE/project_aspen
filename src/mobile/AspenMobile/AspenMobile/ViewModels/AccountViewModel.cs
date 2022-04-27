@@ -73,7 +73,7 @@ namespace AspenMobile.ViewModels
             try
             {
 
-                var uri = new Uri($"{currentServer}/api/events");
+                var uri = new Uri($"{Constants.CurrentServer}/api/events");
                 var allEvents = await httpClient.GetFromJsonAsync<IEnumerable<DtoEvent>>(uri);
                 foreach (var e in allEvents)
                 {
