@@ -1,4 +1,4 @@
-﻿
+﻿using System.Text;
 namespace Api.Controllers;
 
 [ApiController]
@@ -16,16 +16,18 @@ public class UserController : ControllerBase
     [HttpGet]
     public string Get()
     {
+        StringBuilder claims = new();
         log.LogDebug("HttpGet User");
         foreach (var claim in User.Claims)
         {
             Console.WriteLine(claim.Type + " - " + claim.Value + " - " + claim.ToString());
+            claims.AppendLine(claim.Type + " - " + claim.Value + " - " + claim.ToString());
         }
         Console.WriteLine("");
         Console.WriteLine("");
         Console.WriteLine("");
         Console.WriteLine("");
         // User.Claims
-        return "here";
+        return claims.ToString();
     }
 }

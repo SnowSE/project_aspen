@@ -19,6 +19,8 @@ namespace AspenMobile.ViewModels
     {
         private readonly HttpClient httpClient = new();
         private string current;
+        [ObservableProperty]
+        private bool canCreateTeam;
         public HomeViewModel()
         {
             DisplayEventAsync();
@@ -42,6 +44,8 @@ namespace AspenMobile.ViewModels
             {
                 await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             }
+            CanCreateTeam = (Preferences.Get(Constants.UserID, -1L) != -1L);
+
             try
             {
                 var closestEvent = await GetClosestEventAsync();
@@ -84,8 +88,8 @@ namespace AspenMobile.ViewModels
                     if (smallestTime < prev || prev == 0)
                     {
                         closestEvent = item;
+                        prev = smallestTime;
                     }
-                    prev = smallestTime;
                 }
             }
             return closestEvent;
@@ -94,7 +98,17 @@ namespace AspenMobile.ViewModels
         [ICommand]
         public async void CreateATeamAsync()
         {
-            await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+            if (CanCreateTeam)
+            {
+                await Shell.Current.GoToAsync($"{nameof(CreateATeamPage)}");
+
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Can't create Team", "You must be logged in to create team", "Ok");
+                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+
+            }
         }
 
         [ICommand]

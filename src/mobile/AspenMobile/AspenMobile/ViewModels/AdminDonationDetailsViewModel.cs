@@ -1,4 +1,5 @@
 ﻿using AspenMobile.GlobalConstants;
+using IdentityModel.OidcClient;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using shared.DtoModels;
@@ -30,17 +31,30 @@ namespace AspenMobile.ViewModels
 
         public long eventId;
         private string current;
+        public LoginResult _result;
+
+        public OidcClient client;
 
         [ObservableProperty]
         private string errorMessage;
         [ObservableProperty]
-        public ObservableCollection<DtoDonation> donations;
+        public ObservableCollection<DtoDonation> donations = new ObservableCollection<DtoDonation>();
 
         public async void DisplayDonationAsync()
         {
             var httpClient = new HttpClient();
             var accessToken = await SecureStorage.GetAsync(Constants.AccessToken) ?? throw new Exception("Access token not found");
-
+            if (accessToken == null)
+            {
+                _result = await client.LoginAsync(new LoginRequest());
+                if (_result.IsError)
+                {
+                    ErrorMessage = _result.Error;
+                    return;
+                }
+                accessToken = _result.AccessToken;
+                await SecureStorage.SetAsync(Constants.AccessToken, accessToken);
+            }
             if (httpClient.DefaultRequestHeaders.Authorization == null)
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -51,16 +65,8 @@ namespace AspenMobile.ViewModels
             foreach (var donation in donations)
             {
                 Donations.Add(donation);
+                Console.WriteLine(Donations.Count);
             }
-            // Donations=donation;
-
-            //  var donationDetails = await httpClient.GetFromJsonAsync<List<DtoTeam>>($"{current}/api/admin/donations/{currentEvent.ID}");
-
-            //foreach (var donation in donationDetails)
-            //{
-            //    Donations.Add(donation);
-            //}
-            // var test = Preferences.Get(Constants.CurrentEventId, null);
 
         }
     }
