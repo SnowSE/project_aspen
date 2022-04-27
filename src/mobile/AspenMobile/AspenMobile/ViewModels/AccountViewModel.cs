@@ -44,7 +44,7 @@ namespace AspenMobile.ViewModels
 
                 foreach (var e in Events)
                 {
-                    var uri = new Uri($"{currentServer}/api/donations/{e.ID}");
+                    var uri = new Uri($"{currentServer}/api/Admin/donation/{e.ID}");
                     var allDons = await httpClient.GetFromJsonAsync<IEnumerable<DtoDonation>>(uri);
                     foreach (var don in allDons)
                     {
