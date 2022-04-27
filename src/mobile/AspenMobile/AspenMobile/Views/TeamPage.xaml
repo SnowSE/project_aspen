@@ -1,11 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:gauge="clr-namespace:Syncfusion.SfGauge.XForms;assembly=Syncfusion.SfGauge.XForms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"              
              x:Class="AspenMobile.Views.TeamPage">
-    <ContentPage.Content>
-
-        <StackLayout>
+    <ContentPage.Content>            
             
                         <StackLayout HorizontalOptions="Center">
                             <Grid>
@@ -30,23 +27,25 @@
                                 <Label Text="{Binding  CurrentDonatedAmount}"
                                        Grid.Row="5"
                                        HorizontalOptions="Center"
-                                       FontSize="Medium" />                 
+                                       FontSize="Medium" />            
 
-                </Grid>
+                             </Grid>
+                      </StackLayout>
 
-                <gauge:SfLinearGauge>
+
+
+
+
+        <!--<gauge:SfLinearGauge>
                     <gauge:SfLinearGauge.Scales>
                         <gauge:LinearScale MinimumValue="{Binding CurrentDonatedAmount}" MaximumValue="{Binding Team.DonationTarget}">
 
                         </gauge:LinearScale>
                     </gauge:SfLinearGauge.Scales>
-                </gauge:SfLinearGauge>
-
-
-            </StackLayout>
+                </gauge:SfLinearGauge>-->         
                     
-        </StackLayout>
+       
 
-
+      
     </ContentPage.Content>
 </ContentPage>

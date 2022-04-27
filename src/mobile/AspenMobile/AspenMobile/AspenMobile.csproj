@@ -13,6 +13,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
+    <PackageReference Include="Xuni.Forms.Gauge" Version="2.3.20171.185" />
   </ItemGroup>
 
   <ItemGroup>
