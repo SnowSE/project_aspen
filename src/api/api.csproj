@@ -4,6 +4,7 @@
     <AssemblyName>aspen_api</AssemblyName>
     <RootNamespace>Api</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>12f4d497-d04f-43f2-a2be-4ef5e8f2a6fe</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />

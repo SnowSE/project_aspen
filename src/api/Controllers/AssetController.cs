@@ -21,7 +21,6 @@ public class AssetController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Response<string>>> PostAsync([FromForm] IFormFile asset)
     {
-        logger.LogDebug("HttpPost asset");
         logger.LogInformation("Posted {asset}", asset);
         var newId = await assetsFileService.StoreAsset(asset);
 

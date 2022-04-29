@@ -1,12 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AspenMobile.ViewModels"
              x:Class="AspenMobile.Views.CreateNewEventPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Create A New Event Page!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Date Of Event" HorizontalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding Date}" HorizontalOptions="FillAndExpand"
+                                         Placeholder="YYYY-MM-DD HH-MM-SS"/>
+            <Label Text="Event Name" HorizontalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding Title}" HorizontalOptions="FillAndExpand"
+                                          Placeholder="Ex: New Years Work Party"/>
+            <Label Text="Event Location" HorizontalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding Location}" HorizontalOptions="FillAndExpand"
+                                             Placeholder="Ex: City Hall"/>
+            <Label Text="Primary Image Url" HorizontalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding PrimaryImageUrl}" HorizontalOptions="FillAndExpand"
+                                                    Placeholder="Ex: No Idea"/>
+            <Label Text="Event Donation Target" HorizontalOptions="CenterAndExpand"/>
+            <Entry Text="{Binding DonationTarget}" HorizontalOptions="FillAndExpand"
+                                                   Placeholder="Ex: $1000"/>
+            <Label Text="Event Description" HorizontalOptions="CenterAndExpand"/>
+            <Editor Text="{Binding Description}" HorizontalOptions="FillAndExpand"
+                                                 IsSpellCheckEnabled="True"
+                                                 VerticalOptions="FillAndExpand"
+                                                 Placeholder="Ex: Coolest Work Party Ever"/>
+
+            <Button Command="{Binding SubmitNewEventCommand}"
+                    Text="Create New Event"
+                    HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

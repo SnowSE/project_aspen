@@ -40,7 +40,6 @@ public class PageDataController : ControllerBase
     [HttpGet("{key}")]
     public async Task<ActionResult<DtoPageData>> GetByKey(string key)
     {
-        log.LogDebug("HttpGet GetByKey");
         log.LogInformation("Getting key {key}", key);
         var pageData = await pageDataRepository.GetAsync(key);
         if (pageData == null)
@@ -50,11 +49,9 @@ public class PageDataController : ControllerBase
 
     // PUT: api/PageData/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{key}")]
-    /*[Authorize(Roles = "admin-aspen")]*/
+    [HttpPut("{key}"), Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<IActionResult> Edit(string key, DtoPageData pageData)
     {
-        log.LogDebug("HttpPut Edit Key");
         log.LogInformation("Editing key {key} for page {pageData}", key, pageData);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
@@ -72,9 +69,7 @@ public class PageDataController : ControllerBase
         return NoContent();
     }
 
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    /*[Authorize(Roles = "admin-aspen")]*/
+    [HttpPost, Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<ActionResult<DtoPageData>> Post(DtoPageData pageData)
     {
         log.LogDebug("HttpPost Post PageData");
@@ -88,12 +83,10 @@ public class PageDataController : ControllerBase
 
     // DELETE: api/PageData/5
     // DELETE: api/PageData?key={key}
-    [HttpDelete("{key}")]
-    /*[Authorize(Roles = "admin-aspen")]*/
+    [HttpDelete("{key}"), Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<IActionResult> Delete(string key)
     {
-        log.LogDebug("HttpDelete Deleteting Key");
-        log.LogInformation("Deleteting key {key}", key);
+        log.LogInformation("Deleting key {key}", key);
         if (!await pageDataRepository.ExistsAsync(key))
             return NotFound("Page Data key does not exist");
         await pageDataRepository.DeleteAsync(key);

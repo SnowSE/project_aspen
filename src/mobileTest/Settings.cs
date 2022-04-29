@@ -1,8 +1,5 @@
-using NUnit.Framework;
 using AspenMobile.ViewModels;
-using FluentAssertions;
-using Xamarin.Essentials;
-using Xamarin.Forms;
+using NUnit.Framework;
 
 
 namespace mobileTest
@@ -12,11 +9,12 @@ namespace mobileTest
         [SetUp]
         public void Setup()
         {
-           
+
 
         }
 
         [Test]
+        [Ignore("Not ready for this quite yet")]
         public void Test1()
         {
             SettingsViewModel viewModel;

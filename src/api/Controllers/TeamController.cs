@@ -26,7 +26,6 @@ public class TeamController : ControllerBase
     [HttpGet("event/{eventId}")]
     public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
-        log.LogDebug("HttpGet GetByEventID");
         log.LogInformation("Getting Team by event {eventId}", eventId);
         try
         {
@@ -42,7 +41,6 @@ public class TeamController : ControllerBase
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
-        log.LogDebug("HttpGet GetByID");
         log.LogInformation("Getting team by teamId {teamId}", teamId);
         if (!await teamRepository.ExistsAsync(teamId))
             return NotFound("Team id does not exist");
@@ -52,7 +50,6 @@ public class TeamController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
     {
-        log.LogDebug("HttpPost Add dtoTeam");
         log.LogInformation("Adding new dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
@@ -69,7 +66,6 @@ public class TeamController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
-        log.LogDebug("HttpPut Edit dtoTeam");
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
@@ -87,8 +83,7 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        log.LogDebug("HttpDelete Delete Team");
-        log.LogInformation("Deleteting team {id}", id);
+        log.LogInformation("Deleting team {id}", id);
         if (!await teamRepository.ExistsAsync(id))
             return NotFound("Team id does not exist");
 

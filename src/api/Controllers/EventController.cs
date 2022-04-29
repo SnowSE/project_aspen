@@ -26,8 +26,6 @@ public class EventController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<DtoEvent>> GetAll()
     {
-        log.LogDebug("HttpGet({eventID})");
-        log.LogInformation("Getting the total donations for events ");
         log.LogInformation("Getting all events");
         return mapper.Map<IEnumerable<DtoEvent>>(await eventRepository.GetAllAsync());
     }
@@ -35,7 +33,6 @@ public class EventController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<DtoEvent>> GetByID(long id)
     {
-        log.LogDebug("HttpGet({id})");
         log.LogInformation("Getting the event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
@@ -46,7 +43,6 @@ public class EventController : ControllerBase
     [HttpPost, Authorize(Roles = AspenAdminRole)]
     public async Task<ActionResult<DtoEvent>> Add([FromBody] DtoEvent dtoEvent)
     {
-        log.LogDebug("HttpPost dtoEvent");
         log.LogInformation("Adding the new dtoEvent {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
@@ -61,7 +57,6 @@ public class EventController : ControllerBase
     [HttpPut(), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Edit([FromBody] DtoEvent dtoEvent)
     {
-        log.LogDebug("HttpPut Edit dtoEvent");
         log.LogInformation("Editing the event {dtoEvent}", dtoEvent);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
@@ -75,8 +70,7 @@ public class EventController : ControllerBase
     [HttpDelete("{id}"), Authorize(Roles = AspenAdminRole)]
     public async Task<IActionResult> Delete(long id)
     {
-        log.LogDebug("HttpDelete({id})");
-        log.LogInformation("Deleteting event {id}", id);
+        log.LogInformation("Deleting event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
             return NotFound("Event id does not exist");
 
