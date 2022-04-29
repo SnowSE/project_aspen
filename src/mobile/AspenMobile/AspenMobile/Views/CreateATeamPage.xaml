@@ -11,7 +11,7 @@
             <Entry Text="{Binding Description}" HorizontalOptions="Center"/>
             <Label Text="Enter Donation Target" HorizontalOptions="Center"/>
             <Entry Text="{Binding DonationTarget}" HorizontalOptions="Center"/>
-            <Button Text="Add Team Image" Clicked="PickImageAsync"/>
+            <Button Text="Add Team Image" Command="{Binding PickImageAsync}"/>
             <Label x:Name="LabelInfo" />
             <Button Command="{Binding CreateTeamAsyncCommand}" Text="Create Team" HorizontalOptions="Center"/>
         </StackLayout>
