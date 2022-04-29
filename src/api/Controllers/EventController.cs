@@ -49,9 +49,19 @@ public class EventController : ControllerBase
         if (dtoEvent.ID != 0)
             return BadRequest("Cannot add event with a valid id");
 
-        var @event = mapper.Map<Event>(dtoEvent);
-        var newEvent = await eventRepository.AddAsync(@event);
-        return mapper.Map<DtoEvent>(newEvent);
+        try
+        {
+            var @event = mapper.Map<Event>(dtoEvent);
+            log.LogInformation("Mapped {dtoEvent} to {event}", dtoEvent, @event);
+            var newEvent = await eventRepository.AddAsync(@event);
+            log.LogInformation("Got back {newEvent} from event repository", newEvent);
+            return mapper.Map<DtoEvent>(newEvent);
+        }
+        catch (Exception ex)
+        {
+            log.LogError("Got an exception adding event {ex}", ex);
+            throw;
+        }
     }
 
     [HttpPut(), Authorize(Roles = AspenAdminRole)]
