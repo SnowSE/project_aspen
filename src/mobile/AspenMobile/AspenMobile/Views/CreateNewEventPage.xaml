@@ -6,8 +6,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Date Of Event" HorizontalOptions="CenterAndExpand"/>
-            <Entry Text="{Binding Date}" HorizontalOptions="FillAndExpand"
-                                         Placeholder="YYYY-MM-DD HH-MM-SS"/>
+            <DatePicker Date="{Binding Date}" />
             <Label Text="Event Name" HorizontalOptions="CenterAndExpand"/>
             <Entry Text="{Binding Title}" HorizontalOptions="FillAndExpand"
                                           Placeholder="Ex: New Years Work Party"/>

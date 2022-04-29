@@ -106,9 +106,6 @@ namespace AspenMobile.ViewModels
 
                     await SecureStorage.SetAsync(Constants.AccessToken, accessToken);
                     IsAdmin = IsTokenAdmin(accessToken);
-                    await SetUserNameFromToken();
-                    await GetPersonIDAsync();
-
                 }
 
                 CanLogIn = false;
@@ -117,6 +114,9 @@ namespace AspenMobile.ViewModels
                 {
                     _apiClient.Value.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
                 }
+
+                await SetUserNameFromToken();
+                await GetPersonIDAsync();
             }
             catch (Exception ex)
             {
@@ -178,16 +178,15 @@ namespace AspenMobile.ViewModels
 
             try
             {
-                HttpClient httpClient = new();
-                var personID = await httpClient.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/person/authid/{jwtSecurityToken.Claims.Single(c => c.Type == "email").Value}");
+                var person = await _apiClient.Value.GetFromJsonAsync<DtoPerson>($"{Preferences.Get(Constants.CurrentServer, null)}/api/user/");
 
-                PersonID = personID.ID;
-                Preferences.Set(Constants.UserID, personID.ID);
+                PersonID = person.ID;
+                Preferences.Set(Constants.UserID, person.ID);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return;
+                throw;
             }
         }
 
