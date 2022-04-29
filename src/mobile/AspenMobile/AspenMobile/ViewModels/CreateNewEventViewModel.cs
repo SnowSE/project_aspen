@@ -61,6 +61,10 @@ namespace AspenMobile.ViewModels
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
             }
             var response = await httpClient.PostAsJsonAsync($"{current}/api/events", NewEvent);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error creating new event! " + response.ReasonPhrase);
+            }
 
             await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
         }
