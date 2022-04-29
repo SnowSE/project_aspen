@@ -44,7 +44,8 @@ namespace AspenMobile.ViewModels
 
         [ObservableProperty]
         private string outputText;
-
+        [ObservableProperty]
+        public decimal currentDonatedAmount;
         public ObservableCollection<DtoEvent> AllEvents { get; set; } = new();
 
         [ICommand]
@@ -52,7 +53,7 @@ namespace AspenMobile.ViewModels
         {
             AllEvents.Clear();
             var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{current}/api/events");
-
+           // var currentDonationUri = new Uri($"{server}/api/donations/{eventId}/{teamId}");
             foreach (var item in allEvents)
             {
                 AllEvents.Add(item);
