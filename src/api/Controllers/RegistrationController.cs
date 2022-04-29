@@ -52,7 +52,7 @@ public class RegistrationController : ControllerBase
         return mapper.Map<DtoRegistration>(updatedRegistration);
     }
 
-    [HttpPost("/link/{registrationId}/{personId}")]
+    [HttpPost("link/{registrationId}/{personId}")]
     public async Task<ActionResult<DtoRegistration>> LinkPersonRegistration(long registrationId, long personId)
     {
         log.LogInformation("Linking registration {registrationId} to person {personId}", registrationId, personId);
