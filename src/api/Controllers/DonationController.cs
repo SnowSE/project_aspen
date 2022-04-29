@@ -23,16 +23,13 @@ public class DonationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
+    public async Task<ActionResult<DtoDonation>> Add([FromBody] NewDonationRequest donationRequest)
     {
-        log.LogInformation("Adding {dtoDonation}", dtoDonation);
+        log.LogInformation("Adding {dtoDonation}", donationRequest);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
-        if (dtoDonation.ID != 0)
-            return BadRequest("Cannot add with a valid id");
-
-        var donation = mapper.Map<Donation>(dtoDonation);
+        var donation = mapper.Map<Donation>(donationRequest);
         var newDonation = await donationRepository.AddAsync(donation);
         return mapper.Map<DtoDonation>(newDonation);
     }

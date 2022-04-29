@@ -9,12 +9,14 @@ public class UserController : ControllerBase
     private readonly ILogger<UserController> log;
     private readonly IPersonRepository personRepository;
     private readonly IMapper mapper;
+    private readonly IDonationRepository donationRepository;
 
-    public UserController(ILogger<UserController> logger, IPersonRepository personRepository, IMapper mapper)
+    public UserController(ILogger<UserController> logger, IPersonRepository personRepository, IMapper mapper, IDonationRepository donationRepository)
     {
         log = logger;
         this.personRepository = personRepository;
         this.mapper = mapper;
+        this.donationRepository = donationRepository;
     }
 
     [HttpGet]
@@ -23,6 +25,11 @@ public class UserController : ControllerBase
         Description = @"Gets the DtoPerson for the currently logged in user.</br>
 If the current user doesn't have a Person record then one will be created for them.")]
     public async Task<DtoPerson> GetAsync()
+    {
+        return await getLoggedOnPerson();
+    }
+
+    private async Task<DtoPerson> getLoggedOnPerson()
     {
         var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
         try
@@ -57,9 +64,11 @@ If the current user doesn't have a Person record then one will be created for th
     }
 
     [HttpGet("donations")]
-    public IEnumerable<DtoDonation> Donations()
+    public async Task<IEnumerable<DtoDonation>> DonationsAsync()
     {
-        throw new NotImplementedException();
+        var person = await getLoggedOnPerson();
+        var donations = await donationRepository.GetByPersonIdAsync(person.ID);
+        return mapper.Map<IEnumerable<DtoDonation>>(donations);
     }
 
 }

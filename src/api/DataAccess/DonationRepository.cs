@@ -12,6 +12,7 @@ public interface IDonationRepository
     Task<IEnumerable<Donation>> GetByTeamIdAsync(long eventId, long teamId);
     Task<decimal> GetTeamDonationSum(long eventID, long teamID);
     Task<decimal> GetEventDonationSum(long eventID);
+    Task<IEnumerable<Donation>> GetByPersonIdAsync(long iD);
 }
 
 public class DonationRepository : IDonationRepository
@@ -97,5 +98,11 @@ public class DonationRepository : IDonationRepository
     {
         var sum = await context.Donations.Where(d => d.EventID == eventID).SumAsync(d => d.Amount);
         return sum;
+    }
+
+    public async Task<IEnumerable<Donation>> GetByPersonIdAsync(long personID)
+    {
+        var personDonations = await context.Donations.Where(d => d.PersonID == personID).ToListAsync();
+        return mapper.Map<IEnumerable<Donation>>(personDonations);
     }
 }
