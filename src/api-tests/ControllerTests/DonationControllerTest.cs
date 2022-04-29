@@ -83,6 +83,7 @@ public class DonationControllerTest
             Date = new DateTime(1775, 7, 4),
             EventID = eventId,
             TeamID = teamId,
+            TeamName = team1.ID == teamId ? team1.Name : team2.Name,
             IsPending = true
         };
     }
@@ -133,9 +134,9 @@ public class DonationControllerTest
         var adminController = AdminControllerTest.GetAdminController();
         var actualDonationsList = await adminController.GetEventDonations(testEvent.ID);
         var expectedDonationsList = new List<DtoDonation>();
+        expectedDonationsList.Add(dtoDonation);
         expectedDonationsList.AddRange(team1Donations);
         expectedDonationsList.AddRange(team2Donations);
-        expectedDonationsList.Add(dtoDonation);
 
         actualDonationsList.Should().BeEquivalentTo(expectedDonationsList, options => options.Excluding(d => d.ID));
     }
