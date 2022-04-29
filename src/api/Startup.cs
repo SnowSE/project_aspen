@@ -50,19 +50,15 @@ public class Startup
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(o =>
         {
-            // o.Authority = Configuration["Jwt:Authority"];
-            // o.Audience = Configuration["Jwt:Audience"];
-
-            o.Authority = "https://engineering.snow.edu/aspen/auth/realms/aspen";
-            o.Audience = "aspen-web";
-
+            o.Authority = Configuration["Jwt:Authority"];
+            o.Audience = Configuration["Jwt:Audience"];
 
             o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidAudiences = new string[] { "aspen" },
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidIssuer = "https://engineering.snow.edu/aspen/auth/realms/aspen",
+                ValidIssuer = Configuration["Jwt:Issuer"]
             };
 
             o.RequireHttpsMetadata = false;
@@ -82,7 +78,7 @@ public class Startup
                     {
                         return c.Response.WriteAsync(c.Exception.ToString());
                     }
-                    return c.Response.WriteAsync("An error occured processing your authentication.");
+                    return c.Response.WriteAsync("An error occurred processing your authentication.");
                 }
             };
         });
