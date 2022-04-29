@@ -21,9 +21,11 @@ public class Program
                 logging.AddAzureWebAppDiagnostics();
             })
             .Build();
+
         var config = host.Services.GetRequiredService<IConfiguration>();
         var envName = config["ASPNETCORE_ENVIRONMENT"];
         ConfigureLogging(envName, config);
+
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
@@ -58,19 +60,24 @@ docker run -d --name pg -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=P@assword
 
     private static void ConfigureLogging(string environment, IConfiguration configuration)
     {
-        Log.Logger = new LoggerConfiguration()
+        var loggerConfig = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.Debug()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://23.100.86.9:9200"))
+            .WriteTo.Debug();
+        if (configuration["ELASTICSEARCH_URL"] != null)
+        {
+            loggerConfig.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ELASTICSEARCH_URL"]))
             {
                 AutoRegisterTemplate = true,
                 AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
                 IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM-dd}"
-            })
-            .ReadFrom.Configuration(configuration)
-            .CreateLogger();
+            });
+        }
+        loggerConfig
+            .ReadFrom.Configuration(configuration);
+
+        Log.Logger = loggerConfig.CreateLogger();
     }
 
 
