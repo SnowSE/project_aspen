@@ -21,6 +21,9 @@ public class Program
                 logging.AddAzureWebAppDiagnostics();
             })
             .Build();
+        var config = host.Services.GetRequiredService<IConfiguration>();
+        var envName = config["ASPNETCORE_ENVIRONMENT"];
+        ConfigureLogging(envName, config);
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
@@ -53,7 +56,7 @@ docker run -d --name pg -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=P@assword
         host.Run();
     }
 
-    private static void ConfigureLogging(string environment, IConfigurationRoot configuration)
+    private static void ConfigureLogging(string environment, IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
