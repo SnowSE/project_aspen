@@ -8,6 +8,9 @@ In the project directory, you can run:
 
 ### `npm start`
 
+> If you get a **react-scripts not found** error run **npm install**  
+> If you get a **ERR_OSSL_EVP_UNSUPPORTED** error, run **npm run start-legacy**
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
