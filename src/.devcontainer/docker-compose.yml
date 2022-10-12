@@ -35,10 +35,10 @@ services:
   api:
     container_name: api
     build:
-      dockerfile: api/Dockerfile
+      dockerfile: api/dev.Dockerfile
       context: ../
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
       interval: 5s
       timeout: 10s
       retries: 15
@@ -47,6 +47,7 @@ services:
       - ../:/src
     environment:
       ASPEN_TEST_CONNECTION_STRING: Server=api_db;Database=aspen;User Id=aspen;Password=password;
+      SwaggerBasePath: aspen
     networks:
       shared:
       api:

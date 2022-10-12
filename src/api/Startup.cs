@@ -125,6 +125,8 @@ public class Startup
         });
 
         var swaggerBasePath = Configuration["SwaggerBasePath"] ?? "";
+        Console.WriteLine($"swaggerbasepath: {swaggerBasePath}");
+
         if (!string.IsNullOrEmpty(swaggerBasePath) && swaggerBasePath.Length > 0)
             swaggerBasePath += "/";
 
@@ -158,7 +160,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGet("/api/health", c => c.Response.WriteAsync("ur good (4/13/2022)"));
+            endpoints.MapGet("/api/health", c => c.Response.WriteAsync("ur good (10/12/2022)"));
             endpoints.MapControllers();
         });
     }
