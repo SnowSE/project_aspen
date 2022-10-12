@@ -7,7 +7,7 @@ services:
       context: ../../src/
       dockerfile: api/Dockerfile
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 5s
       timeout: 10s
       retries: 15
