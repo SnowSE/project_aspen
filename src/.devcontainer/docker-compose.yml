@@ -47,6 +47,7 @@ services:
       - ../:/src
     environment:
       ASPEN_TEST_CONNECTION_STRING: Server=api_db;Database=aspen;User Id=aspen;Password=password;
+      DOTNET_WATCH_RESTART_ON_RUDE_EDIT: true
       SwaggerBasePath: aspen
     networks:
       shared:
