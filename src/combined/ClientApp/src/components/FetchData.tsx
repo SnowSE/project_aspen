@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
+export interface Forecast {
+    date: string,
+    temperatureC: number,
+    temperatureF: number,
+    summary: string
+}
+
 export function FetchData() {
 
-    const [forecasts, setForecasts] = useState([]);
+    const [forecasts, setForecasts] = useState<Forecast[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const populateWeatherData = async () => {
             const response = await fetch('weatherforecast');
-            const data = await response.json();
+            const data: Forecast[] = await response.json();
             setForecasts(data);
             setLoading(false);
         }
@@ -16,7 +23,7 @@ export function FetchData() {
         populateWeatherData();
     }, []);
 
-    const renderForecastsTable = (forecasts) => {
+    const renderForecastsTable = (forecasts: Forecast[]) => {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
                 <thead>

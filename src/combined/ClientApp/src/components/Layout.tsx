@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, FC, ReactNode } from 'react';
 import { Container } from 'reactstrap';
-import { NavMenu, NavMenu2 } from './NavMenu';
+import { NavMenu } from './NavMenu';
 
-export function Layout(props) {
+export const Layout: FC<{children: ReactNode}> = (props) => {
     return (
         <div>
             <NavMenu />
