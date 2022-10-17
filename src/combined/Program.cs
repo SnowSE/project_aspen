@@ -47,3 +47,5 @@ app.MapGet("/api/health", () => "ur good");
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+public partial class Program { }

@@ -20,7 +20,7 @@ export function NavMenu() {
                             <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                         </NavItem>
                         <NavItem>
-                            <a class="text-dark nav-link" href="/swagger">Swagger</a>
+                            <a className="text-dark nav-link" href="/swagger">Swagger</a>
                         </NavItem>
                         <NavItem>
                             <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
