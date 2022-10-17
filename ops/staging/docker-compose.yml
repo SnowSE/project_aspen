@@ -5,7 +5,7 @@ services:
     container_name: staging_api
     build:
       context: ../../src/
-      dockerfile: api/Dockerfile
+      dockerfile: combined/Dockerfile
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 5s
