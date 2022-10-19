@@ -15,6 +15,7 @@ services:
       - assets:/assets
     environment:
       - SwaggerBasePath=aspen
+      - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;
     networks:
       shared:
       api:
