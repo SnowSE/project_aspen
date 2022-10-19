@@ -109,7 +109,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSwagger();
+var swaggerBasePath = Configuration["SwaggerBasePath"] ?? "";
+Console.WriteLine($"swaggerbasepath: {swaggerBasePath}");
+app.UseSwagger(options =>
+{
+    options.PreSerializeFilters.Add((swagger, httpReq) =>
+    {
+        if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
+        {
+            var scheme = httpReq.Headers["X-Forwarded-Host"] == "engineering.snow.edu" ? "https" : "http";
+            var serverUrl = $"{scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{swaggerBasePath}";
+            swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+        }
+    });
+});
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
