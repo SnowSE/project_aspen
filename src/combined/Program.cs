@@ -109,7 +109,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-var swaggerBasePath = Configuration["SwaggerBasePath"] ?? "";
+var swaggerBasePath = builder.Configuration["SwaggerBasePath"] ?? "";
 Console.WriteLine($"swaggerbasepath: {swaggerBasePath}");
 app.UseSwagger(options =>
 {
