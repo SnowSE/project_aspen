@@ -7,7 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 RUN apt update
-RUN apt install nodejs -y
+# We directly answer the questions asked using the printf statement
+RUN printf 'y\n1\n\1n' | apt install nodejs
+RUN apt install -y npm
 WORKDIR /src
 COPY ["combined/combined.csproj", "combined/"]
 COPY ["shared/shared.csproj", "shared/"]
