@@ -2,17 +2,24 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 
+
+const root = process.env.PUBLIC_URL
+if(!root){ 
+    throw "PUBLIC_URL is undefined";
+}
+
 const AppRoutes = [
   {
     index: true,
+    path: root,
     element: <Home />
   },
   {
-    path: '/counter',
+    path: `${root}/counter`,
     element: <Counter />
   },
   {
-    path: '/fetch-data',
+    path: `${root}/fetch-data`,
     element: <FetchData />
   }
 ];

@@ -18,6 +18,7 @@ builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IAssetFileService, AssetFileService>();
+builder.Services.AddSingleton<LogMiddleware>();
 
 builder.Services.AddCors(options =>
 {
@@ -102,6 +103,7 @@ builder.Services.AddDbContext<AspenContext>(options =>
 
 var app = builder.Build();
 
+app.UsePathBase("/aspen/new");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -133,12 +135,12 @@ app.UseCors(myAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<LogMiddleware>();
 app.MapControllers();
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+name: "default",
+pattern: "{controller}/{action=Index}/{id?}");
 app.MapGet("/api/health", () => "ur good");
-
 app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
@@ -173,3 +175,18 @@ docker run -d --name pg -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=P@assword
 app.Run();
 
 public partial class Program { }
+
+public class LogMiddleware : IMiddleware
+{
+    private readonly ILogger<LogMiddleware> logger;
+
+    public LogMiddleware(ILogger<LogMiddleware> logger)
+    {
+        this.logger = logger;
+    }
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        logger.LogInformation(context.Request.Path);
+        await next.Invoke(context);
+    }
+}

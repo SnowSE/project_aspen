@@ -3,6 +3,11 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 
+const root = process.env.PUBLIC_URL
+if(!root){ 
+    throw "PUBLIC_URL is undefined";
+}
+
 export function NavMenu() {
     const [collapsed, setCollapsed] = useState(true)
     const toggleNavbar = () => {
@@ -17,16 +22,16 @@ export function NavMenu() {
                 <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!collapsed} navbar>
                     <ul className="navbar-nav flex-grow">
                         <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                            <NavLink tag={Link} className="text-dark" to={`${root}/`}>Home</NavLink>
                         </NavItem>
                         <NavItem>
-                            <a className="text-dark nav-link" href="/swagger">Swagger</a>
+                            <a className="text-dark nav-link" href={`${root}/swagger`}>Swagger</a>
                         </NavItem>
                         <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
+                            <NavLink tag={Link} className="text-dark" to={`${root}/counter`}>Counter</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                            <NavLink tag={Link} className="text-dark" to={`${root}/fetch-data`}>Fetch data</NavLink>
                         </NavItem>
                     </ul>
                 </Collapse>
