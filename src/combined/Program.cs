@@ -106,7 +106,7 @@ builder.Services.AddDbContext<AspenContext>(options =>
 
 var app = builder.Build();
 
-app.use
+app.UseHttpLogging();
 app.UsePathBase("/aspen/new");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
