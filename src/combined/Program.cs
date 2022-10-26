@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+builder.Services.AddHostedService<MigrationApplier>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AspenMapperProfile));
@@ -150,29 +151,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
     //dumpLogs(scope, db);
-    try
-    {
-        db.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("******************************************************");
-        Console.WriteLine("***  Trouble applying migrations!");
-        Console.WriteLine("*** " + ex.ToString());
-        Console.WriteLine("******************************************************");
 
-        if (System.Diagnostics.Debugger.IsAttached)
-        {
-            Console.WriteLine("Maybe it's a connection string issue, or the database is not up?\n");
-            Console.WriteLine(@"If so, try these commands FROM THE src/api DIRECTORY:
-
-dotnet user-secrets set ""ASPEN_CONNECTION_STRING"" ""server=localhost; port=5434; database=postgres; user id=postgres; password=P@assword1""
-docker run -d --name pg -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=P@assword1 -p 5434:5432 postgres
-
-");
-        }
-        throw;
-    }
 }
 
 app.Run();
