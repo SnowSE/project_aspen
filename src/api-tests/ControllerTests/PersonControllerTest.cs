@@ -25,7 +25,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanGetCreatedPerson()
     {
-        var newPerson = new DtoPerson { Name = "George" };
+        var newPerson = new DtoPerson { Name = "George", AuthID = "bogus", Bio = "bio" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
         returnedPerson.Name.Should().Be("George");
@@ -34,7 +34,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanGetDifferentPerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben" };
+        var newPerson = new DtoPerson { Name = "Ben", AuthID = "bogus", Bio = "bio" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
         returnedPerson.Name.Should().Be("Ben");
@@ -43,7 +43,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanDeletePerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben" };
+        var newPerson = new DtoPerson { Name = "Ben", AuthID = "bogus", Bio = "This person" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         await GetPersonController().Delete(createdPerson.ID);
         var badPersonRequests = await GetPersonController().GetByID(createdPerson.ID);
@@ -65,7 +65,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanEditPerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben" };
+        var newPerson = new DtoPerson { Name = "Ben", AuthID = Guid.NewGuid().ToString(), Bio = "This person" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
 
         var person = TestHelpers.AspenMapper.Map<Person>(createdPerson);
@@ -91,7 +91,8 @@ public class PersonControllerTest
         var newPerson = new DtoPerson
         {
             Name = "Bill",
-            AuthID = Guid.NewGuid().ToString()
+            AuthID = Guid.NewGuid().ToString(),
+            Bio = "this person"
         };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
@@ -101,7 +102,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanAddAuthIdToPersonAfterCreation()
     {
-        var newPerson = new DtoPerson { Name = "Mike" };
+        var newPerson = new DtoPerson { Name = "Mike", Bio = "This is mike", AuthID = Guid.NewGuid().ToString() };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var authIdPerson = createdPerson.WithAuthID(Guid.NewGuid().ToString());
         await GetPersonController().Edit(authIdPerson);
@@ -117,7 +118,8 @@ public class PersonControllerTest
         var newPerson = new DtoPerson
         {
             Name = "Bill",
-            AuthID = authId
+            AuthID = authId,
+            Bio = "This Person"
         };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByAuthId(authId)).Value;

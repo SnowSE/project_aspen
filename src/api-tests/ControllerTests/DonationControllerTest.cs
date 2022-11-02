@@ -35,7 +35,8 @@ public class DonationControllerTest
             Date = new DateTime(1775, 7, 2),
             Description = "Independence",
             Location = "Philly",
-            Title = "Sign Here"
+            Title = "Sign Here",
+            PrimaryImageUrl = "july4.jpg"
         })).Value;
 
         unassignedDonation = new DtoDonation

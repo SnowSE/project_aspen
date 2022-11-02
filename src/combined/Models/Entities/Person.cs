@@ -26,16 +26,16 @@ public static class PersonExtensions
 {
     public static Person WithName(this Person currentPerson, string newName)
     {
-        return new Person(currentPerson.ID, newName);
+        return new Person(currentPerson.ID, newName) { AuthID = currentPerson.AuthID, Bio = currentPerson.Bio };
     }
 
     public static Person WithBio(this Person currentPerson, string newBio)
     {
-        return new Person(currentPerson.ID, currentPerson.Name, newBio);
+        return new Person(currentPerson.ID, currentPerson.Name) { AuthID = currentPerson.AuthID, Bio = newBio };
     }
 
     public static Person WithAuthId(this Person currentPerson, string newAuthID)
     {
-        return new Person(currentPerson.ID, currentPerson.Name) { AuthID = newAuthID };
+        return new Person(currentPerson.ID, currentPerson.Name) { AuthID = newAuthID, Bio = currentPerson.Bio };
     }
 }

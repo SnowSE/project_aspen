@@ -40,7 +40,7 @@ public class RegistrationControllerTest
     private async Task<DtoRegistration> createRegistration()
     {
         var owner = await GetPersonRepository().AddAsync("ben", null);
-        var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21));
+        var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21), "Snow College", "marathon.jpg");
         var newEvent = await GetEventRepository().AddAsync(eventEntity);
         var team = new Team
         {
@@ -53,7 +53,8 @@ public class RegistrationControllerTest
         var uncreatedDtoRegistration = new DtoRegistration
         {
             OwnerID = owner.ID,
-            TeamID = team.ID
+            TeamID = team.ID,
+            Nickname = "nickname"
         };
 
         var dtoRegistrationResponse = await GetRegistrationController().Add(uncreatedDtoRegistration);
@@ -87,7 +88,7 @@ public class RegistrationControllerTest
         var personController = PersonControllerTest.GetPersonController();
         var registrationController = GetRegistrationController();
 
-        var teamMember = (await personController.Add(new DtoPerson { Name = "Team Member" })).Value;
+        var teamMember = (await personController.Add(new DtoPerson { Name = "Team Member", Bio = "this person" })).Value;
         var teamMemberRegistration = (await registrationController.LinkPersonRegistration(registration.ID, teamMember.ID)).Value;
 
         var registrations = await personController.GetRegistrationsByID(teamMember.ID);

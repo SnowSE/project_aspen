@@ -32,7 +32,8 @@ public class PersonRepository : IPersonRepository
         var dbPerson = new DbPerson()
         {
             Name = name,
-            Bio = bio
+            Bio = bio,
+            AuthID = Guid.NewGuid().ToString()
         };
         return await addDBPersonAsync(dbPerson);
     }
