@@ -18,3 +18,4 @@ global using System.ComponentModel.DataAnnotations;
 global using System.IO;
 global using System.Linq;
 global using System.Threading.Tasks;
+global using Api.Extensions;
