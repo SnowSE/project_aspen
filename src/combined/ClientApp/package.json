@@ -1,0 +1,91 @@
+{
+  "name": "combined",
+  "version": "0.1.0",
+  "homepage": "/aspen/new",
+  "private": true,
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "@reduxjs/toolkit": "^1.8.6",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^18.11.0",
+    "@types/react-dom": "^18.0.6",
+    "@types/valid-url": "^1.0.3",
+    "axios": "^1.1.3",
+    "bootstrap": "^5.2.2",
+    "bootswatch": "^5.2.2",
+    "http-proxy-middleware": "^2.0.6",
+    "jquery": "^3.6.0",
+    "merge": "^2.1.1",
+    "oidc-client": "^1.11.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.4",
+    "react-router-bootstrap": "^0.26.1",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1",
+    "reactstrap": "^9.1.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.55.0",
+    "typescript": "^4.8.4",
+    "valid-url": "^1.0.9",
+    "web-vitals": "^2.1.4",
+    "workbox-background-sync": "^6.5.3",
+    "workbox-broadcast-update": "^6.5.3",
+    "workbox-cacheable-response": "^6.5.3",
+    "workbox-core": "^6.5.3",
+    "workbox-expiration": "^6.5.3",
+    "workbox-google-analytics": "^6.5.3",
+    "workbox-navigation-preload": "^6.5.3",
+    "workbox-precaching": "^6.5.3",
+    "workbox-range-requests": "^6.5.3",
+    "workbox-routing": "^6.5.3",
+    "workbox-strategies": "^6.5.3",
+    "workbox-streams": "^6.5.3"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.2",
+    "@types/redux-mock-store": "^1.0.3",
+    "ajv": "^8.11.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.18.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-react": "^7.30.1",
+    "nan": "^2.16.0",
+    "redux-mock-store": "^1.5.4"
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
+  },
+  "resolutions": {
+    "css-what": "^5.0.1",
+    "nth-check": "^3.0.1"
+  },
+  "scripts": {
+    "prestart": "node aspnetcore-https && node aspnetcore-react",
+    "start": "rimraf ./build && react-scripts start",
+    "build": "react-scripts build",
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src/"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

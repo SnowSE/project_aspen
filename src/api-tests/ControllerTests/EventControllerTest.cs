@@ -71,7 +71,9 @@ public class EventControllerTest
         var newEvent = new DtoEvent()
         {
             Description = "Marathon2",
-            Location = "Snow"
+            Location = "Snow",
+            PrimaryImageUrl = "image.jpg",
+            Title = "Marathon2"
         };
 
         var createdEvent = (await GetEventController().Add(newEvent)).Value;
@@ -91,7 +93,8 @@ public class EventControllerTest
         {
             Title = "Best title",
             Description = "Marathon2",
-            Location = "Snow"
+            Location = "Snow",
+            PrimaryImageUrl = "image.jpg"
         };
 
         var createdEvent = (await GetEventController().Add(newEvent)).Value;
@@ -108,8 +111,10 @@ public class EventControllerTest
     {
         var newEvent = new DtoEvent()
         {
+            Title = "Marathon2",
             Description = "Marathon2",
-            Location = "Snow"
+            Location = "Snow",
+            PrimaryImageUrl = "snow.jpg"
         };
         var createdEvent = (await GetEventController().Add(newEvent)).Value;
 

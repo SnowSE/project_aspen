@@ -1,5 +1,4 @@
-﻿using shared.DtoModels;
-using Tests.Steps;
+﻿using Tests.Steps;
 
 namespace Tests.ControllerTests;
 
@@ -20,7 +19,6 @@ public class FullScenarioTests
     [Test]
     public async Task FullScenario()
     {
-
         var allTeamsInEvent = await getTeams(newEvent.ID);
         allTeamsInEvent.Count().Should().Be(1);
 
@@ -37,10 +35,10 @@ public class FullScenarioTests
     }
 
     private async Task<DtoEvent> createEvent() =>
-        (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now, Location = "NUnit" })).Value;
+        (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now, Location = "NUnit", Title = "Full", PrimaryImageUrl = "image.jpg" })).Value;
 
     private async Task<DtoPerson> createPerson() =>
-        (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
+        (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Bio = "this person" })).Value;
 
     private async Task<DtoTeam> createTeam(DtoPerson person, long eventId) =>
         (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId })).Value;

@@ -6,6 +6,7 @@
   Links to register  
   Links to team detail pages  
   Showcase event sponsors  
+  Brag list of high-fundraising teams
 
 ## /teams/{teamName}  
   Show team details (name, story, picture, bio, etc.)  
@@ -23,4 +24,5 @@
   Manage events  
   Manage page_data (customizable page content)  
   Manage teams (per event), registrations, users (for all events)
-
+  Manage donations, report donations per team, event, etc.
+  Remind pledgees of commitment

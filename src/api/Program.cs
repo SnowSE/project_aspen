@@ -44,7 +44,7 @@ public class Program
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     Console.WriteLine("Maybe it's a connection string issue, or the database is not up?\n");
-                    Console.WriteLine(@"If so, try these commands:
+                    Console.WriteLine(@"If so, try these commands FROM THE src/api DIRECTORY:
 
 dotnet user-secrets set ""ASPEN_CONNECTION_STRING"" ""server=localhost; port=5434; database=postgres; user id=postgres; password=P@assword1""
 docker run -d --name pg -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=P@assword1 -p 5434:5432 postgres

@@ -22,9 +22,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\api\api.csproj" />
+    <Folder Include="Features\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\" />
+    <ProjectReference Include="..\combined\combined.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-FROM jboss/keycloak:latest
+FROM jboss/keycloak:15.1.1
 
 # these settings are only to allow for development of the keycloak pages
 USER jboss

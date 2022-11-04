@@ -35,6 +35,7 @@ A different as-yet-undetermined URL route could/would allow access to previous/f
 - An event has a location
 - An event can have a schedule of activities (out of scope for 2021)
 - An event has sponsor tiers are based on donation amounts
+- An event has a fundraising goal
 
 
 ## Teams
@@ -43,8 +44,10 @@ A different as-yet-undetermined URL route could/would allow access to previous/f
 - Team owners can set fundraising goals for their team  
 - Team owners can set the story, the picture, the description, video link, etc. for the team.  
 
+## Person
+- A person has a name, an email, 
 
-## Donations
+## Donations / Pledges(?)
 - Any donation can be made anonymous or linked to a logged-in user  
 - Donations can be made to an event or to a specific team  
 - A donation can have a sponsorID (but cannot have both a sponsorID and a personID)

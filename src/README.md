@@ -11,6 +11,8 @@
 
 2. Configure WSL for SSH
 
+> Note: If you don't get have ssh keys, run `ssh-keygen` from a windows command prompt (powershell, etc.), just accept the defaults.  It will create the id_rsa and id_rsa.pub files
+
 ```bash
 cp -r /mnt/c/users/yourwindowsusername/.ssh ~/
 chown -R yourwslusername. ~/.ssh/ #NOTE: The trailing . after your linux user name is IMPORTANT.

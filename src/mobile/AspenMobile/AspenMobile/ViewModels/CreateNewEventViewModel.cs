@@ -4,10 +4,9 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using shared.DtoModels;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -56,7 +55,16 @@ namespace AspenMobile.ViewModels
             NewEvent.PrimaryImageUrl = primaryImageUrl;
             NewEvent.DonationTarget = donationTarget;
 
-            await httpClient.PostAsJsonAsync($"{current}/api/events", NewEvent);
+            if (httpClient.DefaultRequestHeaders.Authorization == null)
+            {
+                var accessToken = await SecureStorage.GetAsync(Constants.AccessToken);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken ?? "");
+            }
+            var response = await httpClient.PostAsJsonAsync($"{current}/api/events", NewEvent);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error creating new event! " + response.ReasonPhrase);
+            }
 
             await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
         }
