@@ -1,6 +1,6 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import { Home } from "./components/Home";
+import { Home } from "./Pages/Home";
 
 
 const root = process.env.PUBLIC_URL
