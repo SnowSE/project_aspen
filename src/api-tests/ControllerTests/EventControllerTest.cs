@@ -72,7 +72,7 @@ public class EventControllerTest
         {
             Description = "Marathon2",
             Location = "Snow",
-            PrimaryImageUrl = "image.jpg",
+            MainImage = "image.jpg",
             Title = "Marathon2"
         };
 
@@ -94,7 +94,7 @@ public class EventControllerTest
             Title = "Best title",
             Description = "Marathon2",
             Location = "Snow",
-            PrimaryImageUrl = "image.jpg"
+            MainImage = "image.jpg"
         };
 
         var createdEvent = (await GetEventController().Add(newEvent)).Value;
@@ -114,7 +114,7 @@ public class EventControllerTest
             Title = "Marathon2",
             Description = "Marathon2",
             Location = "Snow",
-            PrimaryImageUrl = "snow.jpg"
+            MainImage = "snow.jpg"
         };
         var createdEvent = (await GetEventController().Add(newEvent)).Value;
 

@@ -11,7 +11,7 @@ public record DtoPerson
 
     public string Name { get; set; }
 
-    public string Bio { get; set; }
+    public string? Bio { get; set; }
 }
 public static class DtoPersonHelpers
 {

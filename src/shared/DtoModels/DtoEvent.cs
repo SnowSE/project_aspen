@@ -13,6 +13,6 @@ public record DtoEvent
     public string Title { get; set; }
     public string Location { get; set; }
     public string Description { get; set; }
-    public string PrimaryImageUrl { get; set; }
+    public string MainImage { get; set; }
     public decimal DonationTarget { get; set; }
 }

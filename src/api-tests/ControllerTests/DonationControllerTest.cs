@@ -36,7 +36,7 @@ public class DonationControllerTest
             Description = "Independence",
             Location = "Philly",
             Title = "Sign Here",
-            PrimaryImageUrl = "july4.jpg"
+            MainImage = "july4.jpg"
         })).Value;
 
         unassignedDonation = new DtoDonation
