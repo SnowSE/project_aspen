@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-
+import homeimage from '../Images/home';
 export function LoginPage() {
     const navigate = useNavigate();
 
@@ -14,6 +14,13 @@ export function LoginPage() {
                 <Routes>
                     <Route path="/" element={<App />} />
                 </Routes>
+
+                <Link to="/">
+                    <img src={homeimage} alt="home"></img>
+                </Link>
+                <form>
+                    <label> bobassdfsdfd </label>
+                </form>
             </div>
             
         </div >);
