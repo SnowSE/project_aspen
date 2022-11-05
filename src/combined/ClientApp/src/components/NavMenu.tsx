@@ -33,6 +33,9 @@ export function NavMenu() {
                         <NavItem>
                             <NavLink tag={Link} className="text-dark" to={`${root}/fetch-data`}>Fetch data</NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} className="text-dark" to={`${root}/loginPage`}>LoginPage</NavLink>
+                        </NavItem>
                     </ul>
                 </Collapse>
             </Navbar>
