@@ -4,6 +4,9 @@
   "homepage": "/aspen/new",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.12",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.8.6",
     "@types/jest": "^27.0.2",
