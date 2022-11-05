@@ -4,6 +4,10 @@
   "homepage": "/aspen/new",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.12",
+    "@mui/styled-engine-sc": "^5.10.6",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.8.6",
     "@types/jest": "^27.0.2",
@@ -26,6 +30,7 @@
     "reactstrap": "^9.1.5",
     "rimraf": "^3.0.2",
     "sass": "^1.55.0",
+    "styled-components": "^5.3.6",
     "typescript": "^4.8.4",
     "valid-url": "^1.0.9",
     "web-vitals": "^2.1.4",

@@ -8,9 +8,23 @@ import { Provider } from "react-redux";
 
 //import "./custom.scss";
 import "bootstrap/dist/js/bootstrap";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NavMenu from './components/NavMenu';
+import { Home } from './Pages/Home';
+import { FetchData } from './components/FetchData';
+import { Counter } from './components/Counter';
 
 const root = createRoot(document.getElementById("root")!);
-root.render(<App />);
+root.render(
+    <BrowserRouter>
+        <NavMenu />
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/fetch-data" element={<FetchData />} />
+            <Route path="/counter" element={<Counter />} />
+            {/*<Route path="/swagger" element={<swagger />} />*/}
+        </Routes>
+    </BrowserRouter>);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
