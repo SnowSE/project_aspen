@@ -1,3 +1,4 @@
+using Api.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Tests.ControllerTests;
@@ -40,13 +41,15 @@ public class RegistrationControllerTest
     private async Task<DtoRegistration> createRegistration()
     {
         var owner = await GetPersonRepository().AddAsync("ben", null);
-        var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21), "Snow College", "marathon.jpg");
+        var eventEntity = new Event(0, "Title", "Marathon1", new DateTime(2021, 6, 21).SetKindUtc(), "Snow College", "marathon.jpg");
         var newEvent = await GetEventRepository().AddAsync(eventEntity);
         var team = new Team
         {
             OwnerID = owner.ID,
             EventID = newEvent.ID,
-            Name = $"New Team {owner.ID}-{newEvent.ID}"
+            Name = $"New Team {owner.ID}-{newEvent.ID}",
+            Description = "Test Team",
+            MainImage = "Snow.jpg"
         };
 
         team = await GetTeamRepository().AddAsync(team);

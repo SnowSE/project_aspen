@@ -76,7 +76,7 @@ public class RegistrationRepository : IRegistrationRepository
 
         var personRegistration = new DbPersonRegistration
         {
-            CreatedDate = DateTime.Now,
+            CreatedDate = DateTime.Now.ToUniversalTime(),
             PersonID = personId,
             RegistrationID = registrationId
         };

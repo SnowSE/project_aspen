@@ -35,13 +35,13 @@ public class FullScenarioTests
     }
 
     private async Task<DtoEvent> createEvent() =>
-        (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now, Location = "NUnit", Title = "Full", MainImage = "image.jpg" })).Value;
+        (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now.ToUniversalTime(), Location = "NUnit", Title = "Full", MainImage = "image.jpg" })).Value;
 
     private async Task<DtoPerson> createPerson() =>
         (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Bio = "this person" })).Value;
 
     private async Task<DtoTeam> createTeam(DtoPerson person, long eventId) =>
-        (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId })).Value;
+        (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId, MainImage = "image.jpg" })).Value;
 
     private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
         (await TeamControllerTest.GetTeamController().GetByEventID(eventId)).Value;

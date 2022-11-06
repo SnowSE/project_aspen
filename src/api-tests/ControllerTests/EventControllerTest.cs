@@ -18,7 +18,9 @@ public class EventControllerTest
         var newEvent = new DtoEvent
         {
             Description = "Marathon1",
-            Location = "Snow"
+            Title = "Marathon at Snow",
+            Location = "Snow",
+            MainImage = "Snow.jpg"
         };
 
         var eventController = GetEventController();
@@ -34,7 +36,9 @@ public class EventControllerTest
         var newEvent = new DtoEvent()
         {
             Description = "Marathon2",
-            Location = "Snow"
+            Title = "Marathon at Snow",
+            Location = "Snow",
+            MainImage = "Snow.jpg"
         };
 
         var eventController = GetEventController();
@@ -53,7 +57,8 @@ public class EventControllerTest
             Title = "Marathon",
             Description = "Cool Marathon2",
             Location = "Snow",
-            DonationTarget = 1.23M
+            DonationTarget = 1.23M,
+            MainImage = "Snow.jpg"
         };
 
         var eventController = GetEventController();
@@ -141,8 +146,10 @@ public class EventControllerTest
         //Arrange, make a good event
         var newEvent = new DtoEvent()
         {
+            Title = "Marathon",
             Description = "Marathon2",
-            Location = "Snow"
+            Location = "Snow",
+            MainImage = "snow.jpg"
         };
         var goodEvent = (await GetEventController().Add(newEvent)).Value;
 
