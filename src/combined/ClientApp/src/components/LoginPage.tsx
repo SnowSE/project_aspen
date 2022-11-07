@@ -17,6 +17,9 @@ export function LoginPage() {
                     <Route path="/" element={<App />} />
                 </Routes>
 
+
+
+
                 <Grid container spacing={2} >
                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <button onClick={() => navigate(-1)}>Go back 1 Page</button>
@@ -30,6 +33,7 @@ export function LoginPage() {
                         </Link>
                     </Grid>
                 </Grid>
+                
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Form>
 
