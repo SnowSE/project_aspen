@@ -11,5 +11,5 @@ public record DbDonation
     public DbPerson Person { get; init; }
     public DateTime Date { get; init; }
     public decimal Amount { get; init; }
-    public bool IsPending { get; init; } = true;
+    public bool IsPledge { get; init; } = false;
 }

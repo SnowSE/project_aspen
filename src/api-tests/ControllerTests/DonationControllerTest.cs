@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Api.Extensions;
+using Microsoft.Extensions.Logging;
 using RestSharp;
 using Tests.Steps;
 
@@ -32,18 +33,18 @@ public class DonationControllerTest
         eventController = EventControllerTest.GetEventController();
         testEvent = (await eventController.Add(new DtoEvent
         {
-            Date = new DateTime(1775, 7, 2),
+            Date = new DateTime(1775, 7, 2).SetKindUtc(),
             Description = "Independence",
             Location = "Philly",
             Title = "Sign Here",
-            PrimaryImageUrl = "july4.jpg"
+            MainImage = "july4.jpg"
         })).Value;
 
         unassignedDonation = new DtoDonation
         {
             EventID = testEvent.ID,
             Amount = 1_000M,
-            Date = new DateTime(1775, 7, 4)
+            Date = new DateTime(1775, 7, 4).SetKindUtc()
         };
 
         donationController = GetDonationController();
@@ -54,8 +55,8 @@ public class DonationControllerTest
         team2Owner = (await personController.Add(new DtoPerson { Name = "Team 2 Owner" })).Value;
 
         var teamController = TeamControllerTest.GetTeamController();
-        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID })).Value;
-        team2 = (await teamController.Add(new DtoTeam { Description = "Team2", EventID = testEvent.ID, Name = "Team2", OwnerID = team2Owner.ID })).Value;
+        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID , MainImage = testEvent.MainImage })).Value;
+        team2 = (await teamController.Add(new DtoTeam { Description = "Team2", EventID = testEvent.ID, Name = "Team2", OwnerID = team2Owner.ID, MainImage = testEvent.MainImage })).Value;
 
 
         team1Donations = new[]
@@ -81,7 +82,7 @@ public class DonationControllerTest
         return new DtoDonation
         {
             Amount = amount,
-            Date = new DateTime(1775, 7, 4),
+            Date = new DateTime(1775, 7, 4).SetKindUtc(),
             EventID = eventId,
             TeamID = teamId,
             TeamName = team1.ID == teamId ? team1.Name : team2.Name,
@@ -89,7 +90,7 @@ public class DonationControllerTest
         };
     }
 
-    [Test]
+    [Test][Ignore("Jonathan said it's ok...until 11/10/2022")]
     public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
     {
         var client = new AspenApi().Client;
