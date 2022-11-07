@@ -1,6 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /app
 
+RUN apt-get update -yq && apt-get upgrade -yq && apt-get install -yq curl git nano
+RUN curl -sL https://deb.nodesource.com/setup_18.7 | bash - && apt-get install -yq nodejs build-essential
+
+
 COPY api/*.csproj ./api/
 COPY api-tests/*.csproj ./api-tests/
 COPY aspen.sln .
