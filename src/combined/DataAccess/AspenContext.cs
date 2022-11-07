@@ -15,7 +15,7 @@ public class AspenContext : DbContext
 
         builder.Entity<DbDonation>(entity =>
         {
-            entity.Property(nameof(DbDonation.IsPending)).HasDefaultValue(true);
+            entity.Property(nameof(DbDonation.IsPledge)).HasDefaultValue(false);
         });
     }
 

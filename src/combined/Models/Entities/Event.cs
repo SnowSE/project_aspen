@@ -17,14 +17,14 @@ public class Event
         Date = date;
         Location = location;
     }
-    public Event(long id, string title, string description, DateTime date, string location, string primaryImageUrl)
+    public Event(long id, string title, string description, DateTime date, string location, string mainImage)
     {
         ID = id;
         Title = title;
         Description = description;
         Date = date;
         Location = location;
-        PrimaryImageUrl = primaryImageUrl;
+        MainImage = mainImage;
     }
 
     public long ID { get; init; }
@@ -37,7 +37,7 @@ public class Event
 
     public string Description { get; init; }
 
-    public string? PrimaryImageUrl { get; init; }
+    public string? MainImage { get; init; }
     public decimal DonationTarget { get; init; }
 }
 
@@ -72,7 +72,7 @@ public static class EventExtensions
             currentEvent.Title,
             currentEvent.Date,
             currentEvent.Location,
-            currentEvent.PrimaryImageUrl)
+            currentEvent.MainImage)
         {
             DonationTarget = donationTarget
         };

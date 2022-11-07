@@ -11,7 +11,7 @@ public record DtoRegistration
 
     public bool IsPublic { get; set; }
 
-    public string Nickname { get; set; }
+    public string? Nickname { get; set; }
 
     public long OwnerID { get; set; }
 
