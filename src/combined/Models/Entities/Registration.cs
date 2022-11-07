@@ -8,7 +8,7 @@ public class Registration
 
     public bool IsPublic { get; init; }
 
-    public string Nickname { get; init; }
+    public string? Nickname { get; init; }
 
     public long OwnerID { get; init; }
 

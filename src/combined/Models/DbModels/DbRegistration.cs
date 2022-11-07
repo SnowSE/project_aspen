@@ -8,7 +8,7 @@ public record DbRegistration
 
     public bool IsPublic { get; init; }
 
-    public string Nickname { get; init; }
+    public string? Nickname { get; init; }
 
     public long OwnerID { get; init; }
     public DbPerson Owner { get; init; }
