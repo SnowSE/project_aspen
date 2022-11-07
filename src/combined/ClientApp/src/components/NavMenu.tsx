@@ -46,8 +46,6 @@ const NavMenu = () => {
                             variant="h6"
                             align = 'center'
                             noWrap
-                            component="a"
-                            href="/"
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
@@ -58,9 +56,9 @@ const NavMenu = () => {
                                 textDecoration: 'none',
                             }}
                         >
-                            Food Drive
+                            SanPete Food Bank
                         </Typography>
-                        <Box sx={{ flexGrow: .5, display: { md: 'flex' } }}>
+                        <Box sx={{ flexGrow: .5, display: { md: 'flex' }}}>
                             {pages.map((page) => (
                                 <LinkStyle
                                     to={page.href}
