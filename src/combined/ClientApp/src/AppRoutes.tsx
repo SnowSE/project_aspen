@@ -1,6 +1,7 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import { Home } from "./components/Home";
+//import { Home } from "./components/Home";
+import { LoginPage } from "./components/LoginPage";
 
 
 const root = process.env.PUBLIC_URL
@@ -9,11 +10,11 @@ if(!root){
 }
 
 const AppRoutes = [
-  {
+  /*{
     index: true,
     path: root,
     element: <Home />
-  },
+  },*/
   {
     path: `${root}/counter`,
     element: <Counter />
@@ -21,7 +22,11 @@ const AppRoutes = [
   {
     path: `${root}/fetch-data`,
     element: <FetchData />
-  }
+    },
+    {
+        path: `${root}/loginPage`,
+        element: <LoginPage />
+    }
 ];
 
 export default AppRoutes;
