@@ -1,12 +1,7 @@
-﻿using Api.DataAccess;
-using Api.Mappers;
+﻿using Api.Mappers;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Tests.Hooks;
 
 namespace Tests
 {
@@ -15,7 +10,7 @@ namespace Tests
         public static IMapper AspenMapper { get; } = new Mapper(new MapperConfiguration(c => c.AddProfile<AspenMapperProfile>()));
 
         private static string GetConnectionString() =>
-            Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") ?? "Server=api_db;Database=aspen;User Id=aspen;Password=password;";
+            Environment.GetEnvironmentVariable("ASPEN_TEST_CONNECTION_STRING") ?? TestHook.ConnectionString;
 
         public static AspenContext CreateContext() =>
             new AspenContext(new DbContextOptionsBuilder<AspenContext>().UseNpgsql(GetConnectionString()).Options);

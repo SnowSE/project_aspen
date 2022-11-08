@@ -7,7 +7,7 @@ namespace Tests.Steps
     {
         public AspenApi()
         {
-            var baseUrl = "http://127.0.0.1:" + Hooks.Hooks.ExposedPort;
+            var baseUrl = "http://127.0.0.1:" + Hooks.TestHook.ExposedPort;
             RestClient = new RestClient(baseUrl);
             RestClient.ThrowOnAnyError = true;
 
