@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using System.Net.Http;
 
 namespace Tests.Steps
 {
@@ -6,19 +7,23 @@ namespace Tests.Steps
     {
         public AspenApi()
         {
-            Client = new RestClient("http://127.0.0.1:" + Hooks.Hooks.ExposedPort);
-            Client.ThrowOnAnyError = true;
+            var baseUrl = "http://127.0.0.1:" + Hooks.Hooks.ExposedPort;
+            RestClient = new RestClient(baseUrl);
+            RestClient.ThrowOnAnyError = true;
+
+            HttpClient = new HttpClient() { BaseAddress = new Uri(baseUrl) };
         }
 
-        public RestClient Client { get; }
+        public RestClient RestClient { get; }
+        public HttpClient HttpClient { get; }
 
         public async Task<DtoPerson> CreatePersonAsync(DtoPerson person)
         {
             var request = new RestRequest("api/person/").AddJsonBody(person);
-            return await Client.PostAsync<DtoPerson>(request);
+            return await RestClient.PostAsync<DtoPerson>(request);
         }
 
         public IRestResponse GetTeamsByEvent(int eventId) =>
-            Client.Get(new RestRequest($"api/teams/event/{eventId}"));
+            RestClient.Get(new RestRequest($"api/teams/event/{eventId}"));
     }
 }

@@ -109,6 +109,7 @@ var app = builder.Build();
 
 app.UseHttpLogging();
 app.UsePathBase("/aspen/new");
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -146,13 +147,6 @@ name: "default",
 pattern: "{controller}/{action=Index}/{id?}");
 app.MapGet("/api/health", () => "ur good");
 app.MapFallbackToFile("index.html");
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
-    //dumpLogs(scope, db);
-
-}
 
 app.Run();
 
