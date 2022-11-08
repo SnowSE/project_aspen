@@ -125,7 +125,7 @@ public class TestHook
         await waitForDatabaseToComeUp();
 
         var containerDetails = await dockerClient.Containers.InspectContainerAsync(containerId);
-        TestConstants.ContainerPort = containerDetails.NetworkSettings.Ports.First().Value.First().HostPort;
+        TestConstants.ContainerPort = containerDetails.NetworkSettings.Ports.FirstOrDefault().Value?.FirstOrDefault()?.HostPort ?? throw new UnableToDetermineContainerPortException();
     }
 
     private static async Task<DockerClient> createDockerClientAsync()
