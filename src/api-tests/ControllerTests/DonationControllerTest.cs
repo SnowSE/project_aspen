@@ -1,6 +1,5 @@
 ﻿using Api.Extensions;
 using Microsoft.Extensions.Logging;
-using RestSharp;
 using Tests.Steps;
 
 namespace Tests.ControllerTests;
@@ -55,7 +54,7 @@ public class DonationControllerTest
         team2Owner = (await personController.Add(new DtoPerson { Name = "Team 2 Owner" })).Value;
 
         var teamController = TeamControllerTest.GetTeamController();
-        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID , MainImage = testEvent.MainImage })).Value;
+        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID, MainImage = testEvent.MainImage })).Value;
         team2 = (await teamController.Add(new DtoTeam { Description = "Team2", EventID = testEvent.ID, Name = "Team2", OwnerID = team2Owner.ID, MainImage = testEvent.MainImage })).Value;
 
 
@@ -90,13 +89,14 @@ public class DonationControllerTest
         };
     }
 
-    [Test][Ignore("Jonathan said it's ok...until 11/10/2022")]
+    [Test]
     public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
     {
-        var client = new AspenApi().Client;
-        var request = new RestRequest($"api/teams/{team2.ID}");
-        var response = client.Delete(request);
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        var api = new AspenApi();
+        (await api.HttpClient.DeleteAsync($"api/teams/{team2.ID}"))
+            .StatusCode
+            .Should()
+            .Be(System.Net.HttpStatusCode.BadRequest);
     }
 
     [Test]
