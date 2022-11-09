@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import {Box, 
         Button, 
         Typography, 
-        Paper,
-        IconButton, 
-        Link} from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
-import { LoginPage } from '../components/LoginPage';
-import { useNavigate } from 'react-router-dom';
+        Paper, 
+        Link,} from '@mui/material';
+import ReactPlayer from 'react-player';
 
 export function Home() {
     const navigate = useNavigate();
-
     return (
         <Box>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
@@ -45,8 +41,8 @@ export function Home() {
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button onClick={() => navigate('/TeamsList')} variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 } }>JOIN A TEAM</Button>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>CREATE A TEAM</Button>
+                    <Button variantvariant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>JOIN A TEAM</Button>
+                    <Button ='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>CREATE A TEAM</Button>
                 </Box>
             </Box>
 

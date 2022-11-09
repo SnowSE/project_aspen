@@ -30,6 +30,7 @@ const NavMenu = () => {
             },
         },
     });
+
     const LinkStyle = styled(Link)`
     color: White;
     text-decoration: none;
@@ -62,13 +63,14 @@ const NavMenu = () => {
                         <Box sx={{ flexGrow: .5, display: { md: 'flex' }}}>
                             {pages.map((page) => (
                                 <LinkStyle
-                                    to={page.href}
-                                    key={page.text}
+                                to={page.href}
+                                key={page.text}
                                 >
                                     {page.text}
                                 </LinkStyle>
                             ))}
                         </Box>
+                        {localStorage.getItem("LoggedInUser") == "" ? <h5>not logged in</h5>: <h5> Logged In As: {localStorage.getItem("LoggedInUser")}</h5>}
                     </Toolbar>
                 </Container>
             </AppBar>
