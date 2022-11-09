@@ -31,7 +31,7 @@ export function LoginPage() {
                     <Link to="/"></Link>
                 </nav>
                 <Routes>
-                    <Route path="/" element={<App />} />
+                    <Route path="/" />
                 </Routes>
 
                 <button onClick={loginHandler}>Test Login</button>
@@ -89,8 +89,3 @@ export function LoginPage() {
 
 }
 
-
-function App() {
-    return (
-        <div></div>);
-}

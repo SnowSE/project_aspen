@@ -2,6 +2,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 //import { Home } from "./components/Home";
 import { LoginPage } from "./components/LoginPage";
+import { TeamsListPage } from "./components/TeamsListPage";
 
 
 const root = process.env.PUBLIC_URL
@@ -26,6 +27,10 @@ const AppRoutes = [
     {
         path: `${root}/loginPage`,
         element: <LoginPage />
+    },
+     {
+         path: `${root}/TeamsListPage`,
+         element: <TeamsListPage />
     }
 ];
 export default AppRoutes;
