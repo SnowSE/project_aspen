@@ -4,7 +4,8 @@ import {Box,
         Typography, 
         Paper,
         IconButton, 
-        Link} from '@mui/material';
+        Link,
+        CardMedia} from '@mui/material';
 
 import { LoginPage } from '../../components/LoginPage';
 import Share from '../../components/Share';
@@ -23,6 +24,13 @@ export function Home() {
                         <Button onClick={LoginPage} variant='contained' sx={{backgroundColor:'orange'}}>SIGN IN</Button>
                         <Share/>
                     </Box>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <CardMedia
+                        component='video'
+                        image={"C:\Users\jayse.baruch\Pictures\Camera Roll\squidward-spare-change.gif"}
+                        autoPlay
+                    />
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Button onClick={() => navigate('../DonationPage/DonationPage')} variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>DONATE MEALS</Button>
