@@ -11,7 +11,7 @@ import Share from '../../components/Share';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
 
-
+console.log("Public URL is:", `${process.env.PUBLIC_URL}`)
 
 export function Home() {
     const navigate = useNavigate();
@@ -31,14 +31,7 @@ export function Home() {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <ReactPlayer 
-                    width={'80%'} 
-                    height='100%'
-                    url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-                    playing={true}
-                    muted={true}
-                    controls={true}
-                    />
+                    <iframe width="780" height="400" src="https://www.youtube.com/embed/wkFlIx9sV04" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button 
