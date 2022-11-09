@@ -5,8 +5,9 @@ import {Box,
         Paper,
         IconButton, 
         Link} from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
+
 import { LoginPage } from '../components/LoginPage';
+import Share from '../components/Share';
 
 export function Home() {
     return (
@@ -16,9 +17,7 @@ export function Home() {
                     <Typography variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
                     <Box sx={{display:'flex', justifyContent:'end'}}>
                         <Button onClick={LoginPage} variant='contained' sx={{backgroundColor:'orange'}}>SIGN IN</Button>
-                        <IconButton aria-label="delete" sx={{backgroundColor:'#673ab7', color:'white'}}  size='large'>
-                            <ShareIcon />
-                        </IconButton>
+                        <Share/>
                     </Box>
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>

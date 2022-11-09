@@ -30,6 +30,7 @@ const NavMenu = () => {
             },
         },
     });
+
     const LinkStyle = styled(Link)`
     color: White;
     text-decoration: none;
