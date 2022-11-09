@@ -2,26 +2,51 @@ import React, { Component } from 'react';
 import {Box, 
         Button, 
         Typography, 
-        Paper,
-        IconButton, 
-        Link} from '@mui/material';
+        Paper, 
+        Link,} from '@mui/material';
+import ReactPlayer from 'react-player';
 
-import { LoginPage } from '../components/LoginPage';
-import Share from '../components/Share';
+import { LoginPage } from '../../components/LoginPage';
+import Share from '../../components/Share';
+import { DonationPage } from '../DonationPage/DonationPage';
+import { useNavigate } from 'react-router-dom';
+
+
 
 export function Home() {
+    const navigate = useNavigate();
     return (
         <Box>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
                 <Box sx={{display:'flex', justifyContent:'center'}}>
-                    <Typography variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
+                    <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
                     <Box sx={{display:'flex', justifyContent:'end'}}>
-                        <Button onClick={LoginPage} variant='contained' sx={{backgroundColor:'orange'}}>SIGN IN</Button>
+                        <Button 
+                            onClick={() => navigate('/Login')} 
+                            variant='contained' 
+                            sx={{backgroundColor:'orange'}}>
+                            SIGN IN
+                        </Button>
                         <Share/>
                     </Box>
                 </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <ReactPlayer 
+                    width={'80%'} 
+                    height='100%'
+                    url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                    playing={true}
+                    muted={true}
+                    controls={true}
+                    />
+                </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>DONATE MEALS</Button>
+                        <Button 
+                            onClick={() => navigate('/Donate')} 
+                            variant='contained' 
+                            sx={{ backgroundColor: 'orange', m: 2 }}>
+                            DONATE MEALS
+                        </Button>
                         <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>SHARE NOW</Button>
                     </Box>
             </Paper>
