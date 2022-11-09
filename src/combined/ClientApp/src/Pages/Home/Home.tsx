@@ -8,8 +8,12 @@ import {Box,
 
 import { LoginPage } from '../../components/LoginPage';
 import Share from '../../components/Share';
+import { useNavigate } from 'react-router-dom';
+
+
 
 export function Home() {
+    const navigate = useNavigate();
     return (
         <Box>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
@@ -21,7 +25,7 @@ export function Home() {
                     </Box>
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>DONATE MEALS</Button>
+                    <Button onClick={() => navigate('../DonationPage/DonationPage')} variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>DONATE MEALS</Button>
                         <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>SHARE NOW</Button>
                     </Box>
             </Paper>

@@ -49,7 +49,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\Pages\DonationPage.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\shared\shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\Pages\DonationPage\DonationPage.tsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
