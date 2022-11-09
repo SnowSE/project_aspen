@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Json;
+using Tests.Steps;
 
 namespace Tests.ControllerTests;
 
@@ -10,6 +12,14 @@ public class TeamControllerTest
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
         var loggerMock = new Mock<ILogger<TeamController>>();
         return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object);
+    }
+
+    public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
+    {
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = ownerName })).Value;
+        var newTeam = new DtoTeam { Name = teamName, Description = teamDescription, OwnerID = newPerson.ID, EventID = eventId, MainImage = "image.jpg" };
+        var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
+        return dtoTeam;
     }
 
     [Test]
@@ -68,9 +78,7 @@ public class TeamControllerTest
     public async Task CanEditTeam()
     {
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
-        var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
-        var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
+        var dtoTeam = await addTeamtoEvent(newEvent.ID, "TeamJayse", "Jayse", "Jayse");
 
         var editedTeam = dtoTeam with { Description = "Changed", DonationTarget = 1234 };
         await GetTeamController().Edit(editedTeam);
@@ -79,4 +87,20 @@ public class TeamControllerTest
         returnedTeam.Description.Should().Be(editedTeam.Description);
         returnedTeam.DonationTarget.Should().Be(1234);
     }
+
+
+    [Test]
+    public async Task GetAllTeamsPerEvent()
+    {
+        var api = new AspenApi();
+        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
+        await addTeamtoEvent(newEvent.ID,"Adam","JayseTeam","Jayse");
+        await addTeamtoEvent(newEvent.ID, "Adam1", "JayseTeam1", "Jayse1");
+        await addTeamtoEvent(newEvent.ID, "Adam2", "JayseTeam2", "Jayse2");
+
+        var teams = await api.HttpClient.GetFromJsonAsync<IEnumerable<DtoTeam>>($"/api/teams/event/{newEvent.ID}");
+
+        teams.Count().Should().Be(3);
+    }
+
 }
