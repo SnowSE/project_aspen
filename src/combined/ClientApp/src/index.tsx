@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import "bootstrap/dist/js/bootstrap";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NavMenu from './components/NavMenu';
-import { Home } from './Pages/Home';
+import { Home } from './Pages/Home/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { LoginPage } from './components/LoginPage';

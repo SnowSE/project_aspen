@@ -6,8 +6,8 @@ import {Box,
         IconButton, 
         Link} from '@mui/material';
 
-import { LoginPage } from '../components/LoginPage';
-import Share from '../components/Share';
+import { LoginPage } from '../../components/LoginPage';
+import Share from '../../components/Share';
 
 export function Home() {
     return (
