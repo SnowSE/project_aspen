@@ -3,9 +3,26 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import homeimage from '../Images/home.png';
 import { Grid } from "@mui/material"
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import { authService } from '../services/authService';
+
 export function LoginPage() {
 
+    const [loggedIn, setLoggedIn] = useState(false)
     const navigate = useNavigate();
+
+    const loginHandler = () => {
+        authService.signinRedirect();
+    }
+    const logoutHandler = () => {
+        authService.logout()
+    }
+
+    const getUser = async () => {
+        var user = await authService.getUser()
+        console.log("user is: ", user)
+    }
+
+
 
     return (
         <div>
@@ -17,9 +34,9 @@ export function LoginPage() {
                     <Route path="/" element={<App />} />
                 </Routes>
 
-
-
-
+                <button onClick={loginHandler}>Test Login</button>
+                <button onClick={logoutHandler}>Test LogOut</button>
+                <button onClick={getUser} >Get User</button>
                 <Grid container spacing={2} >
                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <button onClick={() => navigate(-1)}>Go back 1 Page</button>
