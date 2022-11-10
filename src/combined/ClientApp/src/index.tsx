@@ -16,6 +16,7 @@ import { Counter } from './components/Counter';
 import { LoginPage } from './components/LoginPage';
 import { DonationPage } from './Pages/DonationPage/DonationPage';
 import Landing from './Pages/LoginLanding';
+import CreateTeamPage from './Pages/CreateTeamPage';
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
@@ -28,6 +29,7 @@ root.render(
             <Route path="/login" element={<LoginPage /> } />
             <Route path="/Donate" element={<DonationPage /> } />
             <Route path="/landing" element = {<Landing/>}/>
+            <Route path="createteam" element = {<CreateTeamPage/>}/>
             {/*<Route path="/swagger" element={<swagger />} />*/}
         </Routes>
     </BrowserRouter>);

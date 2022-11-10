@@ -60,7 +60,7 @@ export function Home() {
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>JOIN A TEAM</Button>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>CREATE A TEAM</Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}>CREATE A TEAM</Button>
                 </Box>
             </Box>
 

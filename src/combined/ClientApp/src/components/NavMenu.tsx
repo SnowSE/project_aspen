@@ -17,7 +17,7 @@ const NavMenu = () => {
         { text: 'Swagger', href: `/swagger` },
         { text: 'Counter', href: '/counter' },
         { text: 'Fetch Data', href: '/fetch-data' },
-        { text: 'Sign in', href: '/login' },
+        { text: 'Sign in', href: '/login' }
     ]
 
     const purpleTheme = createTheme({
