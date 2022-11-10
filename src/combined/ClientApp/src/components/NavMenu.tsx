@@ -1,13 +1,14 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import { ThemeProvider, createTheme, Toolbar } from '@mui/material';
+import { ThemeProvider, createTheme, Toolbar, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled';
 import ReactDOM from 'react-dom';
 import { deepPurple, purple } from '@mui/material/colors';
+import { authService } from '../services/authService';
 
 
 const NavMenu = () => {
@@ -16,8 +17,7 @@ const NavMenu = () => {
         { text: 'Home', href: '/' },
         { text: 'Swagger', href: `/swagger` },
         { text: 'Counter', href: '/counter' },
-        { text: 'Fetch Data', href: '/fetch-data' },
-        { text: 'Sign in', href: '/login' }
+        { text: 'Fetch Data', href: '/fetch-data' }
     ]
 
     const purpleTheme = createTheme({
@@ -38,6 +38,12 @@ const NavMenu = () => {
     position: relative;
     `;
 
+    const loginHandler = () => {
+        authService.signinRedirect();
+    }
+    const logoutHandler = () => {
+        authService.logout()
+    }
 
     return (
         <ThemeProvider theme={purpleTheme}>
@@ -70,7 +76,7 @@ const NavMenu = () => {
                                 </LinkStyle>
                             ))}
                         </Box>
-                        {localStorage.getItem("LoggedInUser") == "" ? <h5>not logged in</h5>: <h5> Logged In As: {localStorage.getItem("LoggedInUser")}</h5>}
+                        {localStorage.getItem("LoggedInUser") == "" ? <Button onClick={loginHandler} variant = 'contained' sx = {{backgroundColor:'orange'}}>Login</Button>: <> <Button onClick={logoutHandler} variant = 'contained' sx = {{backgroundColor:'orange'}}>Logout</Button><h5>   Logged In As: {localStorage.getItem("LoggedInUser")}</h5> </>}
                     </Toolbar>
                 </Container>
             </AppBar>
