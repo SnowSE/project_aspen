@@ -7,7 +7,6 @@ import {Box,
         Grid,} from '@mui/material';
 import ReactPlayer from 'react-player';
 
-import { LoginPage } from '../../components/LoginPage';
 import Share from '../../components/Share';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
@@ -73,7 +72,7 @@ export function Home() {
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>JOIN A TEAM</Button>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>CREATE A TEAM</Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}>CREATE A TEAM</Button>
                 </Box>
             </Box>
 
