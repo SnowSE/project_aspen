@@ -68,7 +68,7 @@ public class TeamRepository : ITeamRepository
     {
         var team = await context.Teams.Include(t => t.Donations).FirstOrDefaultAsync(t => t.ID == id);
         if (team == null)
-            throw new NotFoundException<Team>($"Person id does not exist");
+            throw new NotFoundException<Team>($"Team id does not exist");
 
         if(team.Donations.Any())
         {

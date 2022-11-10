@@ -1,4 +1,5 @@
 ﻿using Api.Mappers;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Microsoft.AspNetCore.Builder;
@@ -55,7 +56,6 @@ public class TestHook
         builder.Services.AddScoped<IPersonRepository, PersonRepository>();
         builder.Services.AddScoped<IDonationRepository, DonationRepository>();
         builder.Services.AddScoped<IAssetFileService, AssetFileService>();
-        builder.Services.AddSwaggerGen();
         builder.Services.AddDbContext<AspenContext>(options =>
         {
             options.UseNpgsql(builder.Configuration[TestConstants.ASPEN_TEST_CONNECTION_STRING] ?? ConnectionString);
@@ -154,9 +154,9 @@ public class TestHook
             HostConfig = new HostConfig
             {
                 PortBindings = new Dictionary<string, IList<PortBinding>>
-            {
-                {"5432", new List<PortBinding>(){new PortBinding{HostPort = TestConstants.ContainerPort } } }
-            },
+                {
+                    {"5432", new List<PortBinding>(){new PortBinding{HostPort = TestConstants.ContainerPort } } }
+                },
                 PublishAllPorts = true,
             },
             Healthcheck = new HealthConfig

@@ -8,7 +8,7 @@ import {
 export function DonationPage() {
     return (
         <Box>
-            <Typography>
+            <Typography data-testid={"donationPageHeader"} id={"donationPageHeader"}>
                 Thank you for coming to the donation page. PLEASE GIVE ME YOUR MONEY
             </Typography>
         </Box>

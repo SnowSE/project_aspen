@@ -15,6 +15,7 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { LoginPage } from './components/LoginPage';
 import { DonationPage } from './Pages/DonationPage/DonationPage';
+import Landing from './Pages/LoginLanding';
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
@@ -26,6 +27,7 @@ root.render(
             <Route path="/counter" element={<Counter />} />
             <Route path="/login" element={<LoginPage /> } />
             <Route path="/Donate" element={<DonationPage /> } />
+            <Route path="/landing" element = {<Landing/>}/>
             {/*<Route path="/swagger" element={<swagger />} />*/}
         </Routes>
     </BrowserRouter>);

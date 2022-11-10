@@ -28,5 +28,4 @@ const AppRoutes = [
         element: <LoginPage />
     }
 ];
-
 export default AppRoutes;
