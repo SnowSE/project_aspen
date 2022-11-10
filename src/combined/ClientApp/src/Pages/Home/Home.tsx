@@ -10,6 +10,7 @@ import { LoginPage } from '../../components/LoginPage';
 import Share from '../../components/Share';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
+import TeamInfoModal from '../../components/TeamInfoModal';
 
 console.log("Public URL is:", `${process.env.PUBLIC_URL}`)
 
@@ -27,14 +28,22 @@ export function Home() {
                             sx={{backgroundColor:'orange'}}>
                             SIGN IN
                         </Button>
-                        <Share/>
+                        <Share data-testid={"shareBtn"}/>
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <iframe width="780" height="400" src="https://www.youtube.com/embed/wkFlIx9sV04" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                    <iframe 
+                            src="https://www.youtube.com/embed/wkFlIx9sV04" 
+                            title="YouTube video player" 
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            width= "1000"
+                            height= "450"
+                            allowFullScreen />
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button 
+                            data-testid={'donateBtn'}
                             onClick={() => navigate('/Donate')} 
                             variant='contained' 
                             sx={{ backgroundColor: 'orange', m: 2 }}>
@@ -55,7 +64,7 @@ export function Home() {
                 </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Link href="#">Learn More About Teams</Link>
+                <TeamInfoModal/>
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
