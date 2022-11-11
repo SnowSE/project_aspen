@@ -6,7 +6,7 @@ import './custom.css';
 
 function App() {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
             <Layout>
                 <Routes>
                     {AppRoutes.map((route, index) => {
