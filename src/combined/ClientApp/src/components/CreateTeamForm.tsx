@@ -25,13 +25,13 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event:React.FormEvent) => {
         event.preventDefault()
-        
-        var currentUserUrl = "https://localhost:44478/aspen/new/api/User"
-        var eventsUrl =      "https://localhost:44478/aspen/new/api/events"
+        console.log(process.env.REACT_APP_BASE_URL)
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "api/User"
+        var eventsUrl =      process.env.REACT_APP_BASE_URL + "api/events"
 
         const currentUser = await axios.get(currentUserUrl, config)
         const events = await axios.get(eventsUrl)
-        
+
         let newTeam:team = {
             name: teamName,
             description: teamDescription, 
@@ -41,7 +41,7 @@ const CreateTeamForm = () => {
             donationTarget: donationGoal
         }
 
-        var teamUrl = "https://localhost:44478/aspen/new/api/teams"
+        var teamUrl = process.env.REACT_APP_BASE_URL + "api/teams"
         const res = await axios.post(teamUrl, newTeam, config)
         .then((response)=> {})
         .catch((error)=> {console.log(error.response.data)})
