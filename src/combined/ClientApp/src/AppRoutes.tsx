@@ -33,7 +33,7 @@ const AppRoutes = [
         element: <CreateTeamPage />
     },
      {
-         path: `$/TeamsListPage`,
+         path: `/TeamsListPage`,
          element: <TeamsListPage />
     },
 ];
