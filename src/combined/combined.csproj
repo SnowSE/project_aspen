@@ -49,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\ProgressBar.tsx" />
     <None Remove="ClientApp\src\Pages\DonationPage.tsx" />
   </ItemGroup>
 
@@ -57,6 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\ProgressBar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\Pages\DonationPage\DonationPage.tsx" />
   </ItemGroup>
 

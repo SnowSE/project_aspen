@@ -9,6 +9,7 @@ const Share = () => {
     return (
         <div>
             <RWebShare
+                data-testid={"shareModal"}
                 data={{
                     text: "",
                     url:  shareUrl,
