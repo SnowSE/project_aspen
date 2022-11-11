@@ -42,7 +42,7 @@ export function Home() {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             width= "1000"
                             height= "450"
-                            allowFullScreen />
+                        allowFullScreen />
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <ProgressBar />
