@@ -4,6 +4,8 @@ import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 
 const CreateTeamForm = () => {
+    console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
+    console.log('BASE_URL', process.env.BASE_URL)
 
     const [teamName, setTeamName] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
