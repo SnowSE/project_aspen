@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import {Box, 
         Button, 
         Typography, 
@@ -9,10 +9,12 @@ import ReactPlayer from 'react-player';
 import Share from '../../components/Share';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 console.log("Public URL is:", `${process.env.PUBLIC_URL}`)
 
 export function Home() {
+
     const navigate = useNavigate();
     return (
         <Box>

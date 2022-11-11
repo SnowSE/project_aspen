@@ -13,8 +13,8 @@ const LoginLanding = () => {
                 var access_token = user.access_token;
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
                 localStorage.setItem("access_token",  access_token ? access_token : "")
-
                 navigate('/')
+                navigate(0)
             }
         );
     }, []);
@@ -23,3 +23,6 @@ const LoginLanding = () => {
 }
 
 export default LoginLanding;
+
+
+

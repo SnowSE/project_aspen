@@ -40,8 +40,6 @@ export const authService = {
       localStorage.setItem("redirectUri", window.location.pathname);
     }
     await userManager.signinRedirect();
-    const user = await userManager.signinRedirectCallback()
-    console.log("user is: ", user.profile.name)
   },
 
   signinRedirectCallback: async () => {
