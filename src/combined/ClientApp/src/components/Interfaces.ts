@@ -1,6 +1,6 @@
-﻿export type TeamsList = {
-    ID: number,
-    Name: string, 
+﻿export type Team = {
+    id: number,
+    name: string, 
     Description: string,
     MainImage: string,
     OwnerID: string,
