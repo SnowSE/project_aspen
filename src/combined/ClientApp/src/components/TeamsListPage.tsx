@@ -6,6 +6,9 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 export function TeamsListPage() {
     const navigate = useNavigate();
 
+    //const { isLoading, error, data } = EventsHooks.useEventsQuery();
+
+
     return (
         <div>'
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
