@@ -1,25 +1,36 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-//import { Home } from "./components/Home";
-
-const root = process.env.PUBLIC_URL
-if(!root){ 
-    throw "PUBLIC_URL is undefined";
-}
+import CreateTeamPage from "./Pages/CreateTeamPage";
+import { DonationPage } from "./Pages/DonationPage/DonationPage";
+import { Home } from "./Pages/Home/Home";
+import LoginLanding from "./Pages/LoginLanding";
 
 const AppRoutes = [
-  /*{
-    index: true,
-    path: root,
-    element: <Home />
-  },*/
-  {
-    path: `${root}/counter`,
-    element: <Counter />
-  },
-  {
-    path: `${root}/fetch-data`,
-    element: <FetchData />
+    {
+        index: true,
+        path: '/',
+        element: <Home />
+    },
+    {
+        path: `/counter`,
+        element: <Counter />
+    },
+    {
+        path: `/fetch-data`,
+        element: <FetchData />
+    },
+    {
+        path: `/donate`,
+        element: <DonationPage />
+    },
+    {
+        path: `/landing`,
+        element: <LoginLanding />
+    },
+    {
+        path: `/createteam`,
+        element: <CreateTeamPage />
     },
 ];
+
 export default AppRoutes;
