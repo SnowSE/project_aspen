@@ -3,6 +3,7 @@ import { getByTestId, render, RenderResult, screen } from '@testing-library/reac
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 import {Home} from './Home'
+import { useNavigate } from 'react-router-dom';
 
 let documentBody: RenderResult;
 
@@ -22,4 +23,11 @@ describe('Home Page', () => {
         expect(screen.getByTestId('homePageHeader')).toBeInTheDocument;
 
     });
+
+    // it('Click donate button and naviagte to donate page', () => {
+    //     expect(screen.getByTestId("shareBtn")).toBeInTheDocument
+    //     //await userEvent.click(screen.getByTestId('shareBtn'))
+
+    //     //expect(screen.getByTestId('shareModal')).toBeInTheDocument
+    // })  
 });

@@ -66,6 +66,7 @@ public class TeamController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
+        Console.WriteLine("heresadasdfasdfasdfasdfasdfasdf");
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
