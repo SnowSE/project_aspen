@@ -25,13 +25,12 @@ export function TeamsListPage() {
         }
         callService()
     }, [])
-    console.log(teamsList)
     return (
         <div>'
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
                 <button onClick={() => navigate(-1)}>Go back 1 Page</button>
             </Grid>
-            <h1>Existing {teamsList.length} Teams {teamsList.length > 0 && (teamsList[0].name ?? 'missing name') }</h1>
+            <h1>Existing {teamsList.length} Teams  </h1>
             <ul>
                 {teamsList.map((t) => (<li key={t.name}>{t.name}</li>))}          
             </ul>
