@@ -17,7 +17,11 @@ const Share = () => {
                 }}
                 onClick={() => console.log("shared successfully!")}
             >
-                <IconButton aria-label="delete" sx={{ backgroundColor: '#673ab7', color: 'White' }} size='large'>
+                <IconButton 
+                aria-label="delete" 
+                sx={{ backgroundColor: '#673ab7', color: 'White' }} 
+                size='large'
+                data-testid={'shareIconBtn'}>
                     <ShareIcon />
                 </IconButton>
             </RWebShare>
