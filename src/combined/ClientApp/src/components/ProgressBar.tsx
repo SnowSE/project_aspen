@@ -32,7 +32,7 @@ export default function ProgressBar() {
 
     return (
         <Box sx={{ width: '50%' }}>
-            <LinearProgressWithLabel value={progress} />
+            <LinearProgressWithLabel value={progress} data-testid={"homePageProgressBar"} />
         </Box>
     );
 }

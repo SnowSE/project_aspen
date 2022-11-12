@@ -23,8 +23,15 @@ export default function TeamInfoModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Learn More About Teams</Button>
+      <Button 
+            onClick={handleOpen}
+            id={'teamModalBtn'}
+            data-testid={'teamModalBtn'}>
+                Learn More About Teams
+        </Button>
       <Modal
+        id={'homePageTeamInfoModal'}
+        data-testid={'homePageTeamInfoModal'}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -38,7 +45,13 @@ export default function TeamInfoModal() {
             This is more info about what teams are
             </Typography>
             <Box sx={{mt:2}}>
-                <Button fullWidth onClick={handleClose}>CLOSE</Button>
+                <Button 
+                    fullWidth 
+                    onClick={handleClose}
+                    id={'closeBtn'}
+                    data-testid={'closeBtn'}>
+                        CLOSE
+                </Button>
             </Box>
         </Box>
 
