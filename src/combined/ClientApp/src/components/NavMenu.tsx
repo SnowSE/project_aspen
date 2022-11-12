@@ -26,7 +26,7 @@ const NavMenu = () => {
                 main: deepPurple[500],
             },
             secondary: {
-                main: '#f44336',
+                main: '#ff9800',
             },
         },
     });
@@ -36,6 +36,7 @@ const NavMenu = () => {
     text-decoration: none;
     margin: 1rem;
     position: relative;
+    hover: Orange;
     `;
 
     const loginHandler = () => {
@@ -47,10 +48,12 @@ const NavMenu = () => {
 
     return (
         <ThemeProvider theme={purpleTheme}>
-            <AppBar position="static">
+            <AppBar position="fixed">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
+                            component="a"
+                            href="https://sanpetepantry.org/"
                             variant="h6"
                             align = 'center'
                             noWrap
@@ -62,6 +65,7 @@ const NavMenu = () => {
                                 letterSpacing: '.2rem',
                                 color: 'white',
                                 textDecoration: 'none',
+                                "&:Hover": {color: "orange" }
                             }}
                         >
                             SanPete Food Bank

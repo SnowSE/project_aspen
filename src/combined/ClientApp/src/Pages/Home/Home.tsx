@@ -7,12 +7,14 @@ import {Box,
         Grid,} from '@mui/material';
 import ReactPlayer from 'react-player';
 
-import Share from '../../components/Share';
+import Share from '../../components/SharingIcon';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/TeamInfoModal';
+import SharingIcon from '../../components/SharingIcon';
+import SharingButton from '../../components/SharingButton';
 
 
 
@@ -20,18 +22,20 @@ export function Home() {
 
     const navigate = useNavigate();
     return (
-        <Box>
+        <Box sx={{ pt: '4rem'} }>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
-                <Box sx={{display:'flex', justifyContent:'center'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
-                    <Box sx={{display:'flex', justifyContent:'end'}}>
-                        <Button 
+                    <Box sx={{display:'flex', justifyContent:'flex-end', alignItems: 'center'}}>
+                        {/*<Button 
                             onClick={() => navigate('/Login')} 
                             variant='contained' 
                             sx={{backgroundColor:'orange'}}>
                             SIGN IN
                         </Button>
-                        <Share data-testid={"shareBtn"}/>
+                        Render me later
+                        */} 
+                        <SharingIcon data-testid={"shareBtn"}/>
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -47,7 +51,7 @@ export function Home() {
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <ProgressBar />
                 </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Button 
                             data-testid={'donateBtn'}
                             onClick={() => navigate('/Donate')} 
@@ -55,17 +59,18 @@ export function Home() {
                             sx={{ backgroundColor: 'orange', m: 2 }}>
                             DONATE MEALS
                         </Button>
-                        <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>SHARE NOW</Button>
+                        <SharingButton />
                     </Box>
-            </Paper>
 
+            </Paper>
+            <Paper square={true} sx={{ backgroundColor: '#eeeeee' }}>
             <Box sx={{display:'flex', justifyContent:'center'}}>
                 <Typography variant='h6' sx={{fontSize: 20}}>
                     2 Is Better Than 1
                 </Typography>
             </Box>
             <Box sx={{display:'flex', justifyContent:'center'}}>
-                <Typography sx={{fontSize: 15}} paragraph={true}>
+                    <Typography sx={{ fontSize: 15, mx: 'auto', pl: 2 }} paragraph={true} >
                     Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most meals can win some aswesome prizes!
                 </Typography>
             </Box>
@@ -77,7 +82,9 @@ export function Home() {
                     <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>JOIN A TEAM</Button>
                     <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}>CREATE A TEAM</Button>
                 </Box>
-            </Box>
+                </Box>
+            </Paper>
+            
 
         </Box>
     );
