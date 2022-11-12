@@ -39,7 +39,8 @@ export function Home() {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <iframe 
+                    <iframe
+                            data-testid={"homePageVideo"} id={"homePageVideo"}
                             src="https://www.youtube.com/embed/wkFlIx9sV04" 
                             title="YouTube video player" 
                             frameBorder="0" 
@@ -49,11 +50,12 @@ export function Home() {
                         allowFullScreen />
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <ProgressBar />
+                    <ProgressBar/>
                 </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Button 
-                            data-testid={'donateBtn'}
+                            data-testid="donateMealsBtn"
+                            id={"donateMealsBtn"}
                             onClick={() => navigate('/Donate')} 
                             variant='contained' 
                             sx={{ backgroundColor: 'orange', m: 2 }}>
@@ -79,8 +81,16 @@ export function Home() {
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}>JOIN A TEAM</Button>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}>CREATE A TEAM</Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}                            
+                        data-testid={'joinATeamBtn'}
+                        id={"joinATeamBtn"}>
+                            JOIN A TEAM
+                    </Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}
+                        data-testid={'createATeamBtn'}
+                        id={"createATeamBtn"}>
+                            CREATE A TEAM
+                    </Button>
                 </Box>
                 </Box>
             </Paper>
