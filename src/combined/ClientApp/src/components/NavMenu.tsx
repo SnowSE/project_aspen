@@ -14,11 +14,14 @@ import { authService } from '../services/authService';
 const NavMenu = () => {
 
     const pages = [
-        { text: 'Home', href: '/' },
-        { text: 'Swagger', href: `/swagger` },
-        { text: 'Counter', href: '/counter' },
-        { text: 'Fetch Data', href: '/fetch-data' }
+        { text: 'Home', href: '/' }
     ]
+
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        pages.push({ text: 'Swagger', href: `/swagger` });
+        pages.push({ text: 'Counter', href: '/counter' });
+        pages.push({ text: 'Fetch Data', href: '/fetch-data' });
+    }
 
     const purpleTheme = createTheme({
         palette: {
