@@ -1,10 +1,11 @@
 ﻿import { RWebShare } from "react-web-share";
 import ShareIcon from '@mui/icons-material/Share';
 import {
+    Button,
     IconButton
 } from '@mui/material';
 
-const Share = () => {
+const SharingButton = () => {
     const shareUrl = window.location.href;
     return (
         <div>
@@ -17,12 +18,10 @@ const Share = () => {
                 }}
                 onClick={() => console.log("shared successfully!")}
             >
-                <IconButton aria-label="delete" sx={{ backgroundColor: '#673ab7', color: 'White' }} size='large'>
-                    <ShareIcon />
-                </IconButton>
+                <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>SHARE NOW</Button>
             </RWebShare>
         </div>
     );
 };
 
-export default Share;
+export default SharingButton;

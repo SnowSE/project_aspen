@@ -1,6 +1,5 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 
-
 const authUrl = process.env.REACT_APP_AUTH_URL
 
 const userManager = new UserManager({
@@ -8,8 +7,8 @@ const userManager = new UserManager({
   authority:
     `${authUrl}/realms/aspen/.well-known/openid-configuration`,
   client_id: "aspen-web",
-  redirect_uri: window.location.origin + "/landing",
-  post_logout_redirect_uri: window.location.origin + "/",
+  redirect_uri: window.location.origin + "/aspen/new/landing",
+  post_logout_redirect_uri: window.location.origin + "/aspen/new/",
   silent_redirect_uri: window.location.origin + "/login",
   response_type: "code",
   scope: "openid profile email",
