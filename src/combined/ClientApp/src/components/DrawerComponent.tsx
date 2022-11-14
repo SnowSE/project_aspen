@@ -36,7 +36,7 @@ function DrawerComponent() {
                     {pages.map((page) => (
                         <List >
                         <ListItem>
-                            <ListItemButton>
+                                <ListItemButton onClick={() => setOpenDrawer(false) }>
                                 <LinkStyle
                                     to={page.href}
                                     key={page.text}
