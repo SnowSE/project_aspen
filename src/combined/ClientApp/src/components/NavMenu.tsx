@@ -16,18 +16,14 @@ const NavMenu = () => {
     const [isAdmin, setIsAdmin] = useState(false)
 
     const pages = [
-        { text: 'Home', href: '/' },
-        { text: 'Swagger', href: `/swagger` },
-        { text: 'Counter', href: '/counter' },
-        { text: 'Fetch Data', href: '/fetch-data' }, 
-        { text: 'Add Event', href: '/EventPage'}
-        { text: 'Home', href: '/' }
+        
     ]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         pages.push({ text: 'Swagger', href: `/swagger` });
         pages.push({ text: 'Counter', href: '/counter' });
         pages.push({ text: 'Fetch Data', href: '/fetch-data' });
+        pages.push({ text: 'Add Event', href: '/EventPage'})
     }
 
     const purpleTheme = createTheme({
