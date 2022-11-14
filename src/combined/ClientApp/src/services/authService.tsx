@@ -1,6 +1,5 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 
-
 const authUrl = process.env.REACT_APP_AUTH_URL
 
 const userManager = new UserManager({

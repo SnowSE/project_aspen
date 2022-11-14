@@ -9,15 +9,18 @@ import styled from '@emotion/styled';
 import ReactDOM from 'react-dom';
 import { deepPurple, purple } from '@mui/material/colors';
 import { authService } from '../services/authService';
+import { useEffect, useState } from 'react';
 
 
 const NavMenu = () => {
+    const [isAdmin, setIsAdmin] = useState(false)
 
     const pages = [
         { text: 'Home', href: '/' },
         { text: 'Swagger', href: `/swagger` },
         { text: 'Counter', href: '/counter' },
-        { text: 'Fetch Data', href: '/fetch-data' }
+        { text: 'Fetch Data', href: '/fetch-data' }, 
+        { text: 'Add Event', href: '/EventPage'}
     ]
 
     const purpleTheme = createTheme({
@@ -30,6 +33,7 @@ const NavMenu = () => {
             },
         },
     });
+
 
     const LinkStyle = styled(Link)`
     color: White;
@@ -44,6 +48,35 @@ const NavMenu = () => {
     const logoutHandler = () => {
         authService.logout()
     }
+
+    const adminPages = (value:any) => {
+        if(isAdmin == false && value.key == "Add Event"){
+            console.log("value is: ", value)
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
+    useEffect(() => {
+        async function currentUser() {
+            var user = await authService.getUser()
+            console.log("user roles:", user?.profile.roles)
+            user?.profile.roles.forEach((role:string)=> {
+                console.log(role)
+                if(role.includes("admin")){
+                    console.log("here")
+                    setIsAdmin(true)
+
+                }
+                else{
+                    setIsAdmin(false)
+                }
+            });
+        }
+        currentUser()
+    },[])
 
     return (
         <ThemeProvider theme={purpleTheme}>
@@ -74,12 +107,13 @@ const NavMenu = () => {
                                 >
                                     {page.text}
                                 </LinkStyle>
-                            ))}
+                            )).filter(adminPages)}
                         </Box>
                         {localStorage.getItem("LoggedInUser") == "" ? <Button onClick={loginHandler} variant = 'contained' sx = {{backgroundColor:'orange'}}>Login</Button>: <> <Button onClick={logoutHandler} variant = 'contained' sx = {{backgroundColor:'orange'}}>Logout</Button><h5>   Logged In As: {localStorage.getItem("LoggedInUser")}</h5> </>}
                     </Toolbar>
                 </Container>
             </AppBar>
+            {isAdmin ? <Button>I am admin</Button> : <Button>I am not admin</Button>}
         </ThemeProvider>
     );
 };
