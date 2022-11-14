@@ -86,7 +86,7 @@ export function Home() {
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}                            
+                    <Button onClick={() => navigate('\TeamsListPage')} variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}                            
                         data-testid={'joinATeamBtn'}
                         id={"joinATeamBtn"}>
                             JOIN A TEAM
