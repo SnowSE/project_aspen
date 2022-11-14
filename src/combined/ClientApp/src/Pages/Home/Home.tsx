@@ -1,10 +1,12 @@
 import React, { Component, useEffect } from 'react';
-import {Box, 
-        Button, 
-        Typography, 
-        Paper, 
-        Link,
-        Grid,} from '@mui/material';
+import {
+    Box,
+    Button,
+    Typography,
+    Paper,
+    Link,
+    Grid,
+} from '@mui/material';
 import ReactPlayer from 'react-player';
 
 import Share from '../../components/SharingIcon';
@@ -17,8 +19,11 @@ import SharingIcon from '../../components/SharingIcon';
 import SharingButton from '../../components/SharingButton';
 
 
-
 export function Home() {
+
+
+
+  
 
     const navigate = useNavigate();
     return (
@@ -77,7 +82,7 @@ export function Home() {
                 </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TeamInfoModal/>
+                <TeamInfoModal />
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
