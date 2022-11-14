@@ -17,8 +17,8 @@ const NavMenu = () => {
     const [isAdmin, setIsAdmin] = useState(false)
 
     const pages = [
-        { text: 'Home', href: '/' }
-        { text: 'Add Event', href: '/EventPage'}
+        { text: 'Home', href: '/' },
+        { text: 'Add Event', href: '/createEvent'}
 
     ]
 
@@ -26,7 +26,6 @@ const NavMenu = () => {
         pages.push({ text: 'Swagger', href: `/swagger` });
         pages.push({ text: 'Counter', href: '/counter' });
         pages.push({ text: 'Fetch Data', href: '/fetch-data' });
-        pages.push({ text: 'Add Event', href: '/createEvent'})
     }
 
 
@@ -131,7 +130,6 @@ const NavMenu = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            {isAdmin ? <Button>I am admin</Button> : <Button>I am not admin</Button>}
         </ThemeProvider>
     );
 };
