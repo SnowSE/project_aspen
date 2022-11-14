@@ -16,14 +16,15 @@ const NavMenu = () => {
     const [isAdmin, setIsAdmin] = useState(false)
 
     const pages = [
-        
+        // { text: 'Add Event', href: '/EventPage'}
+
     ]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         pages.push({ text: 'Swagger', href: `/swagger` });
         pages.push({ text: 'Counter', href: '/counter' });
         pages.push({ text: 'Fetch Data', href: '/fetch-data' });
-        pages.push({ text: 'Add Event', href: '/EventPage'})
+        pages.push({ text: 'Add Event', href: '/createEvent'})
     }
 
     const purpleTheme = createTheme({

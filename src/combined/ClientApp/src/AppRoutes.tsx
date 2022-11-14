@@ -1,6 +1,7 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Swagger } from "./components/Swagger";
+import CreateEventPage from "./Pages/CreateEventPage";
 import CreateTeamPage from "./Pages/CreateTeamPage";
 import { DonationPage } from "./Pages/DonationPage/DonationPage";
 import { Home } from "./Pages/Home/Home";
@@ -36,6 +37,10 @@ const AppRoutes = [
         path: `/createteam`,
         element: <CreateTeamPage />
     },
+    {
+        path:'/createEvent', 
+        element: <CreateEventPage/>
+    }
 ];
 
 export default AppRoutes;

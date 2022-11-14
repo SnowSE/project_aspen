@@ -10,6 +10,8 @@ const queryClient = getQueryClient();
 export const EventsHooks = {
   useEventsQuery: () =>
     useQuery(["eventsList"], EventsService.GetEventsViaAxios),
+  addEventsQuery: async (newEvent:AspenEvent) => 
+    useQuery(["addEvent", newEvent],  await EventsService.CreateEventViaAxios(newEvent)),
   useEventUpdateMutation: (id: number) =>
     useMutation(
       async (e: AspenEvent) => {
@@ -17,7 +19,7 @@ export const EventsHooks = {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(["eventById", id]);
+          queryClient.invalidateQueries(["addEvent"]);
           queryClient.invalidateQueries(["eventsList"]);
         },
       }
