@@ -23,7 +23,8 @@ export function Home() {
 
 
 
-  
+    console.log("window.location.origin is: ", window.location.origin)
+
 
     const navigate = useNavigate();
     return (
