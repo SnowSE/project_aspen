@@ -1,13 +1,41 @@
-name: Deploy Staging
+name: Test & Deploy (Staging)
 on:
+  pull_request:
   push:
     branches:
       - master
   workflow_dispatch:
     
 jobs:
-  deloy-staging:
+  run-tests:
     runs-on: self-hosted
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2.4.0
+
+      - name: build and test
+        run: |
+          cd ops/testing
+          DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+          docker-compose up -d
+          docker-compose exec -T api_test dotnet test api-tests
+          # docker-compose exec -T web_test npm run ops:test
+          # docker-compose exec -T web_test npm run ops:lint 
+
+  teardown-tests:
+    runs-on: self-hosted
+    if: ${{ always() }}
+    needs: [run-tests]
+    steps:
+      - name: teardown
+        run: |
+          cd ops/testing
+          docker-compose down
+
+  deploy-staging:
+    runs-on: self-hosted
+    needs: [run-tests]
+    if: github.event_name != 'pull_request'
     steps:
       - name: checkout repo
         uses: actions/checkout@v2

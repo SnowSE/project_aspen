@@ -1,5 +1,6 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
+import { Swagger } from "./components/Swagger";
 import CreateTeamPage from "./Pages/CreateTeamPage";
 import { DonationPage } from "./Pages/DonationPage/DonationPage";
 import { TeamsListPage } from "./components/TeamsListPage";
@@ -15,6 +16,10 @@ const AppRoutes = [
     {
         path: `/counter`,
         element: <Counter />
+    },
+    {
+        path: `/swagger`,
+        element: <Swagger />
     },
     {
         path: `/fetch-data`,
