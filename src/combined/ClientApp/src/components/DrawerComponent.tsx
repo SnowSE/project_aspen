@@ -26,36 +26,54 @@ const LinkStyle = styled(Link)`
 function DrawerComponent() {
     const [openDrawer, setOpenDrawer] = useState(false);
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Drawer
-                open={openDrawer}
-                onClose={() => setOpenDrawer(false)}
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Drawer
+                    open={openDrawer}
+                    onClose={() => setOpenDrawer(false)}
                 
-            >
-                <Box sx={{ backgroundColor: '#673ab7', flexGrow: 1, display: { md: 'flex' } }}>
-                    {pages.map((page) => (
-                        <List >
-                        <ListItem>
-                                <ListItemButton onClick={() => setOpenDrawer(false) }>
-                                <LinkStyle
-                                    to={page.href}
-                                    key={page.text}
-                                >
-                                    {page.text}
-                                </LinkStyle>
-                                </ListItemButton>
-                        </ListItem>
-                    </List>
-                    ))}
+                >
+                    <Box sx={{ backgroundColor: '#673ab7', flexGrow: 1, display: { md: 'flex' } }}>
+                        {pages.map((page) => (
+                            <List >
+                            <ListItem>
+                                    <ListItemButton onClick={() => setOpenDrawer(false) }>
+                                    <LinkStyle
+                                        to={page.href}
+                                        key={page.text}
+                                    >
+                                        {page.text}
+                                    </LinkStyle>
+                                    </ListItemButton>
+                                </ListItem>
+
+                        </List>
+                        ))}
+                    </Box>
+                </Drawer>
+                <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
+                    <MenuIcon sx={{color:"white"} } />
+                </IconButton>
+                <Box>
+                    <Typography
+                        component="a"
+                        href="https://sanpetepantry.org/"
+                        variant="h6"
+                        align='center'
+                        noWrap
+                        sx={{
+                            mr: 2,
+                            display: {md: 'flex' },
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.2rem',
+                            color: 'white',
+                            textDecoration: 'none',
+                            "&:Hover": { color: "orange" }
+                        }}>
+                        SanPete Food Bank
+                    </Typography>
                 </Box>
-            </Drawer>
-            <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
-                <MenuIcon sx={{color:"white"} } />
-            </IconButton>
-            <Box>
-                SanPete Food Pantry
             </Box>
-        </Box>
     );
 }
 export default DrawerComponent;

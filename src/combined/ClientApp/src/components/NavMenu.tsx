@@ -51,7 +51,7 @@ const NavMenu = () => {
         authService.logout()
     }
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
     return (
         <ThemeProvider theme={purpleTheme}>
