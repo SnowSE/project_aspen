@@ -13,7 +13,7 @@ const config = {
 export const EventsService = {
 
     GetEventsViaAxios: async (): Promise<AspenEvent[]> => {
-        const res = await axios.get(`${BaseUrl}api/events`);
+        const res = await axios.get(`${BaseUrl}/api/events`);
         return res.data;
       },
     CreateEventViaAxios: async (newEvent:AspenEvent): Promise<any> => {

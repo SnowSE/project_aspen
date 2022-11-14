@@ -31,13 +31,14 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event:React.FormEvent) => {
         event.preventDefault()
-        console.log(process.env.REACT_APP_BASE_URL)
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "api/User"
-        var eventsUrl =      process.env.REACT_APP_BASE_URL + "api/events"
-
+        console.log("BASE URL IS:", process.env.REACT_APP_BASE_URL)
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
+        var eventsUrl =      process.env.REACT_APP_BASE_URL + "/api/events"
+        console.log(currentUserUrl)
         const currentUser = await axios.get(currentUserUrl, config)
         const keycloakUser = await authService.getUser();
         const events = await EventsService.GetEventsViaAxios()
+         
         console.log("current user is: ", currentUser)
         console.log("keycloak user is: ", keycloakUser?.profile.roles)
         
@@ -51,7 +52,8 @@ const CreateTeamForm = () => {
             donationTarget: donationGoal
         }
 
-        var teamUrl = process.env.REACT_APP_BASE_URL + "api/teams"
+        var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
+
         const res = await axios.post(teamUrl, newTeam, config)
         .then((response)=> {})
         .catch((error)=> {console.log(error.response.data)})
