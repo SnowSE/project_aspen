@@ -32,6 +32,7 @@ public class TeamControllerTest
         dtoTeam.ID.Should().NotBe(0);
         dtoTeam.Description.Should().Be("George");
         dtoTeam.Name.Should().Be("New Team!");
+        dtoTeam.IsPublic.Should().BeTrue();
         dtoTeam.DonationTarget.Should().Be(500);
     }
 
