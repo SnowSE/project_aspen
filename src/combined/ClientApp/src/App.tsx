@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import NavMenu from './components/NavMenu';
 import './custom.css';
 
+
 const root = process.env.PUBLIC_URL
 if (!root) {
     throw "PUBLIC_URL is undefined";
@@ -14,7 +15,8 @@ export const EventContext = React.createContext('56');
 
 function App() {
 
-    const [eventID, setEventID] = React.useState('0');
+    const [eventID, setEventID] = React.useState<Event>();
+    
     const currentEventInit = async () => {
         console.log("got here")
         var temp = await fetch(`${root}/api/events`);
@@ -23,6 +25,13 @@ function App() {
             (max: number, temp2: { id: number; }) => (temp2.id > max ? temp2.id : max),
             temp2[0].id
         );
+        var newEvent = new DtoEvent
+        {
+            Description = "Marathon1",
+                Title = "Marathon at Snow",
+                Location = "Snow",
+                MainImage = "Snow.jpg"
+        };
         setEventID(maxId.toString());
         
     }
