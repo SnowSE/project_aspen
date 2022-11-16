@@ -10,6 +10,8 @@ public class Team
     public Person Owner { get; init; }
     public long EventID { get; init; }
     public Event Event { get; init; }
+
+    public bool IsPublic { get; init; }
     public decimal DonationTarget { get; init; }
 }
 
@@ -27,6 +29,7 @@ public static class TeamExtensions
             Owner = currentTeam.Owner,
             EventID = newEventId,
             Event = currentTeam.Event,
+            IsPublic = currentTeam.IsPublic,
             DonationTarget = currentTeam.DonationTarget
         };
     }
@@ -43,6 +46,7 @@ public static class TeamExtensions
             Owner = currentTeam.Owner,
             EventID = currentTeam.ID,
             Event = currentTeam.Event,
+            IsPublic = currentTeam.IsPublic,
             DonationTarget = donationTarget
         };
     }

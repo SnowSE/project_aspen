@@ -1,8 +1,9 @@
 export type AspenEvent = {
-    id:number; 
+    id?: number;
+    date:Date;
     title:string;
     location:string;
     description:string;
     mainImage:string;
-    donationTarget:string;
+    donationTarget:number;
 };
