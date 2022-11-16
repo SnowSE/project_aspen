@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import styled from '@emotion/styled';
 import ReactDOM from 'react-dom';
 import { deepPurple, purple } from '@mui/material/colors';
-import { authService } from '../services/authService';
+import { authService } from '../../services/authService'; 
 
 
 const NavMenu = () => {

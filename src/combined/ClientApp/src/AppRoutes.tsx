@@ -1,9 +1,9 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import CreateTeamPage from "./Pages/CreateTeamPage";
-import { DonationPage } from "./Pages/DonationPage/DonationPage";
+import CreateTeamPage from "./Pages/CreateTeam/CreateTeamPage";
+import { DonationPage } from "./Pages/Donation/DonationPage";
 import { Home } from "./Pages/Home/Home";
-import LoginLanding from "./Pages/LoginLanding";
+import LoginLanding from "./Pages/Login/LoginLanding";
 
 const AppRoutes = [
     {
