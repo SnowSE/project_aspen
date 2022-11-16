@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useContext } from 'react';
 import {
     Box,
     Button,
@@ -10,6 +10,7 @@ import {
 import ReactPlayer from 'react-player';
 
 import Share from '../../components/SharingIcon';
+import { EventContext }  from '../../App';
 import { DonationPage } from '../DonationPage/DonationPage';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
@@ -27,8 +28,13 @@ export function Home() {
 
 
     const navigate = useNavigate();
+    const eventid = useContext(EventContext);
     return (
+
         <Box sx={{ pt: '4rem'} }>
+                        <div>
+                                EventContext
+                        </div>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
