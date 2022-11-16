@@ -6,14 +6,17 @@ export default class Team {
   ownerID: number;
   eventID: number;
   donationTarget: number;
+  isPublic: boolean;
   constructor(
     name: string,
     description: string,
     mainImage: string,
     owenerId: number,
     eventId: number,
-    id?: number,
-    donationTarget: number
+    id: number,
+    donationTarget: number,
+    isPublic: boolean,
+
   ) {
     this.id = id ?? -1;
     this.name = name;
@@ -22,5 +25,6 @@ export default class Team {
     this.ownerID = owenerId;
     this.eventID = eventId;
     this.donationTarget = donationTarget;
+    this.isPublic = isPublic;
   }
 }

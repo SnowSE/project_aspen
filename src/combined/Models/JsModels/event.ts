@@ -3,22 +3,22 @@ export default class EventModel {
   title: string;
   location: string;
   description: string;
-  primaryImageUrl: string;
+  mainImage: string;
   donationTarget: number;
   id: number = -1;
   constructor(
-    date?: Date,
-    location?: string,
-    description?: string,
-    primaryImageUrl?: string,
-    title?: string,
+    date: Date,
+    location: string,
+    description: string,
+    mainImage: string,
+    title: string,
     donationTarget?: number
   ) {
     this.date = date ?? new Date();
     this.title = title ?? "";
     this.location = location ?? "";
     this.description = description ?? "";
-    this.primaryImageUrl = primaryImageUrl ?? "";
+    this.mainImage = mainImage ?? "";
     this.title = title ?? '';
     this.donationTarget = donationTarget ?? 0;
   }
