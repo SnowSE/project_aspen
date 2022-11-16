@@ -101,7 +101,7 @@ export function Home() {
                 </Box>
             </Paper>
             
-
+            
         </Box>
     );
 }

@@ -48,7 +48,7 @@ const CreateTeamForm = () => {
             description: teamDescription, 
             mainImage: image, 
             ownerID: Number(currentUser.data.id), 
-            eventID: events[0].id,
+            eventID: events[0].id!,
             donationTarget: donationGoal
         }
 
