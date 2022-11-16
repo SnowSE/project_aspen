@@ -1,12 +1,16 @@
+﻿import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import CreateEventForm from "../components/CreateEventForm";
 import { authService } from "../services/authService";
 
 
-
-const CreateEventPage = () => {
+const LoginButton = () => {
     const [isAdmin, setIsAdmin] = useState(false)
-
+    const loginHandler = () => {
+        authService.signinRedirect();
+    }
+    const logoutHandler = () => {
+        authService.logout()
+    }
 
     useEffect(() => {
         async function currentUser() {
@@ -27,11 +31,12 @@ const CreateEventPage = () => {
         currentUser()
     }, [])
 
+
     return (
-        <div>
-            {isAdmin ? <CreateEventForm/>: <h1>No</h1>}
-        </div>
+        <Box sx={{color: "white"} }>
+            {localStorage.getItem("LoggedInUser") == "" ? <Button onClick={loginHandler} variant='contained' sx={{ backgroundColor: 'orange', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Login</Button> : <> <Button onClick={logoutHandler} variant='contained' sx={{ backgroundColor: 'orange' }}>Logout</Button><h5>   Logged In As: {localStorage.getItem("LoggedInUser")}</h5> </>}
+        </Box>
     );
 }
 
-export default CreateEventPage;
+export default LoginButton;

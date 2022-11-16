@@ -10,7 +10,7 @@ const CreateTeamPage = () => {
 
 
     return (
-        <Box data-testid="createATeamPage">
+        <Box data-testid="createATeamPage" >
             <h1>Create team here</h1>
             <CreateTeamForm />
         </Box>
