@@ -1,10 +1,12 @@
 import React, { Component, useEffect } from 'react';
-import {Box, 
-        Button, 
-        Typography, 
-        Paper, 
-        Link,
-        Grid,} from '@mui/material';
+import {
+    Box,
+    Button,
+    Typography,
+    Paper,
+    Link,
+    Grid,
+} from '@mui/material';
 import ReactPlayer from 'react-player';
 
 import { DonationPage } from '../Donation/DonationPage';
@@ -16,8 +18,12 @@ import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
 
 
-
 export function Home() {
+
+
+
+    console.log("window.location.origin is: ", window.location.origin)
+
 
     const navigate = useNavigate();
     return (
@@ -76,11 +82,11 @@ export function Home() {
                 </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TeamInfoModal/>
+                <TeamInfoModal />
             </Box>
             <Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}                            
+                    <Button onClick={() => navigate('\TeamsListPage')} variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}                            
                         data-testid={'joinATeamBtn'}
                         id={"joinATeamBtn"}>
                             JOIN A TEAM
@@ -94,7 +100,7 @@ export function Home() {
                 </Box>
             </Paper>
             
-
+            
         </Box>
     );
 }

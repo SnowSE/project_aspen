@@ -2,6 +2,8 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import { EventsService } from "../services/Events/EventsService";
+import { authService } from "../services/authService";
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
@@ -29,23 +31,29 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event:React.FormEvent) => {
         event.preventDefault()
-        console.log(process.env.REACT_APP_BASE_URL)
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "api/User"
-        var eventsUrl =      process.env.REACT_APP_BASE_URL + "api/events"
-
+        console.log("BASE URL IS:", process.env.REACT_APP_BASE_URL)
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
+        var eventsUrl =      process.env.REACT_APP_BASE_URL + "/api/events"
+        console.log(currentUserUrl)
         const currentUser = await axios.get(currentUserUrl, config)
-        const events = await axios.get(eventsUrl)
-
+        const keycloakUser = await authService.getUser();
+        const events = await EventsService.GetEventsViaAxios()
+         
+        console.log("current user is: ", currentUser)
+        console.log("keycloak user is: ", keycloakUser?.profile.roles)
+        
+        
         let newTeam:team = {
             name: teamName,
             description: teamDescription, 
             mainImage: image, 
             ownerID: Number(currentUser.data.id), 
-            eventID: events.data[0].id,
+            eventID: events[0].id!,
             donationTarget: donationGoal
         }
 
-        var teamUrl = process.env.REACT_APP_BASE_URL + "api/teams"
+        var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
+
         const res = await axios.post(teamUrl, newTeam, config)
         .then((response)=> {})
         .catch((error)=> {console.log(error.response.data)})

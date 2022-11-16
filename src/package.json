@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "react-hot-toast": "^2.4.0",
-    "react-player": "^2.11.0"
+    "react-query": "^3.39.2"
   }
 }
