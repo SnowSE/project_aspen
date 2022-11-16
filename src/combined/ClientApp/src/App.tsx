@@ -6,6 +6,7 @@ import NavMenu from './components/NavMenu';
 import './custom.css';
 
 
+
 const root = process.env.PUBLIC_URL
 if (!root) {
     throw "PUBLIC_URL is undefined";
@@ -25,12 +26,12 @@ function App() {
             (max: number, temp2: { id: number; }) => (temp2.id > max ? temp2.id : max),
             temp2[0].id
         );
-        var newEvent = new DtoEvent
+        var newEvent = new Event
         {
-            Description = "Marathon1",
-                Title = "Marathon at Snow",
-                Location = "Snow",
-                MainImage = "Snow.jpg"
+            (Description = temp2[maxId].description),
+              (Title = temp2[maxId].title),
+              (Location = "Snow"),
+              (MainImage = "Snow.jpg");
         };
         setEventID(maxId.toString());
         
