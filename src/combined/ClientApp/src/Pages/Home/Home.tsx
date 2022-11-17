@@ -26,13 +26,12 @@ export function Home() {
 
 
     const navigate = useNavigate();
-    const eventid = useContext(EventContext);
+    const currentEvent = useContext(EventContext);
+
     return (
 
         <Box sx={{ pt: '4rem'} }>
-                        <div>
-                                EventContext
-                        </div>
+
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>

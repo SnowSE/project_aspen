@@ -1,11 +1,11 @@
 export default class Donation {
-  id: number;
+  id?: number;
   eventID: number;
   teamID?: number;
   personID?: number;
   date: string;
   amount: number;
-  isPledge: boolean;
+  isPending: boolean;
 
   constructor(
     eventID: number,
@@ -19,7 +19,7 @@ export default class Donation {
     this.personID = personID ?? undefined;
     this.date = date;
     this.amount = amount;
-    this.isPledge = false;
+    this.isPending = false;
     this.id = undefined;
   }
 }

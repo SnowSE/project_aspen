@@ -4,7 +4,7 @@ import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import NavMenu from './components/NavMenu';
 import './custom.css';
-import Event from '../../Models/JsModels/event'
+import Event from '../src/JsModels/event'
 
 
 
@@ -23,19 +23,14 @@ function App() {
         console.log("got here")
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
-        const maxEventId = allEventsJson.reduce(
-            (max: number, allEventsJson: { id: number; }) => (allEventsJson.id > max ? allEventsJson.id : max),
-            allEventsJson[0].id
-        );
-        
         var latestEvent = new Event(
-            allEventsJson[maxEventId].date,
-            allEventsJson[maxEventId].location,
-            allEventsJson[maxEventId].description,
-            allEventsJson[maxEventId].mainImage,
-            allEventsJson[maxEventId].title,
-            allEventsJson[maxEventId].donationTaget,
-            allEventsJson[maxEventId].id,
+            allEventsJson.at(-1).date,
+            allEventsJson.at(-1).location,
+            allEventsJson.at(-1).description,
+            allEventsJson.at(-1).mainimage,
+            allEventsJson.at(-1).title,
+            allEventsJson.at(-1).donationtaget,
+            allEventsJson.at(-1).id,
         );
         setLatestEvent(latestEvent);
         
