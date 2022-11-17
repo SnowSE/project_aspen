@@ -5,14 +5,15 @@ export default class EventModel {
   description: string;
   mainImage: string;
   donationTarget: number;
-  id: number = -1;
+  id: number;
   constructor(
     date: Date,
     location: string,
     description: string,
     mainImage: string,
     title: string,
-    donationTarget?: number
+      donationTarget: number,
+    id: number
   ) {
     this.date = date ?? new Date();
     this.title = title ?? "";
@@ -21,5 +22,6 @@ export default class EventModel {
     this.mainImage = mainImage ?? "";
     this.title = title ?? '';
     this.donationTarget = donationTarget ?? 0;
+    this.id = id ?? - 1;
   }
 }

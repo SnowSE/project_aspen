@@ -4,6 +4,7 @@ import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import NavMenu from './components/NavMenu';
 import './custom.css';
+import Event from '../../Models/JsModels/event'
 
 
 
@@ -12,28 +13,31 @@ if (!root) {
     throw "PUBLIC_URL is undefined";
 }
 
-export const EventContext = React.createContext('56');
+export const EventContext = React.createContext({} as any);
 
 function App() {
 
-    const [eventID, setEventID] = React.useState<Event>();
+    const [latestEvent, setLatestEvent] = React.useState<Event>();
     
     const currentEventInit = async () => {
         console.log("got here")
-        var temp = await fetch(`${root}/api/events`);
-        var temp2 = await temp.json();
-        const maxId = temp2.reduce(
-            (max: number, temp2: { id: number; }) => (temp2.id > max ? temp2.id : max),
-            temp2[0].id
+        var allEvents = await fetch(`${root}/api/events`);
+        var allEventsJson = await allEvents.json();
+        const maxEventId = allEventsJson.reduce(
+            (max: number, allEventsJson: { id: number; }) => (allEventsJson.id > max ? allEventsJson.id : max),
+            allEventsJson[0].id
         );
-        var newEvent = new Event
-        {
-            (Description = temp2[maxId].description),
-              (Title = temp2[maxId].title),
-              (Location = "Snow"),
-              (MainImage = "Snow.jpg");
-        };
-        setEventID(maxId.toString());
+        
+        var latestEvent = new Event(
+            allEventsJson[maxEventId].date,
+            allEventsJson[maxEventId].location,
+            allEventsJson[maxEventId].description,
+            allEventsJson[maxEventId].mainImage,
+            allEventsJson[maxEventId].title,
+            allEventsJson[maxEventId].donationTaget,
+            allEventsJson[maxEventId].id,
+        );
+        setLatestEvent(latestEvent);
         
     }
     
@@ -46,18 +50,18 @@ function App() {
 
     }, []); 
     return (
-        <EventContext.Provider value= {eventID} >
+      <EventContext.Provider value={latestEvent}>
         <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
-            <Layout>
-                <Routes>
-                    {AppRoutes.map((route, index) => {
-                        const { element, ...rest } = route;
-                        return <Route key={index} {...rest} element={element} />;
-                    })}
-                </Routes>
-            </Layout>
+          <Layout>
+            <Routes>
+              {AppRoutes.map((route, index) => {
+                const { element, ...rest } = route;
+                return <Route key={index} {...rest} element={element} />;
+              })}
+            </Routes>
+          </Layout>
         </BrowserRouter>
-        </EventContext.Provider>
-    )
+      </EventContext.Provider>
+    );
 }
 export default App;
