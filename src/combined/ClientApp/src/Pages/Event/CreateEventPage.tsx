@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import CreateEventForm from "../components/CreateEventForm";
-import { authService } from "../services/authService";
+import CreateEventForm from "../../components/Event/CreateEventForm";
+import { authService } from "../../services/authService";
 
 
 

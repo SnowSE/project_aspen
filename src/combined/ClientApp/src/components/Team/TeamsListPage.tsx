@@ -1,7 +1,7 @@
 ﻿import { Button, Grid } from '@mui/material';
 import React, { Component, useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import { TeamCard } from './Interfaces';
+import { TeamCard } from '../Interfaces';
 import { getTeamsList } from './TeamServices';
 
 
