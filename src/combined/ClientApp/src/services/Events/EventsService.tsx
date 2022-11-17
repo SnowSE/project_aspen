@@ -17,7 +17,7 @@ export const EventsService = {
         return res.data;
       },
     CreateEventViaAxios: async (newEvent:AspenEvent): Promise<any> => {
-        const res = await axios.post(`${BaseUrl}api/events`, newEvent, config);
+        const res = await axios.post(`${BaseUrl}/api/events`, newEvent, config);
         return res.data;
       }
 };
