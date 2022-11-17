@@ -57,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
   </ItemGroup>
 
