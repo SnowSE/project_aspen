@@ -1,4 +1,4 @@
-﻿import { Box, Button } from "@mui/material";
+﻿import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { authService } from "../services/authService";
 
@@ -34,7 +34,27 @@ const LoginButton = () => {
 
     return (
         <Box sx={{color: "white"} }>
-            {localStorage.getItem("LoggedInUser") == "" ? <Button onClick={loginHandler} variant='contained' sx={{ backgroundColor: 'orange', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Login</Button> : <> <Button onClick={logoutHandler} variant='contained' sx={{ backgroundColor: 'orange' }}>Logout</Button><h5>   Logged In As: {localStorage.getItem("LoggedInUser")}</h5> </>}
+            {localStorage.getItem("LoggedInUser") == "" ?
+                <Button
+                    onClick={loginHandler}
+                    variant='contained'
+                    sx={{ backgroundColor: 'orange', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                >
+                    Login
+                </Button> : <>
+                    <Button
+                        onClick={logoutHandler}
+                        variant='contained'
+                        sx={{ backgroundColor: 'orange' }}
+                    >
+                        Logout
+                    </Button>
+                    <Typography
+                        variant="h6"
+                        
+                    >   Logged In As: {localStorage.getItem("LoggedInUser")}
+                    </Typography> </>
+            }
         </Box>
     );
 }

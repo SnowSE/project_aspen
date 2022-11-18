@@ -99,7 +99,7 @@ const NavMenu = () => {
                             )).filter(adminPages)}
                         </Box>
                         )}
-                        <Box sx={{ alignItems: 'center' }}>
+                        <Box sx={{ alignItems: 'center', display: {xs: 'none', sm: 'flex'} }}>
                             <LoginButton />
                         </Box>
                     </Toolbar>
