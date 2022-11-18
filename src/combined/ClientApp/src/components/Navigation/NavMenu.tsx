@@ -18,7 +18,9 @@ const NavMenu = () => {
 
     const pages = [
         { text: 'Home', href: '/' },
-        { text: 'Add Event', href: '/createEvent'}
+        { text: 'Add Event', href: '/createEvent' },
+        { text: 'Team Details', href: '/TeamDetails' }
+
 
     ]
 

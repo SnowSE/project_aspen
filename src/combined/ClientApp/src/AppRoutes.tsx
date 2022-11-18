@@ -4,9 +4,10 @@ import { Swagger } from "./components/Swagger";
 import CreateEventPage from "./Pages/Event/CreateEventPage";
 import CreateTeamPage from "./Pages/CreateTeam/CreateTeamPage";
 import { DonationPage } from "./Pages/Donation/DonationPage";
-import { TeamsListPage } from "./components/Team/TeamsListPage";
+import { TeamsListPage } from "./components/TeamsInfo/Team/TeamsListPage";
 import { Home } from "./Pages/Home/Home";
 import LoginLanding from "./Pages/Login/LoginLanding";
+import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
 
 const AppRoutes = [
     {
@@ -45,7 +46,12 @@ const AppRoutes = [
     {
         path:'/createEvent', 
         element: <CreateEventPage/>
-    }
+    },
+
+     {
+        path: `/TeamDetails`,
+        element: <TeamDetails />
+    },
 ];
 
 export default AppRoutes;
