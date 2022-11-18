@@ -34,6 +34,7 @@ jobs:
 
   deploy-staging:    
     runs-on: [self-hosted, primary]
+    needs: [run-tests]
     if: github.event_name != 'pull_request'
     steps:
       - name: checkout repo
