@@ -11,7 +11,7 @@ import { deepPurple, purple } from '@mui/material/colors';
 import { authService } from '../../services/authService'; 
 import DrawerComponent from './DrawerComponent';
 import { useEffect, useState } from 'react';
-import LoginButton from './LoginButton';
+import LoginButton from '../LoginButton';
 
 
 const NavMenu = () => {
