@@ -2,6 +2,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
+import { TeamDetails } from './TeamDetails';
 import { getTeamsList } from './TeamServices';
 
 
@@ -32,9 +33,11 @@ export function TeamsListPage() {
                 <Button sx={{ backgroundColor: '#FFF500', m: 2 }} onClick={() => navigate(-1)}>Go back 1 Page</Button>
             </Grid>
             <h1>Existing {teamsList.length} Teams  </h1>
-            {teamsList.map((t:any) => {
+            
+            {teamsList.map((t: any, id) => {
                 return (
-                    <TeamCard
+                    //<TeamDetails t={t} key={id }/>
+                     <TeamCard
                         name={t.name}
                         id={t.id}
                         description={t.description}
@@ -44,7 +47,8 @@ export function TeamsListPage() {
                         eventID={t.eventID}
                         donationTarget={t.donationTarget}
                         key={t.id}
-                    />
+
+                    /> 
 
                 )
             })}        
