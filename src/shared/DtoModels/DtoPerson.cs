@@ -7,6 +7,9 @@ public record DtoPerson
     [SwaggerSchema(ReadOnly = true)]
     public long ID { get; set; }
 
+    /// <summary>
+    /// Email address of keycloak user
+    /// </summary>
     public string AuthID { get; set; }
 
     public string Name { get; set; }
