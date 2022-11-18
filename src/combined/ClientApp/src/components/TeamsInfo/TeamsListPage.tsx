@@ -1,12 +1,8 @@
 ﻿import { Button, Grid } from '@mui/material';
 import React, { Component, useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-<<<<<<<< HEAD:src/combined/ClientApp/src/components/Team/TeamsListPage.tsx
-import { TeamCard } from '../Interfaces';
-========
 import { TeamCard } from './Interfaces';
 import { TeamDetails } from './TeamDetails';
->>>>>>>> master:src/combined/ClientApp/src/components/TeamsInfo/TeamsListPage.tsx
 import { getTeamsList } from './TeamServices';
 
 

@@ -1,4 +1,4 @@
-﻿import { TeamCard } from "../Interfaces";
+﻿import { TeamCard } from "./Interfaces";
 
 export const getTeamsList = async () => {
     const apiUrL = 'https://localhost:44478/aspen/new/api/teams/event/1';
