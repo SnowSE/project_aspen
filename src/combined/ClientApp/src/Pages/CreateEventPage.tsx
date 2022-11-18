@@ -28,7 +28,7 @@ const CreateEventPage = () => {
     }, [])
 
     return (
-        <div style={{ paddingTop: '4em' }}>
+        <div>
             {isAdmin ? <CreateEventForm/>: <h1>No</h1>}
         </div>
     );
