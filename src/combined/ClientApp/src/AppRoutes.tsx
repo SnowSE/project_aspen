@@ -1,12 +1,12 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Swagger } from "./components/Swagger";
-import CreateEventPage from "./Pages/CreateEventPage";
-import CreateTeamPage from "./Pages/CreateTeamPage";
-import { DonationPage } from "./Pages/DonationPage/DonationPage";
+import CreateEventPage from "./Pages/Event/CreateEventPage";
+import CreateTeamPage from "./Pages/CreateTeam/CreateTeamPage";
+import { DonationPage } from "./Pages/Donation/DonationPage";
 import { TeamsListPage } from "./components/TeamsInfo/TeamsListPage";
 import { Home } from "./Pages/Home/Home";
-import LoginLanding from "./Pages/LoginLanding";
+import LoginLanding from "./Pages/Login/LoginLanding";
 import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
 
 const AppRoutes = [
