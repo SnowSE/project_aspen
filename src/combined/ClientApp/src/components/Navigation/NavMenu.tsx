@@ -31,7 +31,6 @@ const NavMenu = () => {
     }
     const adminPages = (value: any) => {
         if (isAdmin == false && value.key == "Add Event") {
-            console.log("value is: ", value)
             return false
         }
         else {
@@ -39,6 +38,24 @@ const NavMenu = () => {
         }
     }
 
+    useEffect(() => {
+        async function currentUser() {
+            var user = await authService.getUser()
+            console.log("user roles:", user?.profile.roles)
+            user?.profile.roles.forEach((role: string) => {
+                console.log(role)
+                if (role.includes("admin")) {
+                    console.log("here")
+                    setIsAdmin(true)
+
+                }
+                else {
+                    setIsAdmin(false)
+                }
+            });
+        }
+        currentUser()
+    }, [])
 
     const purpleTheme = createTheme({
         palette: {
