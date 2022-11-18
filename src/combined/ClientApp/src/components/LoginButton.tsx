@@ -4,7 +4,6 @@ import { authService } from "../services/authService";
 
 
 const LoginButton = () => {
-    const [isAdmin, setIsAdmin] = useState(false)
     const loginHandler = () => {
         authService.signinRedirect();
     }
@@ -12,24 +11,7 @@ const LoginButton = () => {
         authService.logout()
     }
 
-    useEffect(() => {
-        async function currentUser() {
-            var user = await authService.getUser()
-            console.log("user roles:", user?.profile.roles)
-            user?.profile.roles.forEach((role: string) => {
-                console.log(role)
-                if (role.includes("admin")) {
-                    console.log("here")
-                    setIsAdmin(true)
-
-                }
-                else {
-                    setIsAdmin(false)
-                }
-            });
-        }
-        currentUser()
-    }, [])
+    
 
 
     return (
