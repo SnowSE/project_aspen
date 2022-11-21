@@ -54,6 +54,12 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
+    <None Remove="ClientApp\src\components\LoginButton.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
   </ItemGroup>
 
   <ItemGroup>

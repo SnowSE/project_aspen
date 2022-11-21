@@ -8,7 +8,7 @@ on:
     
 jobs:
   run-tests:
-    runs-on: self-hosted
+    runs-on: [self-hosted, primary]
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.4.0
@@ -23,7 +23,7 @@ jobs:
           # docker-compose exec -T web_test npm run ops:lint 
 
   teardown-tests:
-    runs-on: self-hosted
+    runs-on: [self-hosted, primary]
     if: ${{ always() }}
     needs: [run-tests]
     steps:
@@ -32,8 +32,8 @@ jobs:
           cd ops/testing
           docker-compose down
 
-  deploy-staging:
-    runs-on: self-hosted
+  deploy-staging:    
+    runs-on: [self-hosted, primary]
     needs: [run-tests]
     if: github.event_name != 'pull_request'
     steps:
