@@ -11,6 +11,7 @@ import ReactPlayer from 'react-player';
 
 import { DonationPage } from '../Donation/DonationPage';
 import { useNavigate } from 'react-router-dom';
+import { EventContext } from '../../App';
 import { authService } from '../../services/authService';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
