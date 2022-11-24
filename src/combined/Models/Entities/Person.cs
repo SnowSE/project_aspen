@@ -15,6 +15,9 @@ public class Person
     }
     public long ID { get; init; }
 
+    /// <summary>
+    /// Email address of keycloak user
+    /// </summary>
     public string? AuthID { get; init; }
 
     public string Name { get; init; }
