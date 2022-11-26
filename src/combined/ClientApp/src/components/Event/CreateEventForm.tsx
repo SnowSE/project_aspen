@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button } from '@mui/material'
 import { FormGroup, Row, Col, Label, Input, FormText, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { AspenEvent } from "../interfaces";
-import { EventsService } from "../services/Events/EventsService";
-import { authService } from "../services/authService";
+import { AspenEvent } from "../../interfaces";
+import { EventsService } from "../../services/Events/EventsService";
+import { authService } from "../../services/authService";
 const CreateEventForm = () => {
 
     var navigate = useNavigate();

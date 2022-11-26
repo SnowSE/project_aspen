@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import CreateEventForm from "../components/CreateEventForm";
-import { authService } from "../services/authService";
+import CreateEventForm from "../../components/Event/CreateEventForm";
+import { authService } from "../../services/authService";
 
 
 
@@ -28,7 +28,7 @@ const CreateEventPage = () => {
     }, [])
 
     return (
-        <div style={{ paddingTop: '4em' }}>
+        <div>
             {isAdmin ? <CreateEventForm/>: <h1>No</h1>}
         </div>
     );
