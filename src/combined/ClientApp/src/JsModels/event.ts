@@ -1,4 +1,4 @@
-export default class EventModel {
+export default class Event {
   date: Date;
   title: string;
   location: string;

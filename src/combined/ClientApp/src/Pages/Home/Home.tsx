@@ -18,23 +18,40 @@ import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/TeamInfoModal';
 import SharingIcon from '../../components/SharingIcon';
 import SharingButton from '../../components/SharingButton';
+import Event from '../../JsModels/event';
 
 
 export function Home() {
 
     console.log("window.location.origin is: ", window.location.origin)
-
-
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
+    const [latestEvent, setLatestEvent] = React.useState<Event>({
+        title : "Loading ...",
+        description : "",
+        id : -1,
+        date : new Date(),
+        location : "",
+        mainImage  : "",
+        donationTarget : 0
+    });
+    console.log("currentEvent is: ", currentEvent);
+    
+    useEffect(() => {
+        console.log("Home mounted");
+        if (currentEvent) {
 
+            setLatestEvent(currentEvent);
+        }
+    }, [currentEvent]);
+    
     return (
 
         <Box sx={{ pt: '4rem'} }>
 
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
+                    <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{ fontWeight: 'bold', color: 'white' }}> {latestEvent.title} </Typography>
                     <Box sx={{display:'flex', justifyContent:'flex-end', alignItems: 'center'}}>
                         {/*<Button 
                             onClick={() => navigate('/Login')} 

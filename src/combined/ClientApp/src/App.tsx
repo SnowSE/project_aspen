@@ -1,4 +1,4 @@
-import React, { Component, createContext, useEffect } from 'react';
+import React, { Component, createContext, useEffect, useRef } from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
@@ -18,45 +18,44 @@ export const EventContext = React.createContext({} as any);
 function App() {
 
     const [latestEvent, setLatestEvent] = React.useState<Event>();
-    
+
     const currentEventInit = async () => {
-        console.log("got here")
+
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
-        var latestEvent = new Event(
-            allEventsJson.at(-1).date,
-            allEventsJson.at(-1).location,
-            allEventsJson.at(-1).description,
-            allEventsJson.at(-1).mainimage,
-            allEventsJson.at(-1).title,
-            allEventsJson.at(-1).donationtaget,
-            allEventsJson.at(-1).id,
-        );
-        setLatestEvent(latestEvent);
+        const maxEventDate = allEventsJson.reduce(
+            (max: Date, allEventsJson: { date: Date; }) => (allEventsJson.date > max ? allEventsJson.date : max),
+            allEventsJson[0].date);
+        const latestEventFromJson: Event = allEventsJson.find(
+            (event: { date: Date }) => event.date === maxEventDate);
         
+        if (latestEventFromJson) {
+            setLatestEvent(latestEventFromJson);
+        }
+        else {
+            console.log("No events found on start up");
+        }
     }
-    
 
-    
     useEffect(() => {
         console.log("App mounted");
-
         currentEventInit();
 
-    }, []); 
+    }, []);
+    
     return (
-      <EventContext.Provider value={latestEvent}>
-        <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
-          <Layout>
-            <Routes>
-              {AppRoutes.map((route, index) => {
-                const { element, ...rest } = route;
-                return <Route key={index} {...rest} element={element} />;
-              })}
-            </Routes>
-          </Layout>
-        </BrowserRouter>
-      </EventContext.Provider>
+        <EventContext.Provider value={latestEvent}>
+            <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
+                <Layout>
+                    <Routes>
+                        {AppRoutes.map((route, index) => {
+                            const { element, ...rest } = route;
+                            return <Route key={index} {...rest} element={element} />;
+                        })}
+                    </Routes>
+                </Layout>
+            </BrowserRouter>
+        </EventContext.Provider>
     );
 }
 export default App;
