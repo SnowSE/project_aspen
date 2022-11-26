@@ -45,28 +45,6 @@ public class PersonController : ControllerBase
         return mapper.Map<DtoPerson>(person);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<DtoPerson>> Add([FromBody] DtoPerson dtoPerson)
-    {
-        log.LogInformation("Adding person {dtoPerson}", dtoPerson);
-        if (!ModelState.IsValid)
-            return BadRequest(getModelStateErrorMessage());
-
-        if (dtoPerson.ID != 0)
-            return BadRequest("Cannot add with a valid id");
-
-        if (string.IsNullOrEmpty(dtoPerson.AuthID))
-        {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
-            return mapper.Map<DtoPerson>(person);
-        }
-        else
-        {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
-            return mapper.Map<DtoPerson>(person);
-        }
-    }
-
     [HttpPut()]
     public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
     {
