@@ -14,7 +14,7 @@ export function TeamDetails() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
-    const api = `https://localhost:44478/aspen/new/api/teams/${id}`;
+    const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
 
 
