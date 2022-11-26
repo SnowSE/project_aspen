@@ -2,8 +2,8 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
-import { EventsService } from "../services/Events/EventsService";
-import { authService } from "../services/authService";
+import { EventsService } from "../../services/Events/EventsService";
+import { authService } from "../../services/authService";
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)

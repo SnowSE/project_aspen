@@ -9,10 +9,9 @@ import {
 } from '@mui/material';
 import ReactPlayer from 'react-player';
 
-import Share from '../../components/SharingIcon';
-import { EventContext }  from '../../App';
-import { DonationPage } from '../DonationPage/DonationPage';
+import { DonationPage } from '../Donation/DonationPage';
 import { useNavigate } from 'react-router-dom';
+import { EventContext } from '../../App';
 import { authService } from '../../services/authService';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/TeamInfoModal';
@@ -46,21 +45,11 @@ export function Home() {
     }, [currentEvent]);
     
     return (
-
-        <Box sx={{ pt: '4rem'} }>
-
+        <Box>
             <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{ fontWeight: 'bold', color: 'white' }}> {latestEvent.title} </Typography>
                     <Box sx={{display:'flex', justifyContent:'flex-end', alignItems: 'center'}}>
-                        {/*<Button 
-                            onClick={() => navigate('/Login')} 
-                            variant='contained' 
-                            sx={{backgroundColor:'orange'}}>
-                            SIGN IN
-                        </Button>
-                        Render me later
-                        */} 
                         <SharingIcon data-testid={"shareBtn"}/>
                     </Box>
                 </Box>

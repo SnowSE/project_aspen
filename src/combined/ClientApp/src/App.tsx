@@ -2,7 +2,7 @@ import React, { Component, createContext, useEffect, useRef } from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
-import NavMenu from './components/NavMenu';
+import NavMenu from './components/Navigation/NavMenu';
 import './custom.css';
 import Event from '../src/JsModels/event'
 

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import  MenuIcon  from "@mui/icons-material/Menu";
+import LoginButton from "../LoginButton";
 
 
 
@@ -48,6 +49,9 @@ function DrawerComponent() {
 
                         </List>
                         ))}
+                    <Box sx={{ position: 'absolute', alignItems: 'center', bottom: 5} }>
+                        <LoginButton />
+                    </Box>
                     </Box>
                 </Drawer>
                 <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
