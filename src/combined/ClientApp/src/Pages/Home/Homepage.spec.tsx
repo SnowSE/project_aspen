@@ -23,7 +23,7 @@ describe('Home Page', () => {
     it('Load Homepage and check for page content', () => {
         expect(screen.getByTestId('homePageHeader')).toBeInTheDocument
         expect(screen.getByTestId('homePageVideo')).toBeInTheDocument
-        expect(screen.getByTestId('homePageProgressBar')).toBeInTheDocument
+        //expect(screen.getByTestId('homePageProgressBar')).toBeInTheDocument
         expect(screen.getByTestId('donateMealsBtn')).toBeInTheDocument
 
         expect(screen.getByTestId('teamModalBtn')).toBeInTheDocument

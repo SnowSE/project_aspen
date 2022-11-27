@@ -14,9 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../../App';
 import { authService } from '../../services/authService';
 import ProgressBar from '../../components/ProgressBar';
-import TeamInfoModal from '../../components/TeamInfoModal';
-import SharingIcon from '../../components/SharingIcon';
-import SharingButton from '../../components/SharingButton';
+import TeamInfoModal from '../../components/Team/TeamInfoModal';
+import SharingIcon from '../../components/Share/SharingIcon';
+import SharingButton from '../../components/Share/SharingButton';
 import Event from '../../JsModels/event';
 
 

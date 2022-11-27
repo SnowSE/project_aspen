@@ -9,7 +9,7 @@ import Event from '../src/JsModels/event'
 
 
 const root = process.env.PUBLIC_URL
-if (!root) {
+if(!root && process.env.NODE_ENV != 'test') {
     throw "PUBLIC_URL is undefined";
 }
 
