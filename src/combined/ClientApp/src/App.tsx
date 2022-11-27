@@ -23,6 +23,7 @@ function App() {
 
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
+
         const maxEventDate = allEventsJson.reduce(
             (max: Date, allEventsJson: { date: Date; }) => (allEventsJson.date > max ? allEventsJson.date : max),
             allEventsJson[0].date);
@@ -40,11 +41,10 @@ function App() {
     useEffect(() => {
         console.log("App mounted");
         currentEventInit();
-
     }, []);
     
     return (
-        <EventContext.Provider value={latestEvent}>
+        <EventContext.Provider data-testid={"eventContext"}  value={latestEvent}>
             <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
                 <Layout>
                     <Routes>
