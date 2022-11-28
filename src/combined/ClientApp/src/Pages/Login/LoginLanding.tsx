@@ -10,9 +10,6 @@ const LoginLanding = () => {
 
         authService.signinRedirectCallback().then(
             ({ desiredDestination, user }) => {
-                const serializedUser = JSON.parse(JSON.stringify(user));
-                console.log("serialized is: ", serializedUser)
-                console.log(user.profile)
                 var userName = user.profile.name
                 var access_token = user.access_token;
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
