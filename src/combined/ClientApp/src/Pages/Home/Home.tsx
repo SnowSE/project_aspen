@@ -8,7 +8,6 @@ import {
     Grid,
 } from '@mui/material';
 import ReactPlayer from 'react-player';
-
 import { DonationPage } from '../Donation/DonationPage';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
@@ -32,7 +31,7 @@ export function Home() {
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{fontWeight:'bold', color:'white'}}>Food Drive</Typography>
                     <Box sx={{display:'flex', justifyContent:'flex-end', alignItems: 'center'}}>
-                        <SharingIcon data-testid={"shareBtn"}/>
+                        <SharingIcon/>
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
