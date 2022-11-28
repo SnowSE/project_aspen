@@ -1,5 +1,6 @@
-﻿import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+﻿import { Button, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { TeamCard } from "./Interfaces";
 
 
@@ -32,13 +33,15 @@ export function TeamDetails() {
         callServise()
     }, []);
     console.log("currentTeam Z", currentTeam);
+    const navigate = useNavigate();
+
+    const loggedInUSer = localStorage.getItem("LoggedInUser")
+
     return (
         <div>   
-            <h1>I am in Team details page</h1>
-            <h1>I am in Team details page</h1>
+           
             <h1>I am in Team details page</h1>
             <h1>I am in Team details page   {id}</h1>
-            <h1></h1>
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
@@ -48,9 +51,10 @@ export function TeamDetails() {
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}
 
-
-
-
+            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : navigate('/NotLoggedInUser')}
+                    sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
+            </Grid>
 
 
 
