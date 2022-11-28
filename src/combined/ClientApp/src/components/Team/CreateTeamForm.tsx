@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventsService } from "../../services/Events/EventsService";
@@ -15,7 +15,7 @@ const CreateTeamForm = () => {
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);  
     const [image, setImage] = useState<string>('')
-
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
@@ -64,12 +64,25 @@ const CreateTeamForm = () => {
     }
 
 
+    useEffect(() => {
+        
+        async function currentUser() {
+            var user = await authService.getUser()
+            if (user == null){
+                setIsLoggedIn(false)
+            }
+            else{
+                setIsLoggedIn(true)
+            }
+        }
+        currentUser()
+    }, [])
 
 
     return (
         <div style={{display:'flex', justifyContent:'center'}}>
 
-        <Form onSubmit = {createTeamHandler} style={{width:'90vw', border:'solid #673ab7', borderRadius:'30px'}}>
+        {isLoggedIn ? <Form onSubmit = {createTeamHandler} style={{width:'90vw', border:'solid #673ab7', borderRadius:'30px'}}>
             <FormGroup>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
@@ -155,6 +168,7 @@ const CreateTeamForm = () => {
                 <Button variant='contained' sx={{backgroundColor:'orange'}} type = "submit" >Submit</Button>
             </Col>
         </Form>
+        : <h1>Not logged in</h1> }
         </div>
 
     );
