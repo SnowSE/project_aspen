@@ -11,7 +11,7 @@ const CreateTeamPage = () => {
 
     return (
         <Box data-testid="createATeamPage" >
-            <h1>Create team here</h1>
+            <h1 style={{textAlign:'center'}}>Create Team Here</h1>
             <CreateTeamForm />
         </Box>
     );
