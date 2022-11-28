@@ -24,6 +24,9 @@ const CreateTeamForm = () => {
     const [image, setImage] = useState<string>('')
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
@@ -79,7 +82,16 @@ const CreateTeamForm = () => {
         else {
             setDisableSubmit(true)
         }
-
+async function currentUser() {
+            var user = await authService.getUser()
+            if (user == null){
+                setIsLoggedIn(false)
+            }
+            else{
+                setIsLoggedIn(true)
+            }
+        }
+        currentUser()
     }, [teamName, teamDescription, donationGoal])
 
 
@@ -109,6 +121,14 @@ const CreateTeamForm = () => {
                         </Col>
                     </Row>
                 </FormGroup>
+
+
+
+    return (
+        <div style={{display:'flex', justifyContent:'center'}}>
+
+        {isLoggedIn ? <Form onSubmit = {createTeamHandler} style={{width:'90vw', border:'solid #673ab7', borderRadius:'30px'}}>
+            <FormGroup>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
                         <FormGroup>
@@ -175,6 +195,26 @@ const CreateTeamForm = () => {
 
                 </Col>
             </Form>
+                        <Label for="exampleAddress">
+                            Donation Goal
+                        </Label>
+                        <Input
+                            id="exampleAddress"
+                            name="donationGoal"
+                            placeholder="$"
+                            type="number"
+                            value = {donationGoal}
+                            onChange={event => setDonationGoal(Number(event.target.value))}
+                        />
+                    </Col>
+                </Row>
+            </FormGroup>
+            <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
+
+                <Button variant='contained' sx={{backgroundColor:'orange'}} type = "submit" >Submit</Button>
+            </Col>
+        </Form>
+        : <h1>Not logged in</h1> }
         </div>
 
     );
