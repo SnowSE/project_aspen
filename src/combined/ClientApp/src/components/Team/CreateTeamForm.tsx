@@ -95,32 +95,6 @@ async function currentUser() {
     }, [teamName, teamDescription, donationGoal])
 
 
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-
-            <Form onSubmit={createTeamHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
-                <FormGroup>
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Col md={6} xs={8}>
-
-                            <Label
-                                for="exampleFile"
-                                sm={2}
-                            >
-                            </Label>
-                            <Input
-                                id="exampleFile"
-                                name="file"
-                                type="file"
-                                placeholder="Team Logo"
-                                onChange={event => setImage(event.target.value)}
-                            />
-                            <FormText>
-                                Select an image that will be displayed as your team's logo
-                            </FormText>
-                        </Col>
-                    </Row>
-                </FormGroup>
 
 
 
@@ -128,7 +102,6 @@ async function currentUser() {
         <div style={{display:'flex', justifyContent:'center'}}>
 
         {isLoggedIn ? <Form onSubmit = {createTeamHandler} style={{width:'90vw', border:'solid #673ab7', borderRadius:'30px'}}>
-            <FormGroup>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
                         <FormGroup>
@@ -195,25 +168,7 @@ async function currentUser() {
 
                 </Col>
             </Form>
-                        <Label for="exampleAddress">
-                            Donation Goal
-                        </Label>
-                        <Input
-                            id="exampleAddress"
-                            name="donationGoal"
-                            placeholder="$"
-                            type="number"
-                            value = {donationGoal}
-                            onChange={event => setDonationGoal(Number(event.target.value))}
-                        />
-                    </Col>
-                </Row>
-            </FormGroup>
-            <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-
-                <Button variant='contained' sx={{backgroundColor:'orange'}} type = "submit" >Submit</Button>
-            </Col>
-        </Form>
+                        
         : <h1>Not logged in</h1> }
         </div>
 
