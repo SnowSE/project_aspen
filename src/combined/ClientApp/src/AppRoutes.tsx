@@ -8,6 +8,9 @@ import { TeamsListPage } from "./components/TeamsInfo/TeamsListPage";
 import { Home } from "./Pages/Home/Home";
 import LoginLanding from "./Pages/Login/LoginLanding";
 import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
+import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
+import { NotLoggedInUser } from "./components/TeamsInfo/NotLoggedInUSer";
+import LoginButton from "./components/LoginButton";
 
 const AppRoutes = [
     {
@@ -51,6 +54,20 @@ const AppRoutes = [
      {
         path: `/TeamDetails`,
         element: <TeamDetails />
+    },
+
+    {
+        path: `/LoggedInUser`,
+        element: <LoggedInUser />
+    },
+
+    {
+        path: `/NotLoggedInUser`,
+        element: <NotLoggedInUser />
+    },
+    {
+        path: `/LoginButton`,
+        element: <LoginButton />
     },
 ];
 
