@@ -1,9 +1,16 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import CreateTeamPage from "./Pages/CreateTeamPage";
-import { DonationPage } from "./Pages/DonationPage/DonationPage";
+import { Swagger } from "./components/Swagger";
+import CreateEventPage from "./Pages/Event/CreateEventPage";
+import CreateTeamPage from "./Pages/CreateTeam/CreateTeamPage";
+import { DonationPage } from "./Pages/Donation/DonationPage";
+import { TeamsListPage } from "./components/TeamsInfo/TeamsListPage";
 import { Home } from "./Pages/Home/Home";
-import LoginLanding from "./Pages/LoginLanding";
+import LoginLanding from "./Pages/Login/LoginLanding";
+import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
+import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
+import { NotLoggedInUser } from "./components/TeamsInfo/NotLoggedInUSer";
+import LoginButton from "./components/LoginButton";
 
 const AppRoutes = [
     {
@@ -14,6 +21,10 @@ const AppRoutes = [
     {
         path: `/counter`,
         element: <Counter />
+    },
+    {
+        path: `/swagger`,
+        element: <Swagger />
     },
     {
         path: `/fetch-data`,
@@ -30,6 +41,33 @@ const AppRoutes = [
     {
         path: `/createteam`,
         element: <CreateTeamPage />
+    },
+     {
+         path: `/TeamsListPage`,
+         element: <TeamsListPage />
+    },
+    {
+        path:'/createEvent', 
+        element: <CreateEventPage/>
+    },
+
+     {
+        path: `/TeamDetails`,
+        element: <TeamDetails />
+    },
+
+    {
+        path: `/LoggedInUser`,
+        element: <LoggedInUser />
+    },
+
+    {
+        path: `/NotLoggedInUser`,
+        element: <NotLoggedInUser />
+    },
+    {
+        path: `/LoginButton`,
+        element: <LoginButton />
     },
 ];
 

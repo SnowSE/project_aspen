@@ -55,6 +55,9 @@ public class PersonController : ControllerBase
         if (dtoPerson.ID != 0)
             return BadRequest("Cannot add with a valid id");
 
+        if (dtoPerson.AuthID != null)
+            return BadRequest("Don't create users with authid using this endpoint.  This endpoint is really only for creating people to be used in a PersonRegistration.");
+
         if (string.IsNullOrEmpty(dtoPerson.AuthID))
         {
             var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);

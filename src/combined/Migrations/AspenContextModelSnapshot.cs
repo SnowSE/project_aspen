@@ -221,6 +221,9 @@ namespace Api.Migrations
                     b.Property<long>("EventID")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("MainImage")
                         .IsRequired()
                         .HasColumnType("text");

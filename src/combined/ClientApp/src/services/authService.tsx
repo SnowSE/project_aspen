@@ -1,6 +1,5 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 
-
 const authUrl = process.env.REACT_APP_AUTH_URL
 
 const userManager = new UserManager({
@@ -16,6 +15,7 @@ const userManager = new UserManager({
   loadUserInfo: true,
   automaticSilentRenew: true,
 });
+
 userManager.startSilentRenew();
 
 export const authService = {
@@ -32,7 +32,7 @@ export const authService = {
   },
 
   signinRedirect: async () => {
-    console.log("window.location.origin is: ", window.location.pathname)
+    console.log("window.location.origin is: ", window.location.origin)
     if (window.location.pathname === '/aspen/' || window.location.pathname === '/aspen') {
       localStorage.setItem("redirectUri", '/');
     }

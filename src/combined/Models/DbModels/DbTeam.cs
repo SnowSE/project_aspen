@@ -13,6 +13,8 @@ public record DbTeam
     public DbEvent Event { get; init; }
     public decimal DonationTarget { get; init; }
 
+    public bool IsPublic { get; init; }
+
     public virtual ICollection<DbRegistration> Registrations { get; init; }
     public List<DbDonation> Donations { get; init; }
 }
