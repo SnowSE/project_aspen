@@ -9,12 +9,8 @@ export function LoggedInUser() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
     console.log("Team id:",typeof(id))
-
-
-
-
     interface registration {
-        creationDate: number,
+        creationDate: Date,
         isPublic: boolean,
         nickname: string,
         ownerID: number,
@@ -27,14 +23,14 @@ export function LoggedInUser() {
                     name: string,
                     bio: string
                 },
-                createdDate: number
+                createdDate: Date
             }
         ]
     }
 
     const navigate = useNavigate();
     
-    const [creationDate, setCreationDate] = useState<number>(new Date().getTime());
+    const [creationDate, setCreationDate] = useState<Date>(new Date(0));
     //THis is under the question
     const [isPublic, setBooleanFlag] = useState<boolean>(true);
     const [nickName, setNickName] = useState<string>('');
@@ -69,7 +65,7 @@ export function LoggedInUser() {
                 .then((response) => { })
                 .catch((error) => { console.log(error.response.data) })
 
-        setNickName(''),
+        setNickName('')
         setPersonRegistration([])
     }
     return (
