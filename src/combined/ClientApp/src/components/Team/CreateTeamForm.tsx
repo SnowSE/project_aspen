@@ -1,7 +1,8 @@
 ﻿import Button from "@mui/material/Button";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import { EventContext } from '../../App';
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
@@ -13,6 +14,7 @@ const CreateTeamForm = () => {
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
+    const currentEvent = useContext(EventContext);
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -51,14 +53,13 @@ const CreateTeamForm = () => {
         console.log('upload result:', result)
         
         const currentUser = await axios.get(currentUserUrl, config)
-        const events = await axios.get(eventsUrl)
-
+        
         let newTeam: team = {
             name: teamName,
             description: teamDescription,
             mainImage: result.data,
             ownerID: Number(currentUser.data.id),
-            eventID: events.data[0].id,
+            eventID: currentEvent.id,
             donationTarget: donationGoal
         }
 

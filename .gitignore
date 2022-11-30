@@ -389,4 +389,4 @@ yarn-error.l
 *.tfvars
 
 # ignore uploaded assets
-src/combined/uploaded_files/
+src/combined/wwwroot/

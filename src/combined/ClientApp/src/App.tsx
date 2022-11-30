@@ -16,7 +16,6 @@ if(!root && process.env.NODE_ENV != 'test') {
 export const EventContext = React.createContext({} as any);
 
 function App() {
-
     const [latestEvent, setLatestEvent] = React.useState<Event>();
 
     const currentEventInit = async () => {
