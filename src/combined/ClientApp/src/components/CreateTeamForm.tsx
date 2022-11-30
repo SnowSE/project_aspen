@@ -11,7 +11,7 @@ const CreateTeamForm = () => {
 
     const [teamName, setTeamName] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
-    const [donationGoal, setDonationGoal] = useState<number>(0);  
+    const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<string>('')
 
     const config = {
@@ -19,28 +19,37 @@ const CreateTeamForm = () => {
     };
 
     interface team {
-        name: string, 
-        description: string, 
-        mainImage: string, 
-        ownerID: number, 
-        eventID: number, 
+        name: string,
+        description: string,
+        mainImage: string,
+        ownerID: number,
+        eventID: number,
         donationTarget: number
     }
 
     const createTeamHandler = async (event:React.FormEvent) => {
         event.preventDefault()
         console.log(process.env.REACT_APP_BASE_URL)
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "api/User"
-        var eventsUrl =      process.env.REACT_APP_BASE_URL + "api/events"
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
+        var eventsUrl = process.env.REACT_APP_BASE_URL + "/api/events"
+        var assetsUrl = process.env.REACT_APP_BASE_URL + "/api/asset"
+
+        const data = new FormData();
+        data.append('asset', image);
+        const assetResponse = await fetch(assetsUrl, {
+            method: 'post',
+            body: data
+        })
+        console.log('asset response', assetResponse);
 
         const currentUser = await axios.get(currentUserUrl, config)
         const events = await axios.get(eventsUrl)
 
         let newTeam:team = {
             name: teamName,
-            description: teamDescription, 
-            mainImage: image, 
-            ownerID: Number(currentUser.data.id), 
+            description: teamDescription,
+            mainImage: image,
+            ownerID: Number(currentUser.data.id),
             eventID: events.data[0].id,
             donationTarget: donationGoal
         }
@@ -55,6 +64,9 @@ const CreateTeamForm = () => {
         setDonationGoal(0)
     }
 
+    const imageOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setImage(event.target.value)
+    }
 
 
 
@@ -76,7 +88,7 @@ const CreateTeamForm = () => {
                             name="file"
                             type="file"
                             placeholder="Team Logo"
-                            onChange={event => setImage(event.target.value)}
+                            onChange={imageOnChange}
                         />
                         <FormText>
                             Select an image that will be displayed as your team's logo
