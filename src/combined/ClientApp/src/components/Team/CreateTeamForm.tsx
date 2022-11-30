@@ -164,7 +164,14 @@ async function currentUser() {
                 </FormGroup>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
 
-                    <Button variant='contained' disabled = {disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button> 
+                    <Button 
+                        variant='contained' 
+                        disabled = {disableSubmit} 
+                        sx={{ backgroundColor: 'orange' }} 
+                        type="submit" 
+                        onClick={() => navigate('/TeamsListPage')}>
+                            Submit
+                    </Button> 
 
                 </Col>
             </Form>

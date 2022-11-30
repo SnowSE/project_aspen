@@ -27,11 +27,7 @@ export function TeamsListPage() {
         callService()
     }, [])
     return (
-        <div>'
-            <Grid item xs={4} sx={{
-                display: 'flex', justifyContent: 'flex-start', }}>
-                <Button sx={{ backgroundColor: '#FFF500', m: 2 }} onClick={() => navigate(-1)}>Go back 1 Page</Button>
-            </Grid>
+        <div>
             <h1>Existing {teamsList.length} Teams  </h1>
             
             {teamsList.map((t: any, id) => {
