@@ -11,7 +11,6 @@ type TeamCardProps = {
 
 export function TeamDetails() {
 
-
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 

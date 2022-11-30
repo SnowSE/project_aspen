@@ -45,8 +45,12 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eve
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}>Learn About Our Team</Button>
                                 </Grid>
 
-                                <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                                    <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : navigate('/NotLoggedInUser')}
+                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                        <Button onClick={() => loggedInUSer ? navigate(
+                                            {
+                                                pathname: '/LoggedInUser',
+                                                search: `?id=${id}`
+                                            }) : navigate('/NotLoggedInUser')}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
                                 </Grid>
 
