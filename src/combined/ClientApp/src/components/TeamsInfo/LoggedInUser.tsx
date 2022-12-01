@@ -114,13 +114,9 @@ export function LoggedInUser() {
                             />
                         </FormGroup>
                     </Col>
-
-                </Row>
-
-               
+                </Row>              
                
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-
                     <Button variant='contained' sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
                 </Col>
             </Form>
