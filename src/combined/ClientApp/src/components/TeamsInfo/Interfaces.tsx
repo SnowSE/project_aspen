@@ -54,7 +54,7 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eve
 
                                                 })}`
                                             })
-                                         : navigate('/NotLoggedInUser')}
+                                            : authService.signinRedirect()}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
                                 </Grid>
 

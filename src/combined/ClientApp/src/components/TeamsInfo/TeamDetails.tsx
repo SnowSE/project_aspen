@@ -1,6 +1,7 @@
 ﻿import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { authService } from "../../services/authService";
 import { TeamCard } from "./Interfaces";
 
 
@@ -51,7 +52,7 @@ export function TeamDetails() {
             {currentTeam?.donationTarget}
 
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : navigate('/NotLoggedInUser')}
+                <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : authService.signinRedirect()}
                     sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
             </Grid>
 
