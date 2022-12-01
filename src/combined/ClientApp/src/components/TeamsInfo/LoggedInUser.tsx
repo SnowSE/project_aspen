@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import {Team } from "./Interfaces"
-type TeamType = {
-    teamId: Team,
-    ownerId: Team
-}
+
+
 export function LoggedInUser() {
 
     const [searchParams] = useSearchParams();
@@ -118,6 +116,7 @@ export function LoggedInUser() {
                     </Col>
 
                 </Row>
+
                
                
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
