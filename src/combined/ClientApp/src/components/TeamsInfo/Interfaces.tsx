@@ -1,10 +1,11 @@
 ﻿import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
+import { LoggedInUser } from './LoggedInUser';
 import { TeamDetails } from './TeamDetails';
 
-type Team = {
+export type Team = {
     id: number,
     name: string, 
     description: string,
@@ -14,8 +15,6 @@ type Team = {
     eventID: string,
     donationTarget: number,
 };
-
-
 
 export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget }: Team) => {
     const navigate = useNavigate();
@@ -46,11 +45,16 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eve
                                 </Grid>
 
                                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                                        <Button onClick={() => loggedInUSer ? navigate(
-                                            {
-                                                pathname: '/LoggedInUser',
-                                                search: `?id=${id}`
-                                            }) : navigate('/NotLoggedInUser')}
+                                        <Button onClick={() => loggedInUSer ?
+                                            navigate({
+                                                pathname: "/LoggedInUser",
+                                                search: `?${createSearchParams({
+                                                    id:`${id}`,
+                                                    ownerID: `${ownerID}`
+
+                                                })}`
+                                            })
+                                         : navigate('/NotLoggedInUser')}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
                                 </Grid>
 

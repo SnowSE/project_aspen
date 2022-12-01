@@ -3,12 +3,40 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
-
+import {Team } from "./Interfaces"
+type TeamType = {
+    teamId: Team,
+    ownerId: Team
+}
 export function LoggedInUser() {
 
     const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
-    console.log("Team id:",typeof(id))
+    const loggedInUSer = localStorage.getItem("LoggedInUser")
+    console.log("I am currently logged in as", typeof (loggedInUSer));
+
+    if (loggedInUSer !== null) {
+        var user = loggedInUSer;
+        console.log("I am a user", user);
+    }
+    const list=[]
+    for (var entry of searchParams.entries()) {
+        console.log(entry[1]);
+        const [teamId, teamIdValue] = entry;
+        list.push(entry[1])
+    }
+    console.log("I am list", list[0]);
+        
+   
+    if (list[0] !== null) {
+        var tId = parseInt(list[0]);   // parse the string back to a number.
+        console.log("Converted team id",typeof( tId));
+    }   
+   
+    if (list[1] !== null) {
+        var ownerId = parseInt(list[1]);   // parse the string back to a number.
+        console.log("Converted ownerID", typeof(ownerId))
+    }
+
     interface registration {
         creationDate: Date,
         isPublic: boolean,
@@ -46,15 +74,15 @@ export function LoggedInUser() {
             creationDate: creationDate,
             isPublic: isPublic,
             nickname: nickName,
-            ownerID: 2,
-            teamID: 1,
+            ownerID: ownerId,
+            teamID: tId,
             personRegistrations: [
                 {
                     personID: 10,
                     person: {
-                        authID: '10',
-                        name: 'Durli',
-                        bio: 'Some bio'
+                        authID: '',
+                        name: user,
+                        bio: ' '
                     },
                     createdDate: creationDate
                 }
@@ -66,7 +94,7 @@ export function LoggedInUser() {
                 .catch((error) => { console.log(error.response.data) })
 
         setNickName('')
-        setPersonRegistration([])
+        setPersonRegistration(personRegistrations)
     }
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
