@@ -19,7 +19,7 @@ jobs:
           DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
           docker-compose up -d
           docker-compose exec -T api_test dotnet test api-tests
-          # docker-compose exec -T web_test npm run test
+          docker-compose exec -T web_test npm run test
           # docker-compose exec -T web_test npm run lint 
 
   teardown-tests:
