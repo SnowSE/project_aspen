@@ -1,16 +1,15 @@
-import React, { Component, createContext, useEffect, useRef } from 'react';
+import React, {useEffect} from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
-import NavMenu from './components/Navigation/NavMenu';
 import './custom.css';
 import Event from '../src/JsModels/event'
 
 
 
 const root = process.env.PUBLIC_URL
-if (!root && process.env.NODE_ENV != 'test') {
-    throw "PUBLIC_URL is undefined";
+if (!root && process.env.NODE_ENV !== 'test') {
+    throw new Error("PUBLIC_URL is undefined");
 }
 
 export const EventContext = React.createContext({} as any);
@@ -37,7 +36,7 @@ function App() {
                 new Date(),
                 "", // location
                 "", // mainImage
-                "", // description
+                "", // description!
                 "There are currently no upcoming events.",
                 0,  // donationTarget
                 -1, // id

@@ -1,23 +1,18 @@
-import React, { Component, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
     Box,
     Button,
     Typography,
-    Paper,
-    Link,
-    Grid,
+    Paper
 } from '@mui/material';
-import ReactPlayer from 'react-player';
 
-import { DonationPage } from '../Donation/DonationPage';
 import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../../App';
-import { authService } from '../../services/authService';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
-import Event from '../../JsModels/event';
+
 
 
 export function Home() {
@@ -87,7 +82,7 @@ export function Home() {
                 </Box>
                 <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button onClick={() => navigate('\TeamsListPage')} variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}
+                        <Button onClick={() => navigate("/TeamsListPage")} variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }}
                             data-testid={'joinATeamBtn'}
                             id={"joinATeamBtn"}>
                             JOIN A TEAM

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, redirect } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { authService } from "../../services/authService"; 
 
 const LoginLanding = () => {
@@ -21,7 +21,7 @@ const LoginLanding = () => {
             }
         );
 
-    }, []);
+    }, [navigate]);
 
 
 

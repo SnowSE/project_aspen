@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { AspenEvent } from "../../interfaces";
 import { getQueryClient } from "../QueryClient";
@@ -10,7 +9,7 @@ const queryClient = getQueryClient();
 export const EventsHooks = {
   useEventsQuery: () =>
     useQuery(["eventsList"], EventsService.GetEventsViaAxios),
-  addEventsQuery: async (newEvent:AspenEvent) => 
+  AddEventsQuery: async (newEvent:AspenEvent) => 
     useQuery(["addEvent", newEvent],  await EventsService.CreateEventViaAxios(newEvent)),
   useEventUpdateMutation: (id: number) =>
     useMutation(

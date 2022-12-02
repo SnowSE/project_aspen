@@ -1,11 +1,9 @@
-﻿import Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import React, { useContext, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
-import { Checkbox, ToggleButton } from "@mui/material";
-import { CheckmarkIcon } from "react-hot-toast";
-import CheckIcon from '@mui/icons-material/Check';
+import { Checkbox} from "@mui/material";
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
@@ -39,7 +37,6 @@ const CreateTeamForm = () => {
         event.preventDefault()
         console.log(process.env.REACT_APP_BASE_URL)
         var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
-        var eventsUrl = process.env.REACT_APP_BASE_URL + "/api/events"
         var assetsUrl = process.env.REACT_APP_BASE_URL + "/api/asset"
 
         if (!image) {
@@ -72,7 +69,7 @@ const CreateTeamForm = () => {
         }
 
         var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
-        const res = await axios.post(teamUrl, newTeam, config)
+        await axios.post(teamUrl, newTeam, config)
             .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
 
