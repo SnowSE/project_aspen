@@ -22,7 +22,7 @@ describe('Home Page', () => {
 
     it('Load Homepage and check for page content', () => {
         expect(screen.getByTestId('homePageHeader')).toBeInTheDocument
-        expect('Loading ...').toBeInTheDocument // Default Vaule for Event Context
+        expect('There are currently no upcoming events.').toBeInTheDocument // Default Vaule for Event Context
         expect(screen.getByTestId('homePageVideo')).toBeInTheDocument
         //expect(screen.getByTestId('homePageProgressBar')).toBeInTheDocument
         expect(screen.getByTestId('donateMealsBtn')).toBeInTheDocument
