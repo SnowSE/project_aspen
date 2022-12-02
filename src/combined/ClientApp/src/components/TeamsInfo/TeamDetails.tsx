@@ -1,17 +1,13 @@
-﻿import { Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { TeamCard } from "./Interfaces";
 
 
-type TeamCardProps = {
-    team: typeof TeamCard
-}
 
 
 export function TeamDetails() {
 
-
+    const baseImageUrl = process.env.REACT_APP_BASE_URL + "/assets/"
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
@@ -19,6 +15,7 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
 
 
+    useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         console.log("I am inside the fetchTEam", res);
@@ -26,12 +23,12 @@ export function TeamDetails() {
         console.log("I am inside the fetchTEam1", response);
         setCurrentTeam(response)
     }
-    useEffect(() => {
         const callServise = async () => {
             await fetchTeam()        }
 
         callServise()
-    }, []);
+    });
+
     console.log("currentTeam Z", currentTeam);
     const navigate = useNavigate();
 
@@ -45,7 +42,7 @@ export function TeamDetails() {
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
-            {currentTeam?.mainImage}
+            <img alt = "mainImage"src={baseImageUrl + currentTeam?.mainImage}/>
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}

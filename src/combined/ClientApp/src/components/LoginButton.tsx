@@ -1,5 +1,4 @@
-﻿import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import { authService } from "../services/authService";
 import "../ComponentStyling.css"
 
@@ -16,9 +15,14 @@ const LoginButton = () => {
 
 
     return (
+<<<<<<< HEAD
         <Box >
             <Box className = "BoxPadding">
             {localStorage.getItem("LoggedInUser") == "" ?
+=======
+        <Box sx={{color: "white"} }>
+                {localStorage.getItem("LoggedInUser") === "" ?
+>>>>>>> master
                 <Button
                     onClick={loginHandler}
                     variant='contained'

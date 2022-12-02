@@ -1,5 +1,6 @@
 using Api.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -134,7 +135,10 @@ app.UseSwagger(options =>
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = "/assets"
+});
 app.UseRouting();
 app.UseCors(myAllowSpecificOrigins);
 

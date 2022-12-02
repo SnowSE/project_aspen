@@ -10,7 +10,7 @@ public class AssetFileService : IAssetFileService
     {
         this.logger = logger;
         this.config = config;
-        assetsDirectory = config.GetSection("AssetsDirectory").Value;
+        assetsDirectory = config["AssetsDirectory"];
         if (assetsDirectory.Length == 0)
         {
             throw new Exception("AssetsDirectory configuration is empty");

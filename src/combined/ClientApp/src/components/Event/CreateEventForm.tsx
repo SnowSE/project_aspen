@@ -4,16 +4,16 @@ import { FormGroup, Row, Col, Label, Input, FormText, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { AspenEvent } from "../../interfaces";
 import { EventsService } from "../../services/Events/EventsService";
-import { authService } from "../../services/authService";
 const CreateEventForm = () => {
 
     var navigate = useNavigate();
-    const [eventDate, setEventDate] = useState<Date>(new Date)
+    const [eventDate, setEventDate] = useState<Date>(new Date(0))
     const [eventTitle, setEventTitle] = useState("")
     const [eventLocation, setEventLocation] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventMainImage, setEventMainImage] = useState("")
     const [eventDonationTarget, setEventDonationTarget] = useState(0)
+    const [disableSubmit, setDisableSubmit] = useState(true)
     const createEventHandler = async (event: React.FormEvent) => {
         event.preventDefault()
 
@@ -32,7 +32,15 @@ const CreateEventForm = () => {
 
     }
 
+    useEffect(() => {
+        if (Date.parse(eventDate.toString()) && eventTitle.trim().length !== 0 && eventLocation.trim().length !== 0 && eventDonationTarget > 0 && eventDescription.trim().length !== 0) {
+            setDisableSubmit(false)
+        }
+        else {
+            setDisableSubmit(true)
+        }
 
+    }, [eventTitle, eventLocation, eventDescription, eventDonationTarget, eventDate])
 
 
     return (
@@ -151,7 +159,7 @@ const CreateEventForm = () => {
                     </FormGroup>
                     <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
 
-                        <Button variant='contained' sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                        <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
                     </Col>
                 </Form>
 
