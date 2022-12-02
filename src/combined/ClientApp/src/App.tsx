@@ -22,19 +22,30 @@ function App() {
 
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
+        if (allEventsJson.length > 0) {
+            const maxEventDate = allEventsJson.reduce(
+                (max: Date, allEventsJson: { date: Date; }) => (allEventsJson.date > max ? allEventsJson.date : max),
+                allEventsJson[0].date);
+            const latestEventFromJson: Event = allEventsJson.find(
+                (event: { date: Date }) => event.date === maxEventDate);
 
-        const maxEventDate = allEventsJson.reduce(
-            (max: Date, allEventsJson: { date: Date; }) => (allEventsJson.date > max ? allEventsJson.date : max),
-            allEventsJson[0].date);
-        const latestEventFromJson: Event = allEventsJson.find(
-            (event: { date: Date }) => event.date === maxEventDate);
-        
-        if (latestEventFromJson) {
-            setLatestEvent(latestEventFromJson);
+            if (latestEventFromJson) {
+                setLatestEvent(latestEventFromJson);
+            }
+
         }
         else {
-            console.log("No events found on start up");
-        }
+            const defaultEvent = new Event(
+                new Date(),
+                "", // location
+                "", // mainImage
+                "", // description
+                "There are currently no upcoming events.",
+                0,  // donationTarget
+                -1, // id
+            );
+            setLatestEvent(defaultEvent);
+        };
     }
 
     useEffect(() => {
