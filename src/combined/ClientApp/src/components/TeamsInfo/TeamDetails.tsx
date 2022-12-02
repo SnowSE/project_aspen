@@ -38,7 +38,7 @@ export function TeamDetails() {
         callServise()
     }, []);
     console.log("currentTeam Z", currentTeam);
-    console.log("I have got registrations 2", currentTeamRegisrtations)
+    console.log("I have got registrations 2", typeof(currentTeamRegisrtations))
 
     const navigate = useNavigate();
 

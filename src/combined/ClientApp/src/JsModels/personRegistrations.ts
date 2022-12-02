@@ -4,11 +4,11 @@
 export default class PersonRegistrations {
     id: number;
     personID: number;
-    person: Person[]
+    person: Person;
        
     createDate: Date;
 
-   constructor(id: number, personID: number, person: Person[], createDate: Date)
+   constructor(id: number, personID: number, person: Person, createDate: Date)
     {
         this.id = id ?? -1;
         this.personID = personID ?? undefined;

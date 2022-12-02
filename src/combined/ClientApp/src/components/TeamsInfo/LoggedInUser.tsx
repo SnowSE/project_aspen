@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import PersonRegistrations from "../../JsModels/personRegistrations";
 import {Team } from "./Interfaces"
 
 
@@ -41,17 +42,7 @@ export function LoggedInUser() {
         nickname: string,
         ownerID: number,
         teamID: number,
-        personRegistrations: [
-            {
-                personID: number,
-                person: {
-                    authID: string,
-                    name: string,
-                    bio: string
-                },
-                createdDate: Date
-            }
-        ]
+        personRegistrations: PersonRegistrations[]
     }
 
     const navigate = useNavigate();
@@ -74,15 +65,18 @@ export function LoggedInUser() {
             nickname: nickName,
             ownerID: ownerId,
             teamID: tId,
-            personRegistrations: [
+            // this part needs to be fixed, currently it is static but it should be dynamic
+            personRegistrations:  [
                 {
+                    id: 3,
                     personID: 10,
                     person: {
+                        id: 1,
                         authID: '',
                         name: user,
                         bio: ' '
                     },
-                    createdDate: creationDate
+                    createDate: creationDate
                 }
             ]
         }
