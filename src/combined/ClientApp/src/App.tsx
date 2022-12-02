@@ -8,8 +8,8 @@ import Event from '../src/JsModels/event'
 
 
 const root = process.env.PUBLIC_URL
-if (!root && process.env.NODE_ENV != 'test') {
-    throw "PUBLIC_URL is undefined";
+if (!root && process.env.NODE_ENV !== 'test') {
+    throw new Error("PUBLIC_URL is undefined");
 }
 
 export const EventContext = React.createContext({} as any);
@@ -36,7 +36,7 @@ function App() {
                 new Date(),
                 "", // location
                 "", // mainImage
-                "", // description
+                "", // description!
                 "There are currently no upcoming events.",
                 0,  // donationTarget
                 -1, // id
