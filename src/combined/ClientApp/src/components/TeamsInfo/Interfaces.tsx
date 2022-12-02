@@ -1,8 +1,6 @@
 ﻿import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../services/authService';
-import { TeamDetails } from './TeamDetails';
 
 type Team = {
     id: number,

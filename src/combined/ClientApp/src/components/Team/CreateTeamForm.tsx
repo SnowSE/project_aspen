@@ -33,7 +33,6 @@ const CreateTeamForm = () => {
         event.preventDefault()
         console.log(process.env.REACT_APP_BASE_URL)
         var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
-        var eventsUrl = process.env.REACT_APP_BASE_URL + "/api/events"
         var assetsUrl = process.env.REACT_APP_BASE_URL + "/api/asset"
 
         if (!image) {
@@ -64,7 +63,7 @@ const CreateTeamForm = () => {
         }
 
         var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
-        const res = await axios.post(teamUrl, newTeam, config)
+        await axios.post(teamUrl, newTeam, config)
             .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
 

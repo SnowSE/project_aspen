@@ -6,8 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled';
-import ReactDOM from 'react-dom';
-import { deepPurple, purple } from '@mui/material/colors';
+import { deepPurple } from '@mui/material/colors';
 import { authService } from '../../services/authService'; 
 import DrawerComponent from './DrawerComponent';
 import { useEffect, useState } from 'react';
@@ -30,7 +29,7 @@ const NavMenu = () => {
         pages.push({ text: 'Fetch Data', href: '/fetch-data' });
     }
     const adminPages = (value: any) => {
-        if (isAdmin == false && value.key == "Add Event") {
+        if (isAdmin === false && value.key === "Add Event") {
             return false
         }
         else {
