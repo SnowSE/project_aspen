@@ -1,0 +1,24 @@
+name: Run Tests
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    
+jobs:
+  run-tests:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2.4.0
+
+      - name: build and test
+        run: |
+          cd ops/testing
+          DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
+          docker-compose up -d
+          docker-compose exec -T api_test dotnet test api-tests
+          docker-compose exec -T web_test npm run test
+          # docker-compose exec -T web_test npm run lint 
+          docker-compose down
