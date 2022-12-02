@@ -12,6 +12,7 @@ type TeamCardProps = {
 
 export function TeamDetails() {
 
+
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
 
@@ -45,7 +46,7 @@ export function TeamDetails() {
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
-            {currentTeam?.mainImage}
+            <img src={baseImageUrl + currentTeam?.mainImage}/>
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}

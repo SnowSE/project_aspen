@@ -7,6 +7,7 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const context =  [
   `/aspen/new/swagger`,
   `/aspen/new/api`,
+  `/aspen/new/assets`
 ];
 
 console.log(context)
