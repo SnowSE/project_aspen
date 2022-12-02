@@ -1,4 +1,4 @@
-﻿import { Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Registration from "../../JsModels/registration";
@@ -6,9 +6,6 @@ import { authService } from "../../services/authService";
 import { TeamCard } from "./Interfaces";
 
 
-type TeamCardProps = {
-    team: typeof TeamCard
-}
 
 
 export function TeamDetails() {
@@ -31,12 +28,12 @@ export function TeamDetails() {
         console.log("I have got registrations", response.registrations)
         setCurrentTeamRegistrations(response.registrations)
     }
-    useEffect(() => {
         const callServise = async () => {
             await fetchTeam()        }
 
         callServise()
-    }, []);
+    });
+
     console.log("currentTeam Z", currentTeam);
     console.log("I have got registrations 2", typeof(currentTeamRegisrtations))
 
@@ -52,7 +49,7 @@ export function TeamDetails() {
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
-            <img src={baseImageUrl + currentTeam?.mainImage}/>
+            <img alt = "mainImage"src={baseImageUrl + currentTeam?.mainImage}/>
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}
