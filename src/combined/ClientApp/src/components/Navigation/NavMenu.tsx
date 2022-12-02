@@ -15,6 +15,7 @@ import LoginButton from '../LoginButton';
 
 const NavMenu = () => {
     const [isAdmin, setIsAdmin] = useState(false)
+    const bogus = "helo";
     const pages = [
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
