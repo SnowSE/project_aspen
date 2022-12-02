@@ -15,13 +15,10 @@ import LoginButton from '../LoginButton';
 
 const NavMenu = () => {
     const [isAdmin, setIsAdmin] = useState(false)
-    const bogus = "helo";
     const pages = [
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
         { text: 'Team Details', href: '/TeamDetails' }
-
-
     ]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
