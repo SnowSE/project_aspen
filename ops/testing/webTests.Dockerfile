@@ -1,12 +1,12 @@
 FROM node:alpine
 
-WORKDIR /src/web
+WORKDIR /src/combined/ClientApp
 
-COPY package.json .
-COPY package-lock.json .
+COPY ClientApp/package.json .
+#COPY CLientApp/package-lock.json .
 
 RUN npm install
-COPY . .
+COPY ClientApp/ .
 
 # ENV CI=true
 CMD npm run test
