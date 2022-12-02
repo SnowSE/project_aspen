@@ -12,6 +12,7 @@ type TeamCardProps = {
 
 export function TeamDetails() {
 
+    const baseImageUrl = process.env.REACT_APP_BASE_URL + "/assets/"
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
