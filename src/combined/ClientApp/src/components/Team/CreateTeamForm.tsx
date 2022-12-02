@@ -64,7 +64,7 @@ const CreateTeamForm = () => {
         let newTeam: team = {
             name: teamName,
             description: teamDescription,
-            mainImage: "asdf",
+            mainImage: result.data,
             ownerID: Number(currentUser.data.id),
             eventID: currentEvent.id,
             donationTarget: donationGoal,
