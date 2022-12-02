@@ -1,4 +1,4 @@
-name: Test & Deploy (Staging)
+name: Run Tests (and deploy to staging if not a pull request)
 on:
   pull_request:
   push:
@@ -8,7 +8,7 @@ on:
     
 jobs:
   run-tests:
-    runs-on: [self-hosted, primary]
+    runs-on: [ubuntu-latest]
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.4.0
@@ -21,15 +21,6 @@ jobs:
           docker-compose exec -T api_test dotnet test api-tests
           docker-compose exec -T web_test npm run test
           # docker-compose exec -T web_test npm run lint 
-
-  teardown-tests:
-    runs-on: [self-hosted, primary]
-    if: ${{ always() }}
-    needs: [run-tests]
-    steps:
-      - name: teardown
-        run: |
-          cd ops/testing
           docker-compose down
 
   deploy-staging:    
