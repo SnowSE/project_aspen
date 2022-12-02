@@ -1,4 +1,4 @@
-﻿import { RWebShare } from "react-web-share";
+import { RWebShare } from "react-web-share";
 import { Button } from '@mui/material';
 
 const SharingButton = () => {

@@ -1,4 +1,4 @@
-﻿import { Button, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
