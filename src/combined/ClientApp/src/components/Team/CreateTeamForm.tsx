@@ -3,9 +3,7 @@ import React, { useContext, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
-import { Checkbox, ToggleButton } from "@mui/material";
-import { CheckmarkIcon } from "react-hot-toast";
-import CheckIcon from '@mui/icons-material/Check';
+import { Checkbox} from "@mui/material";
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
