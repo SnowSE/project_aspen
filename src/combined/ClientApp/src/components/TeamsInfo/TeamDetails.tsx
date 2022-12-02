@@ -25,7 +25,6 @@ export function TeamDetails() {
         console.log("I am inside the fetchTEam1", response);
         setCurrentTeam(response)
     }
-    useEffect(() => {
         const callServise = async () => {
             await fetchTeam()        }
 
@@ -46,8 +45,10 @@ export function TeamDetails() {
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}
-            {currentTeam?.donationTarget}
-
+            {currentTeam?.donationTarget}  
+            {/*<ul>*/}
+            {/*    {currentTeamRegisrtations.map(r: Registration[] => <li>{r.id}</li>)}*/}
+            {/*</ul>*/}
 
 
 
