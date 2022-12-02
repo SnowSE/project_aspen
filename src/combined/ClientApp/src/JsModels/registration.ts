@@ -1,4 +1,5 @@
 import Person from "./person";
+import PersonRegistrations from "./personRegistrations";
 
 export default class Registration {
     id: number;
@@ -7,19 +8,9 @@ export default class Registration {
     nickname: string;
     ownerID: number;
     teamID: number;
-    personRegistrations:[
-        {
-            personID: number,
-            person: Person {
-                authID: string,
-                name: string,
-                bio: string
-            },
-            createdDate: Date
-        }
-    ]
+    personRegistrations: PersonRegistrations[]
   
-    constructor(creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id: number, personRegistrations:PersonRegistratoins[]){
+    constructor(creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id: number, personRegistrations:PersonRegistrations[]){
         this.id = id;
         this.creationDate = creationDate;
         this.isPublic = isPublic;
