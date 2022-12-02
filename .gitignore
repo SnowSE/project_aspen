@@ -387,3 +387,6 @@ yarn-error.l
 *.tfstate
 *.tfstate.*
 *.tfvars
+
+# ignore uploaded assets
+src/combined/wwwroot/
