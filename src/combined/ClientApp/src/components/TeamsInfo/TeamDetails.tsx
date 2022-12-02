@@ -1,6 +1,7 @@
 ﻿import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Registration from "../../JsModels/registration";
 import { authService } from "../../services/authService";
 import { TeamCard } from "./Interfaces";
 
@@ -19,7 +20,7 @@ export function TeamDetails() {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-    const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState<any>();
+    const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
 
     const fetchTeam = async () => {
         const res = await fetch(api)
@@ -27,6 +28,8 @@ export function TeamDetails() {
         const response = await res.json()
         console.log("I am inside the fetchTEam1", response);
         setCurrentTeam(response)
+        console.log("I have got registrations", response.registrations)
+        setCurrentTeamRegistrations(response.registrations)
     }
     useEffect(() => {
         const callServise = async () => {
@@ -35,6 +38,8 @@ export function TeamDetails() {
         callServise()
     }, []);
     console.log("currentTeam Z", currentTeam);
+    console.log("I have got registrations 2", currentTeamRegisrtations)
+
     const navigate = useNavigate();
 
     const loggedInUSer = localStorage.getItem("LoggedInUser")
@@ -51,7 +56,11 @@ export function TeamDetails() {
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}
-            {currentTeam?.donationTarget}         
+            {currentTeam?.donationTarget}  
+            {/*<ul>*/}
+            {/*    {currentTeamRegisrtations.map(r: Registration[] => <li>{r.id}</li>)}*/}
+            {/*</ul>*/}
+
 
 
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>

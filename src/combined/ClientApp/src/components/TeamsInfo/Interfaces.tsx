@@ -1,6 +1,7 @@
 ﻿import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+import Registration from '../../JsModels/registration';
 import { authService } from '../../services/authService';
 import { LoggedInUser } from './LoggedInUser';
 import { TeamDetails } from './TeamDetails';
@@ -14,7 +15,7 @@ export type Team = {
     owner: string,
     eventID: string,
     donationTarget: number,
-    registrations: string[]
+    registrations: Registration[]
 };
 
 export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget, registrations }: Team) => {
