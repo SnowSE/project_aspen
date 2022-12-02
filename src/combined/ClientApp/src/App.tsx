@@ -9,7 +9,7 @@ import Event from '../src/JsModels/event'
 
 
 const root = process.env.PUBLIC_URL
-if(!root && process.env.NODE_ENV != 'test') {
+if (!root && process.env.NODE_ENV != 'test') {
     throw "PUBLIC_URL is undefined";
 }
 
@@ -22,17 +22,15 @@ function App() {
 
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
+        const today = new Date();
         if (allEventsJson.length > 0) {
-            const maxEventDate = allEventsJson.reduce(
-                (max: Date, allEventsJson: { date: Date; }) => (allEventsJson.date > max ? allEventsJson.date : max),
-                allEventsJson[0].date);
-            const latestEventFromJson: Event = allEventsJson.find(
-                (event: { date: Date }) => event.date === maxEventDate);
-
-            if (latestEventFromJson) {
-                setLatestEvent(latestEventFromJson);
-            }
-
+            const closestEvent = allEventsJson.reduce((a: Event, b: Event) => {
+                const diff = new Date(a.date).getTime() - today.getTime();
+                return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
+                    ? a
+                    : b;
+            });
+            setLatestEvent(closestEvent);
         }
         else {
             const defaultEvent = new Event(
@@ -52,9 +50,9 @@ function App() {
         console.log("App mounted");
         currentEventInit();
     }, []);
-    
+
     return (
-        <EventContext.Provider data-testid={"eventContext"}  value={latestEvent}>
+        <EventContext.Provider data-testid={"eventContext"} value={latestEvent}>
             <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
                 <Layout>
                     <Routes>
