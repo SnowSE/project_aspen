@@ -14,14 +14,14 @@ export type Team = {
     owner: string,
     eventID: string,
     donationTarget: number,
+    registrations: string[]
 };
 
-export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget }: Team) => {
+export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget, registrations }: Team) => {
     const navigate = useNavigate();
     //const user = authService.isLoggedIn();
     //{ localStorage.getItem("LoggedInUser") == "" ?}
     const loggedInUSer = localStorage.getItem("LoggedInUser")
-
 
     console.log("Am I logged in", loggedInUSer)
         return (

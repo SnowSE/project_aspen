@@ -17,7 +17,7 @@ export function TeamDetails() {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-
+    const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState<any>();
 
     const fetchTeam = async () => {
         const res = await fetch(api)
@@ -49,7 +49,8 @@ export function TeamDetails() {
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}
-            {currentTeam?.donationTarget}
+            {currentTeam?.donationTarget}         
+
 
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                 <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : authService.signinRedirect()}
