@@ -1,6 +1,7 @@
 ﻿import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { authService } from "../services/authService";
+import "../ComponentStyling.css"
 
 
 const LoginButton = () => {
@@ -15,28 +16,25 @@ const LoginButton = () => {
 
 
     return (
-        <Box sx={{color: "white"} }>
-                {localStorage.getItem("LoggedInUser") == "" ?
+        <Box >
+            <Box className = "BoxPadding">
+            {localStorage.getItem("LoggedInUser") == "" ?
                 <Button
                     onClick={loginHandler}
                     variant='contained'
-                    sx={{ backgroundColor: 'orange', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    className= "LoginButton"
                 >
                     Login
                 </Button> : <>
                     <Button
                         onClick={logoutHandler}
                         variant='contained'
-                        sx={{ backgroundColor: 'orange' }}
+                        className="LogoutButton"
                     >
                         Logout
-                    </Button>
-                    <Typography
-                        variant="h6"
-                        
-                    >   Logged In As: {localStorage.getItem("LoggedInUser")}
-                    </Typography> </>
-            }
+                    </Button> </>
+                }
+                </Box>
         </Box>
     );
 }

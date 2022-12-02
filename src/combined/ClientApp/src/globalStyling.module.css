@@ -1,0 +1,16 @@
+﻿/* A file that will hold all of the styling for the whole site */
+
+.LoginButtonHeader {
+    color: #673ab7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.LoginButtonHeader:hover {
+    color: white
+}
+
+.Donate-meals-button {
+    background-color: #00b0ff;
+    margin: 2px;
+}

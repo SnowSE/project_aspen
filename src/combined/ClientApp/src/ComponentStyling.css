@@ -1,0 +1,181 @@
+﻿/* This .css file is holding all of the information for the styling in all files*/
+
+/* Styling in the Login Button component*/
+.BoxPadding {
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.LoginButton {
+    background-color: orange !important;
+    color: white !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 5px 12px !important;
+}
+.LoginButton:hover {
+    background-color: rebeccapurple !important;
+    color: orange !important;
+}
+
+.LogoutButton {
+    background-color: orange !important;
+    color: white !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 5px 12px !important;
+}
+.LogoutButton:hover {
+    background-color: mediumpurple !important;
+    color: orange !important;
+}
+
+/*Drawer Component*/
+
+.DrawerColor {
+    background-color: #673ab7;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.DrawerAlignment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.HamburgerMenuColor {
+    color: white !important;
+}
+.HeaderInDrawer {
+    margin-right: 2px !important;
+    font-family: monospace !important;
+    font-weight: 700 !important;
+    letter-spacing: 5px !important;
+    color: white !important;
+    text-decoration: none !important;
+    font-size: 20px !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+}
+.HeaderInDrawer:hover {
+    color: orange !important;
+}
+
+.LoginNameInDrawer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-top: 2rem;
+}
+
+.DrawerLinks {
+    color: White !important;
+    text-decoration: none !important;
+    margin: 1rem !important;
+    position: relative !important;
+}
+
+/*NavMenu*/
+
+.HeaderInNavMenu {
+    margin-right: 2px !important;
+    font-family: monospace !important;
+    font-weight: 700 !important;
+    letter-spacing: 5px !important;
+    color: white !important;
+    text-decoration: none !important;
+    font-size: 20px !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    
+}
+
+@media (min-width: 400px) {
+    .HeaderInNavMenu {
+        display: none;
+    }
+}
+@media (min-width: 600px) {
+    .HeaderInNavMenu {
+        display: flex;
+    }
+}
+
+.HeaderInNavMenu:hover{
+    color: orange !important;
+}
+
+.NavMenuLinks {
+    color: White !important;
+    text-decoration: none !important;
+    margin: auto !important;
+    position: center !important;
+    border-left: 1px solid !important;
+    padding: 0px 7px 0px 7px !important;
+    flex-wrap: nowrap !important;
+}
+
+.NavMenuLinks:hover {
+    color: orange !important;
+}
+/*@media (min-width: 1000px) {
+    .NavMenuLinks {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .NavMenuLinks {
+        display: flex;
+    }
+}*/
+
+.NavMenuColorAndPosition {
+    background-color: #673ab7 !important;
+    position: fixed !important;
+}
+
+.NavMenuPadding {
+    padding-bottom: 5rem;
+}
+
+.LoginFeaturesInNavMenu {
+    align-items: center;
+}
+@media (min-width: 400px) {
+    .LoginFeaturesInNavMenu {
+        display: none;
+    }
+}
+
+@media (min-width: 600px) {
+    .LoginFeaturesInNavMenu {
+        display: flex;
+    }
+}
+
+.NavMenuSpacing {
+    flex-direction: row;
+    flex-grow: .5;
+}
+
+@media (min-width: 1100px) {
+    .NavMenuSpacing {
+        display: flex;
+    }
+}
+
+.UserNameSpacing {
+    padding-left: 1rem !important;
+}
+
+/* Page styling */
+/* Home Page */
+
+.PaperColor {
+    background-color: #673ab7 !important;
+}

@@ -18,6 +18,7 @@ import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
 import Event from '../../JsModels/event';
+import '../../globalStyling.module.css'
 
 
 export function Home() {
@@ -46,7 +47,7 @@ export function Home() {
     
     return (
         <Box>
-            <Paper square={true} sx={{backgroundColor:'#673ab7'}}>
+            <Paper square={true} className="PaperColor">
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} variant='h5' sx={{ fontWeight: 'bold', color: 'white' }}> {latestEvent.title} </Typography>
                     <Box sx={{display:'flex', justifyContent:'flex-end', alignItems: 'center'}}>
@@ -101,9 +102,12 @@ export function Home() {
                         id={"joinATeamBtn"}>
                             JOIN A TEAM
                     </Button>
-                    <Button variant='contained' sx={{ backgroundColor: '#00b0ff', m: 2 }} onClick={() => navigate('/createteam')}
-                        data-testid={'createATeamBtn'}
-                        id={"createATeamBtn"}>
+                        <Button
+                            variant='contained'
+                            className='Donate-meals-button'
+                            onClick={() => navigate('/createteam')}
+                            data-testid={'createATeamBtn'}
+                            id={"createATeamBtn"}>
                             CREATE A TEAM
                     </Button>
                 </Box>
