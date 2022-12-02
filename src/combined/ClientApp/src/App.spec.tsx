@@ -1,9 +1,6 @@
-import * as React from 'react';
-import { render, RenderResult} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import App, { EventContext } from './App'
-
-let documentBody: RenderResult;
 
 const mockedUsedNavigate = jest.fn();
 
@@ -14,11 +11,12 @@ jest.mock('react-router-dom', () => ({
 
 describe('App.tsx tests', () => {
     beforeEach(() => {
-        documentBody = render(<App />);
+        render(<App />);
     })
 
     test('App.tsx renders', () => {
-        expect(EventContext.Provider).toBeInTheDocument
+        var temp = expect(EventContext.Provider).toBeInTheDocument
+        console.log("App.tsx:" + temp)
     });
     
 
