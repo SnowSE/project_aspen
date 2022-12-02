@@ -1,9 +1,5 @@
 ﻿import { RWebShare } from "react-web-share";
-import ShareIcon from '@mui/icons-material/Share';
-import {
-    Button,
-    IconButton
-} from '@mui/material';
+import { Button } from '@mui/material';
 
 const SharingButton = () => {
     const shareUrl = window.location.href;

@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box} from "@mui/material";
 import CreateTeamForm from "../../components/Team/CreateTeamForm";
 
 const ASPEN_API = (process.env.REACT_APP_BASE_URL || "https://engineering.snow.edu") + process.env.PUBLIC_URL + "/api"

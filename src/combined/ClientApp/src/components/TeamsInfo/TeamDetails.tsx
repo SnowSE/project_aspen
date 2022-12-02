@@ -1,12 +1,8 @@
 ﻿import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { TeamCard } from "./Interfaces";
 
 
-type TeamCardProps = {
-    team: typeof TeamCard
-}
 
 
 export function TeamDetails() {
@@ -45,7 +41,7 @@ export function TeamDetails() {
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
-            <img src={baseImageUrl + currentTeam?.mainImage}/>
+            <img alt = "mainImage"src={baseImageUrl + currentTeam?.mainImage}/>
             {currentTeam?.ownerID}
             {currentTeam?.owner}
             {currentTeam?.eventID}
