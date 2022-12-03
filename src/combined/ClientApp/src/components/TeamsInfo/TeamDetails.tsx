@@ -57,9 +57,9 @@ export function TeamDetails() {
             {currentTeam?.owner}
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}  
-            {/*<ul>*/}
-            {/*    {currentTeamRegisrtations.map(r: Registration[] => <li>{r.id}</li>)}*/}
-            {/*</ul>*/}
+            <ul>
+                {currentTeamRegisrtations.map(r => <li>{r.nickname}</li>)}
+            </ul>
 
 
 
