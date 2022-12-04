@@ -1,13 +1,12 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import { ThemeProvider, createTheme, Toolbar, Button, useMediaQuery, useTheme } from '@mui/material';
+import { ThemeProvider, createTheme, Toolbar,  useMediaQuery, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled';
-import ReactDOM from 'react-dom';
-import { deepPurple, purple } from '@mui/material/colors';
+import { deepPurple } from '@mui/material/colors';
 import { authService } from '../../services/authService'; 
 import DrawerComponent from './DrawerComponent';
 import { useEffect, useState } from 'react';
@@ -20,8 +19,6 @@ const NavMenu = () => {
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
         { text: 'Team Details', href: '/TeamDetails' }
-
-
     ]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -30,7 +27,7 @@ const NavMenu = () => {
         pages.push({ text: 'Fetch Data', href: '/fetch-data' });
     }
     const adminPages = (value: any) => {
-        if (isAdmin == false && value.key == "Add Event") {
+        if (isAdmin === false && value.key === "Add Event") {
             return false
         }
         else {

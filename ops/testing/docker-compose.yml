@@ -3,7 +3,7 @@ services:
   web_test:
     build:
       dockerfile: ../../ops/testing/webTests.Dockerfile
-      context: ../../src/web/
+      context: ../../src/combined/
     networks:
       shared_test:
 

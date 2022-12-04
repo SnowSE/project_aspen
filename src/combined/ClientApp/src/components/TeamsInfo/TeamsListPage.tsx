@@ -1,8 +1,7 @@
-﻿import { Button, Grid } from '@mui/material';
-import React, { Component, useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
-import { TeamDetails } from './TeamDetails';
 import { getTeamsList } from './TeamServices';
 
 

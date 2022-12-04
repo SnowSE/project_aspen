@@ -1,5 +1,4 @@
-﻿import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import { authService } from "../services/authService";
 
 
@@ -16,7 +15,7 @@ const LoginButton = () => {
 
     return (
         <Box sx={{color: "white"} }>
-                {localStorage.getItem("LoggedInUser") == "" ?
+                {localStorage.getItem("LoggedInUser") === "" ?
                 <Button
                     onClick={loginHandler}
                     variant='contained'

@@ -1,4 +1,4 @@
-import React, { Component, FC, ReactNode } from 'react';
+import React, {FC, ReactNode } from 'react';
 import { Container } from 'reactstrap';
 import  NavMenu from './Navigation/NavMenu';
 
