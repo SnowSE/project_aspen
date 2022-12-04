@@ -10,7 +10,7 @@ export default class Registration {
     teamID: number;
     personRegistrations: PersonRegistrations[]
   
-    constructor(creationDate: string, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id: number, personRegistrations:PersonRegistrations[]){
+    constructor(creationDate: Date, isPublic: boolean, nickname: string, ownerID: number, teamID: number, id: number, personRegistrations:PersonRegistrations[]){
         this.id = id;
         this.creationDate = creationDate;
         this.isPublic = isPublic;
