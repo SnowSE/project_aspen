@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import PersonRegistrations from "../../JsModels/personRegistrations";
+import registration from "../../JsModels/registration";
 import {Team } from "./Interfaces"
 
 
@@ -36,14 +37,14 @@ export function LoggedInUser() {
         console.log("Converted ownerID", typeof(ownerId))
     }
 
-    interface registration {
-        creationDate: Date,
-        isPublic: boolean,
-        nickname: string,
-        ownerID: number,
-        teamID: number,
-        personRegistrations: PersonRegistrations[]
-    }
+    //interface registration {
+    //    creationDate: Date,
+    //    isPublic: boolean,
+    //    nickname: string,
+    //    ownerID: number,
+    //    teamID: number,
+    //    personRegistrations: PersonRegistrations[]
+    //}
 
     const navigate = useNavigate();
     
@@ -60,6 +61,7 @@ export function LoggedInUser() {
         console.log(api)
 
         let newMember: registration = {
+            id: 1,
             creationDate: creationDate,
             isPublic: isPublic,
             nickname: nickName,

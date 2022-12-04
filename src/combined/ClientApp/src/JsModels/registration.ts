@@ -3,7 +3,7 @@ import PersonRegistrations from "./personRegistrations";
 
 export default class Registration {
     id: number;
-    creationDate: string;
+    creationDate: Date;
     isPublic: boolean;
     nickname: string;
     ownerID: number;
