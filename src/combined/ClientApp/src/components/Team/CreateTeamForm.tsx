@@ -87,7 +87,7 @@ const CreateTeamForm = () => {
 
 
     useEffect(() => {
-        if (teamName.trim().length != 0 && teamDescription.trim().length != 0 && donationGoal! > 0) {
+        if (teamName.trim().length !== 0 && teamDescription.trim().length !== 0 && donationGoal! > 0) {
             setDisableSubmit(false)
         }
         else {
