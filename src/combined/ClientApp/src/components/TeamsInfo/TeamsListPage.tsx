@@ -1,30 +1,34 @@
 import { Button, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
 import { getTeamsList } from './TeamServices';
+import { EventContext } from '../../App';
 
 
 export function TeamsListPage() {
     const navigate = useNavigate();
-
-    //const { isLoading, error, data } = EventsHooks.useEventsQuery();
+    const currentEvent = useContext(EventContext);
     const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
+    
     async function settingTeamsList() {
-        const teams = await getTeamsList()
-        console.log('I am  in teams',teams)
-
+        if (!currentEvent.id) {
+            console.log("No current event found!")
+            return;
+        }
+      
+        const teams = await getTeamsList(currentEvent.id)
         setTeams(teams)
     };
-
-
-    useEffect(() => {
-        console.log('in useeffect')
-        const callService = async () => {
+    
+    const callService = async () => {
             await settingTeamsList();
-        }
+    }
+    
+    useEffect(() => {
         callService()
     }, [])
+    
     return (
         <div>'
             <Grid item xs={4} sx={{
