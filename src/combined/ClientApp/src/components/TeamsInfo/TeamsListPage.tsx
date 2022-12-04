@@ -7,27 +7,21 @@ import { EventContext } from '../../App';
 
 
 export function TeamsListPage() {
+    const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
-    const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
-    
-    async function settingTeamsList() {
-        if (!currentEvent.id) {
-            console.log("No current event found!")
-            return;
-        }
-      
-        const teams = await getTeamsList(currentEvent.id)
-        setTeams(teams)
-    };
-    
-    const callService = async () => {
-            await settingTeamsList();
-    }
-    
+       
     useEffect(() => {
-        callService()
-    }, [])
+        const fetchData = async () => {
+            if (!currentEvent.id) {
+                console.log("No current event found!")
+                return;
+            }
+            const teams = await getTeamsList(currentEvent.id)
+            setTeams(teams)
+        }
+        fetchData()
+    }, [currentEvent])
     
     return (
         <div>'
