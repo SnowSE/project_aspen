@@ -34,13 +34,8 @@ export default function PaymentForm() {
                         amount: 100,
                         id: id, 
                         teamName: "asdf"
-                    })
-
-                if (response.data.success) {
-                    console.log("successful payment")
-                    setSuccess(true)
-                    console.log("response si: ", response)
-                }
+                    }).then((response) => {console.log(response.data) })
+                    .catch((error) => { console.log(error.response.data) })
 
             } catch (error) {
                 console.log("error is: ", error)

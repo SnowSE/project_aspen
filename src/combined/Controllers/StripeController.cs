@@ -16,7 +16,7 @@ namespace combined.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> payment([FromBody] Payment payment)
+        public async Task<ActionResult<CheckoutOrderResponse>> payment([FromBody] Payment payment)
         {
             var referer = Request.Headers.Referer;
             client_URL = referer[0];
@@ -32,7 +32,8 @@ namespace combined.Controllers
                 publicKey = publicKey
             };
 
-            return Ok(checkoutOrderResponse);
+            //string url = $"https://checkout.stripe.com/pay/{sessionId}";
+            return checkoutOrderResponse;
         }
 
         [HttpGet("success")]
