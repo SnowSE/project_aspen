@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
-import { Checkbox} from "@mui/material";
+import { Checkbox } from "@mui/material";
 
 const CreateTeamForm = () => {
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
@@ -16,6 +16,7 @@ const CreateTeamForm = () => {
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
     const [isPublic, setIsPublic] = useState<boolean>(false)
+    const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
     const currentEvent = useContext(EventContext);
 
@@ -30,7 +31,7 @@ const CreateTeamForm = () => {
         ownerID: number,
         eventID: number,
         donationTarget: number,
-        isPublic:boolean
+        isPublic: boolean
     }
 
     const createTeamHandler = async (event: React.FormEvent) => {
@@ -84,6 +85,18 @@ const CreateTeamForm = () => {
         }
     }
 
+
+    useEffect(() => {
+        if (teamName.trim().length !== 0 && teamDescription.trim().length !== 0 && donationGoal! > 0) {
+            setDisableSubmit(false)
+        }
+        else {
+            setDisableSubmit(true)
+        }
+    }, [teamName, teamDescription, donationGoal])
+
+
+
     return (
         <div className = "FormPageContentPosition">
 
@@ -92,14 +105,9 @@ const CreateTeamForm = () => {
                     <Row className="FormRowOne">
                         <Col md={6} xs={8}>
 
-                            <Label
-                                for="exampleFile"
-                                sm={2}
-                            >
+                            <Label>
                             </Label>
                             <Input
-                                id="exampleFile"
-                                name="file"
                                 type="file"
                                 placeholder="Team Logo"
                                 onChange={imageOnChange}
@@ -110,87 +118,74 @@ const CreateTeamForm = () => {
                         </Col>
                     </Row>
                 </FormGroup>
-                <Row className="FormRowTwo">
-                    <Col md={6} xs={8}>
-                        <FormGroup>
-                            <Label for="exampleEmail">
+
+                <FormGroup>
+                    <Row className="FormRowTwo">
+                        <Col md={6} xs={8}>
+                            <Label>
                                 Team Name
                             </Label>
                             <Input
-                                id="TeamName"
-                                name="TeamName"
                                 placeholder="Team Name"
                                 value={teamName}
+                                data-testid = "teamNameInput"
                                 onChange={event => setTeamName(event.target.value)}
                             />
-                        </FormGroup>
-                    </Col>
+                        </Col>
+                    </Row>
+                </FormGroup>
 
-                </Row>
                 <FormGroup>
                     <Row className="FormRowThree">
 
                         <Col md={6} xs={8}>
-
-
-                            <Label
-                                for="exampleText"
-                                sm={2}
-                            >
+                            <Label>
                                 Team Description
                             </Label>
                             <Input
-                                id="exampleText"
-                                name="text"
                                 type="textarea"
                                 value={teamDescription}
+                                data-testid = "teamDescriptionInput"
                                 onChange={event => setTeamDescription(event.target.value)}
                             />
-
                         </Col>
                     </Row>
                 </FormGroup>
+
                 <FormGroup>
                     <Row className="FormRowFour">
                         <Col md={6} xs={8}>
-
-                            <Label for="exampleAddress">
+                            <Label>
                                 Donation Goal
                             </Label>
                             <Input
-                                id="exampleAddress"
-                                name="donationGoal"
-                                placeholder="$"
                                 type="number"
                                 value={donationGoal}
+                                data-testid = "teamDonationGoalInput"
                                 onChange={event => setDonationGoal(Number(event.target.value))}
                             />
                         </Col>
                     </Row>
                 </FormGroup>
+
                 <FormGroup>
                     <Row className="FormRowFive">
                         <Col md={6} xs={8} className="FormRowFiveColumnPosition">
 
-                            <Label for="exampleAddress">
-                                Is This Team Public? 
+                            <Label>
+                                Is This Team Public?
                             </Label>
-                            
 
-                                <Checkbox checked = {isPublic} onChange={() => {
-                                    setIsPublic(!isPublic)
-                                }}/>
-
-
-
+                            <Checkbox checked={isPublic} onChange={() => {
+                                setIsPublic(!isPublic)
+                            }} />
                         </Col>
                     </Row>
-
-
                 </FormGroup>
+
                 <Col md={12} xs={8} className="FormButtonPosition">
 
-                    <Button variant='contained' className="FormButtonSubmit" type="submit" >Submit</Button>
+                    <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
                 </Col>
             </Form>
         </div>
