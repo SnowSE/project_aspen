@@ -1,13 +1,14 @@
-import { Box, Drawer, IconButton, List, ListItem, ListItemButton, styled, Typography } from "@mui/material";
+import { Box, Drawer, IconButton, List, ListItem, ListItemButton, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import  MenuIcon  from "@mui/icons-material/Menu";
 import LoginButton from "../LoginButton";
-
+import "../../ComponentStyling.css"
 
 
 const pages = [
-    { text: 'Home', href: '/' }
+    { text: 'Home', href: '/' },
+    { text: 'Team Details', href: '/TeamDetails' }
 ]
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -16,64 +17,49 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     pages.push({ text: 'Fetch Data', href: '/fetch-data' });
 }
 
-const LinkStyle = styled(Link)`
-    color: White;
-    text-decoration: none;
-    margin: 1rem;
-    position: relative;
-    hover: Orange;
-    `;
-
 function DrawerComponent() {
     const [openDrawer, setOpenDrawer] = useState(false);
     return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Box className = 'DrawerAlignment'>
                 <Drawer
                     open={openDrawer}
                     onClose={() => setOpenDrawer(false)}
                 
                 >
-                    <Box sx={{ backgroundColor: '#673ab7', flexGrow: 1, display: { md: 'flex' } }}>
+                    <Box className = "DrawerColor" >
                         {pages.map((page) => (
                             <List >
-                            <ListItem>
-                                    <ListItemButton onClick={() => setOpenDrawer(false) }>
-                                    <LinkStyle
-                                        to={page.href}
-                                        key={page.text}
-                                    >
-                                        {page.text}
-                                    </LinkStyle>
+                                <ListItem >
+                                    <ListItemButton  onClick={() => setOpenDrawer(false) }>
+                                        <Link
+                                            className="DrawerLinks"
+                                            to={page.href}
+                                            key={page.text}
+                                        >
+                                            {page.text}
+                                        </Link>
                                     </ListItemButton>
                                 </ListItem>
 
-                        </List>
+                            </List>
                         ))}
-                    <Box sx={{ position: 'absolute', alignItems: 'center', bottom: 5} }>
+                    <Box>
+                        <Typography className="LoginNameInDrawer">
+                            {localStorage.getItem("LoggedInUser")}
+                        </Typography>
                         <LoginButton />
                     </Box>
                     </Box>
                 </Drawer>
                 <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
-                    <MenuIcon sx={{color:"white"} } />
+                <MenuIcon className="HamburgerMenuColor" />
                 </IconButton>
                 <Box>
                     <Typography
                         component="a"
                         href="https://sanpetepantry.org/"
-                        variant="h6"
-                        align='center'
-                        noWrap
-                        sx={{
-                            mr: 2,
-                            display: {md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.2rem',
-                            color: 'white',
-                            textDecoration: 'none',
-                            "&:Hover": { color: "orange" }
-                        }}>
+                        className = "HeaderInDrawer"
+                    >
                         SanPete Food Bank
                     </Typography>
                 </Box>
