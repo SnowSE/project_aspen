@@ -10,6 +10,8 @@ import {Team } from "./Interfaces"
 export function LoggedInUser() {
 
     const [searchParams] = useSearchParams();
+
+
     const loggedInUSer = localStorage.getItem("LoggedInUser")
     console.log("I am currently logged in as", typeof (loggedInUSer));
 
@@ -28,12 +30,12 @@ export function LoggedInUser() {
    
     if (list[0] !== null) {
         var tId = parseInt(list[0]);   // parse the string back to a number.
-        console.log("Converted team id",typeof( tId));
+        console.log("Converted team id", typeof (tId), tId);
     }   
    
     if (list[1] !== null) {
         var ownerId = parseInt(list[1]);   // parse the string back to a number.
-        console.log("Converted ownerID", typeof(ownerId))
+        console.log("Converted ownerID", typeof (ownerId), ownerId)
     }
 
     interface registration {
@@ -69,8 +71,12 @@ export function LoggedInUser() {
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         const api = process.env.REACT_APP_BASE_URL + `/api/Registration`;
-        console.log(api)
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
 
+        console.log(api)
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
         let newMember: registration = {
             creationDate: creationDate,
             isPublic: isPublic,
@@ -93,7 +99,9 @@ export function LoggedInUser() {
 
         const postNewMember = await axios.post(api, newMember)
                 .then((response) => { })
-                .catch((error) => { console.log(error.response.data) })
+            .catch((error) => { console.log(error.response.data) })
+        const currentUser = await axios.get(currentUserUrl, config)
+
 
         setNickName('')
         setPersonRegistration(personRegistrations)
