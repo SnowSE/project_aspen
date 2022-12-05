@@ -1,6 +1,4 @@
-import { Button, Grid } from '@mui/material';
 import React, { useEffect, useState,useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
 import { getTeamsList } from './TeamServices';
 import { EventContext } from '../../App';
@@ -8,7 +6,6 @@ import { EventContext } from '../../App';
 
 export function TeamsListPage() {
     const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
-    const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
        
     useEffect(() => {

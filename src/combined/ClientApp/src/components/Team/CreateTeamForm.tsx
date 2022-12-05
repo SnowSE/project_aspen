@@ -4,8 +4,12 @@ import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CreateTeamForm = () => {
+
+    const navigate = useNavigate();
+
     console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
     console.log('BASE_URL', process.env.BASE_URL)
     console.log('PUBLIC_URL', process.env.PUBLIC_URL)
@@ -184,8 +188,14 @@ const CreateTeamForm = () => {
                 </FormGroup>
 
                 <Col md={12} xs={8} className="FormButtonPosition">
-
-                    <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                    <Button 
+                        variant='contained' 
+                        disabled={disableSubmit} 
+                        sx={{ backgroundColor: 'orange' }} 
+                        type="submit"
+                        onClick={() => navigate('/TeamsListPage')} >
+                            Submit
+                    </Button>
                 </Col>
             </Form>
         </div>
