@@ -46,6 +46,7 @@ export function LoggedInUser() {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
+        var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
 
         const currentUser = await axios.get(currentUserUrl, config)
         console.log("I am the current user", Number(currentUser.data.id) );
