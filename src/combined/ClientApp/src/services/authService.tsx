@@ -5,11 +5,11 @@ const authUrl = process.env.REACT_APP_AUTH_URL
 const userManager = new UserManager({
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority:
-    `${authUrl}/realms/aspen/.well-known/openid-configuration`,
+    `${authUrl || "https://engineering.snow.edu/aspen/auth"}/realms/aspen/.well-known/openid-configuration`,
   client_id: "aspen-web",
   redirect_uri: window.location.origin + "/aspen/new/landing",
   post_logout_redirect_uri: window.location.origin + "/aspen/new/",
-  silent_redirect_uri: window.location.origin + "/login",
+  silent_redirect_uri: window.location.origin + "/aspen/new/",
   response_type: "code",
   scope: "openid profile email",
   loadUserInfo: true,

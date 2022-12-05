@@ -4,7 +4,6 @@ import { FormGroup, Row, Col, Label, Input, FormText, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { AspenEvent } from "../../interfaces";
 import { EventsService } from "../../services/Events/EventsService";
-import { authService } from "../../services/authService";
 const CreateEventForm = () => {
 
     var navigate = useNavigate();
@@ -32,15 +31,15 @@ const CreateEventForm = () => {
         navigate("/")
 
     }
-
+    
     useEffect(() => {
         if (Date.parse(eventDate.toString()) && eventTitle.trim().length !== 0 && eventLocation.trim().length !== 0 && eventDonationTarget > 0 && eventDescription.trim().length !== 0) {
             setDisableSubmit(false)
         }
         else {
+
             setDisableSubmit(true)
         }
-
     }, [eventTitle, eventLocation, eventDescription, eventDonationTarget, eventDate])
 
 
@@ -54,12 +53,14 @@ const CreateEventForm = () => {
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <Col md={6} xs={8}>
                                 <FormGroup>
-                                    <Label for="EventTitle">
+                                    <Label>
                                         Event Title
                                     </Label>
 
                                     <Input
                                         placeholder="Event Title"
+                                        aria-label="eventTitle"
+                                        data-testid="eventTitleInput"
                                         onChange={e => setEventTitle(e.currentTarget.value)}
                                     />
                                 </FormGroup>
@@ -69,14 +70,18 @@ const CreateEventForm = () => {
                     </FormGroup>
                     <FormGroup>
 
+
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <Col md={6} xs={8}>
                                 <FormGroup>
-                                    <Label for="exampleEmail">
+                                    <Label>
                                         Event Location
                                     </Label>
                                     <Input
                                         placeholder="Event Location"
+                                        aria-label="eventLocation"
+                                        data-testid="eventLocationInput"
+
                                         onChange={e => setEventLocation(e.currentTarget.value)}
                                     />
                                 </FormGroup>
@@ -90,14 +95,14 @@ const CreateEventForm = () => {
                             <Col md={6} xs={8}>
 
 
-                                <Label
-                                    for="exampleText"
-                                    sm={2}
-                                >
+                                <Label>
                                     Event Description
                                 </Label>
                                 <Input
                                     type="textarea"
+                                    aria-label="eventDescription"
+                                    data-testid="eventDescriptionInput"
+
                                     onChange={e => setEventDescription(e.currentTarget.value)}
 
                                 />
@@ -109,12 +114,15 @@ const CreateEventForm = () => {
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <Col md={6} xs={8}>
 
-                                <Label for="exampleAddress">
+                                <Label>
                                     Donation Target
                                 </Label>
                                 <Input
                                     placeholder="$"
                                     type="number"
+                                    aria-label="eventDonationGoal"
+                                    data-testid="eventDonationGoalInput"
+
                                     onChange={e => setEventDonationTarget(Number(e.currentTarget.value))}
 
                                 />
@@ -125,11 +133,14 @@ const CreateEventForm = () => {
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <Col md={6} xs={8}>
 
-                                <Label for="exampleAddress">
+                                <Label>
                                     Event Start Date
                                 </Label>
                                 <Input
                                     type="date"
+                                    aria-label="eventDate"
+                                    data-testid="eventDateInput"
+
                                     onChange={e => setEventDate(e.currentTarget.valueAsDate!)}
 
                                 />
@@ -139,12 +150,6 @@ const CreateEventForm = () => {
                     <FormGroup>
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <Col md={6} xs={8}>
-
-                                <Label
-                                    for="exampleFile"
-                                    sm={2}
-                                >
-                                </Label>
                                 <Input
                                     id="exampleFile"
                                     name="file"
@@ -161,6 +166,7 @@ const CreateEventForm = () => {
                     <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
 
                         <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                    
                     </Col>
                 </Form>
 
