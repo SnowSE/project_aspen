@@ -5,6 +5,9 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import StripeContainer from '../../components/Stripe/StripeContainer';
+
+
 
 
 export function DonationPage() {
@@ -38,6 +41,7 @@ export function DonationPage() {
                     Donate Now
                 </Button>
             </Box>
+            <StripeContainer />
         </Box>
     );
 }
