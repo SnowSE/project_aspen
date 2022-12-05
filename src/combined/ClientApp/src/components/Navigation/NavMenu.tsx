@@ -21,9 +21,8 @@ const NavMenu = () => {
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         pages.push({ text: 'Swagger', href: `/swagger` });
-        pages.push({ text: 'Counter', href: '/counter' });
-        pages.push({ text: 'Fetch Data', href: '/fetch-data' });
     }
+    
     const adminPages = (value: any) => {
         if (isAdmin === false && value.key === "Add Event") {
             return false
@@ -42,7 +41,6 @@ const NavMenu = () => {
                 if (role.includes("admin")) {
                     console.log("here")
                     setIsAdmin(true)
-
                 }
                 else {
                     setIsAdmin(false)

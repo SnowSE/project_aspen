@@ -12,19 +12,33 @@ import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
+import { authService } from "../../services/authService"; 
 
 
 
 export function Home() {
-
-    console.log("window.location.origin is: ", window.location.origin)
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
-
-    console.log("currentEvent is: ", currentEvent);
-
+    
     useEffect(() => {
-        console.log("Home mounted");
+
+    //    const user = JSON.parse(localStorage.getItem("user"));
+
+    //    if (user) {
+    //        const decodedJwt = parseJwt(user.accessToken);
+
+    //        if (decodedJwt.exp * 1000 < Date.now()) {
+    //            props.logOut();
+    //        }
+    //    }
+    //});
+    //    async function currentUser() {
+    //        var user = await authService.getUser()
+    //        console.log("user roles:", user?.profile.roles)
+    //        user?.profile.roles.forEach((role: string) => {
+    //            console.log(role)
+    //        });
+    //    }
 
     }, []);
 
