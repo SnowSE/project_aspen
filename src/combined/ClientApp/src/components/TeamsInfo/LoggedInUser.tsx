@@ -1,7 +1,7 @@
-import { Button} from "@mui/material";
+import { Button, Grid} from "@mui/material";
 import axios from "axios";
 import {  useState } from "react";
-import {  useSearchParams } from "react-router-dom";
+import {  useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 
 
@@ -10,7 +10,7 @@ export function LoggedInUser() {
 
     const [searchParams] = useSearchParams();
 
-
+    const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser")
     console.log("I am currently logged in as", typeof (loggedInUSer));
 
@@ -130,6 +130,13 @@ export function LoggedInUser() {
                     <Button variant='contained' sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
                 </Col>
             </Form>
+
+            <Grid item xs={4} sx={{
+                display: 'flex', justifyContent: 'flex-start',
+            }}>
+                <Button sx={{ backgroundColor: '#FFF500', m: 2 }} onClick={() => navigate(-1)}>Go back 1 Page</Button>
+            </Grid>   
+
         </div>);
    
 
