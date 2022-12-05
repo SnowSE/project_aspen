@@ -4,13 +4,17 @@ import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CreateTeamForm = () => {    
+
+    const navigate = useNavigate();
+
     const [teamName, setTeamName] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
-    const [isPublic, setIsPublic] = useState<boolean>(false)
+    const [isPublic, setIsPublic] = useState<boolean>(true)
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
     const currentEvent = useContext(EventContext);
@@ -168,7 +172,7 @@ const CreateTeamForm = () => {
                         <Col md={6} xs={8} className="FormRowFiveColumnPosition">
 
                             <Label>
-                                Is This Team Public?
+                                Team is public.
                             </Label>
 
                             <Checkbox checked={isPublic} onChange={() => {
@@ -179,8 +183,14 @@ const CreateTeamForm = () => {
                 </FormGroup>
 
                 <Col md={12} xs={8} className="FormButtonPosition">
-
-                    <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                    <Button 
+                        variant='contained' 
+                        disabled={disableSubmit} 
+                        sx={{ backgroundColor: 'orange' }} 
+                        type="submit"
+                        onClick={() => {navigate({pathname: '/TeamsListPage'})}}>
+                            Submit
+                    </Button>
                 </Col>
             </Form>
         </div>
