@@ -3,8 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
-import PersonRegistrations from "../../JsModels/personRegistrations";
-import registration from "../../JsModels/registration";
+//import PersonRegistrations from "../../JsModels/personRegistrations";
+//import registration from "../../JsModels/registration";
 import {Team } from "./Interfaces"
 
 
@@ -37,14 +37,25 @@ export function LoggedInUser() {
         console.log("Converted ownerID", typeof(ownerId))
     }
 
-    //interface registration {
-    //    creationDate: Date,
-    //    isPublic: boolean,
-    //    nickname: string,
-    //    ownerID: number,
-    //    teamID: number,
+    interface registration {
+        creationDate: Date,
+        isPublic: boolean,
+        nickname: string,
+        ownerID: number,
+        teamID: number,
     //    personRegistrations: PersonRegistrations[]
-    //}
+        personRegistrations: [
+            {
+                personID: number,
+                person: {
+                    authID: string,
+                    name: string,
+                    bio: string
+                },
+                createDate: Date
+            }
+        ]
+    }
 
     const navigate = useNavigate();
     
@@ -57,11 +68,10 @@ export function LoggedInUser() {
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        const api = process.env.REACT_APP_BASE_URL + `/api/Registration`;
-        console.log(api)
+        const api = process.env.PUBLIC_URL + `/api/Registration`;
+        console.log("I am the api",api)
 
         let newMember: registration = {
-            id: 1,
             creationDate: creationDate,
             isPublic: isPublic,
             nickname: nickName,
@@ -70,10 +80,8 @@ export function LoggedInUser() {
             // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
                 {
-                    id: 3,
                     personID: 10,
                     person: {
-                        id: 1,
                         authID: '',
                         name: user,
                         bio: ' '
@@ -89,6 +97,7 @@ export function LoggedInUser() {
 
         setNickName('')
         setPersonRegistration(personRegistrations)
+        console.log('Nickname is:', nickName);
     }
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
