@@ -42,7 +42,19 @@ export function LoggedInUser() {
         nickname: string,
         ownerID: number,
         teamID: number,
-        personRegistrations: PersonRegistrations[]
+    //    personRegistrations: PersonRegistrations[]
+
+        personRegistrations: [
+            {
+                personID: number,
+                person: {
+                    authID: string,
+                    name: string,
+                    bio: string
+                },
+                createDate: Date
+            }
+        ]
     }
 
     const navigate = useNavigate();
@@ -68,10 +80,8 @@ export function LoggedInUser() {
             // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
                 {
-                    id: 3,
                     personID: 10,
                     person: {
-                        id: 1,
                         authID: '',
                         name: user,
                         bio: ' '
