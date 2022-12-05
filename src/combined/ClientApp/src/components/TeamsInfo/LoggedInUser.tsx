@@ -3,6 +3,7 @@ import axios from "axios";
 import {  useState } from "react";
 import {  useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import registration from "../../JsModels/registration";
 
 
 
@@ -21,7 +22,6 @@ export function LoggedInUser() {
     const list=[]
     for (var entry of searchParams.entries()) {
         console.log(entry[1]);
-        //const [teamId, teamIdValue] = entry;
         list.push(entry[1])
     }
     console.log("I am list", list[0]);
@@ -35,27 +35,6 @@ export function LoggedInUser() {
     if (list[1] !== null) {
         var ownerId = parseInt(list[1]);   // parse the string back to a number.
         console.log("Converted ownerID", typeof (ownerId), ownerId)
-    }
-
-    interface registration {
-        creationDate: Date,
-        isPublic: boolean,
-        nickname: string,
-        ownerID: number,
-        teamID: number,
-    //    personRegistrations: PersonRegistrations[]
-
-        personRegistrations: [
-            {
-                personID: number,
-                person: {
-                    authID: string,
-                    name: string,
-                    bio: string
-                },
-                createDate: Date
-            }
-        ]
     }
 
     
@@ -83,13 +62,8 @@ export function LoggedInUser() {
             teamID: tId,
             // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
-                {
-                    personID: 10,
-                    person: {
-                        authID: '',
-                        name: user,
-                        bio: ' '
-                    },
+                {   
+                    personID: 10,                    
                     createDate: creationDate
                 }
             ]
