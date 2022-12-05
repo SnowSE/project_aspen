@@ -193,7 +193,7 @@ const CreateTeamForm = () => {
                         disabled={disableSubmit} 
                         sx={{ backgroundColor: 'orange' }} 
                         type="submit"
-                        onClick={() => navigate('/TeamsListPage')} >
+                        onClick={() => {navigate({pathname: '/TeamDetails',search: `?id=${id}`})}}>
                             Submit
                     </Button>
                 </Col>
