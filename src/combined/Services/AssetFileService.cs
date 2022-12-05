@@ -15,6 +15,12 @@ public class AssetFileService : IAssetFileService
         {
             throw new Exception("AssetsDirectory configuration is empty");
         }
+
+        if(Directory.Exists(assetsDirectory) is false)
+        {
+            logger.LogInformation("Assets directory doesn't exist...creating it at {0}", assetsDirectory);
+            Directory.CreateDirectory(assetsDirectory);
+        }
     }
 
     public async Task<string> StoreAsset(IFormFile asset)
