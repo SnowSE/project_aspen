@@ -6,14 +6,9 @@ import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const CreateTeamForm = () => {
+const CreateTeamForm = () => {    
 
     const navigate = useNavigate();
-
-    console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
-    console.log('BASE_URL', process.env.BASE_URL)
-    console.log('PUBLIC_URL', process.env.PUBLIC_URL)
-    console.log('everything', process.env)
 
     const [teamName, setTeamName] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
@@ -40,9 +35,9 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        console.log(process.env.REACT_APP_BASE_URL)
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
-        var assetsUrl = process.env.REACT_APP_BASE_URL + "/api/asset"
+        console.log(process.env.PUBLIC_URL)
+        var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+        var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
 
         if (!image) {
             return
@@ -73,7 +68,7 @@ const CreateTeamForm = () => {
             isPublic: isPublic
         }
 
-        var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
+        var teamUrl = process.env.PUBLIC_URL + "/api/teams"
         await axios.post(teamUrl, newTeam, config)
             .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
