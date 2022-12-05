@@ -4,16 +4,16 @@ import { FormGroup, Row, Col, Label, Input, FormText, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { AspenEvent } from "../../interfaces";
 import { EventsService } from "../../services/Events/EventsService";
-import { authService } from "../../services/authService";
 const CreateEventForm = () => {
 
     var navigate = useNavigate();
-    const [eventDate, setEventDate] = useState<Date>(new Date)
+    const [eventDate, setEventDate] = useState<Date>(new Date(0))
     const [eventTitle, setEventTitle] = useState("")
     const [eventLocation, setEventLocation] = useState("")
     const [eventDescription, setEventDescription] = useState("")
     const [eventMainImage, setEventMainImage] = useState("")
     const [eventDonationTarget, setEventDonationTarget] = useState(0)
+    const [disableSubmit, setDisableSubmit] = useState(true)
     const createEventHandler = async (event: React.FormEvent) => {
         event.preventDefault()
 
@@ -31,26 +31,36 @@ const CreateEventForm = () => {
         navigate("/")
 
     }
+    
+    useEffect(() => {
+        if (Date.parse(eventDate.toString()) && eventTitle.trim().length !== 0 && eventLocation.trim().length !== 0 && eventDonationTarget > 0 && eventDescription.trim().length !== 0) {
+            setDisableSubmit(false)
+        }
+        else {
 
-
+            setDisableSubmit(true)
+        }
+    }, [eventTitle, eventLocation, eventDescription, eventDonationTarget, eventDate])
 
 
     return (
         <>
-            <h1 style={{ textAlign: 'center' }}>Create Event here</h1>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Form onSubmit={createEventHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
+            <h1 className="EventHeader">Create Event here</h1>
+            <div className="FormEventPageContentPosition">
+                <Form onSubmit={createEventHandler} className="FormEventBorder">
                     <FormGroup>
 
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowOne">
                             <Col md={6} xs={8}>
                                 <FormGroup>
-                                    <Label for="EventTitle">
+                                    <Label>
                                         Event Title
                                     </Label>
 
                                     <Input
                                         placeholder="Event Title"
+                                        aria-label="eventTitle"
+                                        data-testid="eventTitleInput"
                                         onChange={e => setEventTitle(e.currentTarget.value)}
                                     />
                                 </FormGroup>
@@ -60,14 +70,17 @@ const CreateEventForm = () => {
                     </FormGroup>
                     <FormGroup>
 
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowTwo">
                             <Col md={6} xs={8}>
                                 <FormGroup>
-                                    <Label for="exampleEmail">
+                                    <Label>
                                         Event Location
                                     </Label>
                                     <Input
                                         placeholder="Event Location"
+                                        aria-label="eventLocation"
+                                        data-testid="eventLocationInput"
+
                                         onChange={e => setEventLocation(e.currentTarget.value)}
                                     />
                                 </FormGroup>
@@ -76,19 +89,19 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowThree">
 
                             <Col md={6} xs={8}>
 
 
-                                <Label
-                                    for="exampleText"
-                                    sm={2}
-                                >
+                                <Label>
                                     Event Description
                                 </Label>
                                 <Input
                                     type="textarea"
+                                    aria-label="eventDescription"
+                                    data-testid="eventDescriptionInput"
+
                                     onChange={e => setEventDescription(e.currentTarget.value)}
 
                                 />
@@ -97,15 +110,18 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowFour">
                             <Col md={6} xs={8}>
 
-                                <Label for="exampleAddress">
+                                <Label>
                                     Donation Target
                                 </Label>
                                 <Input
                                     placeholder="$"
                                     type="number"
+                                    aria-label="eventDonationGoal"
+                                    data-testid="eventDonationGoalInput"
+
                                     onChange={e => setEventDonationTarget(Number(e.currentTarget.value))}
 
                                 />
@@ -113,14 +129,17 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowFive">
                             <Col md={6} xs={8}>
 
-                                <Label for="exampleAddress">
+                                <Label>
                                     Event Start Date
                                 </Label>
                                 <Input
                                     type="date"
+                                    aria-label="eventDate"
+                                    data-testid="eventDateInput"
+
                                     onChange={e => setEventDate(e.currentTarget.valueAsDate!)}
 
                                 />
@@ -128,14 +147,8 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowSix">
                             <Col md={6} xs={8}>
-
-                                <Label
-                                    for="exampleFile"
-                                    sm={2}
-                                >
-                                </Label>
                                 <Input
                                     id="exampleFile"
                                     name="file"
@@ -149,9 +162,9 @@ const CreateEventForm = () => {
                             </Col>
                         </Row>
                     </FormGroup>
-                    <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Col md={12} xs={8} className="FormEventButtonPosition">
 
-                        <Button variant='contained' sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                        <Button variant='contained' disabled={disableSubmit} className="FormEventButtonSubmit" type="submit" >Submit</Button>
                     </Col>
                 </Form>
 

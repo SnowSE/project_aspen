@@ -1,31 +1,28 @@
-﻿import { Button, Grid } from '@mui/material';
-import React, { Component, useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import React, { useEffect, useState,useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TeamCard } from './Interfaces';
-import { TeamDetails } from './TeamDetails';
 import { getTeamsList } from './TeamServices';
+import { EventContext } from '../../App';
 
 
 export function TeamsListPage() {
-    const navigate = useNavigate();
-
-    //const { isLoading, error, data } = EventsHooks.useEventsQuery();
     const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
-    async function settingTeamsList() {
-        const teams = await getTeamsList()
-        console.log('I am  in teams',teams)
-
-        setTeams(teams)
-    };
-
-
+    const navigate = useNavigate();
+    const currentEvent = useContext(EventContext);
+       
     useEffect(() => {
-        console.log('in useeffect')
-        const callService = async () => {
-            await settingTeamsList();
+        const fetchData = async () => {
+            if (!currentEvent.id) {
+                console.log("No current event found!")
+                return;
+            }
+            const teams = await getTeamsList(currentEvent.id)
+            setTeams(teams)
         }
-        callService()
-    }, [])
+        fetchData()
+    }, [currentEvent])
+    
     return (
         <div>
             <h1>Existing {teamsList.length} Teams  </h1>
@@ -42,6 +39,7 @@ export function TeamsListPage() {
                         owner={t.owner}
                         eventID={t.eventID}
                         donationTarget={t.donationTarget}
+                        registrations={t.registrations }
                         key={t.id}
 
                     /> 

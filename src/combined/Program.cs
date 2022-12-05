@@ -134,7 +134,6 @@ app.UseSwagger(options =>
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(myAllowSpecificOrigins);
 

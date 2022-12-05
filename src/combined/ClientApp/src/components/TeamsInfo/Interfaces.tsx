@@ -1,10 +1,11 @@
-﻿import { Button, Card, Grid } from '@mui/material';
+import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+import Registration from '../../JsModels/registration';
 import { authService } from '../../services/authService';
-import { TeamDetails } from './TeamDetails';
 
-type Team = {
+
+export type Team = {
     id: number,
     name: string, 
     description: string,
@@ -13,16 +14,14 @@ type Team = {
     owner: string,
     eventID: string,
     donationTarget: number,
+    registrations: Registration[]
 };
 
-
-
-export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget }: Team) => {
+export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget, registrations }: Team) => {
     const navigate = useNavigate();
     //const user = authService.isLoggedIn();
     //{ localStorage.getItem("LoggedInUser") == "" ?}
     const loggedInUSer = localStorage.getItem("LoggedInUser")
-
 
     console.log("Am I logged in", loggedInUSer)
         return (
@@ -45,8 +44,17 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eve
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}>Learn About Our Team</Button>
                                 </Grid>
 
-                                <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                                    <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : navigate('/NotLoggedInUser')}
+                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                        <Button onClick={() => loggedInUSer ?
+                                            navigate({
+                                                pathname: "/LoggedInUser",
+                                                search: `?${createSearchParams({
+                                                    id:`${id}`,
+                                                    ownerID: `${ownerID}`
+
+                                                })}`
+                                            })
+                                            : authService.signinRedirect()}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
                                 </Grid>
 
