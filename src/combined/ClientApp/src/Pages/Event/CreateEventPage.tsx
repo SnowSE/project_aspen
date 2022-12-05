@@ -29,7 +29,7 @@ const CreateEventPage = () => {
 
     return (
         <div>
-            {isAdmin ? <CreateEventForm/>: <h1>No</h1>}
+            {isAdmin ? <CreateEventForm/>: <h1 data-testid = "NotAdminResult">No</h1>}
         </div>
     );
 }
