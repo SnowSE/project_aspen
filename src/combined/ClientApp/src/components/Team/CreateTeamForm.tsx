@@ -72,6 +72,9 @@ const CreateTeamForm = () => {
         setTeamDescription('')
         setTeamName('')
         setDonationGoal(0)
+
+        var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events${currentEvent.id}`)
+        var allEventsJson = await allEvents.json();
     }
 
     const imageOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
