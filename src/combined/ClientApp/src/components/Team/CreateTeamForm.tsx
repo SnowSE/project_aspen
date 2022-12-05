@@ -5,12 +5,7 @@ import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
 
-const CreateTeamForm = () => {
-    console.log('REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL)
-    console.log('BASE_URL', process.env.BASE_URL)
-    console.log('PUBLIC_URL', process.env.PUBLIC_URL)
-    console.log('everything', process.env)
-
+const CreateTeamForm = () => {    
     const [teamName, setTeamName] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
@@ -36,9 +31,9 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        console.log(process.env.REACT_APP_BASE_URL)
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User"
-        var assetsUrl = process.env.REACT_APP_BASE_URL + "/api/asset"
+        console.log(process.env.PUBLIC_URL)
+        var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+        var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
 
         if (!image) {
             return
@@ -69,7 +64,7 @@ const CreateTeamForm = () => {
             isPublic: isPublic
         }
 
-        var teamUrl = process.env.REACT_APP_BASE_URL + "/api/teams"
+        var teamUrl = process.env.PUBLIC_URL + "/api/teams"
         await axios.post(teamUrl, newTeam, config)
             .then((response) => { })
             .catch((error) => { console.log(error.response.data) })

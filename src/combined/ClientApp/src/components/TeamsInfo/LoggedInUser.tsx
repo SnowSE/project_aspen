@@ -68,8 +68,7 @@ export function LoggedInUser() {
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        const api = process.env.REACT_APP_BASE_URL + `/api/Registration`;
-        //var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
+        const api = process.env.PUBLIC_URL + `/api/Registration`;
 
         console.log(api)
         //const config = {

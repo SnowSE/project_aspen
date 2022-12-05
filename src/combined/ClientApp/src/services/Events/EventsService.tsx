@@ -2,7 +2,7 @@ import axios from 'axios'
 import { AspenEvent } from '../../interfaces';
 
 
-const BaseUrl = process.env.REACT_APP_BASE_URL
+const BaseUrl = process.env.PUBLIC_URL
 
 
 const config = {
