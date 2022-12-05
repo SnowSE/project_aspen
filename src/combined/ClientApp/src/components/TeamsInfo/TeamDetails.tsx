@@ -28,11 +28,13 @@ export function TeamDetails() {
         console.log("I have got registrations", response.registrations)
         setCurrentTeamRegistrations(response.registrations)
     }
+    useEffect(() => {
         const callServise = async () => {
-            await fetchTeam()        }
+            await fetchTeam()
+        }
 
         callServise()
-    });
+    }, []);
 
     console.log("currentTeam Z", currentTeam);
     console.log("I have got registrations 2", typeof(currentTeamRegisrtations))
@@ -54,9 +56,9 @@ export function TeamDetails() {
             {currentTeam?.owner}
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}  
-            {/*<ul>*/}
-            {/*    {currentTeamRegisrtations.map(r: Registration[] => <li>{r.id}</li>)}*/}
-            {/*</ul>*/}
+            <ul>
+                {currentTeamRegisrtations.map(r => <li>{r.nickname}</li>)}
+            </ul>
 
 
 
