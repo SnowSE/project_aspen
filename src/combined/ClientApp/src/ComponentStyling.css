@@ -16,8 +16,8 @@
     padding: 5px 12px !important;
 }
 .LoginButton:hover {
-    background-color: rebeccapurple !important;
-    color: orange !important;
+    background-color: mediumpurple !important;
+    color: white !important;
 }
 
 .LogoutButton {
@@ -30,7 +30,7 @@
 }
 .LogoutButton:hover {
     background-color: mediumpurple !important;
-    color: orange !important;
+    color: white !important;
 }
 
 /*Drawer Component*/
@@ -172,10 +172,264 @@
 .UserNameSpacing {
     padding-left: 1rem !important;
 }
+/* ProgressBar Component */
+
+.ProgressBarTextLocation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 35px;
+}
+.ProgressBarPercentageTextDetails {
+    font-size: 22px !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+.ProgressBarTextDetails {
+    font-size: 14px !important;
+    color: #e0e0e0 !important;
+}
+.ProgressBarBarDetails {
+    width: 100%;
+    margin-right: .5rem;
+}
+.ProgressBarTextStyling {
+    width: 50%;
+}
+.ProgressBarDetails{
+    color: green !important;
+    border-radius: 100px !important;
+    height: 20px !important;
+}
+
+.ShareIcon {
+    color: white !important;
+    background: none !important;
+}
+.ShareButton {
+    background-color: orange !important;
+    margin: 3px !important;
+}
+.ShareButton:hover{
+    background-color: mediumpurple !important;
+    color: white !important;
+}
+/*Team Info Modal*/
+
+.TeamInfoModalHeader{
+    font-size: 24px !important;
+    font-weight: bold !important;
+    letter-spacing: 1px !important;
+}
+.TeamModalDescription {
+    margin-top: 1rem !important;
+}
+.TeamModalClose {
+    margin-top: 1rem !important;
+}
+.ModalPositionAndDetails {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    background-color: white;
+    border: 2px solid #000;
+    box-shadow: 24px;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
 
 /* Page styling */
 /* Home Page */
 
 .PaperColor {
     background-color: #673ab7 !important;
+}
+.CurrentEventPosition {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.CurrentEventTextDetails {
+    font-size: 24px !important;
+    font-weight: bold !important;
+    letter-spacing: 1px !important;
+    color: white;
+}
+.ShareIconPosition {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.YoutubePlayerPosition {
+    display: flex;
+    justify-content: center;
+}
+.ProgressBarPosition {
+    display: flex;
+    justify-content: center;
+}
+.DonateButtonPosition {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.DonateButtonDetails {
+    background-color: orange !important;
+    margin: 1rem !important;
+}
+.DonateButtonDetails:hover {
+    background-color: mediumpurple !important;
+}
+.SecondaryPaperColor {
+    background-color: #eeeeee !important;
+}
+.SubTextHeaderPosition {
+    display: flex;
+    justify-content: center;
+}
+.SubTextHeaderDetails {
+    font-size: 20px !important;
+    font-weight: bold !important;
+}
+.SubTextBodyPosition {
+    display: flex;
+    justify-content: center;
+}
+.SubTextBodyDetails {
+    font-size: 15px !important;
+    padding-left: 1rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.TeamInfoModalPosition {
+    display: flex !important;
+    justify-content: center !important;
+}
+.TeamButtonPositions {
+    display: flex !important;
+    justify-content: center !important;
+}
+.JoinTeamButtonDetails {
+    background-color: #00b0ff !important;
+    margin: 1rem !important;
+}
+.CreateTeamButtonDetails {
+    background-color: #00b0ff !important;
+    margin: 1rem !important;
+}
+
+/* Create Team Page */
+
+.FormPageContentPosition {
+    display: flex;
+    justify-content: center;
+}
+.FormBorder {
+    width: 90vw;
+    border: solid #673ab7;
+    border-radius: 30px;
+}
+.FormRowOne {
+    display: flex;
+    justify-content: center;
+}
+.FormRowTwo {
+    display: flex;
+    justify-content: center;
+}
+.FormRowThree {
+    display: flex;
+    justify-content: center;
+}
+.FormRowFour {
+    display: flex;
+    justify-content: center;
+}
+.FormRowFive {
+    display: flex;
+    justify-content: center;
+}
+.FormRowFiveColumnPosition{
+    display: flex !important;
+    justify-content: center !important;
+}
+.FormButtonPosition {
+    display: flex !important;
+    justify-content: center !important;
+}
+.FormButtonSubmit {
+    background-color: orange !important;
+}
+
+/* Create Event Page */
+
+.EventHeader{
+    text-align: center;
+}
+
+.FormEventPageContentPosition {
+    display: flex;
+    justify-content: center;
+}
+
+.FormEventBorder {
+    width: 90vw;
+    border: solid #673ab7;
+    border-radius: 30px;
+}
+
+.FormEventRowOne {
+    display: flex;
+    justify-content: center;
+}
+
+.FormEventRowTwo {
+    display: flex;
+    justify-content: center;
+}
+
+.FormEventRowThree {
+    display: flex;
+    justify-content: center;
+}
+
+.FormEventRowFour {
+    display: flex;
+    justify-content: center;
+}
+
+.FormEventRowFive {
+    display: flex;
+    justify-content: center;
+}
+.FormEventRowSix {
+    display: flex;
+    justify-content: center;
+}
+.FormEventButtonPosition {
+    display: flex !important;
+    justify-content: center !important;
+}
+.FormEventButtonSubmit {
+    background-color: orange !important;
+}
+
+/* Team Details Page */
+
+.TeamDetailsPosition {
+    display: flex;
+    justify-content: flex-end;
+    float: right;
+}
+.JoinATeamButton {
+    background-color: orange !important;
+    margin: 3px !important;
+    font-size: 10px !important;
+    color: white !important;
+}
+.JoinATeamButton:hover {
+    background-color: mediumpurple !important;
+    color: white !important;
 }

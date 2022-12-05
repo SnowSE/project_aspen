@@ -85,11 +85,11 @@ const CreateTeamForm = () => {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className = "FormPageContentPosition">
 
-            <Form onSubmit={createTeamHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
+            <Form onSubmit={createTeamHandler} className="FormBorder">
                 <FormGroup>
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row className="FormRowOne">
                         <Col md={6} xs={8}>
 
                             <Label
@@ -110,7 +110,7 @@ const CreateTeamForm = () => {
                         </Col>
                     </Row>
                 </FormGroup>
-                <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                <Row className="FormRowTwo">
                     <Col md={6} xs={8}>
                         <FormGroup>
                             <Label for="exampleEmail">
@@ -128,7 +128,7 @@ const CreateTeamForm = () => {
 
                 </Row>
                 <FormGroup>
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row className="FormRowThree">
 
                         <Col md={6} xs={8}>
 
@@ -151,7 +151,7 @@ const CreateTeamForm = () => {
                     </Row>
                 </FormGroup>
                 <FormGroup>
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row className="FormRowFour">
                         <Col md={6} xs={8}>
 
                             <Label for="exampleAddress">
@@ -169,8 +169,8 @@ const CreateTeamForm = () => {
                     </Row>
                 </FormGroup>
                 <FormGroup>
-                    <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Col md={6} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row className="FormRowFive">
+                        <Col md={6} xs={8} className="FormRowFiveColumnPosition">
 
                             <Label for="exampleAddress">
                                 Is This Team Public? 
@@ -188,9 +188,9 @@ const CreateTeamForm = () => {
 
 
                 </FormGroup>
-                <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Col md={12} xs={8} className="FormButtonPosition">
 
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                    <Button variant='contained' className="FormButtonSubmit" type="submit" >Submit</Button>
                 </Col>
             </Form>
         </div>

@@ -1,15 +1,10 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import { ThemeProvider, createTheme, Toolbar,  useMediaQuery, useTheme } from '@mui/material';
+import {Toolbar,  useMediaQuery, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
-=======
-import styled from '@emotion/styled';
-import { deepPurple } from '@mui/material/colors';
->>>>>>> master
 import { authService } from '../../services/authService'; 
 import DrawerComponent from './DrawerComponent';
 import { useEffect, useState } from 'react';

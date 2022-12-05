@@ -48,9 +48,9 @@ export function TeamDetails() {
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}
 
-            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+            <Grid item xs={4} className="TeamDetailsPosition">
                 <Button onClick={() => loggedInUSer ? navigate('/LoggedInUser') : navigate('/NotLoggedInUser')}
-                    sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
+                    className="JoinATeamButton"  >Join Our Team</Button>
             </Grid>
 
 

@@ -45,12 +45,12 @@ const CreateEventForm = () => {
 
     return (
         <>
-            <h1 style={{ textAlign: 'center' }}>Create Event here</h1>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Form onSubmit={createEventHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
+            <h1 className="EventHeader">Create Event here</h1>
+            <div className="FormEventPageContentPosition">
+                <Form onSubmit={createEventHandler} className="FormEventBorder">
                     <FormGroup>
 
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowOne">
                             <Col md={6} xs={8}>
                                 <FormGroup>
                                     <Label for="EventTitle">
@@ -68,7 +68,7 @@ const CreateEventForm = () => {
                     </FormGroup>
                     <FormGroup>
 
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowTwo">
                             <Col md={6} xs={8}>
                                 <FormGroup>
                                     <Label for="exampleEmail">
@@ -84,7 +84,7 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowThree">
 
                             <Col md={6} xs={8}>
 
@@ -105,7 +105,7 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowFour">
                             <Col md={6} xs={8}>
 
                                 <Label for="exampleAddress">
@@ -121,7 +121,7 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowFive">
                             <Col md={6} xs={8}>
 
                                 <Label for="exampleAddress">
@@ -136,7 +136,7 @@ const CreateEventForm = () => {
                         </Row>
                     </FormGroup>
                     <FormGroup>
-                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Row className="FormEventRowSix">
                             <Col md={6} xs={8}>
 
                                 <Label
@@ -157,9 +157,9 @@ const CreateEventForm = () => {
                             </Col>
                         </Row>
                     </FormGroup>
-                    <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Col md={12} xs={8} className="FormEventButtonPosition">
 
-                        <Button variant='contained' disabled={disableSubmit} sx={{ backgroundColor: 'orange' }} type="submit" >Submit</Button>
+                        <Button variant='contained' disabled={disableSubmit} className="FormEventButtonSubmit" type="submit" >Submit</Button>
                     </Col>
                 </Form>
 
