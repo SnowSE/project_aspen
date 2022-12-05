@@ -134,10 +134,6 @@ app.UseSwagger(options =>
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//    RequestPath = "/assets"
-//});
 app.UseRouting();
 app.UseCors(myAllowSpecificOrigins);
 
