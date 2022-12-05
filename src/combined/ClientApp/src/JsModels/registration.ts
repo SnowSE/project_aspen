@@ -1,4 +1,3 @@
-import Person from "./person";
 import PersonRegistrations from "./personRegistrations";
 
 export default class Registration {

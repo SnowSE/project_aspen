@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Registration from "../../JsModels/registration";
 import { authService } from "../../services/authService";
-import { TeamCard } from "./Interfaces";
 
 
 
@@ -19,6 +18,7 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
 
+    useEffect(() => {      
     const fetchTeam = async () => {
         const res = await fetch(api)
         console.log("I am inside the fetchTEam", res);
@@ -28,13 +28,12 @@ export function TeamDetails() {
         console.log("I have got registrations", response.registrations)
         setCurrentTeamRegistrations(response.registrations)
     }
-    useEffect(() => {
-        const callServise = async () => {
-            await fetchTeam()
-        }
+    const callServise = async () => {
+        await fetchTeam()
+    }
 
         callServise()
-    }, []);
+    }, [api]);
 
     console.log("currentTeam Z", currentTeam);
     console.log("I have got registrations 2", typeof(currentTeamRegisrtations))

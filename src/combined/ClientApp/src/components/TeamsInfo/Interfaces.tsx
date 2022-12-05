@@ -3,8 +3,7 @@ import * as React from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import Registration from '../../JsModels/registration';
 import { authService } from '../../services/authService';
-import { LoggedInUser } from './LoggedInUser';
-import { TeamDetails } from './TeamDetails';
+
 
 export type Team = {
     id: number,

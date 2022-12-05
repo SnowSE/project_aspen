@@ -1,10 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Button} from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
-import PersonRegistrations from "../../JsModels/personRegistrations";
-import {Team } from "./Interfaces"
+import {  useState } from "react";
+import {  useSearchParams } from "react-router-dom";
+import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+
 
 
 export function LoggedInUser() {
@@ -22,7 +21,7 @@ export function LoggedInUser() {
     const list=[]
     for (var entry of searchParams.entries()) {
         console.log(entry[1]);
-        const [teamId, teamIdValue] = entry;
+        //const [teamId, teamIdValue] = entry;
         list.push(entry[1])
     }
     console.log("I am list", list[0]);
@@ -59,11 +58,10 @@ export function LoggedInUser() {
         ]
     }
 
-    const navigate = useNavigate();
     
-    const [creationDate, setCreationDate] = useState<Date>(new Date(0));
+    const creationDate = new Date(0);
     //THis is under the question
-    const [isPublic, setBooleanFlag] = useState<boolean>(true);
+    //const [isPublic, setBooleanFlag] = useState<boolean>(true);
     const [nickName, setNickName] = useState<string>('');
     const [personRegistrations, setPersonRegistration] = useState([]);
 
@@ -71,15 +69,15 @@ export function LoggedInUser() {
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         const api = process.env.REACT_APP_BASE_URL + `/api/Registration`;
-        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
+        //var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
 
         console.log(api)
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        };
+        //const config = {
+        //    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        //};
         let newMember: registration = {
             creationDate: creationDate,
-            isPublic: isPublic,
+            isPublic: true,
             nickname: nickName,
             ownerID: ownerId,
             teamID: tId,
@@ -97,10 +95,10 @@ export function LoggedInUser() {
             ]
         }
 
-        const postNewMember = await axios.post(api, newMember)
+         await axios.post(api, newMember)
                 .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
-        const currentUser = await axios.get(currentUserUrl, config)
+        //const currentUser = await axios.get(currentUserUrl, config)
 
 
         setNickName('')
