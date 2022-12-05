@@ -19,7 +19,7 @@ const CreateTeamForm = () => {
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
-    const [isPublic, setIsPublic] = useState<boolean>(false)
+    const [isPublic, setIsPublic] = useState<boolean>(true)
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
     const currentEvent = useContext(EventContext);
@@ -177,7 +177,7 @@ const CreateTeamForm = () => {
                         <Col md={6} xs={8} className="FormRowFiveColumnPosition">
 
                             <Label>
-                                Is This Team Public?
+                                Team is public.
                             </Label>
 
                             <Checkbox checked={isPublic} onChange={() => {
@@ -193,7 +193,7 @@ const CreateTeamForm = () => {
                         disabled={disableSubmit} 
                         sx={{ backgroundColor: 'orange' }} 
                         type="submit"
-                        onClick={() => {navigate({pathname: '/TeamDetails',search: `?id=${id}`})}}>
+                        onClick={() => {navigate({pathname: '/TeamsListPage'})}}>
                             Submit
                     </Button>
                 </Col>
