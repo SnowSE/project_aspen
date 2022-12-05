@@ -21,11 +21,8 @@ export function TeamDetails() {
     useEffect(() => {      
     const fetchTeam = async () => {
         const res = await fetch(api)
-        console.log("I am inside the fetchTEam", res);
         const response = await res.json()
-        console.log("I am inside the fetchTEam1", response);
         setCurrentTeam(response)
-        console.log("I have got registrations", response.registrations)
         setCurrentTeamRegistrations(response.registrations)
     }
     const callServise = async () => {
@@ -35,8 +32,7 @@ export function TeamDetails() {
         callServise()
     }, [api]);
 
-    console.log("currentTeam Z", currentTeam);
-    console.log("I have got registrations 2", typeof(currentTeamRegisrtations))
+    
 
     const navigate = useNavigate();
 

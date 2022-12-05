@@ -2,22 +2,11 @@ import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import Registration from '../../JsModels/registration';
+import Team from '../../JsModels/team';
 import { authService } from '../../services/authService';
 
 
-export type Team = {
-    id: number,
-    name: string, 
-    description: string,
-    mainImage: string,
-    ownerID: string,
-    owner: string,
-    eventID: string,
-    donationTarget: number,
-    registrations: Registration[]
-};
-
-export const TeamCard = ({ id, name, description, mainImage, ownerID, owner, eventID, donationTarget, registrations }: Team) => {
+export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, donationTarget, isPublic, registrations }: Team) => {
     const navigate = useNavigate();
     //const user = authService.isLoggedIn();
     //{ localStorage.getItem("LoggedInUser") == "" ?}

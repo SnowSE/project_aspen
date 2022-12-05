@@ -13,28 +13,22 @@ export function LoggedInUser() {
 
     const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser")
-    console.log("I am currently logged in as", typeof (loggedInUSer));
 
     if (loggedInUSer !== null) {
         var user = loggedInUSer;
-        console.log("I am a user", user);
     }
     const list=[]
     for (var entry of searchParams.entries()) {
         console.log(entry[1]);
         list.push(entry[1])
-    }
-    console.log("I am list", list[0]);
-        
+    }        
    
     if (list[0] !== null) {
         var tId = parseInt(list[0]);   // parse the string back to a number.
-        console.log("Converted team id", typeof (tId), tId);
     }   
    
     if (list[1] !== null) {
         var ownerId = parseInt(list[1]);   // parse the string back to a number.
-        console.log("Converted ownerID", typeof (ownerId), ownerId)
     }
 
     
@@ -48,12 +42,14 @@ export function LoggedInUser() {
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         const api = process.env.REACT_APP_BASE_URL + `/api/Registration`;
-        //var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
+        var currentUserUrl = process.env.REACT_APP_BASE_URL + "/api/User";
 
-        console.log(api)
-        //const config = {
-        //    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        //};
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
+
+        const currentUser = await axios.get(currentUserUrl, config)
+        console.log("I am the current user", Number(currentUser.data.id) );
         let newMember: registration = {
             creationDate: creationDate,
             isPublic: true,
@@ -63,7 +59,7 @@ export function LoggedInUser() {
             // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
                 {   
-                    personID: 10,                    
+                    personID: Number(currentUser.data.id),                    
                     createDate: creationDate
                 }
             ]
@@ -72,7 +68,7 @@ export function LoggedInUser() {
          await axios.post(api, newMember)
                 .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
-        //const currentUser = await axios.get(currentUserUrl, config)
+        
 
 
         setNickName('')
