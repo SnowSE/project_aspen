@@ -62,8 +62,8 @@
     <TypeScriptCompile Remove="ClientApp\src\components\Homepage.spec.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
-    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\NotLoggedInUSer.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,8 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
