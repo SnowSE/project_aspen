@@ -12,11 +12,11 @@ export function LoggedInUser() {
     const [searchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const loggedInUSer = localStorage.getItem("LoggedInUser")
+    //const loggedInUSer = localStorage.getItem("LoggedInUser")
 
-    if (loggedInUSer !== null) {
-        var user = loggedInUSer;
-    }
+    //if (loggedInUSer !== null) {
+    //    var user = loggedInUSer;
+    //}
     const list=[]
     for (var entry of searchParams.entries()) {
         console.log(entry[1]);

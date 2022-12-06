@@ -1,7 +1,6 @@
 import { Button, Card, Grid } from '@mui/material';
 import * as React from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import Registration from '../../JsModels/registration';
 import Team from '../../JsModels/team';
 import { authService } from '../../services/authService';
 
