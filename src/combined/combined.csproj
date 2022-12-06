@@ -55,6 +55,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
     <None Remove="ClientApp\src\components\LoginButton.tsx" />
+    <None Remove="ClientApp\src\Pages\SiteAdmin\SiteAdmin.tsx" />
   </ItemGroup>
 
   <ItemGroup>
