@@ -6,7 +6,7 @@ import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const CreateTeamForm = () => {    
+const CreateTeamForm = () => {
 
     const navigate = useNavigate();
 
@@ -67,15 +67,14 @@ const CreateTeamForm = () => {
             donationTarget: donationGoal,
             isPublic: isPublic
         }
-
+        var teamID: number = 0;
         var teamUrl = process.env.PUBLIC_URL + "/api/teams"
         await axios.post(teamUrl, newTeam, config)
-            .then((response) => { })
+            .then((response) => { teamID = response.data.id })
             .catch((error) => { console.log(error.response.data) })
 
-        setTeamDescription('')
-        setTeamName('')
-        setDonationGoal(0)
+        navigate(`/TeamDetails?id=${teamID}`)
+
     }
 
     const imageOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +96,7 @@ const CreateTeamForm = () => {
 
 
     return (
-        <div className = "FormPageContentPosition">
+        <div className="FormPageContentPosition">
 
             <Form onSubmit={createTeamHandler} className="FormBorder">
                 <FormGroup>
@@ -127,7 +126,7 @@ const CreateTeamForm = () => {
                             <Input
                                 placeholder="Team Name"
                                 value={teamName}
-                                data-testid = "teamNameInput"
+                                data-testid="teamNameInput"
                                 onChange={event => setTeamName(event.target.value)}
                             />
                         </Col>
@@ -144,7 +143,7 @@ const CreateTeamForm = () => {
                             <Input
                                 type="textarea"
                                 value={teamDescription}
-                                data-testid = "teamDescriptionInput"
+                                data-testid="teamDescriptionInput"
                                 onChange={event => setTeamDescription(event.target.value)}
                             />
                         </Col>
@@ -160,7 +159,7 @@ const CreateTeamForm = () => {
                             <Input
                                 type="number"
                                 value={donationGoal}
-                                data-testid = "teamDonationGoalInput"
+                                data-testid="teamDonationGoalInput"
                                 onChange={event => setDonationGoal(Number(event.target.value))}
                             />
                         </Col>
@@ -183,13 +182,13 @@ const CreateTeamForm = () => {
                 </FormGroup>
 
                 <Col md={12} xs={8} className="FormButtonPosition">
-                    <Button 
-                        variant='contained' 
-                        disabled={disableSubmit} 
-                        sx={{ backgroundColor: 'orange' }} 
+                    <Button
+                        variant='contained'
+                        disabled={disableSubmit}
+                        sx={{ backgroundColor: 'orange' }}
                         type="submit"
-                        onClick={() => {navigate({pathname: '/TeamsListPage'})}}>
-                            Submit
+                        onClick={createTeamHandler}>
+                        Submit
                     </Button>
                 </Col>
             </Form>
