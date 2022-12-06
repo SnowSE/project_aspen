@@ -1,8 +1,9 @@
-import { Button, Grid} from "@mui/material";
+import { Button, Checkbox, Grid} from "@mui/material";
 import axios from "axios";
 import {  useState } from "react";
 import {  useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import registration from "../../JsModels/registration";
 
 
 
@@ -11,57 +12,29 @@ export function LoggedInUser() {
     const [searchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const loggedInUSer = localStorage.getItem("LoggedInUser")
-    console.log("I am currently logged in as", typeof (loggedInUSer));
+    //const loggedInUSer = localStorage.getItem("LoggedInUser")
 
-    if (loggedInUSer !== null) {
-        var user = loggedInUSer;
-        console.log("I am a user", user);
-    }
+    //if (loggedInUSer !== null) {
+    //    var user = loggedInUSer;
+    //}
     const list=[]
     for (var entry of searchParams.entries()) {
         console.log(entry[1]);
-        //const [teamId, teamIdValue] = entry;
         list.push(entry[1])
-    }
-    console.log("I am list", list[0]);
-        
+    }        
    
     if (list[0] !== null) {
         var tId = parseInt(list[0]);   // parse the string back to a number.
-        console.log("Converted team id", typeof (tId), tId);
     }   
    
     if (list[1] !== null) {
         var ownerId = parseInt(list[1]);   // parse the string back to a number.
-        console.log("Converted ownerID", typeof (ownerId), ownerId)
-    }
-
-    interface registration {
-        creationDate: Date,
-        isPublic: boolean,
-        nickname: string,
-        ownerID: number,
-        teamID: number,
-    //    personRegistrations: PersonRegistrations[]
-
-        personRegistrations: [
-            {
-                personID: number,
-                person: {
-                    authID: string,
-                    name: string,
-                    bio: string
-                },
-                createDate: Date
-            }
-        ]
     }
 
     
     const creationDate = new Date(0);
     //THis is under the question
-    //const [isPublic, setBooleanFlag] = useState<boolean>(true);
+    const [isPublic, setIsPublic] = useState<boolean>(true);
     const [nickName, setNickName] = useState<string>('');
     const [personRegistrations, setPersonRegistration] = useState([]);
 
@@ -70,25 +43,22 @@ export function LoggedInUser() {
         event.preventDefault()
         const api = process.env.PUBLIC_URL + `/api/Registration`;
 
-        console.log(api)
-        //const config = {
-        //    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        //};
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
+        var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+
+        const currentUser = await axios.get(currentUserUrl, config)
+        console.log("I am the current user", Number(currentUser.data.id) );
         let newMember: registration = {
             creationDate: creationDate,
-            isPublic: true,
+            isPublic: isPublic,
             nickname: nickName,
             ownerID: ownerId,
             teamID: tId,
-            // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
-                {
-                    personID: 10,
-                    person: {
-                        authID: '',
-                        name: user,
-                        bio: ' '
-                    },
+                {   
+                    personID: Number(currentUser.data.id),                    
                     createDate: creationDate
                 }
             ]
@@ -97,7 +67,7 @@ export function LoggedInUser() {
          await axios.post(api, newMember)
                 .then((response) => { })
             .catch((error) => { console.log(error.response.data) })
-        //const currentUser = await axios.get(currentUserUrl, config)
+        
 
 
         setNickName('')
@@ -121,6 +91,20 @@ export function LoggedInUser() {
                                 value={nickName}
                                 onChange={event => setNickName(event.target.value)}
                             />
+                        </FormGroup>
+                        <FormGroup>
+                            <Row className="FormRowFive">
+                                <Col md={6} xs={8} className="FormRowFiveColumnPosition">
+
+                                    <Label color='#673ab7'>
+                                        Put a check mark if you want your name to appear for public as a team member?
+                                    </Label>
+
+                                    <Checkbox checked={isPublic} onChange={() => {
+                                        setIsPublic(!isPublic)
+                                    }} />
+                                </Col>
+                            </Row>
                         </FormGroup>
                     </Col>
                 </Row>              
