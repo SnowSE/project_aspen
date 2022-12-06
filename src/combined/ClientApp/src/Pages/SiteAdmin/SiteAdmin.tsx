@@ -1,17 +1,18 @@
-﻿import { Button, Typography } from "@mui/material";
+﻿import { Button, TextField, Typography,Input } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
 
 
-
 const SiteAdmin = () => {
     const [isAdmin, setIsAdmin] = useState(false)
     const currentEvent = useContext(EventContext);
+    const [updateEventTitle, setupdateEventTitle] = useState<string>(currentEvent.title);
 
-
-    const editHandler = async (event: React.FormEvent) => {
-        console.log("ready to edit event");
+    const updateEventHandler = async (event: React.FormEvent) => {
+        event.preventDefault()
+        console.log('update got here');
+        console.log(updateEventTitle)
     }
 
     const deleteHandler = async (event: React.FormEvent) => {
@@ -43,23 +44,23 @@ const SiteAdmin = () => {
         <div>
             {isAdmin ? 
                 <Typography >
-                    {currentEvent?.title}
-                    {currentEvent?.description}
-                    {currentEvent?.Date}
-                    <Button
-                        variant='contained'
-                        sx={{ backgroundColor: 'orange' }}
-                        type="button"
-                        onClick={editHandler}>
-                        Edit
-                    </Button>
-                    <Button
-                        variant='contained'
-                        sx={{ backgroundColor: 'orange' }}
-                        type="button"
-                        onClick={deleteHandler}>
-                        Delete
-                    </Button>
+                    <form onSubmit={updateEventHandler}>
+                        <TextField
+                            id="standard-helperText"
+                            label="Event Title"
+                            defaultValue={updateEventTitle}
+                            variant="standard"
+                            onChange={(event) => { setupdateEventTitle(event.target.value) } }
+                        />
+                        <Button
+                            variant='contained'
+                            sx={{ backgroundColor: 'orange' }}
+                            type="submit"
+                            >
+                            Update
+                        </Button>
+                    </form>
+                    
                 </Typography>
             : <h1 data-testid = "NotAdminResult">No</h1>}
             
