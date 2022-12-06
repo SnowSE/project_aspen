@@ -41,8 +41,6 @@ export function TeamDetails() {
     return (
         <div>   
            
-            <h1>I am in Team details page</h1>
-            <h1>I am in Team details page   {id}</h1>
             {currentTeam?.name}
             {currentTeam?.id}
             {currentTeam?.description}
@@ -51,6 +49,7 @@ export function TeamDetails() {
             {currentTeam?.owner}
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}  
+            <h3>There are {currentTeamRegisrtations.length} members in a this team!</h3>
             <ul>
                 {currentTeamRegisrtations.map((registration) => registration.isPublic===true &&
                     <li key={registration.id}> {registration.nickname}</li>
