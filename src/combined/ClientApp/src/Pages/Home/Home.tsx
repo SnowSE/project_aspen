@@ -19,26 +19,33 @@ import { authService } from "../../services/authService";
 export function Home() {
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
-    
+    const parseJwt = (token:string) => {
+        try {
+            return JSON.parse(atob(token.split('.')[1]));
+        } catch (e) {
+            return null;
+        }
+    };
+
     useEffect(() => {
+        const localStorageToken = localStorage.getItem("access_token");
 
-    //    const user = JSON.parse(localStorage.getItem("user"));
+        if (localStorageToken) {
+            const user = JSON.parse(atob(localStorageToken.split('.')[1]));
+            const decodedJwt = parseJwt(user.accessToken);
 
-    //    if (user) {
-    //        const decodedJwt = parseJwt(user.accessToken);
-
-    //        if (decodedJwt.exp * 1000 < Date.now()) {
-    //            props.logOut();
-    //        }
-    //    }
-    //});
-    //    async function currentUser() {
-    //        var user = await authService.getUser()
-    //        console.log("user roles:", user?.profile.roles)
-    //        user?.profile.roles.forEach((role: string) => {
-    //            console.log(role)
-    //        });
-    //    }
+            if (decodedJwt.exp * 1000 < Date.now()) {
+                console.log("you bad token")
+            }
+        }
+   
+        //async function currentUser() {
+        //    var user = await authService.getUser()
+        //    console.log("user roles:", user?.profile.roles)
+        //    user?.profile.roles.forEach((role: string) => {
+        //        console.log(role)
+        //    });
+        //}
 
     }, []);
 
