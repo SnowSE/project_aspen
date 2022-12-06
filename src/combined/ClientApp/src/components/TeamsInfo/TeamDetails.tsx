@@ -31,13 +31,10 @@ export function TeamDetails() {
 
         callServise()
     }, [api]);
-
-    
+        
 
     const navigate = useNavigate();
-
     const loggedInUSer = localStorage.getItem("LoggedInUser")
-
     return (
         <div>   
            
