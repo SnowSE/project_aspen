@@ -52,9 +52,11 @@ export function TeamDetails() {
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}  
             <ul>
-                {currentTeamRegisrtations.map(r => <li>{r.nickname}</li>)}
+                {currentTeamRegisrtations.map((registration) => registration.isPublic===true &&
+                    <li key={registration.id}> {registration.nickname}</li>
+                )}
             </ul>
-
+                
 
 
             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>

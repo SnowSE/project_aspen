@@ -14,6 +14,6 @@ public class Registration
 
     public long TeamID { get; init; }
 
-    public IEnumerable<PersonRegistration> PersonRegistrations { get; init; }
+    public IEnumerable<PersonRegistration>? PersonRegistrations { get; init; }
 
 }

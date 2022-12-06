@@ -1,4 +1,4 @@
-import { Button, Grid} from "@mui/material";
+import { Button, Checkbox, Grid} from "@mui/material";
 import axios from "axios";
 import {  useState } from "react";
 import {  useNavigate, useSearchParams } from "react-router-dom";
@@ -34,7 +34,7 @@ export function LoggedInUser() {
     
     const creationDate = new Date(0);
     //THis is under the question
-    //const [isPublic, setBooleanFlag] = useState<boolean>(true);
+    const [isPublic, setIsPublic] = useState<boolean>(true);
     const [nickName, setNickName] = useState<string>('');
     const [personRegistrations, setPersonRegistration] = useState([]);
 
@@ -52,11 +52,10 @@ export function LoggedInUser() {
         console.log("I am the current user", Number(currentUser.data.id) );
         let newMember: registration = {
             creationDate: creationDate,
-            isPublic: true,
+            isPublic: isPublic,
             nickname: nickName,
             ownerID: ownerId,
             teamID: tId,
-            // this part needs to be fixed, currently it is static but it should be dynamic
             personRegistrations:  [
                 {   
                     personID: Number(currentUser.data.id),                    
@@ -92,6 +91,20 @@ export function LoggedInUser() {
                                 value={nickName}
                                 onChange={event => setNickName(event.target.value)}
                             />
+                        </FormGroup>
+                        <FormGroup>
+                            <Row className="FormRowFive">
+                                <Col md={6} xs={8} className="FormRowFiveColumnPosition">
+
+                                    <Label color='#673ab7'>
+                                        Put a check mark if you want your name to appear for public as a team member?
+                                    </Label>
+
+                                    <Checkbox checked={isPublic} onChange={() => {
+                                        setIsPublic(!isPublic)
+                                    }} />
+                                </Col>
+                            </Row>
                         </FormGroup>
                     </Col>
                 </Row>              
