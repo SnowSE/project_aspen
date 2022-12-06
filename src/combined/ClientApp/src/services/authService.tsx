@@ -50,12 +50,14 @@ export const authService = {
     return { desiredDestination: tempDestination, user };
   },
 
-  signinSilent: async () => {
+    signinSilent: async () => {
+    const userTemp = await userManager.getUser()
     await userManager
       .signinSilent()
-      .then((user) => {
+        .then((userTemp) => {
       })
-      .catch((err) => {
+        .catch((err) => {
+            console.log("error in signinSilent: ", err);
       });
   },
 

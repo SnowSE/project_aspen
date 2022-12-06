@@ -1,4 +1,4 @@
-import React, { useEffect, useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
     Box,
     Button,
@@ -12,33 +12,26 @@ import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
-import { authService } from "../../services/authService"; 
+import { authService } from "../../services/authService";
 
 
 
 export function Home() {
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
-    const parseJwt = (token:string) => {
-        try {
-            return JSON.parse(atob(token.split('.')[1]));
-        } catch (e) {
-            return null;
+    const checkToken = async () => {
+        var user = await authService.getUser();
+        var userExpiered = user?.expired;
+        if (userExpiered) {
+            await authService.signinSilent();
+            user = await authService.getUser();
+            userExpiered = user?.expired;
         }
     };
 
     useEffect(() => {
-        const localStorageToken = localStorage.getItem("access_token");
+        checkToken();
 
-        if (localStorageToken) {
-            const user = JSON.parse(atob(localStorageToken.split('.')[1]));
-            const decodedJwt = parseJwt(user.accessToken);
-
-            if (decodedJwt.exp * 1000 < Date.now()) {
-                console.log("you bad token")
-            }
-        }
-   
         //async function currentUser() {
         //    var user = await authService.getUser()
         //    console.log("user roles:", user?.profile.roles)
@@ -52,7 +45,7 @@ export function Home() {
     return (
         <Box>
             <Paper square={true} className="PaperColor">
-                <Box className = "CurrentEventPosition">
+                <Box className="CurrentEventPosition">
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
@@ -80,7 +73,7 @@ export function Home() {
                         id={"donateMealsBtn"}
                         onClick={() => navigate('/Donate')}
                         variant='contained'
-                        className = "DonateButtonDetails">
+                        className="DonateButtonDetails">
                         DONATE MEALS
                     </Button>
                     <SharingButton />
@@ -94,7 +87,7 @@ export function Home() {
                     </Typography>
                 </Box>
                 <Box className="SubTextBodyPosition">
-                    <Typography className= "SubTextBodyDetails" paragraph={true} >
+                    <Typography className="SubTextBodyDetails" paragraph={true} >
                         Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most meals can win some aswesome prizes!
                     </Typography>
                 </Box>
