@@ -1,11 +1,13 @@
-﻿import { useEffect, useState } from "react";
-import CreateEventForm from "../../components/Event/CreateEventForm";
+﻿import { Typography } from "@mui/material";
+import { useEffect, useState, useContext } from "react";
+import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
 
 
 
 const SiteAdmin = () => {
     const [isAdmin, setIsAdmin] = useState(false)
+    const currentEvent = useContext(EventContext);
     useEffect(() => {
         async function currentUser() {
             var user = await authService.getUser()
@@ -27,7 +29,14 @@ const SiteAdmin = () => {
 
     return (
         <div>
-            {isAdmin ? <CreateEventForm/>: <h1 data-testid = "NotAdminResult">No</h1>}
+            {isAdmin ? 
+                <Typography >
+                    {currentEvent?.title}
+                    {currentEvent?.description}
+                    {currentEvent?.Date}
+                </Typography>
+            : <h1 data-testid = "NotAdminResult">No</h1>}
+            
         </div>
     );
 }
