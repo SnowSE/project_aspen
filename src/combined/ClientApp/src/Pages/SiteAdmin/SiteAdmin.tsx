@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
@@ -87,7 +87,6 @@ const SiteAdmin = () => {
 
         <div>
             {isAdmin ? (
-                <Typography>
                     <form onSubmit={updateEventHandler}>
                         <TextField
                             id="standard-helperText"
@@ -101,24 +100,70 @@ const SiteAdmin = () => {
                                 }));
                             }}
                         />
-                        <Button
-                            variant="contained"
-                            sx={{ backgroundColor: "orange" }}
-                            type="submit"
-                        >
-                            Update
-                        </Button>
-                        <Button
-                            variant="contained"
-                            sx={{ backgroundColor: "orange" }}
-                            type="button"
-                            onClick={deleteHandler}
-                        >
-                            Delete
+                        
+                        <Box>
+                        <TextField
+                            id="standard-helperText"
+                            label="Event Description"
+                            defaultValue={updatedEvent.description}
+                            variant="standard"
+                            onChange={(event) => {
+                                setupdatedEvent((updateEvent) => ({
+                                    ...updateEvent,
+                                    description: event.target.value,
+                                }));
+                            }}
+                            />
+                        </Box>
+                        <Box>
+                        <TextField
+                            id="standard-helperText"
+                            label="Event Location"
+                            defaultValue={updatedEvent.location}
+                            variant="standard"
+                            onChange={(event) => {
+                                setupdatedEvent((updateEvent) => ({
+                                    ...updateEvent,
+                                    location: event.target.value,
+                                }));
+                            }}
+                            />
+                        </Box>
+                        <Box>
+                        <FormControl variant="standard">
+                            <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
+                            <Input
+                                id="standard-adornment-amount"
+                                defaultValue={updatedEvent.donationTarget}
+                                onChange={(event) => {
+                                    setupdatedEvent((updateEvent) => ({
+                                        ...updateEvent,
+                                        donationTarget: parseInt(event.target.value),
+                                    }));
+                                }}
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                            />
+                            </FormControl>
+                        </Box>
+                        <Box>
+                            <Button
+                                variant="contained"
+                                sx={{ backgroundColor: "orange" }}
+                                type="submit"
+                            >
+                                Update
+                            </Button>
+                            <Button
+                                variant="contained"
+                                sx={{ backgroundColor: "orange" }}
+                                type="button"
+                                onClick={deleteHandler}
+                            >
+                                Delete
 
-                        </Button>
+                            </Button>
+                        </Box>
                     </form>
-                </Typography>
             ) : (
                 <h1 data-testid="NotAdminResult">No</h1>
             )}
