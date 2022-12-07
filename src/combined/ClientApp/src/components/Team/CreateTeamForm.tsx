@@ -5,6 +5,7 @@ import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import team from "../../JsModels/team";
 
 const CreateTeamForm = () => {
 
@@ -17,21 +18,13 @@ const CreateTeamForm = () => {
     const [isPublic, setIsPublic] = useState<boolean>(true)
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
-    const currentEvent = useContext(EventContext);
+    const { currentEvent } = useContext(EventContext);
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
 
-    interface team {
-        name: string,
-        description: string,
-        mainImage: string,
-        ownerID: number,
-        eventID: number,
-        donationTarget: number,
-        isPublic: boolean
-    }
+    
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()

@@ -1,6 +1,7 @@
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
+import Person from "../../JsModels/person";
 import Registration from "../../JsModels/registration";
 import { authService } from "../../services/authService";
 
@@ -17,13 +18,19 @@ export function TeamDetails() {
     const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
+    const [teamOwner, setTeamOwner] = useState<Person>();
+    const personApi = process.env.PUBLIC_URL + `/api/Person/${currentTeam?.ownerID}`;
 
     useEffect(() => {      
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
+
+        const person = await fetch(api)
+        const teamOwner = await person.json()
         setCurrentTeam(response)
         setCurrentTeamRegistrations(response.registrations)
+        setTeamOwner(teamOwner)
     }
     const callServise = async () => {
         await fetchTeam()
@@ -31,7 +38,8 @@ export function TeamDetails() {
 
         callServise()
     }, [api]);
-        
+
+    console.log("I am the Team owner", teamOwner);
 
     const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser")
@@ -47,6 +55,7 @@ export function TeamDetails() {
             {currentTeam?.eventID}
             {currentTeam?.donationTarget}  
             <h3>There are {currentTeamRegisrtations.length} members in a this team!</h3>
+            <h2> Owner of the Team is: {teamOwner?.name} </h2>
             <ul>
                 {currentTeamRegisrtations.map((registration) => registration.isPublic===true ?
                     <li key={registration.id}> {registration.nickname}</li> : <li>ananymous user</li>
