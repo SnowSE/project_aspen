@@ -1,7 +1,7 @@
 import Registration from "./registration";
 
 export default class Team {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   mainImage: string;
