@@ -73,7 +73,7 @@ namespace combined.Controllers
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = payment.teamName,
-                            Description = payment.teamName + "Donation",
+                            Description = payment.teamName + " Donation",
                             Images = new List<string> { payment.teamName }
                         },
                     },
