@@ -16,17 +16,16 @@ const NavMenu = () => {
     const pages = [
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
+        { text: 'Admin Dashboard', href: '/AdminDashboard' },
 
 
     ]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         pages.push({ text: 'Swagger', href: `/swagger` });
-        pages.push({ text: 'Counter', href: '/counter' });
-        pages.push({ text: 'Fetch Data', href: '/fetch-data' });
     }
     const adminPages = (value: any) => {
-        if (isAdmin === false && value.key === "Add Event") {
+        if (isAdmin === false && value.key === "Add Event" && value.key === "Admin Dashboard") {
             return false
         }
         else {
@@ -37,13 +36,9 @@ const NavMenu = () => {
     useEffect(() => {
         async function currentUser() {
             var user = await authService.getUser()
-            console.log("user roles:", user?.profile.roles)
             user?.profile.roles.forEach((role: string) => {
-                console.log(role)
-                if (role.includes("admin")) {
-                    console.log("here")
+                if (role.includes("admin")) {                    
                     setIsAdmin(true)
-
                 }
                 else {
                     setIsAdmin(false)
