@@ -6,7 +6,7 @@ import { EventContext } from '../../App';
 import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import team from "../../JsModels/team";
-import Event from "../../JsModels/event";
+
 
 const CreateTeamForm = () => {
 
