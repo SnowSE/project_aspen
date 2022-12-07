@@ -17,5 +17,5 @@ public record DtoRegistration
 
     public long TeamID { get; set; }
 
-    public IEnumerable<DtoPersonRegistration> PersonRegistrations { get; set; }
+    public IEnumerable<DtoPersonRegistration>? PersonRegistrations { get; set; }
 }

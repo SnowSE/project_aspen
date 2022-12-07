@@ -14,7 +14,7 @@ const SharingButton = () => {
                 }}
                 onClick={() => console.log("shared successfully!")}
             >
-                <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }}>SHARE NOW</Button>
+                <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>
         </div>
     );

@@ -38,7 +38,8 @@ public class RegistrationRepository : IRegistrationRepository
     public async Task<Registration> GetByIdAsync(long registrationID)
     {
         var dbRegistration = await context.Registrations
-            //.Include(r=>r.PersonRegistrations)
+            .Include(r => r.PersonRegistrations)
+            .ThenInclude(pr => pr.Person)
             .FirstOrDefaultAsync(r => r.ID == registrationID);
         if (dbRegistration == null)
             throw new NotFoundException<Registration>();
