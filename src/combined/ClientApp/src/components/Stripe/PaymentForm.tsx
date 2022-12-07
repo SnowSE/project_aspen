@@ -44,10 +44,6 @@ export default function PaymentForm() {
     return (
         <>
             <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center' }}>
-
-
-
-
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
                         id="filled-number"
