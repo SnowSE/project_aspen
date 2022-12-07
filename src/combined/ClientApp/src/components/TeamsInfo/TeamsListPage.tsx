@@ -6,7 +6,7 @@ import { EventContext } from '../../App';
 
 export function TeamsListPage() {
     const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
-    const currentEvent = useContext(EventContext);
+    const { currentEvent }  = useContext(EventContext);
        
     useEffect(() => {
         const fetchData = async () => {
