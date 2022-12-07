@@ -8,13 +8,12 @@ import "../../ComponentStyling.css"
 
 const pages = [
     { text: 'Home', href: '/' },
-    { text: 'Team Details', href: '/TeamDetails' }
+    { text: 'Team Details', href: '/TeamDetails' },
+    { text: 'Admin Dashboard', href: '/AdminDashboard' },
 ]
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     pages.push({ text: 'Swagger', href: `/swagger` });
-    pages.push({ text: 'Counter', href: '/counter' });
-    pages.push({ text: 'Fetch Data', href: '/fetch-data' });
 }
 
 function DrawerComponent() {
