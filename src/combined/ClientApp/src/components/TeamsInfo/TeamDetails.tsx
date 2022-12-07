@@ -48,24 +48,36 @@ export function TeamDetails() {
             {currentTeam?.donationTarget}  
             <h3>There are {currentTeamRegisrtations.length} members in a this team!</h3>
             <ul>
-                {currentTeamRegisrtations.map((registration) => registration.isPublic===true &&
-                    <li key={registration.id}> {registration.nickname}</li>
-                )}
+                {currentTeamRegisrtations.map((registration) => registration.isPublic===true ?
+                    <li key={registration.id}> {registration.nickname}</li> : <li>ananymous user</li>
+                )} 
             </ul>
                 
+            {
+                (() => {
+                    if (id === id && currentTeam?.isPublic === true) {
+                        return (
+                            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                <Button onClick={() => loggedInUSer ? navigate({
+                                    pathname: "/LoggedInUser",
+                                    search: `?${createSearchParams({
+                                        id: `${id}`,
+                                        ownerID: `${currentTeam?.ownerID}`
 
+                                    })}`
+                                }) : authService.signinRedirect()}
+                                    sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
+                            </Grid>
+                        )
+                    } else {
+                        return (
+                            <p>This is Private Team</p>
+                        )
+                    }
+                })()
+            }  
 
-            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                <Button onClick={() => loggedInUSer ? navigate({
-                    pathname: "/LoggedInUser",
-                    search: `?${createSearchParams({
-                        id: `${id}`,
-                        ownerID: `${currentTeam?.ownerID}`
-
-                    })}`
-                }) : authService.signinRedirect()}
-                    sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
-            </Grid>
+           
 
 
 

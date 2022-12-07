@@ -10,8 +10,6 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
     //const user = authService.isLoggedIn();
     //{ localStorage.getItem("LoggedInUser") == "" ?}
     const loggedInUSer = localStorage.getItem("LoggedInUser")
-
-    console.log("Am I logged in", loggedInUSer)
         return (
             <div style={{ paddingTop: "1rem", justifyContent: "flex-start" }}>
                 <div className="d-flex justify-content-start" >
@@ -31,20 +29,32 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                         }}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}>Learn About Our Team</Button>
                                 </Grid>
+                                    {
+                                        (() => {
+                                            if (id === id && isPublic===true) {
+                                                return (
+                                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                                        <Button onClick={() => loggedInUSer ?
+                                                            navigate({
+                                                                pathname: "/LoggedInUser",
+                                                                search: `?${createSearchParams({
+                                                                    id: `${id}`,
+                                                                    ownerID: `${ownerID}`
 
-                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                                        <Button onClick={() => loggedInUSer ?
-                                            navigate({
-                                                pathname: "/LoggedInUser",
-                                                search: `?${createSearchParams({
-                                                    id:`${id}`,
-                                                    ownerID: `${ownerID}`
-
-                                                })}`
-                                            })
-                                            : authService.signinRedirect()}
-                                        sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
-                                </Grid>
+                                                                })}`
+                                                            })
+                                                            : authService.signinRedirect()}
+                                                            sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
+                                                    </Grid>
+                                                )
+                                            }  else {
+                                                return (
+                                                    <p>This is Private Team</p>
+                                                )
+                                            }
+                                        })()
+                                    }  
+                                   
 
                                   
 
