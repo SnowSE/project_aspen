@@ -20,7 +20,7 @@ export function Home() {
     const navigate = useNavigate();
     const currentEvent = useContext(EventContext);
     useEffect(() => {
-    }, []);
+    }, [currentEvent]);
 
     return (
         <Box>
