@@ -17,16 +17,10 @@ import SharingButton from '../../components/Share/SharingButton';
 
 export function Home() {
 
-    console.log("window.location.origin is: ", window.location.origin)
     const navigate = useNavigate();
-    const currentEvent = useContext(EventContext);
-
-    console.log("currentEvent is: ", currentEvent);
-
+    const {currentEvent} = useContext(EventContext);
     useEffect(() => {
-        console.log("Home mounted");
-
-    }, []);
+    }, [currentEvent]);
 
     return (
         <Box>

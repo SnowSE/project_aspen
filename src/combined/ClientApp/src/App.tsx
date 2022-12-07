@@ -15,7 +15,8 @@ if (!root && process.env.NODE_ENV !== 'test') {
 export const EventContext = React.createContext({} as any);
 
 function App() {
-    const [latestEvent, setLatestEvent] = React.useState<Event>();
+    const [currentEvent, setCurrentEvent] = React.useState<Event>();
+    const value = { currentEvent, setCurrentEvent };
 
     const currentEventInit = async () => {
 
@@ -29,7 +30,7 @@ function App() {
                     ? a
                     : b;
             });
-            setLatestEvent(closestEvent);
+            setCurrentEvent(closestEvent);
         }
         else {
             const defaultEvent = new Event(
@@ -41,7 +42,7 @@ function App() {
                 0,  // donationTarget
                 -1, // id
             );
-            setLatestEvent(defaultEvent);
+            setCurrentEvent(defaultEvent);
         };
     }
 
@@ -51,7 +52,7 @@ function App() {
     }, []);
 
     return (
-        <EventContext.Provider data-testid={"eventContext"} value={latestEvent}>
+        <EventContext.Provider data-testid={"eventContext"} value={value}>
             <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
                 <Layout>
                     <Routes>
