@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Input, InputAdornment, InputLabel, TextField} from "@mui/material";
+import { Box, Button, FormControl, Input, InputAdornment, InputLabel, TextField } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
@@ -7,7 +7,7 @@ import { EventsService } from "../../services/Events/EventsService";
 
 
 const SiteAdmin = () => {
-    const [,setIsAdmin] = useState(false);
+    const [, setIsAdmin] = useState(false);
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
 
@@ -78,83 +78,83 @@ const SiteAdmin = () => {
     return (
 
         <div>
-                    <form onSubmit={updateEventHandler}>
-                        <TextField
-                            id="standard-helperText"
-                            label="Event Title"
-                            defaultValue={updatedEvent.title}
-                            variant="standard"
-                            onChange={(event) => {
-                                setupdatedEvent((updateEvent) => ({
-                                    ...updateEvent,
-                                    title: event.target.value,
-                                }));
-                            }}
-                        />
-                        
-                        <Box>
-                        <TextField
-                            id="standard-helperText"
-                            label="Event Description"
-                            defaultValue={updatedEvent.description}
-                            variant="standard"
-                            onChange={(event) => {
-                                setupdatedEvent((updateEvent) => ({
-                                    ...updateEvent,
-                                    description: event.target.value,
-                                }));
-                            }}
-                            />
-                        </Box>
-                        <Box>
-                        <TextField
-                            id="standard-helperText"
-                            label="Event Location"
-                            defaultValue={updatedEvent.location}
-                            variant="standard"
-                            onChange={(event) => {
-                                setupdatedEvent((updateEvent) => ({
-                                    ...updateEvent,
-                                    location: event.target.value,
-                                }));
-                            }}
-                            />
-                        </Box>
-                        <Box>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-                            <Input
-                                id="standard-adornment-amount"
-                                defaultValue={updatedEvent.donationTarget}
-                                onChange={(event) => {
-                                    setupdatedEvent((updateEvent) => ({
-                                        ...updateEvent,
-                                        donationTarget: parseInt(event.target.value),
-                                    }));
-                                }}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                            />
-                            </FormControl>
-                        </Box>
-                        <Box>
-                            <Button
-                                variant="contained"
-                                sx={{ backgroundColor: "orange" }}
-                                type="submit"
-                            >
-                                Update
-                            </Button>
-                            <Button
-                                variant="contained"
-                                sx={{ backgroundColor: "orange" }}
-                                type="button"
-                                onClick={deleteHandler}
-                            >
-                                Delete
+            <form onSubmit={updateEventHandler}>
+                <TextField
+                    id="standard-helperText"
+                    label="Event Title"
+                    defaultValue={updatedEvent.title}
+                    variant="standard"
+                    onChange={(event) => {
+                        setupdatedEvent((updateEvent) => ({
+                            ...updateEvent,
+                            title: event.target.value,
+                        }));
+                    }}
+                />
 
-                            </Button>
-                        </Box>
-                    </form>
+                <Box>
+                    <TextField
+                        id="standard-helperText"
+                        label="Event Description"
+                        defaultValue={updatedEvent.description}
+                        variant="standard"
+                        onChange={(event) => {
+                            setupdatedEvent((updateEvent) => ({
+                                ...updateEvent,
+                                description: event.target.value,
+                            }));
+                        }}
+                    />
+                </Box>
+                <Box>
+                    <TextField
+                        id="standard-helperText"
+                        label="Event Location"
+                        defaultValue={updatedEvent.location}
+                        variant="standard"
+                        onChange={(event) => {
+                            setupdatedEvent((updateEvent) => ({
+                                ...updateEvent,
+                                location: event.target.value,
+                            }));
+                        }}
+                    />
+                </Box>
+                <Box>
+                    <TextField
+                        variant="standard"
+                        id="standard-adornment-amount"
+                        type="number"
+                        label="Amount"
+                        InputProps={{ inputProps: { min: 0 }, startAdornment: '$' }}
+                        defaultValue={updatedEvent.donationTarget}
+                        onChange={(event) => {
+                            setupdatedEvent((updateEvent) => ({
+                                ...updateEvent,
+                                donationTarget: parseInt(event.target.value),
+                            }));
+                        }}
+                    />
+                </Box>
+                <Box>
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "orange" }}
+                        type="submit"
+                    >
+                        Update
+                    </Button>
+                    <Button
+                        variant="contained"
+                        sx={{ backgroundColor: "orange" }}
+                        type="button"
+                        onClick={deleteHandler}
+                    >
+                        Delete
+
+                    </Button>
+                </Box>
+            </form>
         </div>
     );
 };
