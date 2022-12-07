@@ -31,7 +31,7 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                 </Grid>
                                     {
                                         (() => {
-                                            if (id === id && isPublic===true) {
+                                            if ( isPublic===true) {
                                                 return (
                                                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                                                         <Button onClick={() => loggedInUSer ?

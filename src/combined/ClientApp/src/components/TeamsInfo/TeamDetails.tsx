@@ -55,7 +55,7 @@ export function TeamDetails() {
                 
             {
                 (() => {
-                    if (id === id && currentTeam?.isPublic === true) {
+                    if (currentTeam?.isPublic === true) {
                         return (
                             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                                 <Button onClick={() => loggedInUSer ? navigate({
