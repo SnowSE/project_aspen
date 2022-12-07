@@ -1,68 +1,58 @@
-import React, { useState } from 'react'
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import React from 'react'
+import {  useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 
 
 export default function PaymentForm() {
 
-    const [success, setSuccess] = useState<boolean>(false)
     const stripe = useStripe()
-    const elements = useElements()
+    // const elements = useElements()
 
-    // type PaymentMethodResult = {
-    //     paymentMethod: PaymentMethod;
-    //     error?: undefined;
-    // } | {
-    //     paymentMethod?: undefined;
-    //     error: StripeError;
-    // }
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         console.log("paying")
-        const paymentMethodResult = await stripe?.createPaymentMethod({
-            type: "card",
-            card: elements!.getElement(CardElement)!
-        })
+        // const paymentMethodResult = await stripe?.createPaymentMethod({
+        //     type: "card",
+        //     card: elements!.getElement(CardElement)!
+        // })
 
-        console.log(paymentMethodResult)
-        if (!paymentMethodResult?.error) {
+        // console.log(paymentMethodResult)
+        // if (!paymentMethodResult?.error) {
             try {
-                const id = paymentMethodResult?.paymentMethod.id
-                const response = await axios.post("https://localhost:44478/aspen/new/api/stripe",
+                // const id = paymentMethodResult?.paymentMethod.id
+                await axios.post("https://localhost:44478/aspen/new/api/stripe",
                     {
                         amount: 100,
-                        id: id, 
-                        teamName: "asdf"
-                    }).then((response) => {console.log(response.data) })
-                    .catch((error) => { console.log(error.response.data) })
+                        id: "bob",
+                        teamName: "Snow_Team"
+                    }).then((response) => {
+                        const session = response.data.sessionId
+                        stripe?.redirectToCheckout({ sessionId: session })
+                    })
+                    .catch((error) => { console.log("There was an error", error.response.data) })
 
             } catch (error) {
                 console.log("error is: ", error)
             }
         }
-        else {
-            console.log("here")
-        }
-
-    }
-
+    
 
     return (
         <>
-            {!success ?
                 <form onSubmit={handleSubmit}>
                     <fieldset className='FormGroup'>
                         <div className='FormRow'>
-                            <CardElement  />
-
 
                         </div>
                     </fieldset>
                     <button>Pay</button>
 
+
+
                 </form>
-                : <h1>Success</h1>}
+
         </>
     );
 }
