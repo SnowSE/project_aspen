@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Input, InputAdornment, InputLabel, TextField} from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
