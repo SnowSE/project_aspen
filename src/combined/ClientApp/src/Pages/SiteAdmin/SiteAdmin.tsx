@@ -78,7 +78,6 @@ const SiteAdmin = () => {
     return (
 
         <div>
-            {isAdmin ? (
                     <form onSubmit={updateEventHandler}>
                         <TextField
                             id="standard-helperText"
@@ -156,9 +155,6 @@ const SiteAdmin = () => {
                             </Button>
                         </Box>
                     </form>
-            ) : (
-                <h1 data-testid="NotAdminResult">No</h1>
-            )}
         </div>
     );
 };
