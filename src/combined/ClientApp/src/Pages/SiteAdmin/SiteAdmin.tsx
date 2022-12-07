@@ -11,9 +11,34 @@ const SiteAdmin = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
 
+    const nextCurrentEvent = async () => {
+        var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
+        var allEventsJson = await allEvents.json();
+        const today = new Date();
+        if (allEventsJson.length > 0) {
+            const closestEvent = allEventsJson.reduce((a: Event, b: Event) => {
+                const diff = new Date(a.date).getTime() - today.getTime();
+                return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
+                    ? a
+                    : b;
+            });
+            setCurrentEvent(closestEvent);
+        }
+        else {
+            const defaultEvent = new Event(
+                new Date(),
+                "", // location
+                "", // mainImage
+                "", // description!
+                "There are currently no upcoming events.",
+                0,  // donationTarget
+                -1, // id
+            );
+            setCurrentEvent(defaultEvent);
+        };
+    };
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
-
         var changedEvent: AspenEvent = {
             date: updatedEvent.date,
             title: updatedEvent.title,
@@ -31,7 +56,14 @@ const SiteAdmin = () => {
     };
 
     const deleteHandler = async (event: React.FormEvent) => {
-        console.log("ready to delete event");
+        event.preventDefault();
+        try {
+            //TODO: need to alert user that this can't be undone
+            await EventsService.DeleteEventViaAxios(currentEvent.id);
+        } catch (e) {
+            console.log("Delete Event failed: " + e);
+        }
+        nextCurrentEvent();
     };
 
     useEffect(() => {
@@ -52,7 +84,7 @@ const SiteAdmin = () => {
     }, []);
 
     return (
-        
+
         <div>
             {isAdmin ? (
                 <Typography>
@@ -75,6 +107,15 @@ const SiteAdmin = () => {
                             type="submit"
                         >
                             Update
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{ backgroundColor: "orange" }}
+                            type="button"
+                            onClick={deleteHandler}
+                        >
+                            Delete
+
                         </Button>
                     </form>
                 </Typography>
