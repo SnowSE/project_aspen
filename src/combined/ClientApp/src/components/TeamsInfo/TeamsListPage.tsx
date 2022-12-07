@@ -33,9 +33,9 @@ export function TeamsListPage() {
                         description={t.description}
                         mainImage={t.mainImage}
                         ownerID={t.ownerID}
-                        owner={t.owner}
                         eventID={t.eventID}
                         donationTarget={t.donationTarget}
+                        isPublic={t.isPublic }
                         registrations={t.registrations }
                         key={t.id}
 
