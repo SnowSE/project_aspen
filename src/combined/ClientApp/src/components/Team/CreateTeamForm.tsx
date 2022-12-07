@@ -7,6 +7,7 @@ import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import team from "../../JsModels/team";
 
+
 const CreateTeamForm = () => {
 
     const navigate = useNavigate();
@@ -23,8 +24,6 @@ const CreateTeamForm = () => {
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
-
-    
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()
@@ -50,7 +49,7 @@ const CreateTeamForm = () => {
         console.log('upload result:', result)
 
         const currentUser = await axios.get(currentUserUrl, config)
-
+        console.log(currentEvent.id)
         let newTeam: team = {
             name: teamName,
             description: teamDescription,
