@@ -7,7 +7,7 @@ import { EventsService } from "../../services/Events/EventsService";
 
 
 const SiteAdmin = () => {
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [,setIsAdmin] = useState(false);
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
 
