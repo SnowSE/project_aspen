@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AspenEvent } from '../../interfaces';
+import AspenEvent from '../../JsModels/event'
 
 
 const BaseUrl = process.env.PUBLIC_URL

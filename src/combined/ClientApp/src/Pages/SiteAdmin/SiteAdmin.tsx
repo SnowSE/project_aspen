@@ -4,7 +4,7 @@ import { EventContext } from "../../App";
 import { authService } from "../../services/authService";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
-import { AspenEvent } from "../../interfaces";
+
 
 const SiteAdmin = () => {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -39,16 +39,8 @@ const SiteAdmin = () => {
     };
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
-        var changedEvent: AspenEvent = {
-            date: updatedEvent.date,
-            title: updatedEvent.title,
-            location: updatedEvent.location,
-            description: updatedEvent.description,
-            mainImage: updatedEvent.mainImage,
-            donationTarget: updatedEvent.donationTarget,
-        };
         try {
-            await EventsService.UpdateEventViaAxios(changedEvent);
+            await EventsService.UpdateEventViaAxios(updatedEvent);
         } catch (e) {
             console.log("Update Event failed: " + e);
         }
