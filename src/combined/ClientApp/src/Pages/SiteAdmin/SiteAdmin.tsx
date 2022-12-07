@@ -8,7 +8,7 @@ import { AspenEvent } from "../../interfaces";
 
 const SiteAdmin = () => {
     const [isAdmin, setIsAdmin] = useState(false);
-    const currentEvent: Event = useContext(EventContext);
+    const { currentEvent, setCurrentEvent } = useContext(EventContext);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
 
     const updateEventHandler = async (event: React.FormEvent) => {
@@ -27,6 +27,7 @@ const SiteAdmin = () => {
         } catch (e) {
             console.log("Update Event failed: " + e);
         }
+        setCurrentEvent(updatedEvent);
     };
 
     const deleteHandler = async (event: React.FormEvent) => {

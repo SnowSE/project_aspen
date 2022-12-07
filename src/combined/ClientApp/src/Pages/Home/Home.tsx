@@ -18,7 +18,7 @@ import SharingButton from '../../components/Share/SharingButton';
 export function Home() {
 
     const navigate = useNavigate();
-    const currentEvent = useContext(EventContext);
+    const {currentEvent} = useContext(EventContext);
     useEffect(() => {
     }, [currentEvent]);
 
