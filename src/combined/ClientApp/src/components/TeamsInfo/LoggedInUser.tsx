@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import registration from "../../JsModels/registration";
 //import PersonRegistrations from "../../JsModels/personRegistrations";
 //import registration from "../../JsModels/registration";
 
