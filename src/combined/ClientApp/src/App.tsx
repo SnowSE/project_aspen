@@ -1,14 +1,12 @@
-import React, {useEffect} from 'react';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
-import './custom.css';
-import Event from '../src/JsModels/event'
+import React, { useEffect } from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import AppRoutes from "./AppRoutes";
+import { Layout } from "./components/Layout";
+import "./custom.css";
+import Event from "../src/JsModels/event";
 
-
-
-const root = process.env.PUBLIC_URL
-if (!root && process.env.NODE_ENV !== 'test') {
+const root = process.env.PUBLIC_URL;
+if (!root && process.env.NODE_ENV !== "test") {
     throw new Error("PUBLIC_URL is undefined");
 }
 
@@ -19,18 +17,19 @@ function App() {
     const value = { currentEvent, setCurrentEvent };
 
     const currentEventInit = async () => {
-
         var allEvents = await fetch(`${root}/api/events`);
         var allEventsJson = await allEvents.json();
-        const today = new Date();
         if (allEventsJson.length > 0) {
-            const closestEvent = allEventsJson.reduce((a: Event, b: Event) => {
-                const diff = new Date(a.date).getTime() - today.getTime();
-                return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
-                    ? a
-                    : b;
+            var jsonEvent: Event[] = JSON.parse(JSON.stringify(allEventsJson));
+            const today = new Date();
+            var eventEndingAfterToday = jsonEvent.filter((event: Event) => {
+                var eventDate = new Date(event.date);
+                return eventDate >= today;
             });
-            setCurrentEvent(closestEvent);
+            var closesDate = eventEndingAfterToday.sort(function (a, b) {
+                return a.date > b.date ? 1 : -1;
+            });
+            setCurrentEvent(closesDate[0]);
         }
         else {
             const defaultEvent = new Event(
@@ -44,7 +43,8 @@ function App() {
             );
             setCurrentEvent(defaultEvent);
         };
-    }
+    };
+
 
     useEffect(() => {
         console.log("App mounted");
