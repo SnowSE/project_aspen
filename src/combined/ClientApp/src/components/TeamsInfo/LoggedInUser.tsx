@@ -1,9 +1,10 @@
 import { Button, Checkbox, Grid} from "@mui/material";
 import axios from "axios";
-import {  useState } from "react";
-import {  useNavigate, useSearchParams } from "react-router-dom";
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
-import registration from "../../JsModels/registration";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+//import PersonRegistrations from "../../JsModels/personRegistrations";
+//import registration from "../../JsModels/registration";
 
 
 
