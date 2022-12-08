@@ -26,7 +26,6 @@ export function TeamsListPage() {
             
             {teamsList.map((t: any, id) => {
                 return (
-                    //<TeamDetails t={t} key={id }/>
                      <TeamCard
                         name={t.name}
                         id={t.id}
