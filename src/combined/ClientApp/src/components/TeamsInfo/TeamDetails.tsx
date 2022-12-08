@@ -77,8 +77,8 @@ export function TeamDetails() {
         await fetchTeamOwner();
     };
 
-    callServise();
-  }, [api]);
+      callServise();
+  }, [api, personApi]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
