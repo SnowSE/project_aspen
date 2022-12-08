@@ -1,16 +1,5 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Collapse,
-  Typography,
-} from "@mui/material";
+import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography,} from "@mui/material";
 import { useEffect, useState } from "react";
-
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import Registration from "../../JsModels/registration";
@@ -42,27 +31,50 @@ export function TeamDetails() {
   const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
   const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  const list=[]
+    for (var entry of searchParams.entries()) {
+        console.log(entry[1]);
+        list.push(entry[1])
+    }        
+    var tId = parseInt(list[0]);
+    if (list[0] !== null) {
+       tId = parseInt(list[0]);   // parse the string back to a number.
+    }   
+    var ownerId = parseInt(list[1]);
+    if (list[1] !== null) {
+        ownerId =parseInt(list[1]);   // parse the string back to a number.
+    }
 
-    const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
+
+    const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
-    const personApi = process.env.PUBLIC_URL + `/api/Person/${currentTeam?.ownerID}`;
+    const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
 
   useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
-
-        const person = await fetch(api)
-        const teamOwner = await person.json()
         setCurrentTeam(response)
-        setCurrentTeamRegistrations(response.registrations)
-        setTeamOwner(teamOwner)
-    }
+        setCurrentTeamRegistrations(response.registrations)       
+        
+      }
+      const fetchTeamOwner = async () => {
+          try {
+              const person = await fetch(personApi)
+              const teamOwner = await person.json()
+              setTeamOwner(teamOwner)
+
+          } catch (e) {
+              console.log(e);
+          }
+          
+
+      }
     const callServise = async () => {
-      await fetchTeam();
+        await fetchTeam();
+        await fetchTeamOwner();
     };
 
     callServise();
@@ -75,14 +87,35 @@ export function TeamDetails() {
   const navigate = useNavigate();
   const loggedInUSer = localStorage.getItem("LoggedInUser");
   return (
-    <Box>
+      <Box>
+          <CardContent>
+              <Typography paragraph>Members:</Typography>
+              <Typography paragraph>
+                  <h4>The Team owner is: {teamOwner?.name}</h4>                  
+                  <h4>There are {currentTeamRegisrtations.length} members on this
+                      team!</h4>
+                  <ul>
+                      {currentTeamRegisrtations.map(
+                          (registration) => {
+                              if (registration.isPublic === true) {
+                                  return (
+                                      <li key={registration.id}> {registration.nickname}</li>)
+                              } else {
+                                  return <li>ananymous team member</li>
+                              }
+                          }
+                              
+                      )}
+                  </ul>
+              </Typography>
+          </CardContent>
       <Button
         onClick={() =>
           loggedInUSer
             ? navigate({
                 pathname: "/LoggedInUser",
                 search: `?${createSearchParams({
-                  id: `${id}`,
+                  id: `${tId}`,
                   ownerID: `${currentTeam?.ownerID}`,
                 })}`,
               })
@@ -131,21 +164,7 @@ export function TeamDetails() {
             </ExpandMore>
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>Members:</Typography>
-              <Typography paragraph>
-                There are {currentTeamRegisrtations.length} members on this
-                team!
-                <ul>
-                  {currentTeamRegisrtations.map(
-                    (registration) =>
-                      registration.isPublic === true && (
-                        <li key={registration.id}> {registration.nickname}</li>
-                      )
-                  )}
-                </ul>
-              </Typography>
-            </CardContent>
+          
           </Collapse>
         </Card>
       </Box>
