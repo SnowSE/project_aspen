@@ -10,6 +10,7 @@ import LoginLanding from "./Pages/Login/LoginLanding";
 import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
 import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
 import LoginButton from "./components/LoginButton";
+import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 
 const AppRoutes = [
     {
@@ -64,6 +65,10 @@ const AppRoutes = [
     {
         path: `/LoginButton`,
         element: <LoginButton />
+    },
+    {
+        path: `/AdminDashboard`,
+        element: <SiteAdmin />
     },
 ];
 

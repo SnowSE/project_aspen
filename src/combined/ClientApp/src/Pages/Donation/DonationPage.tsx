@@ -1,10 +1,11 @@
 import React from 'react';
 import {
     Box,
-    Button,
-    TextField,
     Typography,
 } from '@mui/material';
+import StripeContainer from '../../components/Stripe/StripeContainer';
+
+
 
 
 export function DonationPage() {
@@ -16,28 +17,10 @@ export function DonationPage() {
                 </Typography>
             </Box>
             <br />
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TextField
-                    id="filled-number"
-                    label="Meals"
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    InputProps={{
-                        inputProps: { min: 0}
-                    } }
-                    variant="filled"
-                 />
-            </Box>
+            
                 <br/>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                    variant='contained'
-                    sx={{ backgroundColor: 'orange' }}>
-                    Donate Now
-                </Button>
-            </Box>
+            
+            <StripeContainer />
         </Box>
     );
 }

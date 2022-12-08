@@ -59,6 +59,7 @@ describe('Check input change', () => {
         expect(eventDonationGoalInput.value).toEqual('45')
         // expect(eventDateInput.value).toEqual('2022-11-09T00:41:37.022Z')
         expect(submitButton).not.toBeDisabled()
+        
     })
 
     it('Check that form is NOT submittable', async () => {

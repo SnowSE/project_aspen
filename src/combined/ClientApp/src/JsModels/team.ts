@@ -1,5 +1,7 @@
+import Registration from "./registration";
+
 export default class Team {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   mainImage: string;
@@ -7,6 +9,7 @@ export default class Team {
   eventID: number;
   donationTarget: number;
   isPublic: boolean;
+  registrations?: Registration[];
   constructor(
     name: string,
     description: string,
@@ -15,7 +18,8 @@ export default class Team {
     eventId: number,
     id: number,
     donationTarget: number,
-    isPublic: boolean,
+     isPublic: boolean,
+     registrations: Registration[],
 
   ) {
     this.id = id ?? -1;
@@ -26,5 +30,6 @@ export default class Team {
     this.eventID = eventId;
     this.donationTarget = donationTarget;
     this.isPublic = isPublic;
+    this.registrations= [];
   }
 }

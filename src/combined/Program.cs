@@ -1,11 +1,12 @@
 using Api.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -135,10 +136,7 @@ app.UseSwagger(options =>
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(new StaticFileOptions
-{
-    RequestPath = "/assets"
-});
+app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(myAllowSpecificOrigins);
 

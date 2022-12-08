@@ -1,43 +1,74 @@
-import { Button, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Collapse,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Registration from "../../JsModels/registration";
 import { authService } from "../../services/authService";
-import { TeamCard } from "./Interfaces";
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import SharingIcon from "../../components/Share/SharingIcon";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ProgressBar from "../ProgressBar";
 
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
 
-
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 export function TeamDetails() {
+  const [expanded, setExpanded] = React.useState(false);
+  const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
-    const baseImageUrl = process.env.REACT_APP_BASE_URL + "/assets/"
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
 
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
+  const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
+  const [currentTeam, setCurrentTeam] = useState<any>();
+  const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState<
+    Registration[]
+  >([]);
 
-    const api = process.env.PUBLIC_URL + `/api/teams/${id}`;
-    const [currentTeam, setCurrentTeam] = useState<any>();
-    const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
-
+  useEffect(() => {
     const fetchTeam = async () => {
-        const res = await fetch(api)
-        console.log("I am inside the fetchTEam", res);
-        const response = await res.json()
-        console.log("I am inside the fetchTEam1", response);
-        setCurrentTeam(response)
-        console.log("I have got registrations", response.registrations)
-        setCurrentTeamRegistrations(response.registrations)
-    }
-    useEffect(() => {
-        const callServise = async () => {
-            await fetchTeam()
-        }
+      const res = await fetch(api);
+      const response = await res.json();
+      setCurrentTeam(response);
+      setCurrentTeamRegistrations(response.registrations);
+    };
+    const callServise = async () => {
+      await fetchTeam();
+    };
 
-        callServise()
-    }, []);
+    callServise();
+  }, [api]);
 
-    console.log("currentTeam Z", currentTeam);
-    console.log("I have got registrations 2", typeof(currentTeamRegisrtations))
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
     const navigate = useNavigate();
 
@@ -72,4 +103,3 @@ export function TeamDetails() {
         </div>
     );
 }
-    
