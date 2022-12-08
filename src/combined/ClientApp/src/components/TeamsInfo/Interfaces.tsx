@@ -24,7 +24,11 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                         <Button onClick={() => {
                                             navigate({
                                                 pathname: '/TeamDetails',
-                                                search: `?id=${id}`
+                                                search: `?${createSearchParams({
+                                                    id: `${id}`,
+                                                    ownerID: `${ownerID}`
+
+                                                })}`
                                             })
                                         }}
                                         sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}>Learn About Our Team</Button>
