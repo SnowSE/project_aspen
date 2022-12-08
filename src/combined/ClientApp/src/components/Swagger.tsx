@@ -11,11 +11,11 @@ const Swagger = () => {
     useEffect(() => {
         refreshPage();
     });
-        return (
-            <>
-                <Navigate to="index.html" replace={true} />
-            </>
-        );
-    }
+    return (
+        <>
+            <Navigate to="index.html" replace={true} />
+        </>
+    );
+}
 
 export { Swagger };
