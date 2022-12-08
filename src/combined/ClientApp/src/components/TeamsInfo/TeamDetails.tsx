@@ -1,4 +1,4 @@
-import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography,} from "@mui/material";
+import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography, Grid,} from "@mui/material";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
@@ -95,36 +95,44 @@ export function TeamDetails() {
                   <h4>There are {currentTeamRegisrtations.length} members on this
                       team!</h4>
                   <ul>
-                      {currentTeamRegisrtations.map(
-                          (registration) => {
-                              if (registration.isPublic === true) {
-                                  return (
-                                      <li key={registration.id}> {registration.nickname}</li>)
-                              } else {
-                                  return <li>ananymous team member</li>
-                              }
-                          }
-                              
-                      )}
+                      {currentTeamRegisrtations.map((registration) =>                          
+                              registration.isPublic === true ?
+                                  <li key={registration.id}> {registration.nickname}</li>
+                                        : <li>ananymous team member</li>)}
                   </ul>
               </Typography>
           </CardContent>
-      <Button
-        onClick={() =>
-          loggedInUSer
-            ? navigate({
-                pathname: "/LoggedInUser",
-                search: `?${createSearchParams({
-                  id: `${tId}`,
-                  ownerID: `${currentTeam?.ownerID}`,
-                })}`,
-              })
-            : authService.signinRedirect()
-        }
-        sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
-      >
-        Join Our Team
-      </Button>
+
+          { (() => {
+                  if (currentTeam?.isPublic === true) {
+                      return (
+                          <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                              <Button
+                                  onClick={() =>
+                                      loggedInUSer
+                                          ? navigate({
+                                              pathname: "/LoggedInUser",
+                                              search: `?${createSearchParams({
+                                                  id: `${tId}`,
+                                                  ownerID: `${currentTeam?.ownerID}`,
+                                              })}`,
+                                          })
+                                          : authService.signinRedirect()
+                                  }
+                                  sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                              >
+                                  Join Our Team
+                              </Button>
+                          </Grid>
+                      )
+                  } else {
+                      return (
+                          <p>This is Private Team</p>
+                      )
+                  }
+              })()
+          }  
+      
       {currentTeam?.id}
       {currentTeam?.ownerID}
       {currentTeam?.owner}
