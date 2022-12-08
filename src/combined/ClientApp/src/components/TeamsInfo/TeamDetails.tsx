@@ -20,9 +20,9 @@ import { authService } from "../../services/authService";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import SharingIcon from "../../components/Share/SharingIcon";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
+import SharingIcon from "../Share/SharingIcon";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -90,15 +90,18 @@ export function TeamDetails() {
       >
         Join Our Team
       </Button>
-      {currentTeam?.id}
-      {currentTeam?.ownerID}
-      {currentTeam?.owner}
-      {currentTeam?.eventID}
-      <Box sx={{display:'flex', justifyContent:'center'}}>
-        <Card sx={{ maxWidth: 500 }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Card sx={{ maxWidth: 550 }}>
           <CardHeader
+            className="PaperColor"
+            sx={{ color: "white" }}
             title={currentTeam?.name}
-            subheader={"Donation Target: "+ currentTeam?.donationTarget + "Meals"}
+            subheader={
+              <Typography sx={{ color: "white" }}>
+                {" "}
+                Donation Target: ${currentTeam?.donationTarget} Meals{" "}
+              </Typography>
+            }
           />
           <CardMedia
             component="img"
@@ -106,19 +109,16 @@ export function TeamDetails() {
             image={baseImageUrl + currentTeam?.mainImage}
             alt="mainImage"
           />
-          <CardContent>
-            <Box
-              className="ProgressBarPosition"
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+          <CardContent className="PaperColor">
+            <Box className="ProgressBarPosition">
               <ProgressBar />
+              <SharingIcon data-testid={"shareBtn"} />
             </Box>
-            <Typography variant="body2" color="text.secondary">
-              {currentTeam?.description}
-            </Typography>
+          </CardContent>
+          <CardContent>
+            <Typography variant="body2">{currentTeam?.description}</Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <SharingIcon data-testid={"shareBtn"} />
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
@@ -129,11 +129,13 @@ export function TeamDetails() {
             </ExpandMore>
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>Members:</Typography>
-              <Typography paragraph>
+            <CardContent className="PaperColor">
+              <Typography paragraph sx={{ color: "white" }}>
                 There are {currentTeamRegisrtations.length} members on this
                 team!
+                <Typography paragraph sx={{ color: "white" }}>
+                  Members:
+                </Typography>
                 <ul>
                   {currentTeamRegisrtations.map(
                     (registration) =>
