@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\AdminComponents\EventEditDeleteForm.tsx" />
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
     <None Remove="ClientApp\src\components\LoginButton.tsx" />
     <None Remove="ClientApp\src\Pages\SiteAdmin\SiteAdmin.tsx" />
@@ -70,10 +71,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\shared\shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\DrawerComponent.tsx" />
   </ItemGroup>
 
   <ItemGroup>
