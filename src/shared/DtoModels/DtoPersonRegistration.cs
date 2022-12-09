@@ -8,7 +8,7 @@ public record DtoPersonRegistration
     public long ID { get; set; }
 
     public long PersonID { get; set; }
-    public DtoPerson Person { get; set; }
+    public DtoPerson? Person { get; set; }
 
     public DateTime CreatedDate { get; set; }
 }

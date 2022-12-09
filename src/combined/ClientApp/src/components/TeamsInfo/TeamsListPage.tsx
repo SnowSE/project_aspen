@@ -6,7 +6,7 @@ import { EventContext } from '../../App';
 
 export function TeamsListPage() {
     const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
-    const currentEvent = useContext(EventContext);
+    const { currentEvent }  = useContext(EventContext);
        
     useEffect(() => {
         const fetchData = async () => {
@@ -26,16 +26,15 @@ export function TeamsListPage() {
             
             {teamsList.map((t: any, id) => {
                 return (
-                    //<TeamDetails t={t} key={id }/>
                      <TeamCard
                         name={t.name}
                         id={t.id}
                         description={t.description}
                         mainImage={t.mainImage}
                         ownerID={t.ownerID}
-                        owner={t.owner}
                         eventID={t.eventID}
                         donationTarget={t.donationTarget}
+                        isPublic={t.isPublic }
                         registrations={t.registrations }
                         key={t.id}
 

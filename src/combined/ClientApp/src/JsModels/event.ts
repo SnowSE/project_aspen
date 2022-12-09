@@ -5,7 +5,7 @@ export default class Event {
   description: string;
   mainImage: string;
   donationTarget: number;
-  id: number;
+  id?: number;
   constructor(
     date: Date,
     location: string,

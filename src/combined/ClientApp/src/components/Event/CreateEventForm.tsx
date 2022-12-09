@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button } from '@mui/material'
 import { FormGroup, Row, Col, Label, Input, FormText, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { AspenEvent } from "../../interfaces";
+import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
+import { EventContext } from "../../App";
+
 const CreateEventForm = () => {
 
     var navigate = useNavigate();
@@ -14,10 +16,46 @@ const CreateEventForm = () => {
     const [eventMainImage, setEventMainImage] = useState("")
     const [eventDonationTarget, setEventDonationTarget] = useState(0)
     const [disableSubmit, setDisableSubmit] = useState(true)
+    const { setCurrentEvent } = useContext(EventContext);
+
+    const nextCurrentEvent = async () => {
+        var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
+        var allEventsJson = await allEvents.json();
+
+        if (allEventsJson.length > 0) {
+            var jsonEvent: Event[] = JSON.parse(JSON.stringify(allEventsJson));
+            const today = new Date();
+
+            var eventsEndingAfterToday = jsonEvent.filter((event: Event) => {
+                var eventDate = new Date(event.date);
+                return eventDate >= today;
+            });
+
+            var closesEventDate = eventsEndingAfterToday.sort(function (a, b) {
+                return a.date > b.date ? 1 : -1;
+            });
+
+            if (closesEventDate.length > 0) {
+                setCurrentEvent(closesEventDate[0]);
+            } else {
+                const defaultEvent = new Event(
+                    new Date(),
+                    "", // location
+                    "", // mainImage
+                    "", // description!
+                    "There are currently no upcoming events.",
+                    0, // donationTarget
+                    -1 // id
+                );
+                setCurrentEvent(defaultEvent);
+            }
+        }
+    };
+
     const createEventHandler = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        var newEvent: AspenEvent = {
+        var newEvent: Event = {
             date: eventDate,
             title: eventTitle,
             location: eventLocation,
@@ -26,12 +64,17 @@ const CreateEventForm = () => {
             donationTarget: eventDonationTarget
         }
 
-        await EventsService.CreateEventViaAxios(newEvent)
+        try {
+            await EventsService.CreateEventViaAxios(newEvent)
+            nextCurrentEvent();
+            navigate("/")
+        } catch (e) {
+            alert("Could not add Event");
+        }
 
-        navigate("/")
 
     }
-    
+
     useEffect(() => {
         if (Date.parse(eventDate.toString()) && eventTitle.trim().length !== 0 && eventLocation.trim().length !== 0 && eventDonationTarget > 0 && eventDescription.trim().length !== 0) {
             setDisableSubmit(false)
