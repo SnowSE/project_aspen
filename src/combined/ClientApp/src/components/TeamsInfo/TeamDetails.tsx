@@ -10,6 +10,8 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
+import axios from "axios";
+import { User } from "oidc-client";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -50,7 +52,15 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
+    const [currentUser, setCurrentUser] = useState<User>();
+
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+    var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+    };
+
+    
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -69,37 +79,41 @@ export function TeamDetails() {
           } catch (e) {
               console.log(e);
           }
-          
-
       }
+      const getCurrentUser = async () => {
+          try {
+              const currentUser = await axios.get(currentUserUrl, config)
+              setTeamOwner(teamOwner)
+
+          } catch (e) {
+              console.log(e);
+          }
+      }
+
+      
     const callServise = async () => {
         await fetchTeam();
         await fetchTeamOwner();
-    };
 
+    };
       callServise();
   }, [api, personApi]);
+    
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const navigate = useNavigate();
-  const loggedInUSer = localStorage.getItem("LoggedInUser");
+    const loggedInUSer = localStorage.getItem("LoggedInUser");
+
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
-                  <h4>The Team owner is: {teamOwner?.name}</h4>                  
-                  <h4>There are {currentTeamRegisrtations.length} members on this
-                      team!</h4>
-                  <ul>
-                      {currentTeamRegisrtations.map((registration) =>                          
-                              registration.isPublic === true ?
-                                  <li key={registration.id}> {registration.nickname}</li>
-                                        : <li>ananymous team member</li>)}
-                  </ul>
+                  <h4>The Team owner is: {teamOwner?.name}</h4>               
+                 
               </Typography>
           </CardContent>
 
