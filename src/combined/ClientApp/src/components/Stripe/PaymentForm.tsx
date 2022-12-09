@@ -4,8 +4,6 @@ import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
-import { getTeamsList } from '../TeamsInfo/TeamServices';
-import Team from '../../JsModels/team';
 
 
 export default function PaymentForm() {
@@ -19,17 +17,18 @@ export default function PaymentForm() {
     const [teamName, setTeamName] = useState<string>('')
     const [userId, setUserId] = useState<number>(0)
     const [userName, setUserName] = useState<string>('')
-    
+
 
     const BaseUrl = process.env.PUBLIC_URL
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-      };
-
     useEffect(() => {
 
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
+
+
         const getUser = async () => {
-            await axios.get(BaseUrl + '/api/user', config).then((response)=>{
+            await axios.get(BaseUrl + '/api/user', config).then((response) => {
                 setUserId(response?.data?.id)
                 setUserName(response?.data?.name)
             })
@@ -37,22 +36,22 @@ export default function PaymentForm() {
 
 
         const getTeam = async () => {
-                await axios.get(BaseUrl + '/api/Person/'+ userId + '/registrations').then((response)=> {
-                    response.data.forEach((registration:any) => {
-                        if(registration.ownerID == userId){
-                            
-                            setTeamId(registration.teamID)
-                        }
-                        
-                    })
-                }).catch((error)=> {console.log("error is: ", error)})
-        } 
+            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
+                response.data.forEach((registration: any) => {
+                    if (registration.ownerID === userId) {
+
+                        setTeamId(registration.teamID)
+                    }
+
+                })
+            }).catch((error) => { console.log("error is: ", error) })
+        }
 
         const getTeamName = async () => {
             await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
                 setTeamName(response.data.name)
             })
-        } 
+        }
 
 
         const serviceCalls = async () => {
@@ -60,10 +59,10 @@ export default function PaymentForm() {
             await getTeam()
             await getTeamName()
         }
-        
+
         serviceCalls()
 
-    },[teamId, userId, loading])
+    }, [teamId, userId, loading, BaseUrl])
 
 
 
@@ -78,22 +77,22 @@ export default function PaymentForm() {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
-            await axios.post("https://localhost:44478/aspen/new/api/stripe",
-                {
-                    amount: (donationAmount * 1000),
-                    id: "paymentid",
-                    teamName: teamName, 
-                    teamId: teamId, 
-                    personId: userId,
-                    eventId: currentEvent.id, 
-                    personName: userName
-                }).then((response) => {
-                    const session = response.data.sessionId
-                    stripe?.redirectToCheckout({ sessionId: session })
-                })
-                .catch((error) => { console.log("There was an error", error.response.data) })
+        await axios.post("https://localhost:44478/aspen/new/api/stripe",
+            {
+                amount: (donationAmount * 1000),
+                id: "paymentid",
+                teamName: teamName,
+                teamId: teamId,
+                personId: userId,
+                eventId: currentEvent.id,
+                personName: userName
+            }).then((response) => {
+                const session = response.data.sessionId
+                stripe?.redirectToCheckout({ sessionId: session })
+            })
+            .catch((error) => { console.log("There was an error", error.response.data) })
 
-       
+
     }
 
 
