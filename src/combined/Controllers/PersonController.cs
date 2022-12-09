@@ -103,6 +103,8 @@ public class PersonController : ControllerBase
             throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
 
         var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
-        return mapper.Map<IEnumerable<DtoRegistration>>(registrations);
+        var dtoRegistrations = mapper.Map<IEnumerable<DtoRegistration>>(registrations);
+        await registrationRepository.EnrichWithEventIdsAsync(dtoRegistrations);
+        return dtoRegistrations;
     }
 }
