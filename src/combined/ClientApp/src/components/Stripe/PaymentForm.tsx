@@ -60,7 +60,6 @@ export default function PaymentForm() {
             })
         }
 
-
         const serviceCalls = async () => {
             await getUser()
             await getTeam()
