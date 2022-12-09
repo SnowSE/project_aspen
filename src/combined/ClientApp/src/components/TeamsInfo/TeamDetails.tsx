@@ -70,7 +70,6 @@ export function TeamDetails() {
               console.log(e);
           }
           
-
       }
     const callServise = async () => {
         await fetchTeam();
