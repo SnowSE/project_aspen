@@ -31,6 +31,9 @@ export default function PaymentForm() {
             await axios.get(BaseUrl + '/api/user', config).then((response) => {
                 setUserId(response?.data?.id)
                 setUserName(response?.data?.name)
+            }).catch((error)=> {
+                setUserId(0)
+                setUserName("Anonymous")
             })
         }
 
@@ -44,12 +47,16 @@ export default function PaymentForm() {
                     }
 
                 })
-            }).catch((error) => { console.log("error is: ", error) })
+            }).catch((error) => { 
+                setTeamId(0)
+             })
         }
 
         const getTeamName = async () => {
             await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
                 setTeamName(response.data.name)
+            }).catch((error)=> {
+                setTeamName("Anonymous")
             })
         }
 
