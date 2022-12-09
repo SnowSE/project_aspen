@@ -1,4 +1,4 @@
-﻿import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";

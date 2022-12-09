@@ -1,9 +1,4 @@
-﻿import { AccordionDetails, Typography } from "@mui/material"
-
-
-
-
-
+import { AccordionDetails, Typography } from "@mui/material"
 
 const TeamMembersListAccordian = () => {
     return (
