@@ -1,5 +1,6 @@
 ﻿import { Box, Button, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
@@ -7,55 +8,96 @@ import { EventsService } from "../../services/Events/EventsService";
 
 
 const EventEditDeleteForm = () => {
-
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
+    useEffect(() => {
+    }, [currentEvent]);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
+    const navigate = useNavigate();
+
 
     const nextCurrentEvent = async () => {
         var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
         var allEventsJson = await allEvents.json();
-        const today = new Date();
+
         if (allEventsJson.length > 0) {
-            const closestEvent = allEventsJson.reduce((a: Event, b: Event) => {
-                const diff = new Date(a.date).getTime() - today.getTime();
-                return diff > 0 && diff < new Date(b.date).getTime() - today.getTime()
-                    ? a
-                    : b;
+            var jsonEvent: Event[] = JSON.parse(JSON.stringify(allEventsJson));
+            const today = new Date();
+
+            var eventsEndingAfterToday = jsonEvent.filter((event: Event) => {
+                var eventDate = new Date(event.date);
+                return eventDate >= today;
             });
-            setCurrentEvent(closestEvent);
+
+            var closesEventDate = eventsEndingAfterToday.sort(function (a, b) {
+                return a.date > b.date ? 1 : -1;
+            });
+
+            if (closesEventDate.length > 0) {
+                setCurrentEvent(closesEventDate[0]);
+            } else {
+                const defaultEvent = new Event(
+                    new Date(),
+                    "", // location
+                    "", // mainImage
+                    "", // description!
+                    "There are currently no upcoming events.",
+                    0, // donationTarget
+                    -1 // id
+                );
+                setCurrentEvent(defaultEvent);
+            }
         }
-        else {
-            const defaultEvent = new Event(
-                new Date(),
-                "", // location
-                "", // mainImage
-                "", // description!
-                "There are currently no upcoming events.",
-                0,  // donationTarget
-                -1, // id
-            );
-            setCurrentEvent(defaultEvent);
-        };
+    };
+
+    const addNewEventHandler = async (event: React.FormEvent) => {
+        event.preventDefault();
+        try {
+            //maybe go to the create event page? or
+            // 
+            await EventsService.CreateEventViaAxios(updatedEvent);
+            nextCurrentEvent();
+            alert("Adding new Event was successful");
+        } catch (e) {
+            alert("Create New Event failed");
+        }
     };
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
+        if (currentEvent.id === -1) {
+            addNewEventHandler(event);
+        }
+
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
+            alert("Update was successful");
         } catch (e) {
-            console.log("Update Event failed: " + e);
+            console.log("Update event failed: " + e);
         }
         setCurrentEvent(updatedEvent);
     };
 
     const deleteHandler = async (event: React.FormEvent) => {
         event.preventDefault();
-        try {
-            //TODO: need to alert user that this can't be undone
-            await EventsService.DeleteEventViaAxios(currentEvent.id);
-        } catch (e) {
-            console.log("Delete Event failed: " + e);
+        if (currentEvent.id === -1) {
+            alert("There are no events to delete");
+        } else {
+            if (
+                window.confirm(
+                    "Are you sure you want to delete this event, it can't be undone?"
+                )
+            ) {
+                try {
+                    await EventsService.DeleteEventViaAxios(currentEvent.id);
+                    nextCurrentEvent();
+                    alert(
+                        "The deletion was successful, you will be redirect to Home page."
+                    );
+                    navigate("/");
+                } catch (e) {
+                    alert("Delete event failed");
+                }
+            }
         }
-        nextCurrentEvent();
     };
 
     return (
