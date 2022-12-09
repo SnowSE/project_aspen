@@ -103,6 +103,7 @@ public class Payment {
     public string id { get; set; }
     public int teamId { get; set; }
     public int personId { get; set; }
+    public int eventId { get; set; }
     public string personName { get; set; }
     public string teamName { get; set; }
 
