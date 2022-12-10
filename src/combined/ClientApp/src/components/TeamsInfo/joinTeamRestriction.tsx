@@ -1,32 +1,40 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import Registration from "../../JsModels/registration";
 
 export function JoinTeamRestriction({ id }: any) {
 
-    //const [userId, setID] = useState<number>();
+    const [registrations, setRegistrations] = useState<Registration[]>();
 
     //setID(userId);
 
     console.log("passed user id:", id);
-    //var userID = id
-    //console.log("2nd id", userID);
-    //const getRegistrations = async ( ) => {
-    //    console.log("Passed id is",id)
-    //    const apiUrL = process.env.PUBLIC_URL + `/api/Person/${id}/registrations`;
-    //    console.log(apiUrL);
-    //    const res = await fetch(apiUrL)
-    //    console.log(res);
-    //    const response = await res.json()
-    //    console.log(response);
-    //    const otherArray: typeof Registration = response
-    //    console.log("otherArray", otherArray);
-    //    return otherArray
-    //}
+    var userID = id
+    console.log("2nd id", userID);
+
+    const apiUrL = process.env.PUBLIC_URL + `/api/Person/${id}/registrations`;
+        useEffect(() => {
+        const getRegistrations = async () => {
+            console.log("Passed id is", id)
+            const res = await fetch(apiUrL)
+            const response = await res.json()
+            console.log("this is response", response)
+            const otherArray = response
+            console.log("otherArray", otherArray);
+            setRegistrations(otherArray);
+        }
 
 
+        const callServise = async () => {
+            await getRegistrations();
+
+        };
+        callServise();
+
+
+    },[apiUrL])      
 
     return (
         <div>
-
+            <h2>Registrations:{registrations?.map(p => p.teamID)}</h2> 
         </div>)
 }

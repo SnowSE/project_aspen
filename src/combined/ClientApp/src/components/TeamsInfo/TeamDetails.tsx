@@ -105,14 +105,14 @@ export function TeamDetails() {
 
   const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-    console.log("currentUser",typeof(currentUSer));
+    console.log("currentUser", currentUSer);
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
                   The Team owner is: {teamOwner?.name}         
-                  <JoinTeamRestriction id={currentUSer} />
+                 
               </Typography>
           </CardContent>
 
@@ -149,7 +149,9 @@ export function TeamDetails() {
       {currentTeam?.id}
       {currentTeam?.ownerID}
       {currentTeam?.owner}
-      {currentTeam?.eventID}
+          {currentTeam?.eventID}
+          <JoinTeamRestriction id={currentUSer} />
+
       <Box sx={{display:'flex', justifyContent:'center'}}>
         <Card sx={{ maxWidth: 500 }}>
           <CardHeader
