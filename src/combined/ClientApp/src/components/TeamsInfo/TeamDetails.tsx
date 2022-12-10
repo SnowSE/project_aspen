@@ -12,6 +12,7 @@ import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from "axios";
 import { User } from "../../JsModels/user";
+import { JoinTeamRestriction } from "./joinTeamRestriction";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -52,7 +53,8 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
-    const [currentUser, setCurrentUser] = useState<any>();
+    const [currentUSer, setCurrentUser] = useState<any>();
+
 
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
     var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
@@ -60,15 +62,20 @@ export function TeamDetails() {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
 
-    
 
   useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
         setCurrentTeam(response)
-        setCurrentTeamRegistrations(response.registrations)       
+        setCurrentTeamRegistrations(response.registrations)   
+        const user = await axios.get(currentUserUrl, config)
+        console.log("I am the current user", typeof(user.data.id));
+
+        const curUser= Number(user.data.id)
+        setCurrentUser(curUser);
         
+
       }
       const fetchTeamOwner = async () => {
           try {
@@ -80,22 +87,12 @@ export function TeamDetails() {
               console.log(e);
           }
       }
-      const getCurrentUser = async () => {
-          try {
-              const user = await axios.get(currentUserUrl, config)
-              console.log("current user info",user)
-              setCurrentUser(user);
-              
-          } catch (e) {
-              console.log(e);
-          }
-      }
+     
 
       
     const callServise = async () => {
         await fetchTeam();
         await fetchTeamOwner();
-        await getCurrentUser();
 
     };
       callServise();
@@ -108,15 +105,14 @@ export function TeamDetails() {
 
   const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-    console.log("I am the current user", currentUser.data);
-
+    console.log("currentUser",typeof(currentUSer));
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
-                  <h4>The Team owner is: {teamOwner?.name}</h4>               
-                  
+                  The Team owner is: {teamOwner?.name}         
+                  <JoinTeamRestriction id={currentUSer} />
               </Typography>
           </CardContent>
 
