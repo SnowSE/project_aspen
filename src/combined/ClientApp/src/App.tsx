@@ -50,8 +50,9 @@ function App() {
                 setCurrentEvent(defaultEvent);
 
             };
+        }
+
         };
-    };
 
         useEffect(() => {
             console.log("App mounted");
