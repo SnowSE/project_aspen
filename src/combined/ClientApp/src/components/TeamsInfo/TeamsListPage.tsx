@@ -17,6 +17,7 @@ export function TeamsListPage() {
             const teams = await getTeamsList(currentEvent.id)
             setTeams(teams)
         }
+        
         fetchData()
     }, [currentEvent])
     

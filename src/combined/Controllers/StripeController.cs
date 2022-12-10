@@ -73,8 +73,8 @@ namespace combined.Controllers
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = payment.teamName,
-                            Description = payment.teamName + " Donation",
-                            Images = new List<string> { payment.teamName }
+                            Description = payment.teamName + " Donation"
+                            //Images = new List<string> { payment.teamName }
                         },
                     },
                     Quantity = 1,
@@ -101,7 +101,12 @@ namespace combined.Controllers
 public class Payment {
     public int amount { get; set; }
     public string id { get; set; }
+    public int teamId { get; set; }
+    public int personId { get; set; }
+    public int eventId { get; set; }
+    public string personName { get; set; }
     public string teamName { get; set; }
+
 }
 
 public class CheckoutOrderResponse
