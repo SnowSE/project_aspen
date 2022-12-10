@@ -1,9 +1,6 @@
 ﻿
 
-export const joinTeamRestriction = () => {
-
-
-    
+export const joinTeamRestriction = ({ id }) => {    
     return (
         <div>
            

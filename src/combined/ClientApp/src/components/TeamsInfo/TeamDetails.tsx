@@ -11,7 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from "axios";
-import { User } from "oidc-client";
+import { User } from "../../JsModels/user";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -52,7 +52,7 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
-    const [currentUser, setCurrentUser] = useState<User>();
+    const [currentUser, setCurrentUser] = useState<any>();
 
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
     var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
@@ -82,9 +82,10 @@ export function TeamDetails() {
       }
       const getCurrentUser = async () => {
           try {
-              const currentUser = await axios.get(currentUserUrl, config)
-              setTeamOwner(teamOwner)
-
+              const user = await axios.get(currentUserUrl, config)
+              console.log("current user info",user)
+              setCurrentUser(user);
+              
           } catch (e) {
               console.log(e);
           }
@@ -94,10 +95,11 @@ export function TeamDetails() {
     const callServise = async () => {
         await fetchTeam();
         await fetchTeamOwner();
+        await getCurrentUser();
 
     };
       callServise();
-  }, [api, personApi]);
+  }, [api, personApi, currentUserUrl]);
     
 
   const handleExpandClick = () => {
@@ -106,6 +108,7 @@ export function TeamDetails() {
 
   const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
+    console.log("I am the current user", currentUser.data);
 
   return (
       <Box>
@@ -113,7 +116,7 @@ export function TeamDetails() {
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
                   <h4>The Team owner is: {teamOwner?.name}</h4>               
-                 
+                  
               </Typography>
           </CardContent>
 
