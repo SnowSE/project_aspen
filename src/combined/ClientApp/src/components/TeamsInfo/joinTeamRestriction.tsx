@@ -1,40 +1,49 @@
-﻿import { useEffect, useState } from "react";
+﻿import axios from "axios";
+import {  useContext, useEffect, useState } from "react";
 import Registration from "../../JsModels/registration";
+import { getRegistrationList } from "./RegistrationService";
+import { getUserTeamID } from "./TeamRegistration";
 
-export function JoinTeamRestriction({ id }: any) {
+export function JoinTeamRestriction() {
 
     const [registrations, setRegistrations] = useState<Registration[]>();
 
-    //setID(userId);
-
-    console.log("passed user id:", id);
-    var userID = id
-    console.log("2nd id", userID);
-
-    const apiUrL = process.env.PUBLIC_URL + `/api/Person/${id}/registrations`;
-        useEffect(() => {
+    var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+    };
+    useEffect(() => {   
         const getRegistrations = async () => {
-            console.log("Passed id is", id)
-            const res = await fetch(apiUrL)
-            const response = await res.json()
-            console.log("this is response", response)
-            const otherArray = response
-            console.log("otherArray", otherArray);
-            setRegistrations(otherArray);
+
+            const user = await axios.get(currentUserUrl, config)
+            console.log("I am the current user", typeof (user.data.id));
+
+            const curUser = Number(user.data.id)
+            const regs = await getRegistrationList(curUser);
+            setRegistrations(regs)
+
+            
         }
-
-
         const callServise = async () => {
             await getRegistrations();
-
         };
         callServise();
+    }, [currentUserUrl])
 
-
-    },[apiUrL])      
-
+    const teamId = () => {
+        const tId:any = registrations?.map(p => p.teamID)
+        getUserTeamID(tId);
+    }
+    teamId();
     return (
         <div>
-            <h2>Registrations:{registrations?.map(p => p.teamID)}</h2> 
-        </div>)
+            {registrations?.map(p => p.teamID)}
+            {/*{registrations?.map(r => {*/}
+            {/*    if (typeof (r.teamID)! == 'undefined' || r.teamID !== null) {*/}
+            {/*        return "True"*/}
+            {/*    }*/}
+            {/*    else { return "False" };*/}
+            {/*})}*/}
+
+        </div>)     
 }

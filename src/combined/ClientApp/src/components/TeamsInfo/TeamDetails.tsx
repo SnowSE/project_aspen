@@ -1,5 +1,5 @@
 import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography, Grid,} from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import Registration from "../../JsModels/registration";
@@ -10,9 +10,9 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
-import axios from "axios";
 import { User } from "../../JsModels/user";
 import { JoinTeamRestriction } from "./joinTeamRestriction";
+import { EventContext } from "../../App";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -53,28 +53,19 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
-    const [currentUSer, setCurrentUser] = useState<any>();
+    const { currentEvent }  = useContext(EventContext);
+    const [registrations, setRegistrations] = useState<Registration[]>();
 
 
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
-    var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-    };
-
+   
 
   useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
         setCurrentTeam(response)
-        setCurrentTeamRegistrations(response.registrations)   
-        const user = await axios.get(currentUserUrl, config)
-        console.log("I am the current user", typeof(user.data.id));
-
-        const curUser= Number(user.data.id)
-        setCurrentUser(curUser);
-        
+        setCurrentTeamRegistrations(response.registrations)          
 
       }
       const fetchTeamOwner = async () => {
@@ -96,7 +87,7 @@ export function TeamDetails() {
 
     };
       callServise();
-  }, [api, personApi, currentUserUrl]);
+  }, [api, personApi]);
     
 
   const handleExpandClick = () => {
@@ -105,18 +96,35 @@ export function TeamDetails() {
 
   const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-    console.log("currentUser", currentUSer);
+    console.log("Current event id", currentEvent.id);
+    console.log("Temassss", {JoinTeamRestriction})
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
-                  The Team owner is: {teamOwner?.name}         
-                 
+                  The Team owner is: {teamOwner?.name}
+                  Registrations team id: {typeof (Number(<JoinTeamRestriction />))}
+                  and reg teamid is: {<JoinTeamRestriction />}
+                  currentTeamId is {typeof (currentTeam?.id)} and id is {currentTeam?.id}
               </Typography>
           </CardContent>
 
-          { (() => {
+          {(() => {
+              console.log("inner checking", currentTeam?.id)
+              console.log("outer checking", Number(< JoinTeamRestriction />))
+              if (currentEvent.id === currentTeam?.eventID &&  Number(<JoinTeamRestriction />) !== currentTeam?.id) {
+                  return (
+                      <p>You are already a member of the another team </p>
+                  )
+              }
+              else if (currentEvent.id === currentTeam?.eventID && Number(<JoinTeamRestriction />) === currentTeam?.id) {
+                  return (
+                      <p>You are already a member of this team </p>
+                  )
+              }
+
+              else {
                   if (currentTeam?.isPublic === true) {
                       return (
                           <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
@@ -143,6 +151,10 @@ export function TeamDetails() {
                           <p>This is Private Team</p>
                       )
                   }
+
+              }
+        
+                  
               })()
           }  
       
@@ -150,7 +162,6 @@ export function TeamDetails() {
       {currentTeam?.ownerID}
       {currentTeam?.owner}
           {currentTeam?.eventID}
-          <JoinTeamRestriction id={currentUSer} />
 
       <Box sx={{display:'flex', justifyContent:'center'}}>
         <Card sx={{ maxWidth: 500 }}>

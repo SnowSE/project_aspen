@@ -65,7 +65,9 @@
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\joinTeamRestriction.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\RegistrationService.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamRegistration.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
   </ItemGroup>
 
