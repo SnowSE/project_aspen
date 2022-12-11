@@ -9,6 +9,11 @@ import StripeContainer from '../../components/Stripe/StripeContainer';
 
 
 export function DonationPage() {
+
+
+    
+
+
     return (
         <Box >
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
