@@ -11,7 +11,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 //import PersonRegistrations from "../../JsModels/personRegistrations";
 //import registration from "../../JsModels/registration";
->>>>>>> Stashed changes
+import {Team } from "./Interfaces"
 
 
 
