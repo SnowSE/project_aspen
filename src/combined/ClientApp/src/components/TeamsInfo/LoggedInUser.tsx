@@ -19,7 +19,7 @@ export function LoggedInUser() {
     //}
     const list=[]
     for (var entry of searchParams.entries()) {
-        console.log(entry[1]);
+        console.log(entry);
         list.push(entry[1])
     }        
    
@@ -28,7 +28,7 @@ export function LoggedInUser() {
     }   
    
     if (list[1] !== null) {
-        var ownerId = parseInt(list[1]);   // parse the string back to a number.
+        var userId = parseInt(list[1]);   // parse the string back to a number.
     }
 
     
@@ -54,7 +54,7 @@ export function LoggedInUser() {
             creationDate: creationDate,
             isPublic: isPublic,
             nickname: nickName,
-            ownerID: ownerId,
+            ownerID: userId,
             teamID: tId,
             personRegistrations:  [
                 {   
