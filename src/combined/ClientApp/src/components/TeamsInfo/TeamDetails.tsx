@@ -54,9 +54,9 @@ export function TeamDetails() {
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+    
+    useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
-
-  useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
   };
