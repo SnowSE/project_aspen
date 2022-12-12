@@ -433,3 +433,84 @@
     background-color: mediumpurple !important;
     color: white !important;
 }
+
+/* Admin Dashboard */
+.AdminPaperDetails {
+    background-color: #673ab7 !important;
+    padding-bottom: 1em !important;
+    padding-top: 1em !important;
+}
+
+.AdminCurrentEventDetails {
+    display: flex;
+    justify-content: center;
+}
+.AdminCurrentEventTextDetails {
+    color: white !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    letter-spacing: 1px !important;
+    padding-right: 2em;
+}
+.AdminButtonDetails {
+    max-width: 40px !important;
+    max-height: 40px !important;
+    background-color: #1e90ff !important;
+    border: groove !important;
+    border-color: black !important;
+    border-width: 2px !important;
+    margin: 3px !important;
+    font-size: 12px !important;
+    color: white !important;
+}
+.AdminButtonDetails:hover {
+    background-color: #446ccf !important;
+}
+
+.EventEditDeleteFormDetails input {
+    color: white !important;
+}
+.EventFormPosition {
+    display: fixed !important;
+    justify-content: center !important;
+    align-content: center !important;
+    padding-left: 2em !important;
+}
+
+.PaddingBetweenItems {
+    padding-top: 2em !important;
+    display: fixed !important;
+    justify-content: center !important;
+}
+
+.UpdateButtonDetails {
+    background-color: orange !important;
+    color: white !important;
+    margin: 1rem !important;
+}
+.DeleteButtonDetails {
+    background-color: red !important;
+    color: white !important;
+    margin: 1rem !important;
+}
+
+.AccordionSpacing {
+    margin-top: 1em !important;
+}
+.AccordionDetails {
+    transition: box-shadow .3s;
+    border: groove 1px !important;
+}
+.AccordionDetails:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+.InnerAccordionSpacing {
+    margin-top: 1em !important;
+}
+.InnerAccordionDetails {
+    transition: box-shadow .3s;
+    border: groove 1px !important;
+}
+.InnerAccordionDetails:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
