@@ -11,6 +11,7 @@ import { TeamDetails } from "./components/TeamsInfo/TeamDetails";
 import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
 import LoginButton from "./components/LoginButton";
 import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
+import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
 
 const AppRoutes = [
     {
@@ -70,6 +71,10 @@ const AppRoutes = [
         path: `/AdminDashboard`,
         element: <SiteAdmin />
     },
+    {
+        path: `/successfuldonation/:personName/:teamName`, 
+        element:<SuccessfulDonation/>
+    }
 ];
 
 export default AppRoutes;

@@ -13,9 +13,9 @@ export default function PaymentForm() {
     const { currentEvent, loading } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
-    const [teamId, setTeamId] = useState<number>(0)
+    const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
-    const [userId, setUserId] = useState<number>(0)
+    const [userId, setUserId] = useState(null)
     const [userName, setUserName] = useState<string>('')
 
 
@@ -32,7 +32,6 @@ export default function PaymentForm() {
                 setUserId(response?.data?.id)
                 setUserName(response?.data?.name)
             }).catch((error)=> {
-                setUserId(0)
                 setUserName("Anonymous")
             })
         }
@@ -48,7 +47,6 @@ export default function PaymentForm() {
 
                 })
             }).catch((error) => { 
-                setTeamId(0)
              })
         }
 
@@ -70,7 +68,8 @@ export default function PaymentForm() {
 
     }, [teamId, userId, loading, BaseUrl])
 
-
+console.log("user id is: ", userId)
+console.log("team id is: ", teamId)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -136,3 +135,5 @@ export default function PaymentForm() {
         </>
     );
 }
+
+

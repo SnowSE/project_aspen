@@ -100,7 +100,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
-
+    
 builder.Services.AddDbContext<AspenContext>(options =>
 {
     var connectionString = builder.Configuration["ASPEN_CONNECTION_STRING"] ?? builder.Configuration.GetConnectionString("docker");
