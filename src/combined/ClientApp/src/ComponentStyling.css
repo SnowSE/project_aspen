@@ -500,6 +500,7 @@
 .AccordionDetails {
     transition: box-shadow .3s;
     border: groove 1px !important;
+    flex-direction: row-reverse !important;
 }
 .AccordionDetails:hover {
     box-shadow: 0 0 11px rgba(33,33,33,.2);
@@ -510,7 +511,31 @@
 .InnerAccordionDetails {
     transition: box-shadow .3s;
     border: groove 1px !important;
+    flex-direction: row-reverse !important;
 }
 .InnerAccordionDetails:hover {
     box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.TeamsSpacing{
+    margin-top: -.75rem !important;
+    margin-left: auto !important;
+}
+
+.UpdateTeamButtonDetails {
+    max-width: 40px !important;
+    max-height: 20px !important;
+    font-size: 10px !important;
+    background-color: orange !important;
+    color: white !important;
+    margin: .5rem !important;
+}
+
+.DeleteTeamButtonDetails {
+    max-width: 40px !important;
+    max-height: 20px !important;
+    font-size: 10px !important;
+    background-color: red !important;
+    color: white !important;
+    margin: .5rem !important;
 }

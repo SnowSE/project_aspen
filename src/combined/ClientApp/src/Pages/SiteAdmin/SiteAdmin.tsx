@@ -56,9 +56,23 @@ const SiteAdmin = () => {
                                 className="InnerAccordionDetails"
                                 expandIcon={<ExpandMoreIcon />}
                             >
-                                <Typography>
-                                    {t.name}
-                                </Typography>
+                                    <Typography>
+                                        {t.name}
+                                    </Typography>
+                                <Box className="TeamsSpacing">
+                                    <Button
+                                        variant="contained"
+                                        className="UpdateTeamButtonDetails"
+                                        type="submit"
+                                    >Update
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        className="DeleteTeamButtonDetails"
+                                        type="button"
+                                    > Delete
+                                    </Button>
+                                </Box>
                             </AccordionSummary>
                             <TeamMembersListAccordian />
                         </Accordion>
