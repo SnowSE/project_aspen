@@ -26,7 +26,7 @@ const CssTextField = styled(TextField)({
         },
     },
 });
-const EventEditDeleteForm = () => {
+const TeamEditDelete = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     useEffect(() => {
     }, [currentEvent]);
@@ -208,4 +208,4 @@ const EventEditDeleteForm = () => {
     )
 }
 
-export default EventEditDeleteForm
+export default TeamEditDelete

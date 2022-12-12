@@ -1,5 +1,5 @@
-import { Accordion, AccordionSummary, Box, Button, Typography } from "@mui/material";
-import { useContext, useEffect, useState} from "react";
+import { Accordion, AccordionSummary, Box, Button, Paper, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
 import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembersListAccordian";
@@ -30,39 +30,57 @@ const SiteAdmin = () => {
     return (
 
         <Box>
-            <Box>
-                {
-                    showEditEvent === true ? <Typography>{currentEvent?.title}</Typography> : <EventEditDeleteForm />
-                }
-                <Button type='button' variant='contained' onClick={() => setShowEditEvent((prevState) => !prevState)}>
+            <Paper square={true} elevation={6} className="AdminPaperDetails">
+                <Box className="AdminCurrentEventDetails">
                     {
-                        showEditEvent === true ? "Edit" : "Close"
+                        showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.title}</Typography> : <EventEditDeleteForm />
                     }
-                </Button>
-            </Box>
-            <Accordion>
+                    <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => setShowEditEvent((prevState) => !prevState)}>
+                        {
+                            showEditEvent === true ? "Edit" : "Close"
+                        }
+                    </Button>
+                </Box>
+            </Paper>
+            <Accordion className="AccordionSpacing">
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/> }
+                    className="AccordionDetails"
+                    expandIcon={<ExpandMoreIcon />}
                 >
                     <Typography> Teams </Typography>
                 </AccordionSummary>
-            {teamsList?.map((t: any, id) => {
-                return (
-                        <Accordion>
+                {teamsList?.map((t: any, id) => {
+                    return (
+                        <Accordion className="InnerAccordionSpacing">
                             <AccordionSummary
+                                className="InnerAccordionDetails"
                                 expandIcon={<ExpandMoreIcon />}
                             >
-                                <Typography>
-                                    {t.name}
-                                </Typography>
+                                    <Typography>
+                                        {t.name}
+                                    </Typography>
+                                <Box className="TeamsSpacing">
+                                    <Button
+                                        variant="contained"
+                                        className="UpdateTeamButtonDetails"
+                                        type="submit"
+                                    >Update
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        className="DeleteTeamButtonDetails"
+                                        type="button"
+                                    > Delete
+                                    </Button>
+                                </Box>
                             </AccordionSummary>
                             <TeamMembersListAccordian />
                         </Accordion>
-               )})}
+                    )
+                })}
             </Accordion>
-            
         </Box>
-        
+
     );
 };
 
