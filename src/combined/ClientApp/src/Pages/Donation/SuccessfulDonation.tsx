@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, useSearchParams, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Confetti from 'react-confetti'
 
 
