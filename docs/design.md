@@ -1,4 +1,7 @@
-# Domain
+# Project Aspen - Design Notes
+
+## Domain
+
 - One instance of Project Aspen represents one charity.
 - A charity can have multiple events.
 - An event has multiple teams.
@@ -6,9 +9,10 @@
 - A team may elect to have hidden registrants or public registrants.  In either case you still show the number of people on the team in the team details page.
 - A registrant can have multiple people (adults, children).
 
+## User Roles
 
-# User Roles
 ** An individual user can have multiple roles **
+
 - Admin
   - An administrator can create and update events, and manage page_data to customize the site.  Admin users can also manage teams.
 - Sponsor
@@ -27,18 +31,19 @@
   - Can buy t-shirts, meals etc. (out of scope for 2021)
 - Public unauthenticated user
 
+## Events
 
-# Events
 There is one 'current' event; requests to the root of the site will display information on the 'current' event.
 A different as-yet-undetermined URL route could/would allow access to previous/future events (e.g. /events/2021walk/*)
+
 - An event has multiple teams.
 - An event has a location
 - An event can have a schedule of activities (out of scope for 2021)
 - An event has sponsor tiers are based on donation amounts
 - An event has a fundraising goal
 
-
 ## Teams
+
 - A team only exists within an event.  
 - Team owners can manage members on their team  
 - Team owners can set fundraising goals for their team  
