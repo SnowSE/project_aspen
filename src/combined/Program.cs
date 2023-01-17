@@ -5,6 +5,8 @@ using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddProblemDetails();
+
 // Add services to the container.
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
@@ -100,7 +102,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
-    
+
 builder.Services.AddDbContext<AspenContext>(options =>
 {
     var connectionString = builder.Configuration["ASPEN_CONNECTION_STRING"] ?? builder.Configuration.GetConnectionString("docker");
@@ -109,6 +111,7 @@ builder.Services.AddDbContext<AspenContext>(options =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseHttpLogging();
 app.UsePathBase("/aspen/new");
 
