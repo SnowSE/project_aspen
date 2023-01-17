@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 WORKDIR /app
 
 RUN apt-get update -yq && apt-get upgrade -yq && apt-get install -yq curl git nano
