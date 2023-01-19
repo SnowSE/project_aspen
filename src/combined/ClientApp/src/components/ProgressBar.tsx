@@ -37,7 +37,7 @@ export default function ProgressBar() {
 
     return (
         <Box className="ProgressBarTextStyling">
-            <LinearProgressWithLabel className="ProgressBarDetails" color="success" value={progress} />
+            <LinearProgressWithLabel data-testid={"ProgressBar"} className="ProgressBarDetails" color="success" value={progress} />
         </Box>
     );
 }
