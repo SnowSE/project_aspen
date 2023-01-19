@@ -12,4 +12,6 @@ public record DbDonation
     public DateTime Date { get; init; }
     public decimal Amount { get; init; }
     public bool IsPledge { get; init; } = false;
+    public Guid TransactionNumber { get; init; }
+    public string? AuthorizationNumber { get; init; }
 }
