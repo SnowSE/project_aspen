@@ -50,7 +50,8 @@ namespace combined.Controllers
                 TeamID=teamId,      
                 PersonID=personId,
                 Amount=amount/100,
-                Date = dateTime
+                Date = dateTime,
+                TransactionNumber = Guid.NewGuid()
             };
 
 

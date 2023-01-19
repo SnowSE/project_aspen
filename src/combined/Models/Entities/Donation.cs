@@ -16,8 +16,7 @@ public record Donation
     public decimal Amount { get; init; }
     public bool IsPending { get; init; } = true;
     public long? Link { get; init; }
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid TransactionNumber  { get; init; }
+    public Guid TransactionNumber { get; init; }
 
     public string? AuthorizationNumber { get; init; }
 }
