@@ -18,9 +18,11 @@ import { authService } from "../../services/authService";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import SharingIcon from "../../components/Share/SharingIcon";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
+import SharingIcon from "../Share/SharingIcon";
+import axios from 'axios'
+
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -61,9 +63,15 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+    
+    useEffect(() => {
+    const BaseUrl = process.env.PUBLIC_URL
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+  };
 
-  useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
@@ -71,6 +79,15 @@ export function TeamDetails() {
         setCurrentTeamRegistrations(response.registrations)       
         
       }
+
+
+    const getUser = async () => {
+        await axios.get(BaseUrl + '/api/user', config).then((response) => {
+            setLoggedInUserId(response?.data?.id)
+        }).catch((error)=> {
+        })
+    }
+
       const fetchTeamOwner = async () => {
           try {
               const person = await fetch(personApi)
@@ -81,15 +98,15 @@ export function TeamDetails() {
               console.log(e);
           }
           
-
       }
     const callServise = async () => {
+        await getUser()
         await fetchTeam();
         await fetchTeamOwner();
     };
 
-        callServise();
-    }, [api]);
+      callServise();
+  }, [api, personApi]);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -124,8 +141,8 @@ export function TeamDetails() {
                                           ? navigate({
                                               pathname: "/LoggedInUser",
                                               search: `?${createSearchParams({
-                                                  id: `${tId}`,
-                                                  ownerID: `${currentTeam?.ownerID}`,
+                                                  teamId: `${tId}`,
+                                                  userId: `${loggedInUserId}`,
                                               })}`,
                                           })
                                           : authService.signinRedirect()
@@ -151,8 +168,15 @@ export function TeamDetails() {
       <Box sx={{display:'flex', justifyContent:'center'}}>
         <Card sx={{ maxWidth: 500 }}>
           <CardHeader
+            className="PaperColor"
+            sx={{ color: "white" }}
             title={currentTeam?.name}
-            subheader={"Donation Target: "+ currentTeam?.donationTarget + "Meals"}
+            subheader={
+              <Typography sx={{ color: "white" }}>
+                {" "}
+                Donation Target: ${currentTeam?.donationTarget} Meals{" "}
+              </Typography>
+            }
           />
           <CardMedia
             component="img"
@@ -160,19 +184,16 @@ export function TeamDetails() {
             image={baseImageUrl + currentTeam?.mainImage}
             alt="mainImage"
           />
-          <CardContent>
-            <Box
-              className="ProgressBarPosition"
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+          <CardContent className="PaperColor">
+            <Box className="ProgressBarPosition">
               <ProgressBar />
+              <SharingIcon data-testid={"shareBtn"} />
             </Box>
-            <Typography variant="body2" color="text.secondary">
-              {currentTeam?.description}
-            </Typography>
+          </CardContent>
+          <CardContent>
+            <Typography variant="body2">{currentTeam?.description}</Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <SharingIcon data-testid={"shareBtn"} />
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
@@ -183,7 +204,23 @@ export function TeamDetails() {
             </ExpandMore>
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-          
+            <CardContent className="PaperColor">
+              <Typography paragraph sx={{ color: "white" }}>
+                There are {currentTeamRegisrtations.length} members on this
+                team!
+                <Typography paragraph sx={{ color: "white" }}>
+                  Members:
+                </Typography>
+                <ul>
+                  {currentTeamRegisrtations.map(
+                    (registration) =>
+                      registration.isPublic === true && (
+                        <li key={registration.id}> {registration.nickname}</li>
+                      )
+                  )}
+                </ul>
+              </Typography>
+            </CardContent>
           </Collapse>
         </Card>
       </Box>

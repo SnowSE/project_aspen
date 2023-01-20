@@ -10,6 +10,7 @@ public interface IRegistrationRepository
     Task<bool> ExistsAsync(long registrationID);
     Task<Registration> LinkPersonToRegistrationAsync(long registrationId, long personId);
     Task<IEnumerable<Registration>> GetRegistrationsByPersonAsync(long personId);
+    Task EnrichWithEventIdsAsync(IEnumerable<DtoRegistration> dtoRegistrations);
 }
 
 public class RegistrationRepository : IRegistrationRepository
@@ -98,5 +99,22 @@ public class RegistrationRepository : IRegistrationRepository
             .Where(r=>r.PersonRegistrations.Any(pr => pr.PersonID == personId) || r.OwnerID == personId)
             .ToListAsync();
         return registrations.Select(r => mapper.Map<Registration>(r));
+    }
+
+    public async Task EnrichWithEventIdsAsync(IEnumerable<DtoRegistration> dtoRegistrations)
+    {
+        var uniqueTeamIds = dtoRegistrations
+            .Select(r => r.TeamID)
+            .Distinct();
+
+        var eventIds = await context.Teams
+            .Where(t => uniqueTeamIds.Contains(t.ID))
+            .Select(t => new { TeamId = t.ID, EventId = t.EventID })
+            .ToListAsync();
+
+        foreach(var registration in dtoRegistrations)
+        {
+            registration.EventID = eventIds.Single(e => e.TeamId == registration.TeamID).EventId;
+        }
     }
 }

@@ -12,7 +12,7 @@ services:
       timeout: 10s
       retries: 15
     volumes:
-      - assets:/assets
+      - assets:/app/wwwroot/assets
     environment:
       - SwaggerBasePath=aspen
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;      

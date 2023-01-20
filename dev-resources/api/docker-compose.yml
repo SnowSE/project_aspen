@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  api_db:
+    image: postgres
+    container_name: localdev_api_db
+    volumes:
+      - localdev_api_db:/var/lib/postgresql/data
+      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    environment:
+      POSTGRES_DB: aspen
+      POSTGRES_USER: aspen
+      POSTGRES_PASSWORD: P@assword1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aspen"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+    restart: unless-stopped
+    ports:
+      - 5434:5432    
+
+volumes:
+  localdev_api_db:
+  

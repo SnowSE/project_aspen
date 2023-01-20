@@ -25,7 +25,7 @@ const NavMenu = () => {
         pages.push({ text: 'Swagger', href: `/swagger` });
     }
     const adminPages = (value: any) => {
-        if (isAdmin === false && value.key === "Add Event" && value.key === "Admin Dashboard") {
+        if ((isAdmin === false && value.key === "Add Event") || (isAdmin === false &&  value.key === "Admin Dashboard")) {
             return false
         }
         else {

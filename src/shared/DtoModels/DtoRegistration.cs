@@ -16,6 +16,7 @@ public record DtoRegistration
     public long OwnerID { get; set; }
 
     public long TeamID { get; set; }
+    public long? EventID { get; set; }
 
     public IEnumerable<DtoPersonRegistration>? PersonRegistrations { get; set; }
 }
