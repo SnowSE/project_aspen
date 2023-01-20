@@ -30,20 +30,20 @@ export function JoinTeamRestriction() {
         callServise();
     }, [currentUserUrl])
 
-    const teamId = () => {
-        const tId:any = registrations?.map(p => p.teamID)
-        getUserTeamID(tId);
-    }
-    teamId();
+    //const teamId = () => {
+    //    const tId:any = registrations?.map(p => p.teamID)
+    //    getUserTeamID(tId);
+    //}
+    //teamId();
     return (
         <div>
-            {registrations?.map(p => p.teamID)}
-            {/*{registrations?.map(r => {*/}
-            {/*    if (typeof (r.teamID)! == 'undefined' || r.teamID !== null) {*/}
-            {/*        return "True"*/}
-            {/*    }*/}
-            {/*    else { return "False" };*/}
-            {/*})}*/}
+            {/*{registrations?.map(p => p.teamID)}*/}
+            {registrations?.map(r => {
+                if (typeof (r.teamID)! == 'undefined' || r.teamID !== null) {
+                    return "True"
+                }
+                else { return "False" };
+            })}
 
         </div>)     
 }
