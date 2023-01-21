@@ -539,3 +539,10 @@
     color: white !important;
     margin: .5rem !important;
 }
+
+/* Donation Page */
+
+.DonationPageHeader {
+    font-size: 30px !important;
+    font-weight: bold !important;
+}

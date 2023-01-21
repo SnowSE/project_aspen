@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
+import { DonateButton } from "../DonateButton";
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -177,6 +178,9 @@ export function TeamDetails() {
             <Box className="ProgressBarPosition">
               <ProgressBar />
               <SharingIcon data-testid={"shareBtn"} />
+            </Box>
+            <Box className= "DonateButtonPosition">
+                <DonateButton />
             </Box>
           </CardContent>
           <CardContent>
