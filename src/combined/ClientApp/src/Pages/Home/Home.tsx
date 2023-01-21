@@ -12,6 +12,7 @@ import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import SharingButton from '../../components/Share/SharingButton';
+import { DonateButton } from '../../components/DonateButton';
 
 
 
@@ -50,15 +51,8 @@ export function Home() {
                     <ProgressBar />
                 </Box>
                 <Box className="DonateButtonPosition">
-                    <Button
-                        data-testid="donateMealsBtn"
-                        id={"donateMealsBtn"}
-                        onClick={() => navigate('/Donate')}
-                        variant='contained'
-                        className = "DonateButtonDetails">
-                        DONATE MEALS
-                    </Button>
                     <SharingButton />
+                    <DonateButton />
                 </Box>
 
             </Paper>
