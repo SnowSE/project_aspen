@@ -14,4 +14,6 @@ public record DtoDonation
     public bool IsPledge { get; set; } = false;
     public string? TeamName { get; set; }
     public string? PersonName { get; set; }
+    public Guid TransactionNumber { get; set; }
+    public string? AuthorizationNumber { get; set; }
 }
