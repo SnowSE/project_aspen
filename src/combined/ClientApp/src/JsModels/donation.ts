@@ -6,6 +6,7 @@ export default class Donation {
   date: string;
   amount: number;
   isPending: boolean;
+    
 
   constructor(
     eventID: number,
