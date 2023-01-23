@@ -4,9 +4,11 @@ import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
+import { useNavigate } from "react-router-dom";
 
 
 export default function PaymentForm() {
+    const navigate = useNavigate();
 
     const stripe = useStripe()
 
@@ -121,7 +123,7 @@ console.log("team id is: ", teamId)
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button
+                    <Button onClick={() => navigate('/PaymentForm')}
                         variant='contained'
                         sx={{ backgroundColor: "orange" }}>
                         Donate Now
