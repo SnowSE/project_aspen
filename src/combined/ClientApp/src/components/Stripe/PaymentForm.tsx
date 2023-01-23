@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { Box, TextField } from '@mui/material';
@@ -17,7 +17,11 @@ export default function PaymentForm() {
     const [teamName, setTeamName] = useState<string>('')
     const [userId, setUserId] = useState(null)
     const [userName, setUserName] = useState<string>('')
+    const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
+    const [donationSubmitName, setDonationSubmitName] = useState<string>('')
+    const [donationEmail, setDonationEmail] = useState<string>('')
+    const [donationPhoneNumber, setDonationPhoneNumber] = useState<string>('')
 
     const BaseUrl = process.env.PUBLIC_URL
     useEffect(() => {
@@ -68,9 +72,19 @@ export default function PaymentForm() {
 
     }, [teamId, userId, loading, BaseUrl])
 
-console.log("user id is: ", userId)
-console.log("team id is: ", teamId)
+    useEffect(() => {
+        console.log("here in second use effect")
+        if(donationAmount === 0 || donationEmail.trim().length === 0){
+            setCanSubmit(false)
+        }
+        else {
+            setCanSubmit(true)
+        }
 
+    }, [donationAmount, donationEmail])
+    
+
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         // const paymentMethodResult = await stripe?.createPaymentMethod({
@@ -90,7 +104,10 @@ console.log("team id is: ", teamId)
                 teamId: teamId,
                 personId: userId,
                 eventId: currentEvent.id,
-                personName: userName
+                personName: userName, 
+                donationName: donationSubmitName, 
+                donationEmail: donationEmail, 
+                donationPhoneNumber: donationPhoneNumber
             }).then((response) => {
                 const session = response.data.sessionId
                 stripe?.redirectToCheckout({ sessionId: session })
@@ -103,12 +120,13 @@ console.log("team id is: ", teamId)
 
     return (
         <>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center' }}>
+            <form onSubmit={handleSubmit} style={{  justifyContent: 'center' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
                         id="filled-number"
                         label="Meals"
                         type="number"
+                        required={true}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -116,16 +134,76 @@ console.log("team id is: ", teamId)
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
-                        onChange={(e) => setDonationAmount(Number(e.target.value))}
+                        onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
+                    />
+                </Box>
+<br></br>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        id="name"
+                        label="Name you want on donation"
+                        type="text"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
+                        variant="filled"
+                        onChange={(e)=> setDonationSubmitName(e.target.value)}
+                    />
+                </Box>
+<br></br>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        id="email"
+                        label="Email"
+                        type="email"
+                        required={true}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
+                        variant="filled"
+                        onChange={(e) => {setDonationEmail(e.target.value)}}
+                    />
+                </Box>
+<br></br>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TextField
+                        id="PhoneNumber"
+                        label="Phone Number"
+                        type="text"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
+                        variant="filled"
+                        onChange={(e) => setDonationPhoneNumber(e.target.value)}
                     />
                 </Box>
 
+                <br></br>
+
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {canSubmit  ? 
                     <Button
-                        variant='contained'
-                        sx={{ backgroundColor: "orange" }}>
+                    variant='contained'
+                    
+                    sx={{ backgroundColor: "orange" }}>
                         Donate Now
                     </Button>
+                    :  <Button
+                    disabled = {true}
+                    sx={{ backgroundColor: "orange" }}>
+                        Donate Now
+                    </Button>   }
                 </Box>
 
 
