@@ -118,6 +118,9 @@ public class Payment {
     public int eventId { get; set; }
     public string personName { get; set; }
     public string teamName { get; set; }
+    public string donationName { get; set; }
+    public string donationEmail { get; set; }
+    public string donationPhoneNumber { get; set; }
 
 }
 
