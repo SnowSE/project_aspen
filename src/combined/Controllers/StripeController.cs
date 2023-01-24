@@ -41,9 +41,13 @@ namespace combined.Controllers
         [HttpGet("success")]
         // Automatic query parameter handling from ASP.NET.
         // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
-        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string personName, string teamName, decimal amount)
+        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string personName, string teamName, decimal amount, string sessionId)
         {
             var dateTime = DateTime.UtcNow;
+            var session = new SessionService();
+
+            var s = session.Get(sessionId);
+            var paymentIntentId = s.PaymentIntentId;
 
             var newDonation = new Donation {
                 EventID=eventId,
@@ -57,7 +61,7 @@ namespace combined.Controllers
 
             await donationRepository.AddAsync(newDonation);
 
-            return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}");
+            return Redirect($"https://localhost:44478/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
         }
 
         [NonAction]
@@ -69,7 +73,7 @@ namespace combined.Controllers
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&teamName={payment.teamName}",
+                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
                 CancelUrl = "https://localhost:44478/aspen/new/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
             {
@@ -98,7 +102,6 @@ namespace combined.Controllers
 
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            var test = session.AmountTotal;
             return session.Id;
         }
 
