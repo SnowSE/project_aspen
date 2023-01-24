@@ -18,6 +18,7 @@ const SharingButton = () => {
             </RWebShare>
         </div>
     );
+
 };
 
 export default SharingButton;
