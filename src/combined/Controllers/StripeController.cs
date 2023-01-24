@@ -2,8 +2,8 @@
 using Stripe;
 using Stripe.Checkout;
 
-namespace Api.Controllers
-{
+namespace Api.Controllers;
+
     [Route("api/stripe")]
     [ApiController]
     public class StripeController : ControllerBase
@@ -109,7 +109,7 @@ namespace Api.Controllers
 
 
     }
-}
+
 
 public class Payment {
     public int amount { get; set; }
