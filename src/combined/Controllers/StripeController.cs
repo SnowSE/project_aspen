@@ -2,7 +2,7 @@
 using Stripe;
 using Stripe.Checkout;
 
-namespace combined.Controllers
+namespace Api.Controllers
 {
     [Route("api/stripe")]
     [ApiController]
