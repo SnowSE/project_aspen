@@ -1,7 +1,8 @@
 ﻿
 namespace Api.Controllers;
 
-[Route("api/link")]
+//[Route("api/link")]
+[Route("/api/[controller]")]
 [ApiController]
 public class LinkController : ControllerBase
 {

@@ -1,6 +1,6 @@
 import { RWebShare } from "react-web-share";
 import { Button } from '@mui/material';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { EventContext } from '../../App';
 import axios from "axios";
 import Link from "../../JsModels/link";
@@ -17,15 +17,18 @@ const SharingButtonCustomLink = () => {
     const buildLink = async () => {
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
-            const tempLink = new Link(
+            let newLink = new Link(
                 currentEvent.id,
                 new Date(),
                 shareUrl,
                 currentUser.data.id,
             );
-            var teamUrl = process.env.PUBLIC_URL + "/api/link";
-            const response = await axios.post(teamUrl, tempLink).catch((error) => { console.log("There was an error", error.response.data) })
-            //setLink(shareUrl + "/link/");
+            var linkUrl = `${process.env.PUBLIC_URL}/api/link`;
+            
+            var response = await axios.post(linkUrl, newLink, config)
+                .then((response) => { newLink.id = response.data.id })
+                .catch((error) => { console.log(error.response.data) })
+            setLink(shareUrl + "/link");
 
         } catch (error) {
             console.log(`$Failed to get current user, error:${error}`);
@@ -41,7 +44,7 @@ const SharingButtonCustomLink = () => {
                     url: link,
                     title: "Name of Event Here"
                 }}
-                onClick={() => console.log("shared successfully!")}
+                onClick={() => buildLink()}
             >
                 <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>
