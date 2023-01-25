@@ -126,12 +126,12 @@ export default function     () {
     return (
         <>
             <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
-                <Button onClick={() => updateMealsTextField(1)}>1 Meal</Button>
-                <Button onClick={() => updateMealsTextField(2)}>2 Meal</Button>
-                <Button onClick={() => updateMealsTextField(3)}>3 Meal</Button>
-                <Button onClick={() => updateMealsTextField(4)}>4 Meal</Button>
-                <Button onClick={() => updateMealsTextField(5)}>5 Meal</Button>
-                <Button onClick={() => updateMealsTextField(6)}>6 Meal</Button>
+                <Button onClick={() => updateMealsTextField(100)}>100 Meals</Button>
+                <Button onClick={() => updateMealsTextField(200)}>200 Meals</Button>
+                <Button onClick={() => updateMealsTextField(300)}>300 Meals</Button>
+                <Button onClick={() => updateMealsTextField(800)}>800 Meals</Button>
+                <Button onClick={() => updateMealsTextField(1000)}>1000 Meals</Button>
+                <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
                 
