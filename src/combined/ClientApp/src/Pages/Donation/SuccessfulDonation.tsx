@@ -7,7 +7,7 @@ import Confetti from 'react-confetti'
 const SuccessfulDonation = () => {
     const navigate = useNavigate()
 
-    const { personName, teamName } = useParams()
+    const { personName, teamName, transactionId } = useParams()
 
     useEffect(() => {
         setTimeout(() => {
@@ -22,6 +22,7 @@ const SuccessfulDonation = () => {
                 <div>
                     <Confetti />
                     <h1 style={{ textAlign: 'center' }}>Thank you stranger for your donation</h1>
+                    <h1>Transaction Id: {transactionId}</h1>
                 </div>
                 :
                 <div>
@@ -29,6 +30,8 @@ const SuccessfulDonation = () => {
 
                     <h1 style={{ textAlign: 'center' }}>
                         Thank you {personName} For your donation to the team: {teamName}
+                        <h1>Transaction Id: {transactionId}</h1>
+
                     </h1>
                 </div>
             }
