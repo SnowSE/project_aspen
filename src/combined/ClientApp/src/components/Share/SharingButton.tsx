@@ -8,7 +8,7 @@ const SharingButton = () => {
             <RWebShare
                 data-testid={"shareModal"}
                 data={{
-                    text: "",
+                    text: "555",
                     url:  shareUrl,
                     title: "Name of Event Here"
                 }}
@@ -18,6 +18,7 @@ const SharingButton = () => {
             </RWebShare>
         </div>
     );
+
 };
 
 export default SharingButton;

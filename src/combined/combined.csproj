@@ -66,9 +66,11 @@
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\App.spec.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\Homepage.spec.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\Share\SharingButtonCustomLink.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\JsModels\link.ts" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
   </ItemGroup>
 
