@@ -13,6 +13,12 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2.4.0
 
+      - name: Creat env file
+        run: |
+          touch .env
+          echo "${{secrets.Stripe__PublicKey}}" > .env
+          echo "${{secrets.Stripe__SecretKey}}" > .env
+          cat .env
       - name: build and test
         run: |
           cd ops/testing
