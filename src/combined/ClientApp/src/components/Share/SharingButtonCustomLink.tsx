@@ -6,6 +6,7 @@ import axios from "axios";
 import Link from "../../JsModels/link";
 
 const SharingButtonCustomLink = () => {
+    const BaseUrl = process.env.PUBLIC_URL
     const shareUrl = window.location.href;
     const { currentEvent } = useContext(EventContext);
     const [link, setLink] = useState<string>(shareUrl);
@@ -17,18 +18,23 @@ const SharingButtonCustomLink = () => {
     const buildLink = async () => {
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
-            let newLink = new Link(
-                currentEvent.id,
-                new Date(),
-                shareUrl,
-                currentUser.data.id,
-            );
-            var linkUrl = `${process.env.PUBLIC_URL}/api/link`;
-            
-            var response = await axios.post(linkUrl, newLink, config)
-                .then((response) => { newLink.id = response.data.id })
-                .catch((error) => { console.log(error.response.data) })
-            setLink(shareUrl + "/link");
+
+            var linkUrl = "/api/link";
+            await axios.post("https://localhost:44478/aspen/new/api/links",
+                {
+                    EventId : currentEvent.id,
+                    PersonID : currentUser.data.id,
+                    Date : new Date(),
+                    LinkURL  : shareUrl        
+                }).then((response) => {
+
+                    setLink(shareUrl + "/link/" + response.data.id);
+               })
+                .catch((error) => { console.log("There was an error", error.response.data) })
+            //var response = await axios.post(`${BaseUrl}/api/events`, newLink)
+            //    .then((response) => { newLink.id = response.data.id })
+            //    .catch((error) => { console.log(error.response.data) })
+            //setLink(shareUrl + "/link");
 
         } catch (error) {
             console.log(`$Failed to get current user, error:${error}`);

@@ -1,8 +1,7 @@
 ﻿
 namespace Api.Controllers;
 
-//[Route("api/link")]
-[Route("/api/[controller]")]
+[Route("api/links")]
 [ApiController]
 public class LinkController : ControllerBase
 {
@@ -42,7 +41,7 @@ public class LinkController : ControllerBase
             return BadRequest("Cannot add with a valid id");
 
         var link = mapper.Map<Link>(dtoLink);
-        var newLink = await linkRepository.AddAsync(link);
+        var newLink = await linkRepository.Add(link);
         return mapper.Map<DtoLink>(newLink);
 
     }

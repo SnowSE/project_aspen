@@ -2,7 +2,7 @@
 
 public interface ILinkRepository
 {
-    Task<Link> AddAsync(Link link);
+    Task<Link> Add(Link link);
 
 }
 
@@ -17,7 +17,7 @@ public class LinkRepository : ILinkRepository
         this.mapper = mapper;
     }
 
-    public async Task<Link> AddAsync(Link link)
+    public async Task<Link> Add(Link link)
     {
         var dbLink = mapper.Map<DBLink>(link);
         await context.Links.AddAsync(dbLink);
