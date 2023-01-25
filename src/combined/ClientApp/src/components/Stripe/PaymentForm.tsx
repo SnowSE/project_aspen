@@ -6,12 +6,11 @@ import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
 
 
-export default function     () {
+export default function PaymentForm() {
 
     const stripe = useStripe()
 
     const { currentEvent, loading } = useContext(EventContext);
-        const [meals, setMeals] = useState<number>(0)
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
