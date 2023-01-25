@@ -59,5 +59,8 @@ public class AspenMapperProfile : Profile
             .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.Team.Name))
             .ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.Person.Name));
 
+        CreateMap<DtoLink,Link>()
+            .ReverseMap();
+
     }
 }
