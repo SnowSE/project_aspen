@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import { useContext, useEffect, useState } from "react";
 import { EventContext } from '../../App';
 import axios from "axios";
+import Link from "../../JsModels/link";
 
 const SharingButtonCustomLink = () => {
     const shareUrl = window.location.href;
@@ -12,40 +13,24 @@ const SharingButtonCustomLink = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
 
+
     const buildLink = async () => {
-
-        ////No current Event
-        //if (currentEvent.id !== -1) {
-        //    setLink(shareUrl +)
-        //}
-
-    };
-
-    const getUser = async () => {
-        
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
-            console.log(`$CurrentUser:${currentUser.data.id}`);
+            const tempLink = new Link(
+                currentEvent.id,
+                new Date(),
+                shareUrl,
+                currentUser.data.id,
+            );
+            var teamUrl = process.env.PUBLIC_URL + "/api/link";
+            const response = await axios.post(teamUrl, tempLink).catch((error) => { console.log("There was an error", error.response.data) })
+            //setLink(shareUrl + "/link/");
 
         } catch (error) {
             console.log(`$Failed to get current user, error:${error}`);
         }
-
-
-
     };
-
-    const getLinkID = async () => {
-
-
-    };
-
-    useEffect(() => {
-        getUser();
-        //getLinkID();
-        //buildLink();
-        console.log(link);
-    }, []);
 
     return (
         <div>
