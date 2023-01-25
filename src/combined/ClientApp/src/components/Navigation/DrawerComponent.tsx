@@ -10,6 +10,7 @@ const pages = [
     { text: 'Home', href: '/' },
     { text: 'Team Details', href: '/TeamDetails' },
     { text: 'Admin Dashboard', href: '/AdminDashboard' },
+    { text: 'Donate', href: '/Donate' },
 ]
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

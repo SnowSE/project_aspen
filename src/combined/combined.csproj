@@ -57,6 +57,7 @@
     <None Remove="ClientApp\src\components\AdminComponents\EventEditDeleteForm.tsx" />
     <None Remove="ClientApp\src\components\AdminComponents\TeamEditDelete.tsx" />
     <None Remove="ClientApp\src\components\AdminComponents\TeamMembersListAccordian.tsx" />
+    <None Remove="ClientApp\src\components\BackToDonationButton.tsx" />
     <None Remove="ClientApp\src\components\DonateButton.tsx" />
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
     <None Remove="ClientApp\src\components\LoginButton.tsx" />
