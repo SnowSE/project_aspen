@@ -8,6 +8,9 @@ import SharingButton from "../../components/Share/SharingButton";
 
 
 const SuccessfulDonation = () => {
+    const navigate = useNavigate()
+
+    const { personName, teamName, transactionId } = useParams()
     const { personName, teamName } = useParams()
     const { currentEvent } = useContext(EventContext);
     const navigate = useNavigate();
