@@ -8,7 +8,6 @@ const LinkRedirect = () => {
     const navigate = useNavigate()
     const [linkId, setlinkId] = useState(-1);
     const [personId, setPersonId] = useState(-1);
-    const path = window.location.pathname.split("/");
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -49,7 +48,7 @@ const LinkRedirect = () => {
         url2.pop();
 
         let finalUrl = "/";
-        if (url2.length > 0) {
+        if (url2.length > 1) {
             finalUrl = url2.join("/");
         }
         if (url.includes("donation")) {
