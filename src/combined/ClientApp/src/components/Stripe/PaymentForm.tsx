@@ -167,6 +167,7 @@ export default function PaymentForm() {
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
+                        defaultValue={localStorage.getItem("LoggedInUser")}
                         onChange={(e)=> setDonationSubmitName(e.target.value)}
                     />
                 </Box>
@@ -185,6 +186,7 @@ export default function PaymentForm() {
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
+                        defaultValue={localStorage.getItem("LoggedInEmail")}
                         onChange={(e) => {setDonationEmail(e.target.value)}}
                     />
                 </Box>
