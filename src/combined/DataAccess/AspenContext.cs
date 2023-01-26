@@ -27,4 +27,7 @@ public class AspenContext : DbContext
     public DbSet<DbPerson> Persons { get; set; }
     public DbSet<DbDonation> Donations { get; set; }
     public DbSet<DbLink> Links { get; set; }
+
+    public DbSet<DbLinkRecord> LinkRecords { get; set; }
+
 }

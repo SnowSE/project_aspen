@@ -19,8 +19,6 @@ const SharingButtonCustomLink = () => {
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
             if (currentUser.data.id !== null) {
-                var linkUrl = `${process.env.PUBLIC_URL}/api/links`;
-                console.log("linkURL" + linkUrl);
                 await axios.post(`${process.env.PUBLIC_URL}/api/links`,
                     {
                         EventId: currentEvent.id,
@@ -34,12 +32,12 @@ const SharingButtonCustomLink = () => {
                     .catch((error) => { console.log("There was an error", error.response.data) })
             }
         } catch (error) {
-            console.log(`$Failed to get current user, error:${error}`);
+            console.log(`$Error on building link, error:${error}`);
         }
     };
     const getLink = async () => {
         await buildLink()
-
+        
     }
 
     return (

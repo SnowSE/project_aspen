@@ -13,9 +13,18 @@ public class AspenMapperProfile : Profile
 
         CreateMap<Event, DtoEvent>()
             .ReverseMap();
+
         CreateMap<DbLink, Link>()
-    .ReverseMap();
-        CreateMap<Link, DtoLink>().ReverseMap();
+            .ReverseMap();
+
+        CreateMap<Link, DtoLink>()
+            .ReverseMap();
+
+        CreateMap<DbLinkRecord, LinkRecord>()
+            .ReverseMap();
+
+        CreateMap<LinkRecord, DtoLinkRecord>()
+            .ReverseMap();
 
         CreateMap<DbPageData, DtoPageData>()
             .ReverseMap();
