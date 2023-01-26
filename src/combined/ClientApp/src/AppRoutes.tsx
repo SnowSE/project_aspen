@@ -72,7 +72,7 @@ const AppRoutes = [
         element: <SiteAdmin />
     },
     {
-        path: `/successfuldonation/:personName/:teamName`, 
+        path: `/successfuldonation/:personName/:teamName/:transactionId`, 
         element:<SuccessfulDonation/>
     }
 ];

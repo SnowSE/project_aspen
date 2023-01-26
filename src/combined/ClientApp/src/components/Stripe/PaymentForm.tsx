@@ -49,7 +49,7 @@ export default function PaymentForm() {
                         setTeamId(registration.teamID)
                     }
 
-                })
+                })  
             }).catch((error) => { 
              })
         }
@@ -77,13 +77,14 @@ export default function PaymentForm() {
         if(donationAmount === 0 || donationEmail.trim().length === 0){
             setCanSubmit(false)
         }
+        
         else {
             setCanSubmit(true)
         }
 
     }, [donationAmount, donationEmail])
-    
 
+   
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -96,7 +97,7 @@ export default function PaymentForm() {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
-        await axios.post("https://engineering.snow.edu/aspen/new/api/stripe",
+        await axios.post("https://localhost:44478/aspen/new/api/stripe",
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",
@@ -116,25 +117,40 @@ export default function PaymentForm() {
 
 
     }
+    function updateMealsTextField(value:any) {
+        setDonationAmount(value);
+    }
 
 
     return (
         <>
-            <form onSubmit={handleSubmit} style={{  justifyContent: 'center' }}>
+            <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
+                <Button onClick={() => updateMealsTextField(100)}>100 Meals</Button>
+                <Button onClick={() => updateMealsTextField(200)}>200 Meals</Button>
+                <Button onClick={() => updateMealsTextField(300)}>300 Meals</Button>
+                <Button onClick={() => updateMealsTextField(800)}>800 Meals</Button>
+                <Button onClick={() => updateMealsTextField(1000)}>1000 Meals</Button>
+                <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
+            </Box>
+            <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
+                
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <TextField
-                        id="filled-number"
+                    <TextField 
+                        id="meals-textfield"
                         label="Meals"
                         type="number"
                         required={true}
                         InputLabelProps={{
                             shrink: true,
+                            
                         }}
                         InputProps={{
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
-                        onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
+                        value={donationAmount}
+
+                            onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
                     />
                 </Box>
 <br></br>
