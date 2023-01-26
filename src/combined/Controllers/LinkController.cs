@@ -1,4 +1,4 @@
-﻿
+﻿using System.Net;
 namespace Api.Controllers;
 
 [Route("api/links")]
@@ -24,16 +24,16 @@ public class LinkController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<string> Get()
+    public string Get()
     {
-        return new string[] { "value1", "value2" };
+        return "stronggothere";
     }
 
 
     [HttpPost]
     public async Task<ActionResult<DtoLink>> Add([FromBody] DtoLink dtoLink)
     {
-        log.LogInformation($"Adding new dtoLink {dtoLink}", dtoLink);
+        log.LogInformation($"Adding new dtoLink {dtoLink}");
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 

@@ -19,7 +19,7 @@ public class LinkRepository : ILinkRepository
 
     public async Task<Link> Add(Link link)
     {
-        var dbLink = mapper.Map<DBLink>(link);
+        var dbLink = mapper.Map<DbLink>(link);
         await context.Links.AddAsync(dbLink);
 
         await context.SaveChangesAsync();

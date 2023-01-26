@@ -1,6 +1,6 @@
 ﻿namespace Api.DbModels;
 
-public record DBLink
+public record DbLink
 {
     public long ID { get; init; }
     public DbEvent Event { get; init; }

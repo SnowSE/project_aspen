@@ -18,28 +18,25 @@ const SharingButtonCustomLink = () => {
     const buildLink = async () => {
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
+            if (currentUser.data.id !== null) {
+                var linkUrl = "/api/link";
+                await axios.post("https://localhost:44478/aspen/new/api/links",
+                    {
+                        EventId: currentEvent.id,
+                        PersonID: currentUser.data.id,
+                        Date: new Date(),
+                        LinkURL: shareUrl
+                    }).then((response) => {
 
-            var linkUrl = "/api/link";
-            await axios.post("https://localhost:44478/aspen/new/api/links",
-                {
-                    EventId : currentEvent.id,
-                    PersonID : currentUser.data.id,
-                    Date : new Date(),
-                    LinkURL  : shareUrl        
-                }).then((response) => {
-
-                    setLink(shareUrl + "/link/" + response.data.id);
-               })
-                .catch((error) => { console.log("There was an error", error.response.data) })
-            //var response = await axios.post(`${BaseUrl}/api/events`, newLink)
-            //    .then((response) => { newLink.id = response.data.id })
-            //    .catch((error) => { console.log(error.response.data) })
-            //setLink(shareUrl + "/link");
-
+                        setLink(shareUrl + "/link/" + response.data.id);
+                    })
+                    .catch((error) => { console.log("There was an error", error.response.data) })
+            }
         } catch (error) {
             console.log(`$Failed to get current user, error:${error}`);
         }
     };
+
 
     return (
         <div>
@@ -50,7 +47,7 @@ const SharingButtonCustomLink = () => {
                     url: link,
                     title: "Name of Event Here"
                 }}
-                onClick={() => buildLink()}
+                onClick={buildLink()}
             >
                 <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>

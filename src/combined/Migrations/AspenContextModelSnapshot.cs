@@ -50,7 +50,7 @@ namespace Api.Migrations
 
                     b.HasIndex("PersonID");
 
-                    b.ToTable("Links");
+                    b.ToTable("Links", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbDonation", b =>
@@ -95,7 +95,7 @@ namespace Api.Migrations
 
                     b.HasIndex("TeamID");
 
-                    b.ToTable("Donations");
+                    b.ToTable("Donations", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbEvent", b =>
@@ -130,7 +130,7 @@ namespace Api.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPageData", b =>
@@ -154,7 +154,7 @@ namespace Api.Migrations
                     b.HasIndex("Key")
                         .IsUnique();
 
-                    b.ToTable("PageData");
+                    b.ToTable("PageData", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPerson", b =>
@@ -178,7 +178,7 @@ namespace Api.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Persons", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPersonRegistration", b =>
@@ -204,7 +204,7 @@ namespace Api.Migrations
 
                     b.HasIndex("RegistrationID");
 
-                    b.ToTable("PersonRegistrations");
+                    b.ToTable("PersonRegistrations", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbRegistration", b =>
@@ -236,7 +236,7 @@ namespace Api.Migrations
 
                     b.HasIndex("TeamID");
 
-                    b.ToTable("Registrations");
+                    b.ToTable("Registrations", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DbTeam", b =>
@@ -278,7 +278,7 @@ namespace Api.Migrations
 
                     b.HasIndex("OwnerID");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Api.DbModels.DBLink", b =>

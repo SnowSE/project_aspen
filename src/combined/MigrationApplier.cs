@@ -8,7 +8,6 @@
         this.service = service;
         this.logger = logger;
     }
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
         using (var scope = service.CreateScope())

@@ -22,6 +22,7 @@ builder.Services.AddScoped<IPageDataRepository, PageDataRepository>();
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<IAssetFileService, AssetFileService>();
 builder.Services.AddHttpLogging(options =>
 {
