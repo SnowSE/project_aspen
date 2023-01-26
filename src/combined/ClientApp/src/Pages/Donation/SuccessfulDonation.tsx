@@ -8,17 +8,15 @@ import SharingButton from "../../components/Share/SharingButton";
 
 
 const SuccessfulDonation = () => {
-    const navigate = useNavigate()
 
-    const { personName, teamName, transactionId } = useParams()
-    const { personName, teamName } = useParams()
+    const { personName, teamName, transactionId, amount, donationDateTime, email, phoneNumber } = useParams()
     const { currentEvent } = useContext(EventContext);
     const navigate = useNavigate();
 
     return (
         <Box>
-            <Box>
-                <CheckCircleOutlineIcon />
+            <Box sx={{ justifyContent: 'center' }}>
+                <CheckCircleOutlineIcon  />
             </Box>
             {personName === "Anonymous" ?
                 <Box>
@@ -36,40 +34,45 @@ const SuccessfulDonation = () => {
             }
             <Divider />
             <Box>
-                <Typography>
+                <Typography sx={{fontWeight: 'bold'} }>
                     Summary:
                 </Typography>
             </Box>
             <Box>
                 <Typography>
-                    Contribution to {currentEvent?.Title }: (Donation Value to be added)
+                    Contribution to: {currentEvent?.title}
+                </Typography>
+            </Box>
+            <Box>
+                <Typography>
+                    Amount: {amount}
                 </Typography>
             </Box>
             <Divider />
             <Box>
                 <Typography>
-                    Date: get current date
+                    Date: {donationDateTime}
                 </Typography>
             </Box>
             <Box>
                 <Typography>
-                    Transaction ID: 
+                    Transaction ID: {transactionId}
                 </Typography>
             </Box>
             <Divider />
             <Box>
                 <Typography>
-                    name
+                    Name: {personName}
                 </Typography>
             </Box>
             <Box>
                 <Typography>
-                    email
+                    Email: {email}
                 </Typography>
             </Box>
             <Box>
                 <Typography>
-                    phone number
+                    Phone Number: {phoneNumber}
                 </Typography>
             </Box>
 
