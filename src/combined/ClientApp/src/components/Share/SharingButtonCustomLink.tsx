@@ -19,8 +19,9 @@ const SharingButtonCustomLink = () => {
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
             if (currentUser.data.id !== null) {
-                var linkUrl = "/api/link";
-                await axios.post("https://localhost:44478/aspen/new/api/links",
+                var linkUrl = `${process.env.PUBLIC_URL}/api/links`;
+                console.log("linkURL" + linkUrl);
+                await axios.post(`${process.env.PUBLIC_URL}/api/links`,
                     {
                         EventId: currentEvent.id,
                         PersonID: currentUser.data.id,
@@ -28,7 +29,7 @@ const SharingButtonCustomLink = () => {
                         LinkURL: shareUrl
                     }).then((response) => {
 
-                        setLink(shareUrl + "/link/" + response.data.id);
+                        setLink(shareUrl + "links/" + response.data.id);
                     })
                     .catch((error) => { console.log("There was an error", error.response.data) })
             }
@@ -47,7 +48,7 @@ const SharingButtonCustomLink = () => {
                     url: link,
                     title: "Name of Event Here"
                 }}
-                onClick={buildLink()}
+                onClick={() => buildLink()}
             >
                 <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>
