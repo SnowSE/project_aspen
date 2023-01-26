@@ -109,9 +109,16 @@ export default function PaymentForm() {
                 donationName: donationSubmitName, 
                 donationEmail: donationEmail, 
                 donationPhoneNumber: donationPhoneNumber
-            }).then((response) => {
+            }).then(async (response) => {
                 const session = response.data.sessionId
-                stripe?.redirectToCheckout({ sessionId: session })
+                try {
+
+                    stripe?.redirectToCheckout({ sessionId: session })
+                }
+                catch(e){
+                    console.log("e")
+                    await axios.post("https://localhost:44478/aspen/new/api/stripe/failure?sessionId=Thisisanerror")
+                }
             })
             .catch((error) => { console.log("There was an error", error.response.data) })
 
