@@ -78,7 +78,7 @@ const AppRoutes = [
     },
     {
         path: `/link/:id`,
-        element:<LinkRedirect/>
+        element:<LinkRedirect />
         }
 
 ];
