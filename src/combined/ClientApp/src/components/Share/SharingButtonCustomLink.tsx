@@ -29,7 +29,7 @@ const SharingButtonCustomLink = () => {
                         LinkURL: shareUrl
                     }).then((response) => {
 
-                        setLink(shareUrl + "links/" + response.data.id);
+                        setLink(shareUrl + "/links/" + response.data.id);
                     })
                     .catch((error) => { console.log("There was an error", error.response.data) })
             }
@@ -37,7 +37,10 @@ const SharingButtonCustomLink = () => {
             console.log(`$Failed to get current user, error:${error}`);
         }
     };
+    const getLink = async () => {
+        await buildLink()
 
+    }
 
     return (
         <div>
@@ -48,7 +51,7 @@ const SharingButtonCustomLink = () => {
                     url: link,
                     title: "Name of Event Here"
                 }}
-                onClick={() => buildLink()}
+                onClick={() => getLink()}
             >
                 <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>

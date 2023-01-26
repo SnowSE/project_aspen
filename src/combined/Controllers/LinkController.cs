@@ -23,11 +23,11 @@ public class LinkController : ControllerBase
         this.log = log;
     }
 
-    [HttpGet]
-    public string Get()
-    {
-        return "stronggothere";
-    }
+    //[HttpGet("/{linkId}")]
+    //public string Get()
+    //{
+    //    return "stronggothere";
+    //}
 
 
     [HttpPost]

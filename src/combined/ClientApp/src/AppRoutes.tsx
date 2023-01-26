@@ -12,6 +12,7 @@ import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
 import LoginButton from "./components/LoginButton";
 import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
+import LinkRedirect from "./components/LinkRedirect/LinkRedirect";
 
 const AppRoutes = [
     {
@@ -74,7 +75,12 @@ const AppRoutes = [
     {
         path: `/successfuldonation/:personName/:teamName/:transactionId`, 
         element:<SuccessfulDonation/>
-    }
+    },
+    {
+        path: `/link/:id`,
+        element:<LinkRedirect/>
+        }
+
 ];
 
 export default AppRoutes;
