@@ -71,6 +71,7 @@ export const authService = {
         await userManager.clearStaleState();
         await userManager.signoutRedirect();
         localStorage.setItem("LoggedInUser", "")
+        localStorage.setItem("LoggedInEmail", "")
         localStorage.setItem("access_token", "")
 
         // await userManager.signoutRedirect({
