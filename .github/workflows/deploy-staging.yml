@@ -37,6 +37,7 @@ jobs:
           cd src/combined/ClientApp
           echo "MY_DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
           echo "MY_SECOND_DUMMY_SECRET=${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
+          echo "TEST_SECRET=TESTING" >> .env
           cat .env
 
       
