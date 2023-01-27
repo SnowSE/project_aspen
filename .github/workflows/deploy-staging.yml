@@ -35,17 +35,11 @@ jobs:
       - name: Update secrets in .env
         run: |
           cd src/combined/ClientApp
-          touch .env
           echo "MY_DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
-          echo "SECOND_DUMMY_SECRET=${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
+          echo "MY_SECOND_DUMMY_SECRET=${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
           cat .env
 
-      - name: Update secrets in ClientApp/appsettings.json
-        run: |
-          cd src/combined/
-          touch .env
-          echo "${{ secrets.MY_DUMMY_SECRET }}" > .env
-          cat .env
+      
 
       - name: update staging containers
         run: |
