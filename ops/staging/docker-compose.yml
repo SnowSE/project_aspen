@@ -15,9 +15,7 @@ services:
       - assets:/app/wwwroot/assets
     environment:
       - SwaggerBasePath=aspen
-      - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen; 
-      - Stripe__PublicKey= ${{secrets.Stripe__PublicKey}}     
-      - Stripe__SecretKey= ${{secrets.Stripe__SecretKey}}     
+      - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
     networks:
       shared:
       api:
