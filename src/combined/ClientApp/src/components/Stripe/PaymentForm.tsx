@@ -97,7 +97,7 @@ export default function PaymentForm() {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
-        await axios.post("https://localhost:44478/aspen/new/api/stripe",
+        await axios.post("https://engineering.snow.edu/aspen/new/api/stripe",
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",
