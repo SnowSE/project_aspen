@@ -17,26 +17,40 @@ namespace Api.Controllers;
             this.donationRepository = donationRepository;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<CheckoutOrderResponse>> payment([FromBody] Payment payment)
+
+    [HttpGet("test")]
+    public async Task<ActionResult> TestGet()
+    {
+
+
+
+        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{"person"}/{"personTeam"}/{"bob"}");
+        
+
+
+    }
+
+
+    [HttpPost]
+    public async Task<ActionResult<CheckoutOrderResponse>> payment([FromBody] Payment payment)
+    {
+        //var referer = Request.Headers.Referer;
+        //client_URL = referer[0];
+
+
+
+        var sessionId = await CheckOut(payment);
+        var publicKey = configuration["Stripe:PublicKey"];
+
+        var checkoutOrderResponse = new CheckoutOrderResponse()
         {
-            //var referer = Request.Headers.Referer;
-            //client_URL = referer[0];
+            SessionId = sessionId,
+            publicKey = publicKey
+        };
 
-
-
-            var sessionId = await CheckOut(payment);
-            var publicKey = configuration["Stripe:PublicKey"];
-
-            var checkoutOrderResponse = new CheckoutOrderResponse()
-            {
-                SessionId = sessionId,
-                publicKey = publicKey
-            };
-
-            //string url = $"https://checkout.stripe.com/pay/{sessionId}";
-            return checkoutOrderResponse;
-        }
+        //string url = $"https://checkout.stripe.com/pay/{sessionId}";
+        return checkoutOrderResponse;
+    }
 
         [HttpGet("success")]
         // Automatic query parameter handling from ASP.NET.
@@ -46,23 +60,23 @@ namespace Api.Controllers;
             var dateTime = DateTime.UtcNow;
             var session = new SessionService();
 
-            var s = session.Get(sessionId);
-            var paymentIntentId = s.PaymentIntentId;
+        var s = session.Get(sessionId);
+        var paymentIntentId = s.PaymentIntentId;
 
-            var newDonation = new Donation {
-                EventID=eventId,
-                TeamID=teamId,      
-                PersonID=personId,
-                Amount=amount/100,
-                Date = dateTime,
-                TransactionNumber = Guid.NewGuid()
-            };
+        var newDonation = new Donation {
+            EventID=eventId,
+            TeamID=teamId,      
+            PersonID=personId,
+            Amount=amount/100,
+            Date = dateTime,
+            TransactionNumber = Guid.NewGuid()
+        };
 
 
-            await donationRepository.AddAsync(newDonation);
+        await donationRepository.AddAsync(newDonation);
 
-            return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
-        }
+        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+    }
 
         [NonAction]
         public async Task<string> CheckOut(Payment payment)
@@ -100,18 +114,18 @@ namespace Api.Controllers;
                 Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
             };
 
-            var service = new SessionService();
-            var session = await service.CreateAsync(options);
-            return session.Id;
-        }
-
-
-
-
-
-
-
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+        return session.Id;
     }
+
+
+
+
+
+
+
+}
 
 
 public class Payment {
