@@ -52,13 +52,13 @@ namespace Api.Controllers;
         return checkoutOrderResponse;
     }
 
-    [HttpGet("success")]
-    // Automatic query parameter handling from ASP.NET.
-    // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
-    public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string personName, string teamName, decimal amount, string sessionId)
-    {
-        var dateTime = DateTime.UtcNow;
-        var session = new SessionService();
+        [HttpGet("success")]
+        // Automatic query parameter handling from ASP.NET.
+        // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
+        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime)
+        {
+            var dateTime = DateTime.UtcNow;
+            var session = new SessionService();
 
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
@@ -78,41 +78,41 @@ namespace Api.Controllers;
         return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
-    [NonAction]
-    public async Task<string> CheckOut(Payment payment)
-    {
-        // Create a payment flow from the items in the cart.
-        // Gets sent to Stripe API.
-        var options = new SessionCreateOptions
+        [NonAction]
+        public async Task<string> CheckOut(Payment payment)
         {
-            // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-            //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-            SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
-            CancelUrl = "https://localhost:44478/aspen/new/Donate",  // Checkout cancelled.
-            PaymentMethodTypes = new List<string> // Only card available in test mode?
-        {
-            "card"
-        },
-            LineItems = new List<SessionLineItemOptions>
-        {
-            new()
+            // Create a payment flow from the items in the cart.
+            // Gets sent to Stripe API.
+            var options = new SessionCreateOptions
             {
-                PriceData = new SessionLineItemPriceDataOptions
-                {
-                    UnitAmount = payment.amount, // Price is in USD cents.
-                    Currency = "USD",
-                    ProductData = new SessionLineItemPriceDataProductDataOptions
-                    {
-                        Name = payment.teamName,
-                        Description = payment.teamName + " Donation"
-                        //Images = new List<string> { payment.teamName }
-                    },
-                },
-                Quantity = 1,
+                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&paymentDate={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://localhost:44478/aspen/new/Donate",  // Checkout cancelled.
+                PaymentMethodTypes = new List<string> // Only card available in test mode?
+            {
+                "card"
             },
-        },
-            Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
-        };
+                LineItems = new List<SessionLineItemOptions>
+            {
+                new()
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = payment.amount, // Price is in USD cents.
+                        Currency = "USD",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = payment.teamName,
+                            Description = payment.teamName + " Donation"
+                            //Images = new List<string> { payment.teamName }
+                        },
+                    },
+                    Quantity = 1,
+                },
+            },
+                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
+            };
 
         var service = new SessionService();
         var session = await service.CreateAsync(options);
@@ -139,6 +139,7 @@ public class Payment {
     public string donationName { get; set; }
     public string donationEmail { get; set; }
     public string donationPhoneNumber { get; set; }
+    public string donationDateTime { get; set; }
 
 }
 
