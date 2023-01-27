@@ -13,6 +13,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2.4.0
 
+      
       - name: build and test
         run: |
           cd ops/testing
@@ -35,8 +36,8 @@ jobs:
         run: |
           cd src/combined/ClientApp
           touch .env
-          echo "${{ secrets.MY_DUMMY_SECRET }}" > .env
-          echo "${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
+          echo "MY_DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
+          echo "SECOND_DUMMY_SECRET=${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
           cat .env
 
       - name: Update secrets in ClientApp/appsettings.json
