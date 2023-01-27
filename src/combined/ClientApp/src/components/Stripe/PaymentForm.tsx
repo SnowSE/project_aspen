@@ -108,7 +108,8 @@ export default function PaymentForm() {
                 personName: userName, 
                 donationName: donationSubmitName, 
                 donationEmail: donationEmail, 
-                donationPhoneNumber: donationPhoneNumber
+                donationPhoneNumber: donationPhoneNumber,
+                donationDateTime: new Date()
             }).then((response) => {
                 const session = response.data.sessionId
                 stripe?.redirectToCheckout({ sessionId: session })
