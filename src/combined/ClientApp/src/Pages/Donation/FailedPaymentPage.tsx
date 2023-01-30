@@ -1,4 +1,3 @@
-﻿import React from "react";
 import { Typography, Box, Divider } from '@mui/material';
 import { BackToDonationButton } from "../../components/BackToDonationButton";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
