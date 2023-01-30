@@ -39,14 +39,14 @@ namespace Api.Controllers;
 
 
         var dummyKey = Environment.GetEnvironmentVariable("GithubDummyKey") ?? "no secret key";
-
+        var test = Environment.GetEnvironmentVariable("testKey") ?? "no test key found";
 
         //var sessionId = await CheckOut(payment);
        // var publicKey = configuration["Stripe:PublicKey"];
 
         var checkoutOrderResponse = new CheckoutOrderResponse()
         {
-            SessionId = "mysessionID",
+            SessionId = test,
             publicKey = dummyKey
         };
 
