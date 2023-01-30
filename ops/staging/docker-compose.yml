@@ -18,7 +18,7 @@ services:
     environment:
       - SwaggerBasePath=aspen
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
-      - MY_SECOND_DUMMY_SECRET=${DUMMY_SECRET}
+      - MY_SECOND_DUMMY_SECRET="${DUMMY_SECRET}"
       
     networks:
       shared:
