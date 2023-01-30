@@ -40,7 +40,7 @@ const SharingButtonCustomLink: React.FC = () => {
     async function postLink() {
         const tempLinkIdentifier = generateGUID()
         if (linkShareUrl === null || linkIdentifier === "") {
-            setlinkIdentifier(tempLinkIdentifier);
+            await setlinkIdentifier(tempLinkIdentifier);
             let shareUrlFinal = shareUrl + "/links/" + tempLinkIdentifier
             setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
             try {
