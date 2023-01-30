@@ -18,6 +18,9 @@ services:
       - testKey=ThisisMyTestKey
       - GithubDummyKey =${{ secrets.MY_SECOND_DUMMY_SECRET }}
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
+    secrets:
+      - source: MY_SECOND_DUMMY_SECRET
+        target: GithubDummyKey
     networks:
       shared:
       api:
