@@ -117,10 +117,6 @@ namespace Api.Migrations
                     b.Property<long>("EventID")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("LinkIdentifer")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("LinkURL")
                         .IsRequired()
                         .HasColumnType("text");

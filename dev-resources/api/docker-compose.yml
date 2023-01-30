@@ -18,8 +18,7 @@ services:
       retries: 5
     restart: unless-stopped
     ports:
-      - 5434:5432    
+      - 5434:5432
 
 volumes:
   localdev_api_db:
-  
