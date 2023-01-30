@@ -39,14 +39,14 @@ namespace Api.Controllers;
 
 
         var dummyKey = Environment.GetEnvironmentVariable("MY_SECOND_DUMMY_SECRET") ?? "no secret key";
-        var test = Environment.GetEnvironmentVariable("testKey") ?? "no test key found";
 
-        //var sessionId = await CheckOut(payment);
-       // var publicKey = configuration["Stripe:PublicKey"];
+
+        var sessionId = await CheckOut(payment);
+         var publicKey = configuration["Stripe:PublicKey"];
 
         var checkoutOrderResponse = new CheckoutOrderResponse()
         {
-            SessionId = test,
+            SessionId = sessionId,
             publicKey = dummyKey
         };
 
@@ -89,8 +89,8 @@ namespace Api.Controllers;
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&paymentDate={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:44478/aspen/new/Donate",  // Checkout cancelled.
+                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
             {
                 "card"

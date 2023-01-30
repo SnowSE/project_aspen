@@ -34,12 +34,15 @@ jobs:
 
       - name: Update secrets in .env
         run: |
-          cd src
-          touch dummyKey.txt
-          echo "${{ secrets.MY_SECOND_DUMMY_SECRET }}" > dummyKey.txt
-          cat dummyKey.txt
-
-      
+          cd ops/staging
+          touch .env
+          echo "DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
+          echo "STRIPE_PUBLIC_KEY=${{secrets.STRIPE_PUBLIC_KEY}}" >> .env
+          echo "STRIPE_SECRET_KEY=${{secrets.STRIPE_SECRET_KEY}}" >> .env
+          echo "STRIPE_PKEY = ${{secrets.STRIPE_PUBLICKEY}}" >> .env
+          echo "STRIPE_SKEY = ${{secrets.STRIPE_SECRETKEY}}" >>.env
+          echo "SECRET_KEY = ${{secrets.SECRETKEY}}" >> .env
+          cat .env
 
       - name: update staging containers
         run: |
