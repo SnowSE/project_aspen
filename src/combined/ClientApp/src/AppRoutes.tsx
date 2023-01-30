@@ -78,13 +78,12 @@ const AppRoutes = [
     {
         path: `/failedpayment`,
         element: <FailedPaymentPage />
-    }
     },
     {
         path: `/links/:linkIdentifer`,
-        element:<LinkRedirect />
-        }
+        element: <LinkRedirect />
+    }
 
-];
+]
 
 export default AppRoutes;
