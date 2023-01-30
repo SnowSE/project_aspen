@@ -36,7 +36,7 @@ jobs:
         run: |
           cd ops/staging
           touch .env-gh
-          echo "DUMMY_SECRET=${{ secrets.PUBLIC_KEY }}" > .env-gh
+          echo "DUMMY_SECRET=${{ secrets.Public_Key }}" > .env-gh
           cat .env-gh
 
       
