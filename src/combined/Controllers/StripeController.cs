@@ -38,7 +38,7 @@ namespace Api.Controllers;
         //client_URL = referer[0];
 
 
-        var dummyKey = Environment.GetEnvironmentVariable("GithubDummyKey") ?? "no secret key";
+        var dummyKey = Environment.GetEnvironmentVariable("MY_SECOND_DUMMY_SECRET") ?? "no secret key";
         var test = Environment.GetEnvironmentVariable("testKey") ?? "no test key found";
 
         //var sessionId = await CheckOut(payment);
