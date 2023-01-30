@@ -12,7 +12,6 @@ if (!root && process.env.NODE_ENV !== "test") {
 
 console.log('FIRST Secret: ', process.env.MY_DUMMY_SECRET);
 console.log('2nd Secret: ', process.env.MY_SECOND_DUMMY_SECRET);
-console.log('Test Secret', process.env.TEST_SECRET);
 
 export const EventContext = React.createContext({} as any);
 

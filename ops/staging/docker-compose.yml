@@ -15,6 +15,7 @@ services:
       - assets:/app/wwwroot/assets
     environment:
       - SwaggerBasePath=aspen
+      - testKey=ThisisMyTestKey
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
     networks:
       shared:
