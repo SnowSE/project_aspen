@@ -45,4 +45,4 @@ jobs:
         run: |
           cd ops/staging
           DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
-          docker-compose up -d -e MY_SECOND_DUMMY_SECRET=${{ secrets.MY_SECOND_DUMMY_SECRET}}
+          docker-compose up -d 
