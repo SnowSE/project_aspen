@@ -69,7 +69,6 @@ const SharingButtonCustomLink: React.FC = () => {
                     })
                     .catch((error) => { console.log("There was an error", error.response.data); })
             }
-
             catch (error) {
                 console.log(error);
             };
