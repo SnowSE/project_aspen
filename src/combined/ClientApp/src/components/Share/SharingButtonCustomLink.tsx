@@ -35,35 +35,65 @@ const SharingButtonCustomLink: React.FC = () => {
         };
     }
     async function postLink() {
-        try {
-            if (currentUserId !== -1) {
-                await axios.post(`${process.env.PUBLIC_URL}/api/links`,
-                    {
-                        eventID: currentEvent.id,
-                        personID: currentUserId,
-                        date: new Date(),
-                        linkURL: linkShareUrl,
-                        linkIdentifer: linkIdentifier
-                    })
-                    .catch((error) => { console.log("There was an error", error.response.data); })             
+            const tempLinkIdentifier = generateGUID()
+        if (linkShareUrl === null || linkIdentifier === "") {
+            setlinkIdentifier(tempLinkIdentifier);
+            let shareUrlFinal = shareUrl + "/links/" + tempLinkIdentifier
+            setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
+            try {
+                if (currentUserId !== -1) {
+                    await axios.post(`${process.env.PUBLIC_URL}/api/links`,
+                        {
+                            eventID: currentEvent.id,
+                            personID: currentUserId,
+                            date: new Date(),
+                            linkURL: shareUrlFinal,
+                            linkIdentifer: tempLinkIdentifier
+                        })
+                        .catch((error) => { console.log("There was an error", error.response.data); })
+                }
             }
+            catch (error) {
+                console.log(error);
+            };
         }
-        catch (error) {
-            console.log(error);
-        };
+        else if (currentUserId !== -1) {
+            try {
+                if (currentUserId !== -1) {
+                    await axios.post(`${process.env.PUBLIC_URL}/api/links`,
+                        {
+                            eventID: currentEvent.id,
+                            personID: currentUserId,
+                            date: new Date(),
+                            linkURL: linkShareUrl,
+                            linkIdentifer: linkIdentifier
+                        })
+                        .catch((error) => { console.log("There was an error", error.response.data); })
+                }
+            }
+            catch (error) {
+                console.log(error);
+            };
+
+        }
+        else {
+            setLinkShareUrl(shareUrl)
+        }
+        
+        setlinkIdentifier("");
     }
 
-        const handleClick = async () => {
-            await getCurrentUser();
-            await postLink();
+    const handleClick = async () => {
+        await getCurrentUser();
+        await postLink();
+
     }
 
     useEffect(() => {
         const tempLinkIdentifier = generateGUID()
         setlinkIdentifier(tempLinkIdentifier);
         setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
-        //getCurrentUser();
-    }, [shareUrl, currentUserId]);
+    }, [shareUrl, currentUserId, setLinkShareUrl]);
 
     return (
         <div>
