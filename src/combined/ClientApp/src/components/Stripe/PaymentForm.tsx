@@ -111,10 +111,11 @@ export default function PaymentForm() {
                 donationPhoneNumber: donationPhoneNumber,
                 donationDateTime: new Date()
             }).then((response) => {
-                const session = response.data.sessionId
+                const session = response.data
+                console.log(session)
                 stripe?.redirectToCheckout({ sessionId: session })
             })
-            .catch((error) => { console.log("There was an error", error.response.data) })
+            .catch((error) => { console.log("There was an error", error) })
 
 
     }
