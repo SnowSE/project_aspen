@@ -17,7 +17,7 @@ const NavMenu = () => {
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
         { text: 'Admin Dashboard', href: '/AdminDashboard' },
-
+        { text: 'Donate', href: '/Donate' },
 
     ]
 
