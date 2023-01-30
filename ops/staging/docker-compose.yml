@@ -3,7 +3,7 @@ version: "3.7"
 services:
   api:
     env_file:
-      - .env-gh
+      - .env
     container_name: staging_combined
     build:
       context: ../../src/

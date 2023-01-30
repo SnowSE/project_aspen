@@ -35,9 +35,9 @@ jobs:
       - name: Update secrets in .env
         run: |
           cd ops/staging
-          touch .env-gh
-          echo "DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env-gh
-          cat .env-gh
+          touch .env
+          echo "DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
+          cat .env
 
       
 
