@@ -114,7 +114,7 @@ export default function PaymentForm() {
                 const session = response.data.sessionId
                 stripe?.redirectToCheckout({ sessionId: session })
             })
-            .catch((error) => { console.log("There was an error", error.response.data) })
+            .catch((error) => { console.log("There was an error", error) })
 
 
     }
