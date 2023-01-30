@@ -40,13 +40,15 @@ namespace Api.Controllers;
 
         var dummyKey = Environment.GetEnvironmentVariable("MY_SECOND_DUMMY_SECRET") ?? "no secret key";
         var test = Environment.GetEnvironmentVariable("testKey") ?? "no test key found";
+        var srcDirectory = Environment.GetEnvironmentVariable("SourceDirectorySecret") ?? "no test key found in src";
+
 
         //var sessionId = await CheckOut(payment);
-       // var publicKey = configuration["Stripe:PublicKey"];
+        // var publicKey = configuration["Stripe:PublicKey"];
 
         var checkoutOrderResponse = new CheckoutOrderResponse()
         {
-            SessionId = test,
+            SessionId = srcDirectory,
             publicKey = dummyKey
         };
 
