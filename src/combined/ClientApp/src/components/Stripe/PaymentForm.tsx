@@ -1,5 +1,5 @@
 import React, {  useContext, useEffect, useState } from 'react'
-import { useStripe } from '@stripe/react-stripe-js';
+//import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
@@ -8,7 +8,7 @@ import { EventContext } from '../../App';
 
 export default function PaymentForm() {
 
-    const stripe = useStripe()
+    //const stripe = useStripe()
 
     const { currentEvent, loading } = useContext(EventContext);
 
