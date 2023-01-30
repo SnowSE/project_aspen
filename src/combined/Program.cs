@@ -8,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProblemDetails();
 
 // Add services to the container.
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+var StripeSecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY") ?? "no secret key";
+
+StripeConfiguration.ApiKey = StripeSecretKey;
 
 string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

@@ -32,26 +32,15 @@ namespace Api.Controllers;
 
 
     [HttpPost]
-    public async Task<ActionResult<CheckoutOrderResponse>> payment([FromBody] Payment payment)
+    public async Task<ActionResult<string>> payment([FromBody] Payment payment)
     {
         //var referer = Request.Headers.Referer;
         //client_URL = referer[0];
-
-
-        var dummyKey = Environment.GetEnvironmentVariable("MY_SECOND_DUMMY_SECRET") ?? "no secret key";
-
-
         var sessionId = await CheckOut(payment);
-         var publicKey = configuration["Stripe:PublicKey"];
-
-        var checkoutOrderResponse = new CheckoutOrderResponse()
-        {
-            SessionId = sessionId,
-            publicKey = dummyKey
-        };
+        
 
         //string url = $"https://checkout.stripe.com/pay/{sessionId}";
-        return checkoutOrderResponse;
+        return sessionId;
     }
 
         [HttpGet("success")]
@@ -145,8 +134,3 @@ public class Payment {
 
 }
 
-public class CheckoutOrderResponse
-{
-    public string SessionId { get; set; }
-    public string publicKey { get; set; }
-}
