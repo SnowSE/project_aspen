@@ -34,7 +34,7 @@ jobs:
 
       - name: Update secrets in .env
         run: |
-          cd src/combined/ClientApp
+          cd src
           touch dummyKey.txt
           echo "${{ secrets.MY_SECOND_DUMMY_SECRET }}" > dummyKey.txt
           cat .dummyKey.txt
