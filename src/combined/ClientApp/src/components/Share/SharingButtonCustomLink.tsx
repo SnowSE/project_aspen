@@ -1,6 +1,6 @@
 import { RWebShare } from "react-web-share";
 import { Button } from '@mui/material';
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { EventContext } from '../../App';
 import axios from "axios";
 
@@ -12,9 +12,7 @@ const SharingButtonCustomLink: React.FC = () => {
     const [linkIdentifier, setlinkIdentifier] = useState<string>("");
     const [linkShareUrl, setLinkShareUrl] = useState<string>(shareUrl);
     const [currentUserId, setCurrentUserId] = useState<number>(-1);
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-    };
+
 
     function generateGUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -22,8 +20,11 @@ const SharingButtonCustomLink: React.FC = () => {
             return v.toString(16);
         });
     }
-
-    async function getCurrentUser() {
+    
+    const getCurrentUser = useCallback(async () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
         try {
             const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
             if (currentUser.data.id != null) {
@@ -33,7 +34,9 @@ const SharingButtonCustomLink: React.FC = () => {
         catch (error) {
             console.log(error);
         };
-    }
+    }, [setCurrentUserId]);
+    
+
     async function postLink() {
         const tempLinkIdentifier = generateGUID()
         if (linkShareUrl === null || linkIdentifier === "") {
@@ -88,11 +91,11 @@ const SharingButtonCustomLink: React.FC = () => {
     }
 
     useEffect(() => {
-        getCurrentUser()
+        getCurrentUser();
         const tempLinkIdentifier = generateGUID()
         setlinkIdentifier(tempLinkIdentifier);
         setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
-    }, [shareUrl, currentUserId, setLinkShareUrl]);
+    }, [shareUrl, setLinkShareUrl, getCurrentUser]);
 
     return (
         <div>
