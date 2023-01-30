@@ -35,7 +35,7 @@ const SharingButtonCustomLink: React.FC = () => {
         };
     }
     async function postLink() {
-            const tempLinkIdentifier = generateGUID()
+        const tempLinkIdentifier = generateGUID()
         if (linkShareUrl === null || linkIdentifier === "") {
             setlinkIdentifier(tempLinkIdentifier);
             let shareUrlFinal = shareUrl + "/links/" + tempLinkIdentifier
@@ -59,18 +59,17 @@ const SharingButtonCustomLink: React.FC = () => {
         }
         else if (currentUserId !== -1) {
             try {
-                if (currentUserId !== -1) {
-                    await axios.post(`${process.env.PUBLIC_URL}/api/links`,
-                        {
-                            eventID: currentEvent.id,
-                            personID: currentUserId,
-                            date: new Date(),
-                            linkURL: linkShareUrl,
-                            linkIdentifer: linkIdentifier
-                        })
-                        .catch((error) => { console.log("There was an error", error.response.data); })
-                }
+                await axios.post(`${process.env.PUBLIC_URL}/api/links`,
+                    {
+                        eventID: currentEvent.id,
+                        personID: currentUserId,
+                        date: new Date(),
+                        linkURL: linkShareUrl,
+                        linkIdentifer: linkIdentifier
+                    })
+                    .catch((error) => { console.log("There was an error", error.response.data); })
             }
+
             catch (error) {
                 console.log(error);
             };
@@ -79,7 +78,7 @@ const SharingButtonCustomLink: React.FC = () => {
         else {
             setLinkShareUrl(shareUrl)
         }
-        
+
         setlinkIdentifier("");
     }
 
@@ -90,6 +89,7 @@ const SharingButtonCustomLink: React.FC = () => {
     }
 
     useEffect(() => {
+        getCurrentUser()
         const tempLinkIdentifier = generateGUID()
         setlinkIdentifier(tempLinkIdentifier);
         setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
