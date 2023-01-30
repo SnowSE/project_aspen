@@ -13,10 +13,11 @@ services:
       retries: 15
     volumes:
       - assets:/app/wwwroot/assets
+    command: ["/bin/sh", "-c", "export MY_SECOND_DUMMY_SECRET=$$(cat dummyKey.txt)"]
     environment:
       - SwaggerBasePath=aspen
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
-      - MY_SECOND_DUMMY_SECRET=${MY_SECOND_DUMMY_SECRET}
+      - MY_SECOND_DUMMY_SECRET="cat dummyKey.txt"
     networks:
       shared:
       api:
