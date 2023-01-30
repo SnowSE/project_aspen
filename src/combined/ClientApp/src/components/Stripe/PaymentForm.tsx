@@ -1,5 +1,5 @@
 import React, {  useContext, useEffect, useState } from 'react'
-import { useStripe } from '@stripe/react-stripe-js';
+//import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
@@ -8,7 +8,7 @@ import { EventContext } from '../../App';
 
 export default function PaymentForm() {
 
-    const stripe = useStripe()
+    //const stripe = useStripe()
 
     const { currentEvent, loading } = useContext(EventContext);
 
@@ -108,10 +108,14 @@ export default function PaymentForm() {
                 personName: userName, 
                 donationName: donationSubmitName, 
                 donationEmail: donationEmail, 
-                donationPhoneNumber: donationPhoneNumber
+                donationPhoneNumber: donationPhoneNumber,
+                donationDateTime: new Date()
             }).then((response) => {
                 const session = response.data.sessionId
-                stripe?.redirectToCheckout({ sessionId: session })
+                console.log(session)
+
+                console.log(response.data.publicKey)
+                //stripe?.redirectToCheckout({ sessionId: session })
             })
             .catch((error) => { console.log("There was an error", error.response.data) })
 
