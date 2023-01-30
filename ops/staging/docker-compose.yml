@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   api:
+    env_file:
+      - .env-gh
     container_name: staging_combined
     build:
       context: ../../src/
@@ -16,8 +18,7 @@ services:
     environment:
       - SwaggerBasePath=aspen
       - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
-      - MY_SECOND_DUMMY_SECRET="$$(cat dummyKey.txt)"
-      - SourceDirectorySecret="$$(cat srcFile.txt)"
+      - MY_SECOND_DUMMY_SECRET=${DUMMY_SECRET}
       
     networks:
       shared:
