@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -7,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLinkTable : Migration
+    public partial class LinkAddTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +22,8 @@ namespace Api.Migrations
                     EventID = table.Column<long>(type: "bigint", nullable: false),
                     PersonID = table.Column<long>(type: "bigint", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LinkURL = table.Column<string>(type: "text", nullable: false)
+                    LinkURL = table.Column<string>(type: "text", nullable: false),
+                    LinkIdentifer = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,6 +42,36 @@ namespace Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+
+
+            migrationBuilder.CreateTable(
+                name: "LinkRecords",
+                columns: table => new
+                {
+                    ID = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LinkID = table.Column<long>(type: "bigint", nullable: false),
+                    PersonID = table.Column<long>(type: "bigint", nullable: true),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LinkRecords", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_LinkRecords_Links_LinkID",
+                        column: x => x.LinkID,
+                        principalTable: "Links",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LinkRecords_LinkID",
+                table: "LinkRecords",
+                column: "LinkID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Links_EventID",
                 table: "Links",
@@ -49,13 +81,19 @@ namespace Api.Migrations
                 name: "IX_Links_PersonID",
                 table: "Links",
                 column: "PersonID");
+
         }
+
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "LinkRecords");
+
+            migrationBuilder.DropTable(
                 name: "Links");
+
         }
     }
 }

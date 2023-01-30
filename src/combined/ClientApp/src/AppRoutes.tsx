@@ -62,8 +62,6 @@ const AppRoutes = [
         path: `/LoggedInUser`,
         element: <LoggedInUser />
     },
-
-   
     {
         path: `/LoginButton`,
         element: <LoginButton />
@@ -77,7 +75,7 @@ const AppRoutes = [
         element:<SuccessfulDonation/>
     },
     {
-        path: `/link/:id`,
+        path: `/links/:linkIdentifer`,
         element:<LinkRedirect />
         }
 

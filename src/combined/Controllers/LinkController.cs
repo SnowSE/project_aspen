@@ -23,11 +23,16 @@ public class LinkController : ControllerBase
         this.log = log;
     }
 
-    //[HttpGet("/{linkId}")]
-    //public string Get()
-    //{
-    //    return "stronggothere";
-    //}
+    [HttpGet("{linkIdentifer}")]
+    public async Task<DtoLink> Get(string linkIdentifier)
+    {
+        
+        log.LogInformation($"Getting link {linkIdentifier}");
+        var link = await linkRepository.GetLinkByIdentiferAsync(linkIdentifier);
+        var results = mapper.Map<DtoLink>(link);
+        return results;
+    }
+
 
 
     [HttpPost]

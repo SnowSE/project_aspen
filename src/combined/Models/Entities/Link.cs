@@ -10,5 +10,6 @@ public class Link
     public long PersonID { get; init; }
     public DateTime Date { get; init; }
     public string LinkURL { get; init; }
+    public string LinkIdentifer { get; init; }
 }
 

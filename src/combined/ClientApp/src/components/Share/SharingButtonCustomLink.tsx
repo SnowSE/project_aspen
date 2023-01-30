@@ -5,47 +5,65 @@ import { EventContext } from '../../App';
 import axios from "axios";
 
 
+
 const SharingButtonCustomLink: React.FC = () => {
-    const BaseUrl = process.env.PUBLIC_URL
     const shareUrl = window.location.href;
-    const [urlValid, setUrlValid] = useState<boolean>(false);
     const { currentEvent } = useContext(EventContext);
-    const [link, setLink] = useState<string>(shareUrl);
+    const [linkIdentifier, setlinkIdentifier] = useState<string>("");
+    const [linkShareUrl, setLinkShareUrl] = useState<string>(shareUrl);
+    const [currentUserId, setCurrentUserId] = useState<number>(-1);
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
 
-    async function buildLink() {
-        try {
-            const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
-            if (currentUser.data.id !== null) {
-                let responseID = -1;
-                await axios.post(`${process.env.PUBLIC_URL}/api/links`,
-                    {
-                        Id :new Guid(),
-                        EventId: currentEvent.id,
-                        PersonID: currentUser.data.id,
-                        Date: new Date(),
-                        LinkURL: shareUrl
-                    }).then((response) => {
-                        responseID = response.data.id
-                    })
-                    .catch((error) => { console.log("There was an error", error.response.data); });
-                setLink(`${shareUrl} /links/ ${responseID}`);
-            }
-        } catch (error) {
-            console.log(`$Error on building link, error:${error}`);
-        }
+    function generateGUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (Math.random() * 16) | 0, v = c === 'x' ? r : ((r & 0x3) | 0x8);
+            return v.toString(16);
+        });
     }
 
-    const handleClick = async () => {
-        await buildLink();
-        setUrlValid(true);
+    async function getCurrentUser() {
+        try {
+            const currentUser = await axios.get(process.env.PUBLIC_URL + "/api/User", config);
+            if (currentUser.data.id != null) {
+                setCurrentUserId(currentUser.data.id);
+            };
+        }
+        catch (error) {
+            console.log(error);
+        };
+    }
+    async function postLink() {
+        try {
+            if (currentUserId !== -1) {
+                await axios.post(`${process.env.PUBLIC_URL}/api/links`,
+                    {
+                        eventID: currentEvent.id,
+                        personID: currentUserId,
+                        date: new Date(),
+                        linkURL: linkShareUrl,
+                        linkIdentifer: linkIdentifier
+                    })
+                    .catch((error) => { console.log("There was an error", error.response.data); })             
+            }
+        }
+        catch (error) {
+            console.log(error);
+        };
+    }
+
+        const handleClick = async () => {
+            await getCurrentUser();
+            await postLink();
     }
 
     useEffect(() => {
-        buildLink();
-    }, [urlValid]);
+        const tempLinkIdentifier = generateGUID()
+        setlinkIdentifier(tempLinkIdentifier);
+        setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
+        //getCurrentUser();
+    }, [shareUrl, currentUserId]);
 
     return (
         <div>
@@ -53,14 +71,14 @@ const SharingButtonCustomLink: React.FC = () => {
                 data-testid="shareModal"
                 data={{
                     text: "",
-                    url: link,
+                    url: linkShareUrl,
                     title: "Name of Event Here"
                 }}
                 onClick={handleClick}
             >
                 <Button variant='contained' className="ShareButton">SHARE NOW</Button>
             </RWebShare>
-            
+
         </div>
     );
 }

@@ -4,7 +4,6 @@ using System.Text.Json;
 using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,11 +12,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20230125144007_AddLinkTable")]
-    partial class AddLinkTable
+    partial class AspenContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,36 +22,6 @@ namespace Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Api.DbModels.DBLink", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("EventID")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("LinkURL")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("PersonID")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("EventID");
-
-                    b.HasIndex("PersonID");
-
-                    b.ToTable("Links");
-                });
 
             modelBuilder.Entity("Api.DbModels.DbDonation", b =>
                 {
@@ -134,6 +101,64 @@ namespace Api.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLink", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EventID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LinkIdentifer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("PersonID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EventID");
+
+                    b.HasIndex("PersonID");
+
+                    b.ToTable("Links");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLinkRecord", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("LinkID")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PersonID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LinkID");
+
+                    b.ToTable("LinkRecords");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPageData", b =>
@@ -284,25 +309,6 @@ namespace Api.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Api.DbModels.DBLink", b =>
-                {
-                    b.HasOne("Api.DbModels.DbEvent", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.DbModels.DbPerson", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Person");
-                });
-
             modelBuilder.Entity("Api.DbModels.DbDonation", b =>
                 {
                     b.HasOne("Api.DbModels.DbEvent", "Event")
@@ -324,6 +330,36 @@ namespace Api.Migrations
                     b.Navigation("Person");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLink", b =>
+                {
+                    b.HasOne("Api.DbModels.DbEvent", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbPerson", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLinkRecord", b =>
+                {
+                    b.HasOne("Api.DbModels.DbLink", "Link")
+                        .WithMany()
+                        .HasForeignKey("LinkID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Link");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPersonRegistration", b =>

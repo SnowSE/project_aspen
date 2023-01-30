@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20230126214921_AddLinkRecordTable")]
-    partial class AddLinkRecordTable
+    [Migration("20230129215501_LinkAddTable")]
+    partial class LinkAddTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,6 +119,10 @@ namespace Api.Migrations
 
                     b.Property<long>("EventID")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("LinkIdentifer")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("LinkURL")
                         .IsRequired()

@@ -4,11 +4,13 @@ export default class Link {
     personID?: number;
     date: Date;
     linkUrl: string;
+    linkIdentifer: string;
 
     constructor(
         eventID: number,
         date: Date,
         linkUrl: string,
+        linkIdentifer: string,
         personID?: number,
         id?: number
 
@@ -17,6 +19,7 @@ export default class Link {
         this.personID = personID ?? undefined;
         this.date = date ?? new Date();
         this.linkUrl = linkUrl;
+        this.linkIdentifer = linkIdentifer;
         this.id = undefined;
     }
 }
