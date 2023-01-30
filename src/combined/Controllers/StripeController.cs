@@ -38,7 +38,7 @@ namespace Api.Controllers;
         //client_URL = referer[0];
 
 
-        var key = Environment.GetEnvironmentVariable("testKey")?? "no secret key";
+        var dummyKey = Environment.GetEnvironmentVariable("GithubDummyKey") ?? "no secret key";
 
 
         //var sessionId = await CheckOut(payment);
@@ -47,7 +47,7 @@ namespace Api.Controllers;
         var checkoutOrderResponse = new CheckoutOrderResponse()
         {
             SessionId = "mysessionID",
-            publicKey = key
+            publicKey = dummyKey
         };
 
         //string url = $"https://checkout.stripe.com/pay/{sessionId}";
