@@ -13,9 +13,8 @@ services:
       retries: 15
     volumes:
       - assets:/app/wwwroot/assets
-    command: bash -c "MY_SECOND_DUMMY_SECRET=$(cat dummyKey.txt)"
     environment:
-      MY_SECOND_DUMMY_SECRET: ${MY_SECOND_DUMMY_SECRET}
+      MY_SECOND_DUMMY_SECRET: "$(cat dummyKey.txt)"
       # - SwaggerBasePath=aspen
       # - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
     
