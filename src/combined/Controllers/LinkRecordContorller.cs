@@ -7,7 +7,7 @@ public class LinkRecordController : ControllerBase
 {
     private readonly ILinkRecordRepository linkRecordRepository;
     private readonly IMapper mapper;
-    private readonly ILogger<LinkController> log;
+    private readonly ILogger<LinkRecordController> log;
 
     private string getModelStateErrorMessage() =>
         string.Join(" | ",
@@ -16,7 +16,7 @@ public class LinkRecordController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public LinkRecordController(ILinkRecordRepository linkRecordRepository, IMapper mapper, ILogger<LinkController> log)
+    public LinkRecordController(ILinkRecordRepository linkRecordRepository, IMapper mapper, ILogger<LinkRecordController> log)
     {
         this.linkRecordRepository = linkRecordRepository;
         this.mapper = mapper;

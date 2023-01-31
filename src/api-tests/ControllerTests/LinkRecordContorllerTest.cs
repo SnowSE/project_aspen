@@ -9,14 +9,16 @@ using Tests.Steps;
 namespace Api.Tests.Controllers
 {
     [TestFixture]
-    public class LinkControllerTests
+    public class LinkRecordControllerTests
     {
+
         private EventController eventController;
         private DtoEvent testEvent;
         private LinkController linkController;
         private DtoLink testLinkLoggedInUser;
-        private DtoLink testGetLink;
         private DtoPerson personOne;
+        private LinkRecordController linkRecordController;
+        private DtoLinkRecord dtoLinkRecord;
 
         public static LinkController GetLinkController()
         {
@@ -25,7 +27,15 @@ namespace Api.Tests.Controllers
             var loggerMock = new Mock<ILogger<LinkController>>();
             return new LinkController(linkRepository, TestHelpers.AspenMapper, loggerMock.Object);
         }
-        
+
+        public static LinkRecordController GetLinkRecordController()
+        {
+            var context = TestHelpers.CreateContext();
+            var linkRecordRepository = new LinkRecordRepository(context, TestHelpers.AspenMapper);
+            var loggerMock = new Mock<ILogger<LinkRecordController>>();
+            return new LinkRecordController(linkRecordRepository, TestHelpers.AspenMapper, loggerMock.Object);
+        }
+
         [SetUp]
         public async Task SetUp()
         {
@@ -39,11 +49,12 @@ namespace Api.Tests.Controllers
                 Title = "Sign Here",
                 MainImage = "july4.jpg"
             })).Value;
-            
+
             //Setup Person
             var personController = PersonControllerTest.GetPersonController();
             personOne = (await personController.Add(new DtoPerson { Name = "Team 1 Owner" })).Value;
-            
+
+            //Setup Link
             linkController = GetLinkController();
             testLinkLoggedInUser = (await linkController.Add(new DtoLink
             {
@@ -53,27 +64,25 @@ namespace Api.Tests.Controllers
                 LinkURL = "http://google.com",
                 LinkIdentifer = "77d475fd-7107-4e1a-9219-bde7e0e5d007"
             })).Value;
+
+            //Setup LinkRecord
+            linkRecordController = GetLinkRecordController();
+            dtoLinkRecord = (await linkRecordController.AddAsync(new DtoLinkRecord
+            {
+                LinkID = testLinkLoggedInUser.ID,
+                PersonID = personOne.ID,
+                Date = new DateTime(1775, 7, 2).SetKindUtc(),
+            })).Value;
         }
 
         [Test]
-        public async Task CanCreateLinkLoggedInUser()
+        public async Task CanAddLinkRecord()
         {
-            testLinkLoggedInUser.ID.Should().NotBe(0);
-            testLinkLoggedInUser.EventID.Should().Be(1);
-            testLinkLoggedInUser.LinkURL.Should().Be("http://google.com");
-            testLinkLoggedInUser.LinkIdentifer.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
+            dtoLinkRecord.ID.Should().NotBe(0);
+            dtoLinkRecord.LinkID.Should().Be(testLinkLoggedInUser.ID);
+            dtoLinkRecord.PersonID.Should().Be(personOne.ID);
+            dtoLinkRecord.Date.Should().Be(new DateTime(1775, 7, 2).SetKindUtc());
+
         }
-
-        [Test]
-        public async Task CanGetLinkFromIdentifier()
-        {
-
-            testGetLink = (await linkController.Get("77d475fd-7107-4e1a-9219-bde7e0e5d007"));
-            testGetLink.ID.Should().Be(1);
-            testGetLink.EventID.Should().Be(1);
-            testGetLink.LinkURL.Should().Be("http://google.com");
-            testGetLink.LinkIdentifer.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
-        }
-
     }
 }
