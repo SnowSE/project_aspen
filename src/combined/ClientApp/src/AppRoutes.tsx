@@ -13,6 +13,7 @@ import LoginButton from "./components/LoginButton";
 import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
 import FailedPaymentPage from "./Pages/Donation/FailedPaymentPage";
+import LinkRedirect from "./components/LinkRedirect/LinkRedirect";
 
 const AppRoutes = [
     {
@@ -61,9 +62,7 @@ const AppRoutes = [
     {
         path: `/LoggedInUser`,
         element: <LoggedInUser />
-    },
-
-   
+    },   
     {
         path: `/LoginButton`,
         element: <LoginButton />
@@ -79,7 +78,12 @@ const AppRoutes = [
     {
         path: `/failedpayment`,
         element: <FailedPaymentPage />
+    },
+    {
+        path: `/links/:linkIdentifer`,
+        element: <LinkRedirect />
     }
+
 ];
 
 export default AppRoutes;

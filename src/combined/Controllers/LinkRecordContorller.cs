@@ -23,13 +23,6 @@ public class LinkRecordController : ControllerBase
         this.log = log;
     }
 
-    //[HttpGet("/{linkId}")]
-    //public string Get()
-    //{
-    //    return "gothere";
-    //}
-
-
     [HttpPost]
     public async Task<ActionResult<DtoLinkRecord>> AddAsync([FromBody] DtoLinkRecord dtoLinkRecord)
     {
