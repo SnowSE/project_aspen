@@ -10,7 +10,6 @@ const CreateTeamPage = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
-    
     useEffect(() => {
         
         async function currentUser() {
