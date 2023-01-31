@@ -62,8 +62,6 @@ const AppRoutes = [
         path: `/LoggedInUser`,
         element: <LoggedInUser />
     },
-
-   
     {
         path: `/LoginButton`,
         element: <LoginButton />
@@ -79,7 +77,7 @@ const AppRoutes = [
     {
         path: `/failedpayment`,
         element: <FailedPaymentPage />
-    }
+    } 
 ];
 
 export default AppRoutes;
