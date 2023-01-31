@@ -18,6 +18,5 @@ describe('App.tsx tests', () => {
         var temp = expect(EventContext.Provider).toBeInTheDocument
         console.log("App.tsx:" + temp)
     });
-    
 
 });
