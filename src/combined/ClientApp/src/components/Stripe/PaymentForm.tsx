@@ -131,8 +131,8 @@ export default function PaymentForm() {
                 <Button onClick={() => updateMealsTextField(200)}>200 Meals</Button>
                 <Button onClick={() => updateMealsTextField(300)}>300 Meals</Button>
                 <Button onClick={() => updateMealsTextField(800)}>800 Meals</Button>
-                <Button onClick={() => updateMealsTextField(1000)}>1000 Meals</Button>
-                <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
+                <Button onClick={() => updateMealsTextField(1000)}>1,000 Meals</Button>
+                <Button onClick={() => updateMealsTextField(2000)}>2,000 Meals</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
                 
