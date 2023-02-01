@@ -27,9 +27,10 @@ const CreateEventPage = () => {
         currentUser()
     }, [])
 
+    
     return (
         <div>
-            {isAdmin ? <CreateEventForm/>: <h1 data-testid = "NotAdminResult">No</h1>}
+            {isAdmin ? <CreateEventForm/>: <h1 data-testid = "NotAdminResult">No</h1> }
         </div>
     );
 }
