@@ -59,48 +59,50 @@ namespace Api.Controllers;
 
 
 
-            var sessionId = await CheckOut(payment);
-            var publicKey = configuration["Stripe:PublicKey"];
+        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{"person"}/{"personTeam"}/{"bob"}");
+        
 
-            var checkoutOrderResponse = new CheckoutOrderResponse()
-            {
-                SessionId = sessionId,
-                publicKey = publicKey
-            };
 
-            //string url = $"https://checkout.stripe.com/pay/{sessionId}";
-            return checkoutOrderResponse;
-        }
+    }
+
+
+    [HttpPost]
+    public async Task<ActionResult<string>> payment([FromBody] Payment payment)
+    {
+        //var referer = Request.Headers.Referer;
+        //client_URL = referer[0];
+        var sessionId = await CheckOut(payment);
+        
+
+        //string url = $"https://checkout.stripe.com/pay/{sessionId}";
+        return sessionId;
+    }
 
         [HttpGet("success")]
         // Automatic query parameter handling from ASP.NET.
         // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
-        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string personName, string teamName, decimal amount, string sessionId)
+        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime)
         {
             var dateTime = DateTime.UtcNow;
             var session = new SessionService();
 
-            var s = session.Get(sessionId);
-            var paymentIntentId = s.PaymentIntentId;
-            var p = new PaymentIntentService();
-            var paymentIntent = p.Get(paymentIntentId);
-            var lastError = paymentIntent.LastPaymentError;
+        var s = session.Get(sessionId);
+        var paymentIntentId = s.PaymentIntentId;
+
+        var newDonation = new Donation {
+            EventID=eventId,
+            TeamID=teamId,      
+            PersonID=personId,
+            Amount=amount/100,
+            Date = dateTime,
+            TransactionNumber = Guid.NewGuid()
+        };
 
 
-            var newDonation = new Donation {
-                EventID=eventId,
-                TeamID=teamId,      
-                PersonID=personId,
-                Amount=amount/100,
-                Date = dateTime,
-                TransactionNumber = Guid.NewGuid()
-            };
+        await donationRepository.AddAsync(newDonation);
 
-
-            await donationRepository.AddAsync(newDonation);
-
-            return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
-        }
+        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+    }
 
         [HttpGet("failure")]
         public ActionResult CheckoutFailure(string sessionId)
@@ -129,9 +131,8 @@ namespace Api.Controllers;
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:44478/aspen/new/api/stripe/failure?sessionId=" +"{CHECKOUT_SESSION_ID}",  // Checkout cancelled.
-                
+                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 
             {
@@ -161,27 +162,18 @@ namespace Api.Controllers;
                 Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
             };
 
-        try
-        {
-
-            var service = new SessionService();
-            var session = await service.CreateAsync(options);
-            return session.Id;
-        }
-        catch(StripeException e)
-        {
-                
-        }
-        return "error";
-        }
-
-
-
-
-
-
-
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+        return session.Id;
     }
+
+
+
+
+
+
+
+}
 
 
 public class Payment {
@@ -195,11 +187,7 @@ public class Payment {
     public string donationName { get; set; }
     public string donationEmail { get; set; }
     public string donationPhoneNumber { get; set; }
+    public string donationDateTime { get; set; }
 
 }
 
-public class CheckoutOrderResponse
-{
-    public string SessionId { get; set; }
-    public string publicKey { get; set; }
-}

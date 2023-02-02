@@ -13,6 +13,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2.4.0
 
+      
       - name: build and test
         run: |
           cd ops/testing
@@ -33,21 +34,15 @@ jobs:
 
       - name: Update secrets in .env
         run: |
-          cd src/combined/ClientApp
+          cd ops/staging
           touch .env
-          echo "${{ secrets.MY_DUMMY_SECRET }}" > .env
-          echo "${{ secrets.MY_SECOND_DUMMY_SECRET }}" >> .env
-          cat .env
-
-      - name: Update secrets in ClientApp/appsettings.json
-        run: |
-          cd src/combined/
-          touch .env
-          echo "${{ secrets.MY_DUMMY_SECRET }}" > .env
+          echo "DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
+          echo "STRIPE_SECRET_KEY=${{secrets.STRIPE__SECRETKEY}}" >> .env
+          
           cat .env
 
       - name: update staging containers
         run: |
           cd ops/staging
           DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --parallel --pull
-          docker-compose up -d
+          docker-compose up -d 

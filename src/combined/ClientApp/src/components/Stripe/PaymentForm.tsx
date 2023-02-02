@@ -97,7 +97,7 @@ export default function PaymentForm() {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
-        await axios.post("https://localhost:44478/aspen/new/api/stripe",
+        await axios.post("https://engineering.snow.edu/aspen/new/api/stripe",
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",
@@ -108,19 +108,14 @@ export default function PaymentForm() {
                 personName: userName, 
                 donationName: donationSubmitName, 
                 donationEmail: donationEmail, 
-                donationPhoneNumber: donationPhoneNumber
-            }).then(async (response) => {
-                const session = response.data.sessionId
-                try {
-
-                    stripe?.redirectToCheckout({ sessionId: session })
-                }
-                catch(e){
-                    console.log("e")
-                    await axios.post("https://localhost:44478/aspen/new/api/stripe/failure?sessionId=Thisisanerror")
-                }
+                donationPhoneNumber: donationPhoneNumber,
+                donationDateTime: new Date()
+            }).then((response) => {
+                const session = response.data
+                console.log(session)
+                stripe?.redirectToCheckout({ sessionId: session })
             })
-            .catch((error) => { console.log("There was an error", error.response.data) })
+            .catch((error) => { console.log("There was an error", error) })
 
 
     }
@@ -174,6 +169,7 @@ export default function PaymentForm() {
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
+                        defaultValue={localStorage.getItem("LoggedInUser")}
                         onChange={(e)=> setDonationSubmitName(e.target.value)}
                     />
                 </Box>
@@ -192,6 +188,7 @@ export default function PaymentForm() {
                             inputProps: { min: 0 }
                         }}
                         variant="filled"
+                        defaultValue={localStorage.getItem("LoggedInEmail")}
                         onChange={(e) => {setDonationEmail(e.target.value)}}
                     />
                 </Box>
