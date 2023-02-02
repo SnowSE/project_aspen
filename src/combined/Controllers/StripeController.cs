@@ -11,7 +11,7 @@ namespace Api.Controllers;
         private readonly IConfiguration configuration;
         private readonly IDonationRepository donationRepository;
         private static string client_URL = "";
-        const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
+        public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
         public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
         {
             this.configuration = configuration;
@@ -51,19 +51,7 @@ namespace Api.Controllers;
             }
         }
 
-    [HttpPost]
-        public async Task<ActionResult<CheckoutOrderResponse>> payment([FromBody] Payment payment)
-        {
-            //var referer = Request.Headers.Referer;
-            //client_URL = referer[0];
 
-
-
-        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{"person"}/{"personTeam"}/{"bob"}");
-        
-
-
-    }
 
 
     [HttpPost]
