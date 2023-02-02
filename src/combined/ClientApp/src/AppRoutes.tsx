@@ -12,6 +12,7 @@ import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
 import LoginButton from "./components/LoginButton";
 import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
+import CreateTeamWysiwyg from "./Pages/CreateTeam/CreateTeamWysiwyg";
 
 const AppRoutes = [
     {
@@ -74,6 +75,10 @@ const AppRoutes = [
     {
         path: `/successfuldonation/:personName/:teamName/:transactionId`, 
         element:<SuccessfulDonation/>
+    },
+    {
+        path: `/CreateTeamWysiwyg`,
+        element: <CreateTeamWysiwyg />
     }
 ];
 

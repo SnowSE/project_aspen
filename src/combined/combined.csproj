@@ -66,10 +66,12 @@
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\App.spec.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\Homepage.spec.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\Stripe\PaymentForm.spec.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\Pages\CreateTeam\CreateTeamWysiwyg.tsx" />
   </ItemGroup>
 
   <ItemGroup>
