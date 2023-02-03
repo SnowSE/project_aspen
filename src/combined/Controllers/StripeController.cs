@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
+using combined.Models.Entities;
+using Newtonsoft.Json;
 
 namespace Api.Controllers;
 
@@ -22,27 +24,33 @@ namespace Api.Controllers;
         public async Task<IActionResult> Index()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            try
-            {
-                var stripeEvent = EventUtility.ConstructEvent(json,
-                    Request.Headers["Stripe-Signature"], endpointSecret);
+            var responseObject = JsonConvert.DeserializeObject<Root>(json);
+
+        try
+        {
+            var stripeEvent = EventUtility.ConstructEvent(json,
+                Request.Headers["Stripe-Signature"], endpointSecret);
 
                 // Handle the event
-                if (stripeEvent.Type == Events.CheckoutSessionAsyncPaymentFailed)
-                {
-                    Console.WriteLine("error");
-                }
+            if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
+            {
+                Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
+
+            }
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
             {
                 Console.WriteLine("success");
 
             }
             // ... handle other event types
+            if(stripeEvent.Type == Events.ChargeFailed)
+            {
+                Console.WriteLine("Charge Failed");
+            }
             else
-                {
-                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
-                }
-
+            {
+                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+            }
                 return Ok();
             }
             catch (StripeException e)
@@ -89,7 +97,7 @@ namespace Api.Controllers;
 
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+        return Redirect($"https://localhost:44478/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
         [HttpGet("failure")]
@@ -101,10 +109,8 @@ namespace Api.Controllers;
             var p = new PaymentIntentService();
             var paymentIntent = p.Get(paymentIntentId);
 
-        return Redirect($"https://engineering.snow.edu/aspen/new/faileddonation");
-
-
-    }
+            return Redirect($"https://engineering.snow.edu/aspen/new/faileddonation");
+        }
 
 
 
@@ -119,7 +125,7 @@ namespace Api.Controllers;
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
+                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
                 CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 
