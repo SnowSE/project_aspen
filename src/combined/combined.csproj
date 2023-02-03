@@ -79,6 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\test\" />
     <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 

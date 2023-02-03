@@ -84,7 +84,7 @@
     "prestart": "node aspnetcore-https && node aspnetcore-react",
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom ",
+    "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom --env=./test/custom-test-env.js",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"
   },
