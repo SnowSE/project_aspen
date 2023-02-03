@@ -65,18 +65,11 @@ namespace Api.Controllers;
     [HttpPost]
     public async Task<ActionResult<string>> payment([FromBody] Payment payment)
     {
-        //var referer = Request.Headers.Referer;
-        //client_URL = referer[0];
         var sessionId = await CheckOut(payment);
-        
-
-        //string url = $"https://checkout.stripe.com/pay/{sessionId}";
         return sessionId;
     }
 
         [HttpGet("success")]
-        // Automatic query parameter handling from ASP.NET.
-        // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
         public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime)
         {
             var dateTime = DateTime.UtcNow;
@@ -97,7 +90,7 @@ namespace Api.Controllers;
 
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"https://localhost:44478/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+        return Redirect($"https://engineering.snow.edu/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
         [HttpGet("failure")]
@@ -125,7 +118,7 @@ namespace Api.Controllers;
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
+                SuccessUrl = $"https://engineering.snow.edu/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&teamName={payment.teamName}&&sessionId="+"{CHECKOUT_SESSION_ID}",
                 CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 
