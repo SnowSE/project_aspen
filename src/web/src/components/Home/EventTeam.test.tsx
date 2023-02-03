@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router} from "react-router-dom";
 import EventTeam from "./EventTeam";
 
+
+
 describe("Event Team tests", ()=>{
     test('Checks for join team button', () => {
         render(
