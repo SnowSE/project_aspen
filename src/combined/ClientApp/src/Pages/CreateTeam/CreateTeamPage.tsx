@@ -6,7 +6,7 @@ import { authService } from "../../services/authService";
 const ASPEN_API = process.env.PUBLIC_URL + "/api"
 console.log("ASPEN_API value is", ASPEN_API)
 
-const CreateTeamPage = () => {
+const CreateTeamPage = ({ description }: any) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 

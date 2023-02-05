@@ -71,7 +71,7 @@
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
-    <TypeScriptCompile Remove="ClientApp\src\Pages\CreateTeam\CreateTeamWysiwyg.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\Pages\CreateTeam\MyEditor.tsx" />
   </ItemGroup>
 
   <ItemGroup>

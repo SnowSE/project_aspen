@@ -7,7 +7,8 @@ import App from "./App";
 //import "./custom.scss";
 import "bootstrap/dist/js/bootstrap";
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot( document.getElementById("root")!);
+
 root.render(<App />);
 
 // If you want to start measuring performance in your app, pass a function
