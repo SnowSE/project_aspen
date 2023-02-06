@@ -32,7 +32,7 @@ const SharingButtonCustomLink: React.FC = () => {
             };
         }
         catch (error) {
-            console.log(error);
+
         };
     }, [setCurrentUserId]);
     
@@ -53,11 +53,10 @@ const SharingButtonCustomLink: React.FC = () => {
                             linkURL: shareUrlFinal,
                             linkIdentifer: tempLinkIdentifier
                         })
-                        .catch((error) => { console.log("There was an error", error.response.data); })
                 }
             }
-            catch (error) {
-                console.log(error);
+            catch (error ) {
+
             };
         }
         else if (currentUserId !== -1) {
@@ -70,10 +69,9 @@ const SharingButtonCustomLink: React.FC = () => {
                         linkURL: linkShareUrl,
                         linkIdentifer: linkIdentifier
                     })
-                    .catch((error) => { console.log("There was an error", error.response.data); })
             }
             catch (error) {
-                console.log(error);
+
             };
 
         }
