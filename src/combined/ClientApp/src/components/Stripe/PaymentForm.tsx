@@ -18,7 +18,7 @@ const PaymentForm: React.FC<Props> = (props) => {
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
-    const [linkGuid, setLinkGuid] = useState<string | undefined>(props.personGUID)
+    const linkGuid= props.personGUID
     const [userId, setUserId] = useState<string | number | null | undefined>(null);
     const [userName, setUserName] = useState<string>('')
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
@@ -79,7 +79,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         }
         serviceCalls()
 
-    }, [teamId, loading, BaseUrl])
+    }, [teamId, loading, BaseUrl, linkGuid, userId])
 
     useEffect(() => {
         console.log("here in second use effect")
