@@ -12,7 +12,7 @@ interface Props {
 const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
-    //const { personGUID } = props.personGUID ? props : { personGUID: "" }
+    const personGUID  = props.personGUID ? props : { personGUID: "" }
 
     const { currentEvent, loading } = useContext(EventContext);
 
@@ -42,41 +42,41 @@ const PaymentForm: React.FC<Props> = (props) => {
                 setUserName(response?.data?.name)
             }).catch((error)=> {
                 setUserName("Anonymous")
-                //if (personGUID !== "" && userId === null) {
-                //    setUserId(personGUID);
-                //}
+                if (personGUID !== "" && userId === null) {
+                    setUserId(personGUID);
+                }
             })
         }
 
 
-        const getTeam = async () => {
-            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
-                response.data.forEach((registration: any) => {
-                    if (registration.ownerID === userId) {
+        //const getTeam = async () => {
+        //    await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
+        //        response.data.forEach((registration: any) => {
+        //            if (registration.ownerID === userId) {
 
-                        setTeamId(registration.teamID)
-                    }
+        //                setTeamId(registration.teamID)
+        //            }
 
-                })  
-            }).catch((error) => { 
-             })
-        }
+        //        })  
+        //    }).catch((error) => { 
+        //     })
+        //}
 
-        const getTeamName = async () => {
-            await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
-                setTeamName(response.data.name)
-            }).catch((error)=> {
-                setTeamName("Anonymous")
-            })
-        }
+        //const getTeamName = async () => {
+        //    await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
+        //        setTeamName(response.data.name)
+        //    }).catch((error)=> {
+        //        setTeamName("Anonymous")
+        //    })
+        //}
 
-        const serviceCalls = async () => {
-            await getUser()
-            await getTeam()
-            await getTeamName()
-        }
+        //const serviceCalls = async () => {
+        //    await getUser()
+        //    await getTeam()
+        //    await getTeamName()
+        //}
 
-        serviceCalls()
+        //serviceCalls()
 
     }, [teamId, userId, loading, BaseUrl])
 

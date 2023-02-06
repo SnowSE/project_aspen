@@ -15,7 +15,7 @@ interface Props {
 
 export default function DonationPage(props: Props) {
     const { state } = useLocation();
-    const personGUID = state.GUID.personGUID || '';
+    const personGUID = state?.GUID.personGUID || '';
     return (
         <Box >
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
