@@ -6,11 +6,16 @@ const PUBLIC_KEY = "pk_test_51M9GZVDsmOjlRQxkc7okZtT2SmNCn8ocitqt5hyHKKDU5WrjQUP
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY)
 
-export default function StripeContainer() {
+interface Props {
+    personGUID: string;
+}
+
+export default function StripeContainer(props: Props) {
+    const { personGUID } = props.personGUID ? props : { personGUID: "" }
+
     return (
-        <Elements stripe = {stripeTestPromise}>
-            <PaymentForm/>
+        <Elements stripe={stripeTestPromise}>
+            <PaymentForm personGUID={personGUID} />
         </Elements>
     );
 }
-

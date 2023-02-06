@@ -1,7 +1,7 @@
 import {  render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
-import { DonationPage } from './DonationPage';
+import DonationPage from './DonationPage';
 
 const mockedUsedNavigate = jest.fn();
 

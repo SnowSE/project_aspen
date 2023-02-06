@@ -5,17 +5,21 @@ import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
 
+interface Props {
+    personGUID?: string;
+}
 
-export default function PaymentForm() {
+const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
+    //const { personGUID } = props.personGUID ? props : { personGUID: "" }
 
     const { currentEvent, loading } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
-    const [userId, setUserId] = useState(null)
+    const [userId, setUserId] = useState<string | number | null | undefined>(null);
     const [userName, setUserName] = useState<string>('')
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
@@ -24,6 +28,7 @@ export default function PaymentForm() {
     const [donationPhoneNumber, setDonationPhoneNumber] = useState<string>('')
 
     const BaseUrl = process.env.PUBLIC_URL
+
     useEffect(() => {
 
         const config = {
@@ -37,6 +42,9 @@ export default function PaymentForm() {
                 setUserName(response?.data?.name)
             }).catch((error)=> {
                 setUserName("Anonymous")
+                //if (personGUID !== "" && userId === null) {
+                //    setUserId(personGUID);
+                //}
             })
         }
 
@@ -233,5 +241,7 @@ export default function PaymentForm() {
         </>
     );
 }
+
+export default PaymentForm;
 
 

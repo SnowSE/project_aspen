@@ -73,6 +73,7 @@ const LinkRedirect: React.FC = () => {
         const url: string = window.location.pathname;
         const homeUrl: string = process.env.PUBLIC_URL || "";
         const newUrl: string = url.split(homeUrl)[1];
+        const personGUID: string = newUrl.split("/")[newUrl.split("/").length - 1];
         let url2 = newUrl.split("/");
         url2.pop();
         url2.pop();
@@ -81,9 +82,9 @@ const LinkRedirect: React.FC = () => {
         if (url2.length > 1) {
             finalUrl = url2.join("/");
         }
-        if (url.includes("donation")) {
+        if (url.includes("Donate" ||"donate")) {
             // ToDo Donation Logic
-            navigate(finalUrl);
+            navigate(finalUrl, { state: { GUID: { personGUID } } });
         } else {
             navigate(finalUrl);
         }
