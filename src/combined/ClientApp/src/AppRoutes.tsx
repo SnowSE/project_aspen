@@ -50,7 +50,7 @@ const AppRoutes = [
          element: <TeamsListPage />
     },
     {
-        path:'/createEvent', 
+        path:`/createEvent`, 
         element: <CreateEventPage/>
     },
 
