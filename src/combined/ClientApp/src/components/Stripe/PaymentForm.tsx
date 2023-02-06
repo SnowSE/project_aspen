@@ -12,13 +12,13 @@ interface Props {
 const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
-    const personGUID  = props.personGUID;
 
     const { currentEvent, loading } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
+    const [linkGuid, setLinkGuid] = useState<string | undefined>(props.personGUID)
     const [userId, setUserId] = useState<string | number | null | undefined>(null);
     const [userName, setUserName] = useState<string>('')
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
@@ -66,8 +66,10 @@ const PaymentForm: React.FC<Props> = (props) => {
 
         const serviceCalls = async () => {
             await getUser()
-            if (personGUID !== "" && userId === null) {
-                setUserId(personGUID);
+            if (linkGuid !== "" && userId === null) {
+                console.log(linkGuid)
+                setTeamName("Anonymous")
+
             }
             else {
                 await getTeam()
@@ -104,7 +106,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
-        await axios.post("https://engineering.snow.edu/aspen/new/api/stripe",
+        await axios.post("https://localhost:44478/aspen/new/api/stripe",
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",
@@ -116,7 +118,8 @@ const PaymentForm: React.FC<Props> = (props) => {
                 donationName: donationSubmitName,
                 donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
-                donationDateTime: new Date()
+                donationDateTime: new Date(), 
+                linkGuid: linkGuid
             }).then((response) => {
                 const session = response.data
                 console.log(session)

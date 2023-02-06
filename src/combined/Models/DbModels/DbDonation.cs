@@ -14,4 +14,5 @@ public record DbDonation
     public bool IsPledge { get; init; } = false;
     public Guid TransactionNumber { get; init; }
     public string? AuthorizationNumber { get; init; }
+    public string? LinkGuid { get; init; }
 }
