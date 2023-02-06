@@ -12,7 +12,7 @@ interface Props {
 const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
-    const personGUID  = props.personGUID ? props : { personGUID: "" }
+    const personGUID  = props.personGUID;
 
     const { currentEvent, loading } = useContext(EventContext);
 
@@ -35,65 +35,64 @@ const PaymentForm: React.FC<Props> = (props) => {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
 
-
         const getUser = async () => {
             await axios.get(BaseUrl + '/api/user', config).then((response) => {
                 setUserId(response?.data?.id)
                 setUserName(response?.data?.name)
-            }).catch((error)=> {
+            }).catch((error) => {
                 setUserName("Anonymous")
-                if (personGUID !== "" && userId === null) {
-                    setUserId(personGUID);
-                }
+            })
+        }
+        const getTeam = async () => {
+            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
+                response.data.forEach((registration: any) => {
+                    if (registration.ownerID === userId) {
+
+                        setTeamId(registration.teamID)
+                    }
+
+                })
+            }).catch((error) => {
             })
         }
 
+        const getTeamName = async () => {
+            await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
+                setTeamName(response.data.name)
+            }).catch((error) => {
+                setTeamName("Anonymous")
+            })
+        }
 
-        //const getTeam = async () => {
-        //    await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
-        //        response.data.forEach((registration: any) => {
-        //            if (registration.ownerID === userId) {
+        const serviceCalls = async () => {
+            await getUser()
+            if (personGUID !== "" && userId === null) {
+                setUserId(personGUID);
+            }
+            else {
+                await getTeam()
+                await getTeamName()
 
-        //                setTeamId(registration.teamID)
-        //            }
+            }
+        }
+        serviceCalls()
 
-        //        })  
-        //    }).catch((error) => { 
-        //     })
-        //}
-
-        //const getTeamName = async () => {
-        //    await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
-        //        setTeamName(response.data.name)
-        //    }).catch((error)=> {
-        //        setTeamName("Anonymous")
-        //    })
-        //}
-
-        //const serviceCalls = async () => {
-        //    await getUser()
-        //    await getTeam()
-        //    await getTeamName()
-        //}
-
-        //serviceCalls()
-
-    }, [teamId, userId, loading, BaseUrl])
+    }, [teamId, loading, BaseUrl])
 
     useEffect(() => {
         console.log("here in second use effect")
-        if(donationAmount === 0 || donationEmail.trim().length === 0){
+        if (donationAmount === 0 || donationEmail.trim().length === 0) {
             setCanSubmit(false)
         }
-        
+
         else {
             setCanSubmit(true)
         }
 
     }, [donationAmount, donationEmail])
 
-   
-    
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         // const paymentMethodResult = await stripe?.createPaymentMethod({
@@ -113,9 +112,9 @@ const PaymentForm: React.FC<Props> = (props) => {
                 teamId: teamId,
                 personId: userId,
                 eventId: currentEvent.id,
-                personName: userName, 
-                donationName: donationSubmitName, 
-                donationEmail: donationEmail, 
+                personName: userName,
+                donationName: donationSubmitName,
+                donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
                 donationDateTime: new Date()
             }).then((response) => {
@@ -127,7 +126,7 @@ const PaymentForm: React.FC<Props> = (props) => {
 
 
     }
-    function updateMealsTextField(value:any) {
+    function updateMealsTextField(value: any) {
         setDonationAmount(value);
     }
 
@@ -143,16 +142,16 @@ const PaymentForm: React.FC<Props> = (props) => {
                 <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
-                
+
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <TextField 
+                    <TextField
                         id="meals-textfield"
                         label="Meals"
                         type="number"
                         required={true}
                         InputLabelProps={{
                             shrink: true,
-                            
+
                         }}
                         InputProps={{
                             inputProps: { min: 0 }
@@ -160,10 +159,10 @@ const PaymentForm: React.FC<Props> = (props) => {
                         variant="filled"
                         value={donationAmount}
 
-                            onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
+                        onChange={(e) => { setDonationAmount(Number(e.target.value)) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -178,10 +177,10 @@ const PaymentForm: React.FC<Props> = (props) => {
                         }}
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInUser")}
-                        onChange={(e)=> setDonationSubmitName(e.target.value)}
+                        onChange={(e) => setDonationSubmitName(e.target.value)}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -197,10 +196,10 @@ const PaymentForm: React.FC<Props> = (props) => {
                         }}
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInEmail")}
-                        onChange={(e) => {setDonationEmail(e.target.value)}}
+                        onChange={(e) => { setDonationEmail(e.target.value) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
                         id="PhoneNumber"
@@ -220,18 +219,18 @@ const PaymentForm: React.FC<Props> = (props) => {
                 <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {canSubmit  ? 
-                    <Button
-                    variant='contained'
-                    
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>
-                    :  <Button
-                    disabled = {true}
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>   }
+                    {canSubmit ?
+                        <Button
+                            variant='contained'
+
+                            sx={{ backgroundColor: "orange" }}>
+                            Donate Now
+                        </Button>
+                        : <Button
+                            disabled={true}
+                            sx={{ backgroundColor: "orange" }}>
+                            Donate Now
+                        </Button>}
                 </Box>
 
 
