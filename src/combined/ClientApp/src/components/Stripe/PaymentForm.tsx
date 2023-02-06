@@ -233,8 +233,6 @@ const PaymentForm: React.FC<Props> = (props) => {
                         </Button>}
                 </Box>
 
-
-
             </form>
 
         </>
