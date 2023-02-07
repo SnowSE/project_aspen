@@ -5,8 +5,11 @@ import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
 
+interface Props {
+    personGUID?: string;
+}
 
-export default function PaymentForm() {
+const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
 
@@ -15,7 +18,8 @@ export default function PaymentForm() {
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
-    const [userId, setUserId] = useState(null)
+    const linkGuid= props.personGUID
+    const [userId, setUserId] = useState<string | number | null | undefined>(null);
     const [userName, setUserName] = useState<string>('')
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
@@ -24,23 +28,21 @@ export default function PaymentForm() {
     const [donationPhoneNumber, setDonationPhoneNumber] = useState<string>('')
 
     const BaseUrl = process.env.PUBLIC_URL
+
     useEffect(() => {
 
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
 
-
         const getUser = async () => {
             await axios.get(BaseUrl + '/api/user', config).then((response) => {
                 setUserId(response?.data?.id)
                 setUserName(response?.data?.name)
-            }).catch((error)=> {
+            }).catch((error) => {
                 setUserName("Anonymous")
             })
         }
-
-
         const getTeam = async () => {
             await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
                 response.data.forEach((registration: any) => {
@@ -49,43 +51,50 @@ export default function PaymentForm() {
                         setTeamId(registration.teamID)
                     }
 
-                })  
-            }).catch((error) => { 
-             })
+                })
+            }).catch((error) => {
+            })
         }
 
         const getTeamName = async () => {
             await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
                 setTeamName(response.data.name)
-            }).catch((error)=> {
+            }).catch((error) => {
                 setTeamName("Anonymous")
             })
         }
 
         const serviceCalls = async () => {
             await getUser()
-            await getTeam()
-            await getTeamName()
-        }
+            if (linkGuid !== "" && userId === null) {
+                console.log(linkGuid)
+                setTeamName("Anonymous")
 
+            }
+            else {
+                await getTeam()
+                await getTeamName()
+
+            }
+        }
         serviceCalls()
 
-    }, [teamId, userId, loading, BaseUrl])
+    }, [teamId, loading, BaseUrl, linkGuid, userId])
 
     useEffect(() => {
         console.log("here in second use effect")
-        if(donationAmount === 0 || donationEmail.trim().length === 0){
+        if (donationAmount === 0 || donationEmail.trim().length === 0) {
             setCanSubmit(false)
         }
-        
+
         else {
             setCanSubmit(true)
         }
 
     }, [donationAmount, donationEmail])
 
-   
-    
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         // const paymentMethodResult = await stripe?.createPaymentMethod({
@@ -97,6 +106,7 @@ export default function PaymentForm() {
         // if (!paymentMethodResult?.error) {
         // const id = paymentMethodResult?.paymentMethod.id
 
+
         await axios.post("https://"+{BaseUrl}+"/aspen/new/api/stripe",
             {
                 amount: (donationAmount * 1000),
@@ -105,11 +115,12 @@ export default function PaymentForm() {
                 teamId: teamId,
                 personId: userId,
                 eventId: currentEvent.id,
-                personName: userName, 
-                donationName: donationSubmitName, 
-                donationEmail: donationEmail, 
+                personName: userName,
+                donationName: donationSubmitName,
+                donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
-                donationDateTime: new Date()
+                donationDateTime: new Date(), 
+                linkGuid: linkGuid
             }).then((response) => {
                 const session = response.data
                 console.log(session)
@@ -119,7 +130,7 @@ export default function PaymentForm() {
 
 
     }
-    function updateMealsTextField(value:any) {
+    function updateMealsTextField(value: any) {
         setDonationAmount(value);
     }
 
@@ -135,16 +146,16 @@ export default function PaymentForm() {
                 <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
-                
+
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <TextField 
+                    <TextField
                         id="meals-textfield"
                         label="Meals"
                         type="number"
                         required={true}
                         InputLabelProps={{
                             shrink: true,
-                            
+
                         }}
                         InputProps={{
                             inputProps: { min: 0 }
@@ -152,10 +163,10 @@ export default function PaymentForm() {
                         variant="filled"
                         value={donationAmount}
 
-                            onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
+                        onChange={(e) => { setDonationAmount(Number(e.target.value)) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -170,10 +181,10 @@ export default function PaymentForm() {
                         }}
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInUser")}
-                        onChange={(e)=> setDonationSubmitName(e.target.value)}
+                        onChange={(e) => setDonationSubmitName(e.target.value)}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -189,10 +200,10 @@ export default function PaymentForm() {
                         }}
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInEmail")}
-                        onChange={(e) => {setDonationEmail(e.target.value)}}
+                        onChange={(e) => { setDonationEmail(e.target.value) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
                         id="PhoneNumber"
@@ -212,26 +223,26 @@ export default function PaymentForm() {
                 <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {canSubmit  ? 
-                    <Button
-                    variant='contained'
-                    
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>
-                    :  <Button
-                    disabled = {true}
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>   }
+                    {canSubmit ?
+                        <Button
+                            variant='contained'
+
+                            sx={{ backgroundColor: "orange" }}>
+                            Donate Now
+                        </Button>
+                        : <Button
+                            disabled={true}
+                            sx={{ backgroundColor: "orange" }}>
+                            Donate Now
+                        </Button>}
                 </Box>
-
-
 
             </form>
 
         </>
     );
 }
+
+export default PaymentForm;
 
 

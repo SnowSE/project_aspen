@@ -16,4 +16,5 @@ public record DtoDonation
     public string? PersonName { get; set; }
     public Guid TransactionNumber { get; set; }
     public string? AuthorizationNumber { get; set; }
+    public string? LinkGuid { get; set; }
 }
