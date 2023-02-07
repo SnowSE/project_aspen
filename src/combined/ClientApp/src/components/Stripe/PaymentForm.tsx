@@ -107,7 +107,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         // const id = paymentMethodResult?.paymentMethod.id
 
 
-        await axios.post("https://"+{BaseUrl}+"/aspen/new/api/stripe",
+        await axios.post(`${process.env.PUBLIC_URL}/api/stripe`,
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",

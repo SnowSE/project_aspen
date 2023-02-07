@@ -7,32 +7,32 @@ using Newtonsoft.Json;
 
 namespace Api.Controllers;
 
-    [Route("api/stripe")]
-    [ApiController]
-    public class StripeController : ControllerBase
+[Route("api/stripe")]
+[ApiController]
+public class StripeController : ControllerBase
+{
+    private readonly IConfiguration configuration;
+    private readonly IDonationRepository donationRepository;
+    private static string client_URL = "";
+    public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
+    public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
     {
-        private readonly IConfiguration configuration;
-        private readonly IDonationRepository donationRepository;
-        private static string client_URL = "";
-        public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
-        public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
-        {
-            this.configuration = configuration;
-            this.donationRepository = donationRepository;
-        }
+        this.configuration = configuration;
+        this.donationRepository = donationRepository;
+    }
 
-        [HttpPost("webhook")]
-        public async Task<IActionResult> Index()
-        {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            var responseObject = JsonConvert.DeserializeObject<Root>(json);
+    [HttpPost("webhook")]
+    public async Task<IActionResult> Index()
+    {
+        var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+        var responseObject = JsonConvert.DeserializeObject<Root>(json);
 
         try
         {
             var stripeEvent = EventUtility.ConstructEvent(json,
                 Request.Headers["Stripe-Signature"], endpointSecret);
 
-                // Handle the event
+            // Handle the event
             if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
             {
                 Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
@@ -44,7 +44,7 @@ namespace Api.Controllers;
 
             }
             // ... handle other event types
-            if(stripeEvent.Type == Events.ChargeFailed)
+            if (stripeEvent.Type == Events.ChargeFailed)
             {
                 Console.WriteLine("Charge Failed");
             }
@@ -52,13 +52,13 @@ namespace Api.Controllers;
             {
                 Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
             }
-                return Ok();
-            }
-            catch (StripeException e)
-            {
-                return BadRequest();
-            }
+            return Ok();
         }
+        catch (StripeException e)
+        {
+            return BadRequest();
+        }
+    }
 
 
 
@@ -70,23 +70,24 @@ namespace Api.Controllers;
         return sessionId;
     }
 
-        [HttpGet("success")]
-        // Automatic query parameter handling from ASP.NET.
-        // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
-        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
+    [HttpGet("success")]
+    // Automatic query parameter handling from ASP.NET.
+    // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
+    public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId, string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
 
-        {
-            var dateTime = DateTime.UtcNow;
-            var session = new SessionService();
+    {
+        var dateTime = DateTime.UtcNow;
+        var session = new SessionService();
 
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
 
-        var newDonation = new Donation {
-            EventID=eventId,
-            TeamID=teamId,      
-            PersonID=personId,
-            Amount=amount/100,
+        var newDonation = new Donation
+        {
+            EventID = eventId,
+            TeamID = teamId,
+            PersonID = personId,
+            Amount = amount / 100,
             Date = dateTime,
             TransactionNumber = Guid.NewGuid(),
             LinkGuid = linkGuid
@@ -98,42 +99,42 @@ namespace Api.Controllers;
         return Redirect($"https://localhost:44478/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
-        [HttpGet("failure")]
-        public ActionResult CheckoutFailure(string sessionId)
-        {
-            var session = new SessionService();
-            var s = session.Get(sessionId);
-            var paymentIntentId = s.PaymentIntentId;
-            var p = new PaymentIntentService();
-            var paymentIntent = p.Get(paymentIntentId);
+    [HttpGet("failure")]
+    public ActionResult CheckoutFailure(string sessionId)
+    {
+        var session = new SessionService();
+        var s = session.Get(sessionId);
+        var paymentIntentId = s.PaymentIntentId;
+        var p = new PaymentIntentService();
+        var paymentIntent = p.Get(paymentIntentId);
 
-            return Redirect($"https://engineering.snow.edu/aspen/new/faileddonation");
-        }
+        return Redirect($"https://localhost:44478/aspen/new/faileddonation");
+    }
 
 
 
     [NonAction]
-        public async Task<string> CheckOut(Payment payment)
-        {
-            // Create a payment flow from the items in the cart.
-            // Gets sent to Stripe API.
-           
+    public async Task<string> CheckOut(Payment payment)
+    {
+        // Create a payment flow from the items in the cart.
+        // Gets sent to Stripe API.
+
 
         var options = new SessionCreateOptions
-            {
-                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> // Only card available in test mode?
+        {
+            // Stripe calls the URLs below when certain checkout events happen such as success and failure.
+            //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
+            SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
+            CancelUrl = "https://localhost:44478/aspen/new/Donate",  // Checkout cancelled.
+            PaymentMethodTypes = new List<string> // Only card available in test mode?
                 
             {
                 "card"
             },
-                CustomerEmail = payment.donationEmail,
-                
+            CustomerEmail = payment.donationEmail,
 
-                LineItems = new List<SessionLineItemOptions>
+
+            LineItems = new List<SessionLineItemOptions>
             {
                 new()
                 {
@@ -151,8 +152,8 @@ namespace Api.Controllers;
                     Quantity = 1,
                 },
             },
-                Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
-            };
+            Mode = "payment" // One-time payment. Stripe supports recurring 'subscription' payments.
+        };
 
         var service = new SessionService();
         var session = await service.CreateAsync(options);
@@ -168,7 +169,8 @@ namespace Api.Controllers;
 }
 
 
-public class Payment {
+public class Payment
+{
     public int amount { get; set; }
     public string id { get; set; }
     public int? teamId { get; set; }
