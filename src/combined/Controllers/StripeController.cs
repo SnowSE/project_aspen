@@ -13,12 +13,14 @@ namespace Api.Controllers;
     {
         private readonly IConfiguration configuration;
         private readonly IDonationRepository donationRepository;
-        private static string client_URL = "";
+        private static string public_URL = "";
         public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
+        
         public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
         {
             this.configuration = configuration;
             this.donationRepository = donationRepository;
+            public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
         }
 
         [HttpPost("webhook")]
@@ -71,8 +73,6 @@ namespace Api.Controllers;
     }
 
         [HttpGet("success")]
-        // Automatic query parameter handling from ASP.NET.
-        // Example URL: https://localhost:7051/checkout/success?sessionId=si_123123123123
         public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
 
         {
@@ -95,7 +95,7 @@ namespace Api.Controllers;
 
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"https://localhost:44478/aspen/new/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
         [HttpGet("failure")]
@@ -107,7 +107,7 @@ namespace Api.Controllers;
             var p = new PaymentIntentService();
             var paymentIntent = p.Get(paymentIntentId);
 
-            return Redirect($"https://engineering.snow.edu/aspen/new/faileddonation");
+            return Redirect($"{public_URL}/faileddonation");
         }
 
 
@@ -123,8 +123,8 @@ namespace Api.Controllers;
             {
                 // Stripe calls the URLs below when certain checkout events happen such as success and failure.
                 //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"https://localhost:44478/aspen/new/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://engineering.snow.edu/aspen/new/Donate",  // Checkout cancelled.
+                SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
+                CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
                 
             {
