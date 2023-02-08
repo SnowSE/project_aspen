@@ -1,4 +1,7 @@
-﻿namespace Api.Mappers;
+﻿using combined.Models.DbModels;
+using combined.Models.Entities;
+
+namespace Api.Mappers;
 
 public class AspenMapperProfile : Profile
 {
@@ -69,6 +72,12 @@ public class AspenMapperProfile : Profile
             .ReverseMap();
 
         CreateMap<LinkRecord, DtoLinkRecord>()
+            .ReverseMap();
+
+        CreateMap<DbPaymentFailure, PaymentFailure>()
+            .ReverseMap();
+
+        CreateMap<PaymentFailure, DtoPaymentFailure>()
             .ReverseMap();
     }
 }

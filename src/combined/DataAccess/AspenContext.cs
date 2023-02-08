@@ -1,3 +1,5 @@
+using combined.Models.DbModels;
+
 namespace Api.DataAccess;
 
 public class AspenContext : DbContext
@@ -28,4 +30,5 @@ public class AspenContext : DbContext
     public DbSet<DbDonation> Donations { get; set; }
     public DbSet<DbLink> Links { get; set; }
     public DbSet<DbLinkRecord> LinkRecords { get; set; }
+    public DbSet<DbPaymentFailure> PaymentFailures { get; set; }
 }

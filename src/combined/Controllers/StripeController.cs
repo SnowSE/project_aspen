@@ -28,6 +28,7 @@ namespace Api.Controllers;
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var responseObject = JsonConvert.DeserializeObject<Root>(json);
+            
 
         try
         {
