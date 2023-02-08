@@ -13,14 +13,20 @@ namespace Api.Controllers;
     {
         private readonly IConfiguration configuration;
         private readonly IDonationRepository donationRepository;
-        private static string public_URL = "";
+        private readonly IPaymentFailureRepository paymentFailureRepository;
+
+    
+
+    private static string public_URL = "";
         public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
         
-        public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
+        public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository)
         {
             this.configuration = configuration;
             this.donationRepository = donationRepository;
-            public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
+            this.paymentFailureRepository = paymentFailureRepository;
+
+        public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
         }
 
         [HttpPost("webhook")]
@@ -35,11 +41,22 @@ namespace Api.Controllers;
             var stripeEvent = EventUtility.ConstructEvent(json,
                 Request.Headers["Stripe-Signature"], endpointSecret);
 
-                // Handle the event
+            // Handle the event
             if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
             {
                 Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
 
+                var paymentFailed = new PaymentFailure
+                {
+                    Amount = responseObject.data.@object.amount,
+                    Decline_Code = responseObject.data.@object.last_payment_error.decline_code,
+                    Message = responseObject.data.@object.last_payment_error.message,
+                    Code = responseObject.data.@object.last_payment_error.code,
+                    PersonID = 1,
+                    EventID = 2
+                };
+
+                await paymentFailureRepository.Add(paymentFailed);
             }
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
             {
@@ -132,8 +149,6 @@ namespace Api.Controllers;
                 "card"
             },
                 CustomerEmail = payment.donationEmail,
-                
-
                 LineItems = new List<SessionLineItemOptions>
             {
                 new()
