@@ -30,7 +30,7 @@ namespace Api.Controllers;
         }
 
         [HttpPost("webhook")]
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var responseObject = JsonConvert.DeserializeObject<Root>(json);
@@ -78,7 +78,7 @@ namespace Api.Controllers;
             {
                 return BadRequest();
             }
-        }
+    }
 
 
 
