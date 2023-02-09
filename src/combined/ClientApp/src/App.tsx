@@ -10,6 +10,10 @@ if (!root && process.env.NODE_ENV !== "test") {
     throw new Error("PUBLIC_URL is undefined");
 }
 
+
+console.log('FIRST Secret: ', process.env.MY_DUMMY_SECRET);
+console.log('2nd Secret: ', process.env.MY_SECOND_DUMMY_SECRET);
+
 export const EventContext = React.createContext({} as any);
 
 function App() {
@@ -50,8 +54,9 @@ function App() {
                 setCurrentEvent(defaultEvent);
 
             };
+        }
+
         };
-    };
 
         useEffect(() => {
             console.log("App mounted");

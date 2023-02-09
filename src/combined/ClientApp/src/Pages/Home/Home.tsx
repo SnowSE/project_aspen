@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext} from 'react';
 import {
     Box,
     Button,
@@ -11,41 +11,24 @@ import { EventContext } from '../../App';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
-import SharingButton from '../../components/Share/SharingButton';
-import { authService } from "../../services/authService";
+import { DonateButton } from '../../components/DonateButton';
+import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
 
 
 
 export function Home() {
+
     const navigate = useNavigate();
-    const currentEvent = useContext(EventContext);
-    const checkToken = async () => {
-        var user = await authService.getUser();
-        var userExpiered = user?.expired;
-        if (userExpiered) {
-            await authService.signinSilent();
-            user = await authService.getUser();
-            userExpiered = user?.expired;
-        }
-    };
+    const { currentEvent } = useContext(EventContext);
 
     useEffect(() => {
-        checkToken();
-
-        //async function currentUser() {
-        //    var user = await authService.getUser()
-        //    console.log("user roles:", user?.profile.roles)
-        //    user?.profile.roles.forEach((role: string) => {
-        //        console.log(role)
-        //    });
-        //}
-
+ 
     }, []);
 
     return (
         <Box>
             <Paper square={true} className="PaperColor">
-                <Box className="CurrentEventPosition">
+                <Box className = "CurrentEventPosition">
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
@@ -68,15 +51,8 @@ export function Home() {
                     <ProgressBar />
                 </Box>
                 <Box className="DonateButtonPosition">
-                    <Button
-                        data-testid="donateMealsBtn"
-                        id={"donateMealsBtn"}
-                        onClick={() => navigate('/Donate')}
-                        variant='contained'
-                        className="DonateButtonDetails">
-                        DONATE MEALS
-                    </Button>
-                    <SharingButton />
+                    <SharingButtonCustomLink />
+                    <DonateButton />
                 </Box>
 
             </Paper>
@@ -87,7 +63,7 @@ export function Home() {
                     </Typography>
                 </Box>
                 <Box className="SubTextBodyPosition">
-                    <Typography className="SubTextBodyDetails" paragraph={true} >
+                    <Typography className= "SubTextBodyDetails" paragraph={true} >
                         Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most meals can win some aswesome prizes!
                     </Typography>
                 </Box>

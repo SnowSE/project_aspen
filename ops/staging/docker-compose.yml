@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   api:
+    env_file:
+      - .env
     container_name: staging_combined
     build:
       context: ../../src/
@@ -12,10 +14,12 @@ services:
       timeout: 10s
       retries: 15
     volumes:
-      - assets:/assets
+      - assets:/app/wwwroot/assets
     environment:
       - SwaggerBasePath=aspen
-      - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;      
+      - ASPEN_CONNECTION_STRING=server=api_db;user id=aspen; password=password; database=aspen;    
+      - MY_SECOND_DUMMY_SECRET=${DUMMY_SECRET}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
     networks:
       shared:
       api:

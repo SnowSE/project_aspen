@@ -85,8 +85,10 @@ public class DonationControllerTest
             EventID = eventId,
             TeamID = teamId,
             TeamName = team1.ID == teamId ? team1.Name : team2.Name,
-            IsPledge = false
-        };
+            IsPledge = false,
+            TransactionNumber = Guid.NewGuid(),
+            AuthorizationNumber = ""
+    };
     }
 
     [Test]

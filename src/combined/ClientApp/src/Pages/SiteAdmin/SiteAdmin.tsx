@@ -1,192 +1,86 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    Input,
-    InputAdornment,
-    InputLabel,
-    TextField,
-} from "@mui/material";
-import { useEffect, useState, useContext } from "react";
+import { Accordion, AccordionSummary, Box, Button, Paper, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../../App";
-import Event from "../../JsModels/event";
-import { EventsService } from "../../services/Events/EventsService";
-import { useNavigate } from "react-router-dom";
+import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
+import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembersListAccordian";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
+import Team from "../../JsModels/team";
+
+
 
 const SiteAdmin = () => {
-    const { currentEvent, setCurrentEvent } = useContext(EventContext);
-    const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
-    const navigate = useNavigate();
-
-    const updateEventHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        if (currentEvent.id === -1) {
-            addNewEventHandler(event);
-        }
-
-        try {
-            await EventsService.UpdateEventViaAxios(updatedEvent);
-            alert("Update was succeful");
-        } catch (e) {
-            console.log("Update event failed: " + e);
-        }
-        setCurrentEvent(updatedEvent);
-    };
-
-    const deleteHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        if (currentEvent.id === -1) {
-            alert("There are no events to delete");
-        } else {
-            if (
-                window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
-                )
-            ) {
-                try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
-                    nextCurrentEvent();
-                    alert(
-                        "The deletion was succeful, you will be redirect to Home page."
-                    );
-                    navigate("/");
-                } catch (e) {
-                    alert("Delete event failed");
-                }
-            }
-        }
-    };
-
-    const addNewEventHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
-        try {
-            await EventsService.CreateEventViaAxios(updatedEvent);
-            nextCurrentEvent();
-            alert("Adding new Event was succeful");
-        } catch (e) {
-            alert("Create New Event failed");
-        }
-    };
-
-    const nextCurrentEvent = async () => {
-        var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
-        var allEventsJson = await allEvents.json();
-
-        if (allEventsJson.length > 0) {
-            var jsonEvent: Event[] = JSON.parse(JSON.stringify(allEventsJson));
-            const today = new Date();
-
-            var eventsEndingAfterToday = jsonEvent.filter((event: Event) => {
-                var eventDate = new Date(event.date);
-                return eventDate >= today;
-            });
-
-            var closesEventDate = eventsEndingAfterToday.sort(function (a, b) {
-                return a.date > b.date ? 1 : -1;
-            });
-
-            if (closesEventDate.length > 0) {
-                setCurrentEvent(closesEventDate[0]);
-            } else {
-                const defaultEvent = new Event(
-                    new Date(),
-                    "", // location
-                    "", // mainImage
-                    "", // description!
-                    "There are currently no upcoming events.",
-                    0, // donationTarget
-                    -1 // id
-                );
-                setCurrentEvent(defaultEvent);
-            }
-        }
-    };
+    const { currentEvent } = useContext(EventContext);
+    const [teamsList, setTeams] = useState<Team[]>();
+    const [showEditEvent, setShowEditEvent] = useState(true);
 
     useEffect(() => {
-
-    }, []);
+        const fetchData = async () => {
+            if (!currentEvent.id) {
+                console.log("No current event found!")
+                return;
+            }
+            var teamsList = await getTeamsList(currentEvent.id)
+            var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
+            setTeams(jsonTeams)
+        }
+        fetchData()
+    }, [currentEvent])
 
     return (
 
-        <div>
-            <form onSubmit={updateEventHandler}>
-                <TextField
-                    id="standard-helperText"
-                    label="Event Title"
-                    defaultValue={updatedEvent?.title}
-                    variant="standard"
-                    onChange={(event) => {
-                        setupdatedEvent((updateEvent) => ({
-                            ...updateEvent,
-                            title: event.target.value,
-                        }));
-                    }}
-                />
-                <Box>
-                    <TextField
-                        id="standard-helperText"
-                        label="Event Description"
-                        defaultValue={updatedEvent?.description}
-                        variant="standard"
-                        onChange={(event) => {
-                            setupdatedEvent((updateEvent) => ({
-                                ...updateEvent,
-                                description: event.target.value,
-                            }));
-                        }}
-                    />
-                </Box>
-                <Box>
-                    <TextField
-                        id="standard-helperText"
-                        label="Event Location"
-                        defaultValue={updatedEvent?.location}
-                        variant="standard"
-                        onChange={(event) => {
-                            setupdatedEvent((updateEvent) => ({
-                                ...updateEvent,
-                                location: event.target.value,
-                            }));
-                        }}
-                    />
-                </Box>
-                <Box>
-                    <FormControl variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-                        <Input
-                            id="standard-adornment-amount"
-                            defaultValue={updatedEvent?.donationTarget}
-                            onChange={(event) => {
-                                setupdatedEvent((updateEvent) => ({
-                                    ...updateEvent,
-                                    donationTarget: parseInt(event.target.value),
-                                }));
-                            }}
-                            startAdornment={
-                                <InputAdornment position="start">$</InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                </Box>
-                <Box>
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: "orange" }}
-                        type="submit"
-                    >
-                        Update
-                    </Button>
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: "orange" }}
-                        type="button"
-                        onClick={deleteHandler}
-                    >
-                        Delete
+        <Box>
+            <Paper square={true} elevation={6} className="AdminPaperDetails">
+                <Box className="AdminCurrentEventDetails">
+                    {
+                        showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.title}</Typography> : <EventEditDeleteForm />
+                    }
+                    <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => setShowEditEvent((prevState) => !prevState)}>
+                        {
+                            showEditEvent === true ? "Edit" : "Close"
+                        }
                     </Button>
                 </Box>
-            </form>
-        </div>
+            </Paper>
+            <Accordion className="AccordionSpacing">
+                <AccordionSummary
+                    className="AccordionDetails"
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                    <Typography> Teams </Typography>
+                </AccordionSummary>
+                {teamsList?.map((t: any, id) => {
+                    return (
+                        <Accordion className="InnerAccordionSpacing">
+                            <AccordionSummary
+                                className="InnerAccordionDetails"
+                                expandIcon={<ExpandMoreIcon />}
+                            >
+                                    <Typography>
+                                        {t.name}
+                                    </Typography>
+                                <Box className="TeamsSpacing">
+                                    <Button
+                                        variant="contained"
+                                        className="UpdateTeamButtonDetails"
+                                        type="submit"
+                                    >Update
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        className="DeleteTeamButtonDetails"
+                                        type="button"
+                                    > Delete
+                                    </Button>
+                                </Box>
+                            </AccordionSummary>
+                            <TeamMembersListAccordian />
+                        </Accordion>
+                    )
+                })}
+            </Accordion>
+        </Box>
+
     );
 };
 

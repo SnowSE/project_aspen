@@ -126,9 +126,8 @@ public class EventControllerTest
         await GetEventController().Delete(createdEvent.ID);
 
         var badEventResult = await GetEventController().GetByID(createdEvent.ID);
-        var result = badEventResult.Result as NotFoundObjectResult;
+        var result = badEventResult.Result as ObjectResult;
         result.StatusCode.Should().Be(404);
-        result.Value.Should().Be("Event id does not exist");
     }
 
     [Test]

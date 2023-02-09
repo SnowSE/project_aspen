@@ -9,7 +9,6 @@ namespace Tests.Steps
         {
             var baseUrl = "http://127.0.0.1:" + Hooks.TestHook.ExposedPort;
             RestClient = new RestClient(baseUrl);
-            RestClient.ThrowOnAnyError = true;
 
             HttpClient = new HttpClient() { BaseAddress = new Uri(baseUrl) };
         }
@@ -23,7 +22,7 @@ namespace Tests.Steps
             return await RestClient.PostAsync<DtoPerson>(request);
         }
 
-        public IRestResponse GetTeamsByEvent(int eventId) =>
+        public RestResponse GetTeamsByEvent(int eventId) =>
             RestClient.Get(new RestRequest($"api/teams/event/{eventId}"));
     }
 }

@@ -5,8 +5,12 @@ using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddProblemDetails();
+
 // Add services to the container.
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+var StripeSecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY") ?? builder.Configuration["Stripe:SecretKey"];
+
+StripeConfiguration.ApiKey = StripeSecretKey;
 
 string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -21,6 +25,9 @@ builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IAssetFileService, AssetFileService>();
+builder.Services.AddScoped<ILinkRepository, LinkRepository>();
+builder.Services.AddScoped<ILinkRecordRepository, LinkRecordRepository>();
+builder.Services.AddScoped<IPaymentFailureRepository, PaymentFailureRepository>();
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties;
@@ -109,6 +116,7 @@ builder.Services.AddDbContext<AspenContext>(options =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseHttpLogging();
 app.UsePathBase("/aspen/new");
 
@@ -134,7 +142,6 @@ app.UseSwagger(options =>
     });
 });
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

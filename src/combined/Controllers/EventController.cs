@@ -1,4 +1,6 @@
-﻿namespace Api.Controllers;
+﻿using System.Net;
+
+namespace Api.Controllers;
 
 [Route("api/events")]
 [ApiController]
@@ -35,7 +37,9 @@ public class EventController : ControllerBase
     {
         log.LogInformation("Getting the event {id}", id);
         if (!await eventRepository.ExistsAsync(id))
-            return NotFound("Event id does not exist");
+        {
+            return Problem("Event id does not exist", statusCode: (int)HttpStatusCode.NotFound);
+        }
 
         return mapper.Map<DtoEvent>(await eventRepository.GetByIdAsync(id));
     }

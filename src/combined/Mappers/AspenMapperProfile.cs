@@ -1,4 +1,7 @@
-﻿namespace Api.Mappers;
+﻿using combined.Models.DbModels;
+using combined.Models.Entities;
+
+namespace Api.Mappers;
 
 public class AspenMapperProfile : Profile
 {
@@ -59,5 +62,22 @@ public class AspenMapperProfile : Profile
             .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.Team.Name))
             .ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.Person.Name));
 
+        CreateMap<DbLink, Link>()
+            .ReverseMap();
+
+        CreateMap<Link, DtoLink>()
+            .ReverseMap();
+
+        CreateMap<DbLinkRecord, LinkRecord>()
+            .ReverseMap();
+
+        CreateMap<LinkRecord, DtoLinkRecord>()
+            .ReverseMap();
+
+        CreateMap<DbPaymentFailure, PaymentFailure>()
+            .ReverseMap();
+
+        CreateMap<PaymentFailure, DtoPaymentFailure>()
+            .ReverseMap();
     }
 }

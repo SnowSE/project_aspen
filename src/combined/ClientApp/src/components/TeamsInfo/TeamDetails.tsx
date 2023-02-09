@@ -10,6 +10,9 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
+import axios from 'axios'
+import { DonateButton } from "../DonateButton";
+
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -50,9 +53,15 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+    
+    useEffect(() => {
+    const BaseUrl = process.env.PUBLIC_URL
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+  };
 
-  useEffect(() => {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
@@ -60,6 +69,15 @@ export function TeamDetails() {
         setCurrentTeamRegistrations(response.registrations)       
         
       }
+
+
+    const getUser = async () => {
+        await axios.get(BaseUrl + '/api/user', config).then((response) => {
+            setLoggedInUserId(response?.data?.id)
+        }).catch((error)=> {
+        })
+    }
+
       const fetchTeamOwner = async () => {
           try {
               const person = await fetch(personApi)
@@ -70,9 +88,9 @@ export function TeamDetails() {
               console.log(e);
           }
           
-
       }
     const callServise = async () => {
+        await getUser()
         await fetchTeam();
         await fetchTeamOwner();
     };
@@ -113,8 +131,8 @@ export function TeamDetails() {
                                           ? navigate({
                                               pathname: "/LoggedInUser",
                                               search: `?${createSearchParams({
-                                                  id: `${tId}`,
-                                                  ownerID: `${currentTeam?.ownerID}`,
+                                                  teamId: `${tId}`,
+                                                  userId: `${loggedInUserId}`,
                                               })}`,
                                           })
                                           : authService.signinRedirect()
@@ -160,6 +178,9 @@ export function TeamDetails() {
             <Box className="ProgressBarPosition">
               <ProgressBar />
               <SharingIcon data-testid={"shareBtn"} />
+            </Box>
+            <Box className= "DonateButtonPosition">
+                <DonateButton />
             </Box>
           </CardContent>
           <CardContent>
