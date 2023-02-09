@@ -150,35 +150,30 @@ export function TeamDetails() {
                   }
               })()
           }  
-          {/*{(() => {*/}
-          {/*    if (currentTeam?.isPublic === true) {*/}
-          {/*        return (*/}
-          {/*            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>*/}
-          {/*                <Button*/}
-          {/*                    onClick={() =>*/}
-          {/*                        loggedInUSer*/}
-          {/*                            ? navigate({*/}
-          {/*                                pathname: "/LoggedInUser",*/}
-          {/*                                search: `?${createSearchParams({*/}
-          {/*                                    teamId: `${tId}`,*/}
-          {/*                                    userId: `${loggedInUserId}`,*/}
-          {/*                                })}`,*/}
-          {/*                            })*/}
-          {/*                            : authService.signinRedirect()*/}
-          {/*                    }*/}
-          {/*                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}*/}
-          {/*                >*/}
-          {/*                    Join Our Team*/}
-          {/*                </Button>*/}
-          {/*            </Grid>*/}
-          {/*        )*/}
-          {/*    } else {*/}
-          {/*        return (*/}
-          {/*            <p>This is Private Team</p>*/}
-          {/*        )*/}
-          {/*    }*/}
-          {/*})()*/}
-          {/*}  */}
+          {(() => {
+              if (currentTeam?.teamOwner === true) {
+                  return (
+                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                          <Button
+                              onClick={() =>
+                                navigate({
+                                          pathname: "/EditTeam",
+                                          search: `?${createSearchParams({
+                                              teamId: `${tId}`,
+                                              userId: `${loggedInUserId}`,
+                                          })}`,
+                                      })
+                                    
+                              }
+                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                          >
+                              Edit Team Details
+                          </Button>
+                      </Grid>
+                  )
+              } 
+          })()
+          }  
       
       {currentTeam?.id}
       {currentTeam?.ownerID}
