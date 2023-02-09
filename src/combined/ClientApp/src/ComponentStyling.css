@@ -546,3 +546,13 @@
     font-size: 30px !important;
     font-weight: bold !important;
 }
+
+/* BackToDonationButton */
+
+.BackToDonateButtonDetails {
+    background-color: orange !important;
+    margin: 1rem !important;
+}
+.BackToDonateButtonDetails:hover {
+    background-color: mediumpurple !important;
+}

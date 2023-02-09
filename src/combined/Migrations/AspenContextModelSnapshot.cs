@@ -48,6 +48,9 @@ namespace Api.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("LinkGuid")
+                        .HasColumnType("text");
+
                     b.Property<long?>("PersonID")
                         .HasColumnType("bigint");
 
@@ -101,6 +104,64 @@ namespace Api.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLink", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EventID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LinkIdentifer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("PersonID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EventID");
+
+                    b.HasIndex("PersonID");
+
+                    b.ToTable("Links");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLinkRecord", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("LinkID")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PersonID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LinkID");
+
+                    b.ToTable("LinkRecords");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPageData", b =>
@@ -251,6 +312,43 @@ namespace Api.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("combined.Models.DbModels.DbPaymentFailure", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Decline_Code")
+                        .HasColumnType("text");
+
+                    b.Property<long>("EventID")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("PersonID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EventID");
+
+                    b.HasIndex("PersonID");
+
+                    b.ToTable("PaymentFailures");
+                });
+
             modelBuilder.Entity("Api.DbModels.DbDonation", b =>
                 {
                     b.HasOne("Api.DbModels.DbEvent", "Event")
@@ -272,6 +370,36 @@ namespace Api.Migrations
                     b.Navigation("Person");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLink", b =>
+                {
+                    b.HasOne("Api.DbModels.DbEvent", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbPerson", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("Api.DbModels.DbLinkRecord", b =>
+                {
+                    b.HasOne("Api.DbModels.DbLink", "Link")
+                        .WithMany()
+                        .HasForeignKey("LinkID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Link");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbPersonRegistration", b =>
@@ -329,6 +457,23 @@ namespace Api.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("combined.Models.DbModels.DbPaymentFailure", b =>
+                {
+                    b.HasOne("Api.DbModels.DbEvent", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbPerson", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonID");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbEvent", b =>

@@ -57,18 +57,21 @@
     <None Remove="ClientApp\src\components\AdminComponents\EventEditDeleteForm.tsx" />
     <None Remove="ClientApp\src\components\AdminComponents\TeamEditDelete.tsx" />
     <None Remove="ClientApp\src\components\AdminComponents\TeamMembersListAccordian.tsx" />
+    <None Remove="ClientApp\src\components\BackToDonationButton.tsx" />
     <None Remove="ClientApp\src\components\DonateButton.tsx" />
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
     <None Remove="ClientApp\src\components\LoginButton.tsx" />
+    <None Remove="ClientApp\src\Pages\Donation\FailedPaymentPage.tsx" />
     <None Remove="ClientApp\src\Pages\SiteAdmin\SiteAdmin.tsx" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Remove="ClientApp\src\App.spec.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\Homepage.spec.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\components\Share\SharingButtonCustomLink.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\JsModels\link.ts" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\personRegistrations.ts" />
   </ItemGroup>
 
@@ -77,6 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\test\" />
     <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 
