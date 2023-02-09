@@ -25,6 +25,4 @@ public class LinkRecordRepository : ILinkRecordRepository
         await context.SaveChangesAsync();
         return mapper.Map<LinkRecord>(dbLinkRecord);
     }
-
-
 }

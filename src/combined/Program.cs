@@ -27,6 +27,7 @@ builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IAssetFileService, AssetFileService>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<ILinkRecordRepository, LinkRecordRepository>();
+builder.Services.AddScoped<IPaymentFailureRepository, PaymentFailureRepository>();
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties;

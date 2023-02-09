@@ -4,6 +4,7 @@ using System.Text.Json;
 using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    partial class AspenContextModelSnapshot : ModelSnapshot
+    [Migration("20230208202242_failurePaymentTable")]
+    partial class failurePaymentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,6 +331,7 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Decline_Code")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("EventID")
