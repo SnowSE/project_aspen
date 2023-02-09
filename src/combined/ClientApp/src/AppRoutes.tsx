@@ -12,12 +12,9 @@ import { LoggedInUser } from "./components/TeamsInfo/LoggedInUser";
 import LoginButton from "./components/LoginButton";
 import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
-<<<<<<< HEAD
-import MyEditor from "./Pages/CreateTeam/MyEditor";
-=======
+
 import FailedPaymentPage from "./Pages/Donation/FailedPaymentPage";
 import LinkRedirect from "./components/LinkRedirect/LinkRedirect";
->>>>>>> master
 
 const AppRoutes = [
     {
@@ -80,10 +77,7 @@ const AppRoutes = [
         element:<SuccessfulDonation/>
     },
     {
-<<<<<<< HEAD
-        path: `/MyEditor`,
-        element: <MyEditor />
-=======
+
         path: `/failedpayment`,
         element: <FailedPaymentPage />
     },
@@ -94,7 +88,6 @@ const AppRoutes = [
     {
         path: `/Donate/links/:linkIdentifer`,
         element: <LinkRedirect />
->>>>>>> master
     }
 
 ];

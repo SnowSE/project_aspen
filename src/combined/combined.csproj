@@ -67,11 +67,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\components\Homepage.spec.tsx" />
-<<<<<<< HEAD
     <TypeScriptCompile Remove="ClientApp\src\components\Stripe\PaymentForm.spec.tsx" />
-=======
     <TypeScriptCompile Remove="ClientApp\src\components\Share\SharingButtonCustomLink.tsx" />
->>>>>>> master
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\ApiContext.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />

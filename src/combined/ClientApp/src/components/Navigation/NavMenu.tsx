@@ -17,13 +17,8 @@ const NavMenu = () => {
         { text: 'Home', href: '/' },
         { text: 'Add Event', href: '/createEvent' },
         { text: 'Admin Dashboard', href: '/AdminDashboard' },
-<<<<<<< HEAD
-        { text: 'My Editor', href: '/MyEditor' },
 
-
-=======
         { text: 'Donate', href: '/Donate' },
->>>>>>> master
 
     ]
 
