@@ -104,8 +104,8 @@ export function TeamDetails() {
 
   const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-    const loggedInUSerid = localStorage.getItem("LoggedInUserid");
-
+   
+    console.log("Logged in user id:", loggedInUserId);
   return (
       <Box>
           <CardContent>
@@ -155,7 +155,7 @@ export function TeamDetails() {
               })()
           }  
           {(() => {
-              if (teamOwner?.name) {
+              if (loggedInUserId === teamOwner?.id) {
                   return (
                       <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                           <Button
