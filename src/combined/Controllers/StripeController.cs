@@ -4,6 +4,7 @@ using Stripe.Checkout;
 using System.Diagnostics;
 using combined.Models.Entities;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Api.Controllers;
 
@@ -15,7 +16,7 @@ namespace Api.Controllers;
         private readonly IDonationRepository donationRepository;
         private static string public_URL = "";
         public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
-        
+
         public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
         {
             this.configuration = configuration;
@@ -37,27 +38,28 @@ namespace Api.Controllers;
                 // Handle the event
             if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
             {
-                Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
+                Log.Warning(responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message, "error");
 
             }
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
             {
-                Console.WriteLine("success");
+                Log.Information(stripeEvent.Type, "Payment success");
 
             }
             // ... handle other event types
             if(stripeEvent.Type == Events.ChargeFailed)
             {
-                Console.WriteLine("Charge Failed");
+                Log.Warning(stripeEvent.Type, "Charge Failed");
             }
             else
             {
-                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                Log.Warning(stripeEvent.Type, "Unhandled event type: {0}");
             }
                 return Ok();
             }
             catch (StripeException e)
             {
+                Log.Warning(e, "Bad Stripe Request");
                 return BadRequest();
             }
         }
@@ -84,7 +86,7 @@ namespace Api.Controllers;
 
         var newDonation = new Donation {
             EventID=eventId,
-            TeamID=teamId,      
+            TeamID=teamId,
             PersonID=personId,
             Amount=amount/100,
             Date = dateTime,
@@ -117,7 +119,7 @@ namespace Api.Controllers;
         {
             // Create a payment flow from the items in the cart.
             // Gets sent to Stripe API.
-           
+
 
         var options = new SessionCreateOptions
             {
@@ -126,12 +128,12 @@ namespace Api.Controllers;
                 SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
                 CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
                 PaymentMethodTypes = new List<string> // Only card available in test mode?
-                
+
             {
                 "card"
             },
                 CustomerEmail = payment.donationEmail,
-                
+
 
                 LineItems = new List<SessionLineItemOptions>
             {
