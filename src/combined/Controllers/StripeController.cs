@@ -15,10 +15,6 @@ namespace Api.Controllers;
     {
         private readonly IConfiguration configuration;
         private readonly IDonationRepository donationRepository;
-        private static string public_URL = "";
-        public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
-
-        public StripeController(IConfiguration configuration, IDonationRepository donationRepository)
         private readonly IPaymentFailureRepository paymentFailureRepository;
 
 
@@ -74,7 +70,7 @@ namespace Api.Controllers;
             // Handle the event
             if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
             {
-                Log.Warning(responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message, "error");
+                Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
 
                 var paymentFailed = new PaymentFailure
                 {
@@ -93,28 +89,28 @@ namespace Api.Controllers;
                 }
                 catch (Exception e)
                 {
+                    Log.Warning(e.Message, "Stipe Payment Intent Failed");
                     Console.Write(e.Message);
-
+                }
             }
             if (stripeEvent.Type == Events.PaymentIntentSucceeded)
             {
-                Log.Information(stripeEvent.Type, "Payment success");
-
+                Log.Information(stripeEvent.Type, "Stipe Payment Success");
             }
             // ... handle other event types
             if(stripeEvent.Type == Events.ChargeFailed)
             {
-                Log.Warning(stripeEvent.Type, "Charge Failed");
+                Log.Warning(stripeEvent.Type, "Stripe Charge Failed");
             }
             else
             {
-                Log.Warning(stripeEvent.Type, "Unhandled event type: {0}");
+                Log.Warning(stripeEvent.Type, "Unhandled Event Type");
             }
                 return Ok();
             }
             catch (StripeException e)
             {
-                Log.Warning(e, "Bad Stripe Request");
+                Log.Warning(e, "Stripe Exceiption");
                 return BadRequest();
             }
     }
@@ -172,22 +168,12 @@ namespace Api.Controllers;
     [NonAction]
         public async Task<string> CheckOut(Payment payment)
         {
-            // Create a payment flow from the items in the cart.
-            // Gets sent to Stripe API.
-
         // Create a payment flow from the items in the cart.
         // Gets sent to Stripe API.
 
         var personId = payment.personId.ToString();
 
         var options = new SessionCreateOptions
-            {
-                // Stripe calls the URLs below when certain checkout events happen such as success and failure.
-                //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-                SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
-                CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
-                PaymentMethodTypes = new List<string> // Only card available in test mode?
-
         {
             // Stripe calls the URLs below when certain checkout events happen such as success and failure.
             //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
@@ -197,9 +183,6 @@ namespace Api.Controllers;
             {
                 "card"
             },
-                CustomerEmail = payment.donationEmail,
-
-
 
             CustomerEmail = payment.donationEmail,
                 LineItems = new List<SessionLineItemOptions>

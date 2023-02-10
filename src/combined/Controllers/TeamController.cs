@@ -1,5 +1,6 @@
 ﻿
 namespace Api.Controllers;
+using Serilog;
 
 [Route("api/teams")]
 [ApiController]
@@ -26,7 +27,7 @@ public class TeamController : ControllerBase
     [HttpGet("event/{eventId}")]
     public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
-        log.LogInformation("Getting Team by event {eventId}", eventId);
+        Log.Information("Getting Team by event {eventId}", eventId);
         try
         {
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
@@ -34,6 +35,7 @@ public class TeamController : ControllerBase
         }
         catch (NotFoundException<IEnumerable<Team>> ex)
         {
+            Log.Information(ex.Message, "Event Not Found");
             return NotFound(ex.Message);
         }
     }
@@ -41,9 +43,12 @@ public class TeamController : ControllerBase
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
-        log.LogInformation("Getting team by teamId {teamId}", teamId);
+        Log.Information("Getting team by teamId {teamId}", teamId);
         if (!await teamRepository.ExistsAsync(teamId))
+        {
+            Log.Information("Does not Exist");
             return NotFound("Team id does not exist");
+        }
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
     }
 
