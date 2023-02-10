@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-
-namespace Api.Models.Entities
+﻿namespace combined.Models.DbModels
 {
-    public class PaymentFailure
+    public record DbPaymentFailure
     {
         public long ID { get; init; }
         public long EventID { get; init; }
+        public DbEvent Event { get; init; }
         public long? PersonID { get; init; }
+        public DbPerson Person { get; init; }
         public long Amount { get; init; }
         public string Code { get; init; }
         public string? Decline_Code { get; init; }
