@@ -155,7 +155,7 @@ export function TeamDetails() {
               })()
           }  
           {(() => {
-              if (teamOwner?.name) {
+              if (loggedInUserId === ownerId) {
                   return (
                       <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                           <Button

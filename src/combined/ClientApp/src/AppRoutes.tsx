@@ -88,7 +88,7 @@ const AppRoutes = [
         element: <LinkRedirect />
     },
     {
-        path: ` / EditTeam /: EditTeam`,
+        path: `/EditTeam`,
         element: <EditTeam />
     }
 
