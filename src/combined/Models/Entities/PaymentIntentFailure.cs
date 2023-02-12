@@ -111,7 +111,7 @@
         public string client_secret { get; set; }
         public string confirmation_method { get; set; }
         public string currency { get; set; }
-        public object customer { get; set; }
+        public string customer { get; set; }
         public object description { get; set; }
         public object destination { get; set; }
         public object dispute { get; set; }

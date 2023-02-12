@@ -5,37 +5,38 @@ using System.Diagnostics;
 using combined.Models.Entities;
 using Newtonsoft.Json;
 using System.Net.Http;
+using static System.Net.WebRequestMethods;
+using System.Net;
+using shared;
+using Person = Api.Models.Entities.Person;
 
 namespace Api.Controllers;
 
-    [Route("api/stripe")]
-    [ApiController]
-    public class StripeController : ControllerBase
-    {
-        private readonly IConfiguration configuration;
-        private readonly IDonationRepository donationRepository;
-        private readonly IPaymentFailureRepository paymentFailureRepository;
-
+[Route("api/stripe")]
+[ApiController]
+public class StripeController : ControllerBase
+{
+    private readonly IConfiguration configuration;
+    private readonly IDonationRepository donationRepository;
+    private readonly IPaymentFailureRepository paymentFailureRepository;
     
 
     private static string public_URL = "";
     private HttpClient httpClient = new HttpClient();
     public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
         
-        public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository)
-        {
-            this.configuration = configuration;
-            this.donationRepository = donationRepository;
-            this.paymentFailureRepository = paymentFailureRepository;
-
+    public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository)
+    {
+        this.configuration = configuration;
+        this.donationRepository = donationRepository;
+        this.paymentFailureRepository = paymentFailureRepository;
         public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
-        }
+    }
+
     [NonAction]
     public async Task<DtoEvent> GetClosestEventAsync()
     {
-
         var allEvents = await httpClient.GetFromJsonAsync<List<DtoEvent>>($"{public_URL}/api/events");
-
         DtoEvent closestEvent = new DtoEvent();
         double prev = 0;
         double smallestTime = 0;
@@ -54,22 +55,31 @@ namespace Api.Controllers;
         }
         return closestEvent;
     }
+
     [HttpPost("webhook")]
-        public async Task<ActionResult> Index()
-        {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            var responseObject = JsonConvert.DeserializeObject<Root>(json);
-            var closestEvent = await GetClosestEventAsync();
+    public async Task<ActionResult> Index()
+    {
+        var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+        var responseObject = JsonConvert.DeserializeObject<Root>(json);
+        var closestEvent = await GetClosestEventAsync();
+        long? personId = null;
+
+       
+        var stripeEvent = EventUtility.ConstructEvent(json,
+        Request.Headers["Stripe-Signature"], endpointSecret);
 
         try
         {
-            var stripeEvent = EventUtility.ConstructEvent(json,
-                Request.Headers["Stripe-Signature"], endpointSecret);
-
-            // Handle the event
             if (stripeEvent.Type == Events.PaymentIntentPaymentFailed)
             {
                 Console.WriteLine("error", responseObject.data.@object.last_payment_error.decline_code, responseObject.data.@object.last_payment_error.code, responseObject.data.@object.last_payment_error.message);
+
+                var customerService = new CustomerService();
+                var currentCustomer = customerService.Get(responseObject.data.@object.customer);
+                if (currentCustomer.Name != null)
+                {
+                    personId = long.Parse(currentCustomer.Name);
+                }
 
                 var paymentFailed = new PaymentFailure
                 {
@@ -77,45 +87,29 @@ namespace Api.Controllers;
                     Decline_Code = responseObject.data.@object.last_payment_error.decline_code,
                     Message = responseObject.data.@object.last_payment_error.message,
                     Code = responseObject.data.@object.last_payment_error.code,
-                    PersonID = 1,
+                    PersonID = personId,
                     EventID = closestEvent.ID
                 };
                 try
                 {
 
                     await paymentFailureRepository.Add(paymentFailed);
+                    return Ok();
 
                 }
                 catch (Exception e)
                 {
                     Console.Write(e.Message);
-                    
+                    return BadRequest();
                 }
             }
-            if (stripeEvent.Type == Events.PaymentIntentSucceeded)
-            {
-                Console.WriteLine("success");
-
-            }
-            // ... handle other event types
-            if(stripeEvent.Type == Events.ChargeFailed)
-            {
-                Console.WriteLine("Charge Failed");
-            }
-            else
-            {
-                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
-            }
-                return Ok();
-            }
-            catch (StripeException e)
-            {
-                return BadRequest();
-            }
+        }
+        catch(StripeException e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok();
     }
-
-
-
 
     [HttpPost]
     public async Task<ActionResult<string>> payment([FromBody] Payment payment)
@@ -124,13 +118,12 @@ namespace Api.Controllers;
         return sessionId;
     }
 
-        [HttpGet("success")]
-        public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
+    [HttpGet("success")]
+    public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
 
-        {
-            var dateTime = DateTime.UtcNow;
-            var session = new SessionService();
-
+    {
+        var dateTime = DateTime.UtcNow;
+        var session = new SessionService();
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
 
@@ -144,25 +137,22 @@ namespace Api.Controllers;
             LinkGuid = linkGuid
         };
 
-
         await donationRepository.AddAsync(newDonation);
 
         return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
     }
 
-        [HttpGet("failure")]
-        public ActionResult CheckoutFailure(string sessionId)
-        {
-            var session = new SessionService();
-            var s = session.Get(sessionId);
-            var paymentIntentId = s.PaymentIntentId;
-            var p = new PaymentIntentService();
-            var paymentIntent = p.Get(paymentIntentId);
+    [HttpGet("failure")]
+    public ActionResult CheckoutFailure(string sessionId)
+    {
+        var session = new SessionService();
+        var s = session.Get(sessionId);
+        var paymentIntentId = s.PaymentIntentId;
+        var p = new PaymentIntentService();
+        var paymentIntent = p.Get(paymentIntentId);
 
-            return Redirect($"{public_URL}/faileddonation");
-        }
-
-
+        return Redirect($"{public_URL}/faileddonation");
+    }
 
     [NonAction]
         public async Task<string> CheckOut(Payment payment)
@@ -171,19 +161,24 @@ namespace Api.Controllers;
         // Gets sent to Stripe API.
 
         var personId = payment.personId.ToString();
+        var customer = new CustomerCreateOptions {
+            Name = personId,
+            Email = payment.donationEmail
+        };
 
+        var customerService = new CustomerService();
+        var newCustomer = await customerService.CreateAsync(customer);
         var options = new SessionCreateOptions
         {
             // Stripe calls the URLs below when certain checkout events happen such as success and failure.
             //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
             SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
             CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
+            Customer = newCustomer.Id,
             PaymentMethodTypes = new List<string> // Only card available in test mode?
             {
                 "card"
             },
-
-            CustomerEmail = payment.donationEmail,
                 LineItems = new List<SessionLineItemOptions>
 
             {
@@ -197,7 +192,6 @@ namespace Api.Controllers;
                         {
                             Name = payment.teamName,
                             Description = payment.teamName + " Donation"
-                            //Images = new List<string> { payment.teamName }
                         },
                     },
                     Quantity = 1,
@@ -210,15 +204,7 @@ namespace Api.Controllers;
         var session = await service.CreateAsync(options);
         return session.Id;
     }
-
-
-
-
-
-
-
 }
-
 
 public class Payment {
     public int amount { get; set; }
@@ -233,6 +219,4 @@ public class Payment {
     public string donationPhoneNumber { get; set; }
     public string donationDateTime { get; set; }
     public string? linkGuid { get; set; }
-
 }
-
