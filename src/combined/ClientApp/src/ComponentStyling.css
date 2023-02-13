@@ -556,3 +556,15 @@
 .BackToDonateButtonDetails:hover {
     background-color: mediumpurple !important;
 }
+
+
+.JoinTeamModal {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 400px !important;
+    background-color: white !important;
+    border: 2px solid #000 !important;
+    box-shadow: 24px !important;
+}
