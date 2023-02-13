@@ -6,14 +6,14 @@ import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembe
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
-import paymentFailure from "../../JsModels/paymentFailure";
+import PaymentFailure from "../../JsModels/paymentFailure";
 
 
 
 const SiteAdmin = () => {
     const { currentEvent } = useContext(EventContext);
     const [teamsList, setTeams] = useState<Team[]>();
-    const [stripeFailureLogs, setStripeFailureLogs] = useState<paymentFailure[]>();
+    const [stripeFailureLogs, setStripeFailureLogs] = useState<PaymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
 
     useEffect(() => {
@@ -22,9 +22,9 @@ const SiteAdmin = () => {
                 console.log("No current event found!")
                 return;
             }
-            const endPoint = process.env.PUBLIC_URL + `/stripe/failuers/`;
+            const endPoint = process.env.PUBLIC_URL + `/failures/`;
             var stripeDBLogs = await fetch(endPoint)
-            var jsonStripeFailures: paymentFailure[] = JSON.parse(JSON.stringify(stripeDBLogs));
+            var jsonStripeFailures: PaymentFailure[] = JSON.parse(JSON.stringify(stripeDBLogs));
             var teamsList = await getTeamsList(currentEvent.id)
             var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
             setStripeFailureLogs(jsonStripeFailures)
