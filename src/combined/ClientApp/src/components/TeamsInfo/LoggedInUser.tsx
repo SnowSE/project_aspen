@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Grid, Typography, Modal} from "@mui/material";
+import { Box, Button,Typography, Modal} from "@mui/material";
 import axios from "axios";
 import {  useState } from "react";
 import {  useNavigate, useSearchParams } from "react-router-dom";
@@ -126,11 +126,13 @@ export function LoggedInUser() {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             Are you sure you want your name to be:
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Typography id="modal-modal-description" sx={{alignContent: "center"} }>
                             {userName}
                         </Typography>
-                        <Button type='submit' variant='contained' onClick={addTeamMemberHandler}> Yes </Button>
-                        <Button variant='contained' onClick={handleClose} > No </Button>
+                        <Box className="JoinTeamModalButtonPosition">
+                            <Button type='submit' variant='contained' onClick={addTeamMemberHandler} className="JoinTeamModalYesButton"> Yes </Button>
+                            <Button variant='contained' onClick={handleClose} className="JoinTeamModalNoButton" > No </Button>
+                        </Box>
                     </Box>
                 </Modal>
                 
