@@ -24,4 +24,3 @@ export default class PaymentFailure {
       this.id = id ?? - 1;
     }
   }
-  

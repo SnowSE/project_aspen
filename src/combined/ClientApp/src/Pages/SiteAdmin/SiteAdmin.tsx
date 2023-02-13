@@ -6,14 +6,14 @@ import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembe
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
-import paymentFailure from "../../JsModels/paymentFailure";
+import PaymentFailure from "../../JsModels/paymentFailure";
 
 
 
 const SiteAdmin = () => {
     const { currentEvent } = useContext(EventContext);
     const [teamsList, setTeams] = useState<Team[]>();
-    const [stripeFailureLogs, setStripeFailureLogs] = useState<paymentFailure[]>();
+    const [stripeFailureLogs, setStripeFailureLogs] = useState<PaymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
 
     useEffect(() => {
@@ -22,17 +22,16 @@ const SiteAdmin = () => {
                 console.log("No current event found!")
                 return;
             }
-            const endPoint = process.env.PUBLIC_URL + `/stripe/failuers/`;
+            const endPoint = process.env.PUBLIC_URL +`/api/stripe/failures`;
             var stripeDBLogs = await fetch(endPoint)
-            var jsonStripeFailures: paymentFailure[] = JSON.parse(JSON.stringify(stripeDBLogs));
+            const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
             var teamsList = await getTeamsList(currentEvent.id)
             var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
-            setStripeFailureLogs(jsonStripeFailures)
+            setStripeFailureLogs(stripeFailures)
             setTeams(jsonTeams)
         }
         fetchData()
-    }, [currentEvent, stripeFailureLogs])
-
+    }, [currentEvent])
     return (
 
         <Box>
@@ -102,17 +101,19 @@ const SiteAdmin = () => {
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {stripeFailureLogs?.map((row : any) => (
+                            {stripeFailureLogs?.map((row : any) => {
+
+                            return (
                                 <TableRow
-                                    // key={row.de}
+                                     key={row.decline_code}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        {row.code}
                                     </TableCell>
-                                    <TableCell align="right">{row.description}</TableCell>
+                                    <TableCell align="right">{row.message}</TableCell>
                                 </TableRow>
-                            ))}
+                            )})}
                             </TableBody>
                         </Table>
                     </TableContainer>
