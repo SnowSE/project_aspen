@@ -116,7 +116,7 @@ export function TeamDetails() {
                       {currentTeamRegisrtations.map((registration) =>                          
                               registration.isPublic === true ?
                                   <li key={registration.id}> {registration.nickname}</li>
-                                        : <li>ananymous team member</li>)}
+                                        : <li>Anonymous User</li>)}
                   </ul>
               </Typography>
           </CardContent>
