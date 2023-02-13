@@ -6,6 +6,7 @@ import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembe
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
+import paymentFailure from "../../JsModels/paymentFailure";
 
 
 
@@ -30,23 +31,7 @@ const SiteAdmin = () => {
             setTeams(jsonTeams)
         }
         fetchData()
-    }, [currentEvent])
-
-    function createData( name: string, description: string) {
-        return { name, description };
-      }
-
-    const rows = [
-
-
-        // foreach(onbject in stripeDBLogs)
-        // {createData(stripeDBLogs.Name, stripeDBLogs.description)}
-        createData('Card Declined', 'info'),
-        createData('Card Expiered', 'info' ),
-        createData('Payment Failure', 'info'),
-        createData('Wrong CCV Code', 'info'),
-        createData('Payment Failed', 'info')
-      ];
+    }, [currentEvent, stripeFailureLogs])
 
     return (
 
@@ -117,17 +102,17 @@ const SiteAdmin = () => {
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {rows.map((row) => (
+                            {stripeFailureLogs?.map((row : any) => (
                                 <TableRow
-                                key={row.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    // key={row.de}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.description}</TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="right">{row.description}</TableCell>
                                 </TableRow>
-                                ))}
+                            ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

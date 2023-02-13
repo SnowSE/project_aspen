@@ -12,19 +12,8 @@ using Person = Api.Models.Entities.Person;
 using Api.DataAccess;
 using AutoMapper;
 using Serilog;
-using Serilog;
 
 namespace Api.Controllers;
-
-    [Route("api/stripe")]
-    [ApiController]
-    public class StripeController : ControllerBase
-    {
-        private readonly IConfiguration configuration;
-        private readonly IDonationRepository donationRepository;
-        private readonly IPaymentFailureRepository paymentFailureRepository;
-
-
 [Route("api/stripe")]
 [ApiController]
 public class StripeController : ControllerBase
@@ -38,13 +27,6 @@ public class StripeController : ControllerBase
     private static string public_URL = "";
     private HttpClient httpClient = new HttpClient();
     public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
-
-        public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository)
-        {
-            this.configuration = configuration;
-            this.donationRepository = donationRepository;
-            this.paymentFailureRepository = paymentFailureRepository;
-
 
     public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository, IMapper mapper)
     {
@@ -128,7 +110,7 @@ public class StripeController : ControllerBase
                 catch (Exception e)
                 {
                     Log.Warning(e.Message, "Stipe Payment Intent Failed");
-                    Console.Write(e.Message);
+                    return BadRequest();
 
                 }
             }
