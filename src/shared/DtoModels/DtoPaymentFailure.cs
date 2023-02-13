@@ -11,7 +11,7 @@ namespace shared.DtoModels
         public long? PersonID { get; set; }
         public long Amount { get; set; }
         public string Code { get; set; }
-        public string Decline_code { get; set; }
+        public string? Decline_Code { get; set; }
         public string Message { get; set; }
 
     }
