@@ -28,8 +28,7 @@
                 {
                     logger.LogWarning("Maybe it's a connection string issue, or the database is not up?\n");
                     logger.LogWarning(@"If so, try this command FROM THE dev-resources/api DIRECTORY:
-
-docker compose up 
+docker compose up -d
 
 ");
                 }

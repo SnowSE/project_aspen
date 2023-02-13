@@ -103,13 +103,17 @@ export function TeamDetails() {
   };
 
   const navigate = useNavigate();
-  const loggedInUSer = localStorage.getItem("LoggedInUser");
+    const loggedInUSer = localStorage.getItem("LoggedInUser");
+   
+    console.log("Logged in user id:", loggedInUserId);
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
-                  <h4>The Team owner is: {teamOwner?.name}</h4>                  
+                  <h4>The Team owner is: {teamOwner?.name}</h4>
+                  <h4>The Team owner is: {currentTeam?.teamowner}</h4>                  
+
                   <h4>There are {currentTeamRegisrtations.length} members on this
                       team!</h4>
                   <ul>
@@ -149,6 +153,55 @@ export function TeamDetails() {
                       )
                   }
               })()
+          }  
+          {(() => {
+              if (loggedInUserId === teamOwner?.id) {
+                  return (
+                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                          <Button
+                              onClick={() =>
+                                navigate({
+                                          pathname: "/EditTeam",
+                                          search: `?${createSearchParams({
+                                              teamId: `${tId}`,
+                                              userId: `${loggedInUserId}`,
+                                          })}`,
+                                      })
+                                    
+                              }
+                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                          >
+                              Edit Team Details
+                          </Button>
+                      </Grid>
+                  )
+              } 
+          })()
+          }  
+
+          {(() => {
+              if (loggedInUserId === teamOwner?.id) {
+                  return (
+                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                          <Button
+                              onClick={() =>
+                                  navigate({
+                                      pathname: "/DeleteTeam",
+                                      search: `?${createSearchParams({
+                                          teamId: `${tId}`,
+                                          userId: `${loggedInUserId}`,
+                                      })}`,
+                                  })
+
+                              }
+                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                          >
+                              Delete Team
+                          </Button>
+                      </Grid>
+                  )
+              }
+          })()
           }  
       
       {currentTeam?.id}

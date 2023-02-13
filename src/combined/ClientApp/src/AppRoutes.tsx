@@ -14,6 +14,8 @@ import SiteAdmin from "./Pages/SiteAdmin/SiteAdmin";
 import SuccessfulDonation from "./Pages/Donation/SuccessfulDonation";
 import FailedPaymentPage from "./Pages/Donation/FailedPaymentPage";
 import LinkRedirect from "./components/LinkRedirect/LinkRedirect";
+import EditTeam from "./Pages/EditTeam/EditTeam";
+import  DeleteTeam  from "./components/TeamsInfo/DeleteTeam";
 
 const AppRoutes = [
     {
@@ -86,7 +88,16 @@ const AppRoutes = [
     {
         path: `/Donate/links/:linkIdentifer`,
         element: <LinkRedirect />
+    },
+    {
+        path: `/EditTeam`,
+        element: <EditTeam />
+    },
+    {
+        path: `/DeleteTeam`,
+        element: <DeleteTeam />
     }
+
 
 ];
 
