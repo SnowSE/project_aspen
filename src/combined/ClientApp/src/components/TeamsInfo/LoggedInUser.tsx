@@ -70,13 +70,19 @@ export function LoggedInUser() {
 
         setPersonRegistration(personRegistrations)
 
+        if (!nickName?.trim() || nickName.length === 0 || nickName === "") {
+            setNickName("Anonymous")
+        }
+
         navigate(-1);
     }
     const handleChange = (e:any) => {
         setNickName(e.target.value);
-        if (e.target.value.trim().length ===0 || e.target.value === "") {
+        if (e.target.value === "" || nickName.length === 0 || nickName === "") {
+            console.log("This should be set to anonymous")
             setNickName("Anonymous");
         } else {
+            console.log("We are adding a user with whatever their name is supposed to be")
             setNickName(e.target.value);
         }
         
