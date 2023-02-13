@@ -1,5 +1,5 @@
-﻿import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import React, { useEffect, useState} from "react";
 import { useSearchParams } from "react-router-dom";
 
 const EditTeam = () => {
@@ -13,10 +13,7 @@ const EditTeam = () => {
     if (list[0] !== null) {
         tId = parseInt(list[0]);   // parse the string back to a number.
     }
-    var ownerId = parseInt(list[1]);
-    if (list[1] !== null) {
-        ownerId = parseInt(list[1]);   // parse the string back to a number.
-    }
+   
 
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
