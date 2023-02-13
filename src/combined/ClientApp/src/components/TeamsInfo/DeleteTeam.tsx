@@ -36,7 +36,7 @@ const DeleteTeam = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await axios.put(api, currentTeam);
+            const response = await axios.delete(api, currentTeam);
             console.log(response);
             alert("Team information updated successfully!");
         } catch (error) {
