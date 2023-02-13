@@ -2,6 +2,7 @@ using Api.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Stripe;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -112,6 +113,11 @@ builder.Services.AddDbContext<AspenContext>(options =>
 {
     var connectionString = builder.Configuration["ASPEN_CONNECTION_STRING"] ?? builder.Configuration.GetConnectionString("docker");
     options.UseNpgsql(connectionString);
+});
+
+builder.Host.UseSerilog((hostContext, services, configuration) => {
+    configuration.WriteTo.Console()
+    .WriteTo.File("logs/apsenLogs.txt", rollingInterval: RollingInterval.Day);
 });
 
 var app = builder.Build();

@@ -14,7 +14,6 @@ using AutoMapper;
 using Serilog;
 
 namespace Api.Controllers;
-
 [Route("api/stripe")]
 [ApiController]
 public class StripeController : ControllerBase
@@ -28,7 +27,7 @@ public class StripeController : ControllerBase
     private static string public_URL = "";
     private HttpClient httpClient = new HttpClient();
     public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
-        
+
     public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository, IMapper mapper)
     {
         this.configuration = configuration;
@@ -75,7 +74,7 @@ public class StripeController : ControllerBase
         var closestEvent = await GetClosestEventAsync();
         long? personId = null;
 
-       
+
         var stripeEvent = EventUtility.ConstructEvent(json,
         Request.Headers["Stripe-Signature"], endpointSecret);
 
@@ -110,8 +109,9 @@ public class StripeController : ControllerBase
                 }
                 catch (Exception e)
                 {
-                    Console.Write(e.Message);
+                    Log.Warning(e.Message, "Stipe Payment Intent Failed");
                     return BadRequest();
+
                 }
             }
         }
@@ -140,7 +140,7 @@ public class StripeController : ControllerBase
 
         var newDonation = new Donation {
             EventID=eventId,
-            TeamID=teamId,      
+            TeamID=teamId,
             PersonID=personId,
             Amount=amount/100,
             Date = dateTime,

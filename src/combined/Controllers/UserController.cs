@@ -1,5 +1,6 @@
 ﻿using System.Text;
 namespace Api.Controllers;
+using Serilog;
 
 [ApiController]
 [Authorize]
