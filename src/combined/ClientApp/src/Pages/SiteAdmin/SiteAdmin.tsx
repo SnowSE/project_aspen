@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Box, Button, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionSummary, Box, Button, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, AccordionDetails } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
@@ -12,6 +12,7 @@ import Team from "../../JsModels/team";
 const SiteAdmin = () => {
     const { currentEvent } = useContext(EventContext);
     const [teamsList, setTeams] = useState<Team[]>();
+    const [stripeFailureLogs, setStripeFailureLogs] = useState<paymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
 
     useEffect(() => {
@@ -20,12 +21,32 @@ const SiteAdmin = () => {
                 console.log("No current event found!")
                 return;
             }
+            const endPoint = process.env.PUBLIC_URL + `/stripe/failuers/`;
+            var stripeDBLogs = await fetch(endPoint)
+            var jsonStripeFailures: paymentFailure[] = JSON.parse(JSON.stringify(stripeDBLogs));
             var teamsList = await getTeamsList(currentEvent.id)
             var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
+            setStripeFailureLogs(jsonStripeFailures)
             setTeams(jsonTeams)
         }
         fetchData()
     }, [currentEvent])
+
+    function createData( name: string, description: string) {
+        return { name, description };
+      }
+
+    const rows = [
+
+
+        // foreach(onbject in stripeDBLogs)
+        // {createData(stripeDBLogs.Name, stripeDBLogs.description)}
+        createData('Card Declined', 'info'),
+        createData('Card Expiered', 'info' ),
+        createData('Payment Failure', 'info'),
+        createData('Wrong CCV Code', 'info'),
+        createData('Payment Failed', 'info')
+      ];
 
     return (
 
@@ -78,6 +99,39 @@ const SiteAdmin = () => {
                         </Accordion>
                     )
                 })}
+            </Accordion>
+            <Accordion className="AccordionSpacing">
+                <AccordionSummary
+                    className="AccordionDetails"
+                    expandIcon={<ExpandMoreIcon />}
+                >
+                    <Typography> Stripe Logs </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell>Stripe Failure Name </TableCell>
+                                <TableCell align="right">Description</TableCell>
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {rows.map((row) => (
+                                <TableRow
+                                key={row.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                <TableCell component="th" scope="row">
+                                    {row.name}
+                                </TableCell>
+                                <TableCell align="right">{row.description}</TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </AccordionDetails>
             </Accordion>
         </Box>
 
