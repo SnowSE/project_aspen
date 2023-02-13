@@ -9,6 +9,9 @@ using static System.Net.WebRequestMethods;
 using System.Net;
 using shared;
 using Person = Api.Models.Entities.Person;
+using Api.DataAccess;
+using AutoMapper;
+using Serilog;
 
 namespace Api.Controllers;
 
@@ -19,18 +22,20 @@ public class StripeController : ControllerBase
     private readonly IConfiguration configuration;
     private readonly IDonationRepository donationRepository;
     private readonly IPaymentFailureRepository paymentFailureRepository;
-    
+    private readonly IMapper mapper;
+
 
     private static string public_URL = "";
     private HttpClient httpClient = new HttpClient();
     public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
         
-    public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository)
+    public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository, IMapper mapper)
     {
         this.configuration = configuration;
         this.donationRepository = donationRepository;
         this.paymentFailureRepository = paymentFailureRepository;
         public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
+        this.mapper = mapper;
     }
 
     [NonAction]
@@ -54,6 +59,12 @@ public class StripeController : ControllerBase
             }
         }
         return closestEvent;
+    }
+
+    [HttpGet("failures")]
+    public async Task<IEnumerable<DtoPaymentFailure>> GetAll()
+    {
+        return mapper.Map<IEnumerable<DtoPaymentFailure>>(await paymentFailureRepository.GetAllAsync());
     }
 
     [HttpPost("webhook")]
