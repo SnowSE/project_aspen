@@ -29,7 +29,7 @@ export function LoggedInUser() {
     
     const creationDate = new Date(0);
     //THis is under the question
-    const [isPublic, setIsPublic] = useState<boolean>(true);
+    const [isPublic] = useState<boolean>(true);
     const [nickName, setNickName] = useState<string>('');
     const [personRegistrations, setPersonRegistration] = useState([]);
     const [open, setOpen] = useState(false);
