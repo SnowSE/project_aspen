@@ -178,6 +178,31 @@ export function TeamDetails() {
               } 
           })()
           }  
+
+          {(() => {
+              if (loggedInUserId === teamOwner?.id) {
+                  return (
+                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                          <Button
+                              onClick={() =>
+                                  navigate({
+                                      pathname: "/DeleteTeam",
+                                      search: `?${createSearchParams({
+                                          teamId: `${tId}`,
+                                          userId: `${loggedInUserId}`,
+                                      })}`,
+                                  })
+
+                              }
+                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                          >
+                              Delete Team
+                          </Button>
+                      </Grid>
+                  )
+              }
+          })()
+          }  
       
       {currentTeam?.id}
       {currentTeam?.ownerID}
