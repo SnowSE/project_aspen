@@ -26,7 +26,7 @@ public class StripeController : ControllerBase
 
     private static string public_URL = "";
     private HttpClient httpClient = new HttpClient();
-    public const string endpointSecret = "whsec_dd905107598f0a108035fc58b344d801eaf59ed1e18c1f1fa385a05bd4439691";
+    public  string endpointSecret = "";
 
     public StripeController(IConfiguration configuration, IDonationRepository donationRepository, IPaymentFailureRepository paymentFailureRepository, IMapper mapper)
     {
@@ -34,6 +34,7 @@ public class StripeController : ControllerBase
         this.donationRepository = donationRepository;
         this.paymentFailureRepository = paymentFailureRepository;
         public_URL = configuration["LocalURL"] ?? "https://engineering.snow.edu/aspen/new";
+        endpointSecret = configuration["Stripe:LocalWebhookSecret"] ?? Environment.GetEnvironmentVariable("STRIPE_WEBHOOK_SECRET");
         this.mapper = mapper;
     }
 
