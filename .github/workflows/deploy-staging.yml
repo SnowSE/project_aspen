@@ -36,9 +36,8 @@ jobs:
         run: |
           cd ops/staging
           touch .env
-          echo "DUMMY_SECRET=${{ secrets.MY_DUMMY_SECRET }}" > .env
-          echo "STRIPE_SECRET_KEY=${{secrets.STRIPE__SECRETKEY}}" >> .env
-          
+          echo "STRIPE_SECRET_KEY=${{secrets.STRIPE__SECRETKEY}}" > .env
+          echo "STRIPE_WEBHOOK_SECRET=${{secrets.WEBHOOK_SECRET}}" >> .env
           cat .env
 
       - name: update staging containers
