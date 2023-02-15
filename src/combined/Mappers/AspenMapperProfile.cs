@@ -17,9 +17,6 @@ public class AspenMapperProfile : Profile
         CreateMap<Event, DtoEvent>()
             .ReverseMap();
 
-        CreateMap<DbPageData, DtoPageData>()
-            .ReverseMap();
-
         CreateMap<DbPerson, Person>()
             .ReverseMap();
 

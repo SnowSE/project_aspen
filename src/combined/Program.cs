@@ -20,7 +20,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AspenMapperProfile));
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<IPageDataRepository, PageDataRepository>();
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
