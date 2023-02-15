@@ -11,5 +11,5 @@ public record DtoLink
     public long? PersonID { get; set; }
     public DateTime Date { get; set; }
     public string LinkURL { get; set; }
-    public string LinkIdentifer { get; set; }
+    public string LinkGUID { get; set; }
 }

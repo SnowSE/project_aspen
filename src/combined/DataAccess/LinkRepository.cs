@@ -3,7 +3,7 @@
 public interface ILinkRepository
 {
     Task<Link> Add(Link link);
-    Task<Link> GetLinkByIdentiferAsync(string linkIdentifier);
+    Task<Link> LinkGUIDAsync(string linkGUID);
 
 }
 
@@ -26,9 +26,9 @@ public class LinkRepository : ILinkRepository
         await context.SaveChangesAsync();
         return mapper.Map<Link>(dbLink);
     }
-    public async Task<Link> GetLinkByIdentiferAsync(string linkIdentifier)
+    public async Task<Link> LinkGUIDAsync(string linkGUID)
     {
-        var link = await context.Links.FirstOrDefaultAsync(l => l.LinkIdentifer == linkIdentifier);
+        var link = await context.Links.FirstOrDefaultAsync(l => l.LinkGUID == linkGUID);
         return mapper.Map<Link>(link);
     }
 

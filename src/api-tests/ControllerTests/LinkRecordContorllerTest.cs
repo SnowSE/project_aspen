@@ -62,7 +62,7 @@ namespace Api.Tests.Controllers
                 PersonID = personOne.ID,
                 Date = new DateTime(1775, 7, 2).SetKindUtc(),
                 LinkURL = "http://google.com",
-                LinkIdentifer = "77d475fd-7107-4e1a-9219-bde7e0e5d007"
+                LinkGUID = "77d475fd-7107-4e1a-9219-bde7e0e5d007"
             })).Value;
 
             //Setup LinkRecord
