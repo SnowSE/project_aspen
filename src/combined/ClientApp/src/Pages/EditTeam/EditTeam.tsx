@@ -47,25 +47,94 @@ const EditTeam = () => {
 
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setCurrentTeam({
+                    ...currentTeam,
+                    image: e.target?.result as string,
+                });
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    };
+
 
 
     return (
         <div>
             {currentTeam ? (
+
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        Team Name:
+                    <div className="form-group">
+                        <label htmlFor="name">Team Name:</label>
                         <input
                             type="text"
+                            id="name"
                             value={currentTeam.name}
                             onChange={(event) =>
-                                setCurrentTeam({ ...currentTeam, name: event.target.value })
+                                setCurrentTeam({
+                                    ...currentTeam,
+                                    name: event.target.value,
+                                })
                             }
                         />
-                    </label>
-                    {/* Add other fields to display and edit the team information */}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="image">Team Image:</label>
+                        <input
+                            type="file"
+                            id="image"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        {currentTeam.image && (
+                            <img
+                                className="team-image-preview"
+                                src={currentTeam.image}
+                                alt="Team Preview"
+                            />
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="description">Team Description:</label>
+                        <textarea
+                            id="description"
+                            value={currentTeam.description}
+                            onChange={(event) =>
+                                setCurrentTeam({
+                                    ...currentTeam,
+                                    description: event.target.value,
+                                })
+                            }
+                        ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="donation-goal">Donation Goal:</label>
+                        <input
+                            type="number"
+                            id="donation-goal"
+                            value={currentTeam.donationGoal}
+                            onChange={(event) =>
+                                setCurrentTeam({
+                                    ...currentTeam,
+                                    donationGoal: parseInt(event.target.value),
+                                })
+                            }
+                        />
+                    </div>
+
                     <button type="submit">Save</button>
+
                 </form>
+
+
+
+
             ) : (
                 "Loading..."
             )}
