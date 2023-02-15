@@ -33,7 +33,12 @@ export function LoggedInUser() {
     const [nickName, setNickName] = useState<string>('');
     const [personRegistrations, setPersonRegistration] = useState([]);
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        if (nickName === null || nickName === '' || !nickName?.trim()) {
+            setNickName("Anonymous")
+        }
+        setOpen(true);
+    }
     const handleClose = () => setOpen(false);
 
 
@@ -45,6 +50,7 @@ export function LoggedInUser() {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
         var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
+        
         
         const currentUser = await axios.get(currentUserUrl, config)
         console.log("I am the current user", Number(currentUser.data.id) );
@@ -70,21 +76,10 @@ export function LoggedInUser() {
 
         setPersonRegistration(personRegistrations)
 
-        if (!nickName?.trim() || nickName.length === 0 || nickName === "") {
-            setNickName("Anonymous")
-        }
-
         navigate(-1);
     }
     const handleChange = (e:any) => {
         setNickName(e.target.value);
-        if (e.target.value === "" || nickName.length === 0 || nickName === "") {
-            console.log("This should be set to anonymous")
-            setNickName("Anonymous");
-        } else {
-            console.log("We are adding a user with whatever their name is supposed to be")
-            setNickName(e.target.value);
-        }
         
     };
 
@@ -93,7 +88,7 @@ export function LoggedInUser() {
         userName = <Typography>Anonymous</Typography>
     }
     else {
-        userName = <Typography>{nickName }</Typography>
+        userName = <Typography>{nickName}</Typography>
     }
 
     return (
