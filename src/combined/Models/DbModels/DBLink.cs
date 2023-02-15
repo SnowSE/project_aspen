@@ -9,7 +9,7 @@ public record DbLink
     public long PersonID { get; init; }
     public DateTime Date { get; init; }
     public string LinkURL { get; init; }
-    public string LinkIdentifer { get; init; }
+    public string LinkGUID { get; init; }
 
 }
 

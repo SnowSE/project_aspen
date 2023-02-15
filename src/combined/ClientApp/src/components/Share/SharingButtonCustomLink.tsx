@@ -9,7 +9,7 @@ import axios from "axios";
 const SharingButtonCustomLink: React.FC = () => {
     const shareUrl = window.location.href;
     const { currentEvent } = useContext(EventContext);
-    const [linkIdentifier, setlinkIdentifier] = useState<string>("");
+    const [linkGUID, setlinkGUID] = useState<string>("");
     const [linkShareUrl, setLinkShareUrl] = useState<string>(shareUrl);
     const [currentUserId, setCurrentUserId] = useState<number>(-1);
 
@@ -38,11 +38,11 @@ const SharingButtonCustomLink: React.FC = () => {
     
 
     async function postLink() {
-        if (linkShareUrl === null || linkIdentifier === "") {
-        const tempLinkIdentifier = generateGUID()
-            setlinkIdentifier(tempLinkIdentifier);
-            let shareUrlFinal = shareUrl + "/links/" + tempLinkIdentifier
-            setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
+        if (linkShareUrl === null || linkGUID === "") {
+        const tempLinkGUID = generateGUID()
+            setlinkGUID(tempLinkGUID);
+            let shareUrlFinal = shareUrl + "/links/" + tempLinkGUID
+            setLinkShareUrl(shareUrl + "/links/" + tempLinkGUID);
             try {
                 if (currentUserId !== -1) {
                     await axios.post(`${process.env.PUBLIC_URL}/api/links`,
@@ -51,7 +51,7 @@ const SharingButtonCustomLink: React.FC = () => {
                             personID: currentUserId,
                             date: new Date(),
                             linkURL: shareUrlFinal,
-                            linkIdentifer: tempLinkIdentifier
+                            linkGUID: tempLinkGUID
                         })
                 }
             }
@@ -67,7 +67,7 @@ const SharingButtonCustomLink: React.FC = () => {
                         personID: currentUserId,
                         date: new Date(),
                         linkURL: linkShareUrl,
-                        linkIdentifer: linkIdentifier
+                        linkGUID: linkGUID
                     })
             }
             catch (error) {
@@ -79,7 +79,7 @@ const SharingButtonCustomLink: React.FC = () => {
             setLinkShareUrl(shareUrl)
         }
 
-        setlinkIdentifier("");
+        setlinkGUID("");
     }
 
     const handleClick = async () => {
@@ -90,9 +90,9 @@ const SharingButtonCustomLink: React.FC = () => {
 
     useEffect(() => {
         getCurrentUser();
-        const tempLinkIdentifier = generateGUID()
-        setlinkIdentifier(tempLinkIdentifier);
-        setLinkShareUrl(shareUrl + "/links/" + tempLinkIdentifier);
+        const tempLinkGUID = generateGUID()
+        setlinkGUID(tempLinkGUID);
+        setLinkShareUrl(shareUrl + "/links/" + tempLinkGUID);
     }, [shareUrl, setLinkShareUrl, getCurrentUser]);
 
     return (

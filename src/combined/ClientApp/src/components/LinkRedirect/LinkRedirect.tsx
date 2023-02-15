@@ -30,11 +30,11 @@ const LinkRedirect: React.FC = () => {
 
         let linkId2 = -1;
         try {
-            var linkIdentifier = url[url.length - 1];
+            var linkGUID = url[url.length - 1];
             await axios
-                .get(`${process.env.PUBLIC_URL}/api/links/${linkIdentifier}`, {
+                .get(`${process.env.PUBLIC_URL}/api/links/${linkGUID}`, {
                     params: {
-                        linkIdentifier: linkIdentifier,
+                        linkGUID: linkGUID,
                     },
                 })
                 .then((response) => {

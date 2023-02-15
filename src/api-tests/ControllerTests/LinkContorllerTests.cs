@@ -51,7 +51,7 @@ namespace Api.Tests.Controllers
                 PersonID = personOne.ID,
                 Date = new DateTime(1775, 7, 2).SetKindUtc(),
                 LinkURL = "http://google.com",
-                LinkIdentifer = "77d475fd-7107-4e1a-9219-bde7e0e5d007"
+                LinkGUID = "77d475fd-7107-4e1a-9219-bde7e0e5d007"
             })).Value;
         }
 
@@ -61,7 +61,7 @@ namespace Api.Tests.Controllers
             testLinkLoggedInUser.ID.Should().NotBe(0);
             testLinkLoggedInUser.EventID.Should().Be(1);
             testLinkLoggedInUser.LinkURL.Should().Be("http://google.com");
-            testLinkLoggedInUser.LinkIdentifer.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
+            testLinkLoggedInUser.LinkGUID.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Api.Tests.Controllers
             testGetLink.ID.Should().Be(1);
             testGetLink.EventID.Should().Be(1);
             testGetLink.LinkURL.Should().Be("http://google.com");
-            testGetLink.LinkIdentifer.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
+            testGetLink.LinkGUID.Should().Be("77d475fd-7107-4e1a-9219-bde7e0e5d007");
         }
 
     }

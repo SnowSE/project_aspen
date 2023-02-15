@@ -82,11 +82,11 @@ const AppRoutes = [
         element: <FailedPaymentPage />
     },
     {
-        path: `/links/:linkIdentifer`,
+        path: `/links/:linkGUID`,
         element: <LinkRedirect />
     },
     {
-        path: `/Donate/links/:linkIdentifer`,
+        path: `/Donate/links/:linkGUID`,
         element: <LinkRedirect />
     },
     {
