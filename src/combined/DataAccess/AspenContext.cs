@@ -10,18 +10,12 @@ public class AspenContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<DbPageData>(entity =>
-        {
-            entity.HasIndex(e => e.Key).IsUnique();
-        });
-
         builder.Entity<DbDonation>(entity =>
         {
             entity.Property(nameof(DbDonation.IsPledge)).HasDefaultValue(false);
         });
     }
 
-    public DbSet<DbPageData> PageData { get; set; }
     public DbSet<DbEvent> Events { get; set; }
     public DbSet<DbTeam> Teams { get; set; }
     public DbSet<DbRegistration> Registrations { get; set; }
