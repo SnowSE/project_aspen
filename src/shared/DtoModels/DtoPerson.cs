@@ -6,6 +6,7 @@ public record DtoPerson
 {
     [SwaggerSchema(ReadOnly = true)]
     public long ID { get; set; }
+    public long TeamID { get; set; }
 
     public string AuthID { get; set; }
 

@@ -14,6 +14,8 @@ public class Person
         Bio = bio;
     }
     public long ID { get; init; }
+    public Team Team { get; init; }
+    public long TeamID { get; init; }
 
     public string? AuthID { get; init; }
 
