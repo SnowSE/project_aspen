@@ -16,7 +16,6 @@ const PaymentForm: React.FC<Props> = (props) => {
     const { currentEvent, loading } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
-    const [teamId, setTeamId] = useState(null)
     const [teamName, setTeamName] = useState<string>('')
     const linkGuid= props.personGUID
     const [userId, setUserId] = useState<string | number | null | undefined>(null);
@@ -43,26 +42,6 @@ const PaymentForm: React.FC<Props> = (props) => {
                 setUserName("Anonymous")
             })
         }
-        const getTeam = async () => {
-            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
-                response.data.forEach((registration: any) => {
-                    if (registration.ownerID === userId) {
-
-                        setTeamId(registration.teamID)
-                    }
-
-                })
-            }).catch((error) => {
-            })
-        }
-
-        const getTeamName = async () => {
-            await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
-                setTeamName(response.data.name)
-            }).catch((error) => {
-                setTeamName("Anonymous")
-            })
-        }
 
         const serviceCalls = async () => {
             await getUser()
@@ -71,15 +50,10 @@ const PaymentForm: React.FC<Props> = (props) => {
                 setTeamName("Anonymous")
 
             }
-            else {
-                await getTeam()
-                await getTeamName()
-
-            }
         }
         serviceCalls()
 
-    }, [teamId, loading, BaseUrl, linkGuid, userId])
+    }, [loading, BaseUrl, linkGuid, userId])
 
     useEffect(() => {
         console.log("here in second use effect")
@@ -97,24 +71,13 @@ const PaymentForm: React.FC<Props> = (props) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // const paymentMethodResult = await stripe?.createPaymentMethod({
-        //     type: "card",
-        //     card: elements!.getElement(CardElement)!
-        // })
-
-        // console.log(paymentMethodResult)
-        // if (!paymentMethodResult?.error) {
-        // const id = paymentMethodResult?.paymentMethod.id
-
 
         await axios.post(`${BaseUrl}/api/stripe`,
             {
                 amount: (donationAmount * 1000),
                 id: "paymentid",
-                teamName: teamName,
-                teamId: teamId,
+                teamName: "TestTeam",
                 personId: userId,
-                eventId: currentEvent.id,
                 personName: userName,
                 donationName: donationSubmitName,
                 donationEmail: donationEmail,

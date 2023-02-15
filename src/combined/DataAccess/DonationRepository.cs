@@ -8,8 +8,6 @@ public interface IDonationRepository
     public Task<bool> ExistsAsync(long id);
     Task<Donation> GetByIdAsync(long id);
     Task<IEnumerable<Donation>> GetAllAsync();
-    Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId);
-    Task<IEnumerable<Donation>> GetByTeamIdAsync(long eventId, long teamId);
     Task<decimal> GetTeamDonationSum(long eventID, long teamID);
     Task<decimal> GetEventDonationSum(long eventID);
 }

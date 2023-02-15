@@ -99,7 +99,6 @@ public class StripeController : ControllerBase
                     Message = responseObject.data.@object.last_payment_error.message,
                     Code = responseObject.data.@object.last_payment_error.code,
                     PersonID = personId,
-                    EventID = closestEvent.ID
                 };
                 try
                 {
@@ -130,7 +129,7 @@ public class StripeController : ControllerBase
     }
 
     [HttpGet("success")]
-    public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
+    public async Task<ActionResult> CheckoutSuccess(long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
 
     {
         var dateTime = DateTime.UtcNow;
@@ -138,9 +137,7 @@ public class StripeController : ControllerBase
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
 
-        var newDonation = new Donation {
-            EventID=eventId,
-            TeamID=teamId,      
+        var newDonation = new Donation {    
             PersonID=personId,
             Amount=amount/100,
             Date = dateTime,
@@ -183,7 +180,7 @@ public class StripeController : ControllerBase
         {
             // Stripe calls the URLs below when certain checkout events happen such as success and failure.
             //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-            SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
+            SuccessUrl = $"{public_URL}/api/stripe/success?personId={payment.personId}&&personName={payment.personName}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
             CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
             Customer = newCustomer.Id,
             PaymentMethodTypes = new List<string> // Only card available in test mode?
@@ -220,9 +217,7 @@ public class StripeController : ControllerBase
 public class Payment {
     public int amount { get; set; }
     public string id { get; set; }
-    public int? teamId { get; set; }
     public int? personId { get; set; }
-    public int eventId { get; set; }
     public string personName { get; set; }
     public string teamName { get; set; }
     public string donationName { get; set; }

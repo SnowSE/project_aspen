@@ -41,7 +41,6 @@ public class DonationControllerTest
 
         unassignedDonation = new DtoDonation
         {
-            EventID = testEvent.ID,
             Amount = 1_000M,
             Date = new DateTime(1775, 7, 4).SetKindUtc()
         };
@@ -60,14 +59,14 @@ public class DonationControllerTest
 
         team1Donations = new[]
         {
-            createDonation(testEvent.ID, team1.ID, 100),
-            createDonation(testEvent.ID, team1.ID, 200)
+            createDonation(100),
+            createDonation(200)
         };
 
         team2Donations = new[]
         {
-            createDonation(testEvent.ID, team2.ID, 300),
-            createDonation(testEvent.ID, team2.ID, 400)
+            createDonation(300),
+            createDonation(400)
         };
 
         foreach (var donation in team1Donations.Union(team2Donations))
@@ -76,15 +75,12 @@ public class DonationControllerTest
         }
     }
 
-    private DtoDonation createDonation(long eventId, long? teamId, decimal amount)
+    private DtoDonation createDonation(decimal amount)
     {
         return new DtoDonation
         {
             Amount = amount,
             Date = new DateTime(1775, 7, 4).SetKindUtc(),
-            EventID = eventId,
-            TeamID = teamId,
-            TeamName = team1.ID == teamId ? team1.Name : team2.Name,
             IsPledge = false,
             TransactionNumber = Guid.NewGuid(),
             AuthorizationNumber = ""
@@ -92,47 +88,36 @@ public class DonationControllerTest
     }
 
     [Test]
-    public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
-    {
-        var api = new AspenApi();
-        (await api.HttpClient.DeleteAsync($"api/teams/{team2.ID}"))
-            .StatusCode
-            .Should()
-            .Be(System.Net.HttpStatusCode.BadRequest);
-    }
-
-    [Test]
     public async Task CanCreateDonation()
     {
         dtoDonation.ID.Should().NotBe(0);
-        dtoDonation.EventID.Should().Be(testEvent.ID);
     }
 
-    [Test]
+/*    [Test]
     public async Task CanSumDonationsForATeam()
     {
         var actualTeam1Sum = (await donationController.GetTeamDonationSum(testEvent.ID, team1.ID)).Value;
         var expectedTeam1Sum = team1Donations.Sum(d => d.Amount);
         actualTeam1Sum.Should().Be(expectedTeam1Sum);
-    }
+    }*/
 
-    [Test]
+/*    [Test]
     public async Task CanSumDonationsForTeam2()
     {
         var actualTeam2Sum = (await donationController.GetTeamDonationSum(testEvent.ID, team2.ID)).Value;
         var expectedTeam2Sum = team2Donations.Sum(d => d.Amount);
         actualTeam2Sum.Should().Be(expectedTeam2Sum);
-    }
+    }*/
 
-    [Test]
+/*    [Test]
     public async Task CanSumDonationsForAnEntireEvent()
     {
         var actualDonationsSum = (await donationController.GetEventDonationSum(testEvent.ID)).Value;
         var expectedDonationSum = team1Donations.Union(team2Donations).Sum(d => d.Amount) + dtoDonation.Amount;
         actualDonationsSum.Should().Be(expectedDonationSum);
-    }
+    }*/
 
-    [Test]
+/*    [Test]
     public async Task GetActualDonationsForEvent()
     {
         var adminController = AdminControllerTest.GetAdminController();
@@ -143,9 +128,9 @@ public class DonationControllerTest
         expectedDonationsList.AddRange(team2Donations);
 
         actualDonationsList.Should().BeEquivalentTo(expectedDonationsList, options => options.Excluding(d => d.ID));
-    }
+    }*/
 
-    [Test]
+/*    [Test]
     public async Task GetActualDonationsForTeam()
     {
         var adminController = AdminControllerTest.GetAdminController();
@@ -153,104 +138,5 @@ public class DonationControllerTest
         var expectedDonationsList = team1Donations;
 
         actualDonationsList.Should().BeEquivalentTo(expectedDonationsList, options => options.Excluding(d => d.ID));
-    }
-
-    //[Test]
-    //public async Task CanGetCreatedDonation() //eventually
-    //{
-    //    var newDonation = new DtoDonation()
-    //    {
-    //        Description = "Marathon2",
-    //        Location = "Snow"
-    //    };
-
-    //    var eventController = GetDonationController();
-    //    var createdDonation = (await eventController.Add(newDonation)).Value;
-    //    var returnedDonation = (await eventController.GetByID(createdDonation.ID)).Value;
-
-    //    returnedDonation.ID.Should().NotBe(0);
-    //    returnedDonation.Description.Should().Be("Marathon2");
-    //}
-
-    //[Test]
-    //public async Task CanGetCreatedDonationTitle() //eventually
-    //{
-    //    var newDonation = new DtoDonation()
-    //    {
-    //        Title = "Marathon",
-    //        Description = "Cool Marathon2",
-    //        Location = "Snow"
-    //    };
-
-    //    var eventController = GetDonationController();
-    //    var createdDonation = (await eventController.Add(newDonation)).Value;
-    //    var returnedDonation = (await eventController.GetByID(createdDonation.ID)).Value;
-
-    //    returnedDonation.ID.Should().NotBe(0);
-    //    returnedDonation.Title.Should().Be("Marathon");
-    //}
-
-    //[Test]
-    //public async Task CanEditCreatedDonation() //eventually
-    //{
-    //    var newDonation = new DtoDonation()
-    //    {
-    //        Description = "Marathon2",
-    //        Location = "Snow"
-    //    };
-
-    //    var createdDonation = (await GetDonationController().Add(newDonation)).Value;
-
-    //    var changedDonation = createdDonation with { Description = "This is changed" };
-    //    await GetDonationController().Edit(changedDonation, changedDonation.ID);
-
-    //    var returnedDonation = (await GetDonationController().GetByID(createdDonation.ID)).Value;
-    //    returnedDonation.Description.Should().Be("This is changed");
-    //}
-
-    //[Test]
-    //public async Task CanEditCreatedDonationWithTitle() //eventually
-    //{
-    //    var newDonation = new DtoDonation()
-    //    {
-    //        Title = "Best title",
-    //        Description = "Marathon2",
-    //        Location = "Snow"
-    //    };
-
-    //    var createdDonation = (await GetDonationController().Add(newDonation)).Value;
-
-    //    var changedDonation = createdDonation with { Title = "This is changed" };
-    //    await GetDonationController().Edit(changedDonation, changedDonation.ID);
-
-    //    var returnedDonation = (await GetDonationController().GetByID(createdDonation.ID)).Value;
-    //    returnedDonation.Title.Should().Be("This is changed");
-    //}
-
-    //[Test]
-    //public async Task CanDeleteDonation()
-    //{
-    //    var newDonation = new DtoDonation()
-    //    {
-    //        Description = "Marathon2",
-    //        Location = "Snow"
-    //    };
-    //    var createdDonation = (await GetDonationController().Add(newDonation)).Value;
-
-    //    await GetDonationController().Delete(createdDonation.ID);
-
-    //    var badDonationResult = await GetDonationController().GetByID(createdDonation.ID);
-    //    var result = badDonationResult.Result as NotFoundObjectResult;
-    //    result.StatusCode.Should().Be(404);
-    //    result.Value.Should().Be("Donation id does not exist");
-    //}
-
-    //[Test]
-    //public async Task BadDeleteRequestReturnsBadRequest()
-    //{
-    //    var badDeleteResult = await GetDonationController().Delete(-1);
-    //    var result = badDeleteResult as NotFoundObjectResult;
-    //    result.StatusCode.Should().Be(404);
-    //    result.Value.Should().Be("Donation id does not exist");
-    //}
+    }*/
 }
