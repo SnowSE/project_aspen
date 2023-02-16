@@ -5,7 +5,7 @@ public interface ITeamRepository
     Task<Team> AddAsync(Team team);
     Task DeleteTeamAsync(long id);
     Task<Team> EditTeamAsync(Team team);
-    Task<Team> GetTeamByIdAsync(long id);
+/*    Task<Team> GetTeamByIdAsync(long id);*/
     Task<IEnumerable<Team>> GetAllAsync();
     Task<IEnumerable<Team>> GetByEventIdAsync(long eventID);
     Task<bool> ExistsAsync(long id);
@@ -33,16 +33,13 @@ public class TeamRepository : ITeamRepository
         return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(teams);
     }
 
-    public async Task<Team> GetTeamByIdAsync(long id)
+/*    public async Task<Team> GetTeamByIdAsync(long id)
     {
-        var team = await context.Teams
-            .Include(t => t.Registrations)
-                .ThenInclude(r=>r.PersonRegistrations)
-                    .ThenInclude(pr=>pr.Person)
+        var team = await context.Teams.Include(pr=>pr.Person)
             .FirstAsync(r => r.ID == id);
         return mapper.Map<Team>(team);
-    }
-
+    }*/
+    // Need to implement the association table here
     public async Task<Team> AddAsync(Team team)
     {
         var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == team.EventID);

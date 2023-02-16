@@ -13,7 +13,6 @@ public class Team
 
     public bool IsPublic { get; init; }
     public decimal DonationTarget { get; init; }
-    public List<Registration>? Registrations { get; init; }
 }
 
 public static class TeamExtensions

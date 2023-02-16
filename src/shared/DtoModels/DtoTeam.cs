@@ -15,5 +15,4 @@ public record DtoTeam
     public long EventID { get; set; }
     public decimal DonationTarget { get; set; }
     public bool IsPublic { get; set; } = true;
-    public List<DtoRegistration>? Registrations { get; set; }
 }
