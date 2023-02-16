@@ -38,18 +38,6 @@ public class AspenMapperProfile : Profile
         CreateMap<DtoEvent, Event>()
             .ReverseMap();
 
-        CreateMap<DtoRegistration, Registration>()
-            .ReverseMap();
-
-        CreateMap<DbRegistration, Registration>()
-            .ReverseMap();
-
-        CreateMap<DbPersonRegistration, PersonRegistration>()
-            .ReverseMap();
-
-        CreateMap<DtoPersonRegistration, PersonRegistration>()
-            .ReverseMap();
-
         CreateMap<DbDonation, Donation>()
             .ReverseMap();
 

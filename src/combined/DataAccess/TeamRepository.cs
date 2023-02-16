@@ -35,11 +35,7 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Team> GetTeamByIdAsync(long id)
     {
-        var team = await context.Teams
-            .Include(t => t.Registrations)
-                .ThenInclude(r=>r.PersonRegistrations)
-                    .ThenInclude(pr=>pr.Person)
-            .FirstAsync(r => r.ID == id);
+        var team = await context.Teams.FirstAsync(r => r.ID == id);
         return mapper.Map<Team>(team);
     }
 
