@@ -21,17 +21,17 @@ public class AdminController : ControllerBase
     public IEnumerable<UserClaim> Get() =>
         User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
 
-    [HttpGet("donation/{eventID}")]
-    public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
-    {
-        var donations = await donationRepository.GetByEventIdAsync(eventID);
-        return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
-    }
+    //[HttpGet("donation/{eventID}")]
+    //public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
+    //{
+    //    //var donations = await donationRepository.GetByEventIdAsync(eventID);
+    //    return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
+    //}
 
     [HttpGet("donation/{eventID}/{teamID}")]
-    public async Task<IEnumerable<DtoDonation>> GetTeamDonations(long eventID, long teamID)
+    public async Task<IEnumerable<DtoDonation>> GetTeamDonations( long teamID)
     {
-        var donations = await donationRepository.GetByTeamIdAsync(eventID, teamID);
+        var donations = await donationRepository.GetByTeamIdAsync(teamID);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
     }
 }

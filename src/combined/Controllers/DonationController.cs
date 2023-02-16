@@ -37,22 +37,22 @@ public class DonationController : ControllerBase
         return mapper.Map<DtoDonation>(newDonation);
     }
 
-    [HttpGet("{eventID}/{teamID}")]
-    public async Task<ActionResult<decimal>> GetTeamDonationSum(long eventID, long teamID)
+    [HttpGet("{teamID}")]
+    public async Task<ActionResult<decimal>> GetTeamDonationSum(long teamID)
     {
-        log.LogInformation("Getting the total donations for {eventID} from team {teamID}", eventID, teamID);
+        log.LogInformation("Getting the total donations from team {teamID}", teamID);
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
-        var sum = await donationRepository.GetTeamDonationSum(eventID, teamID);
+        var sum = await donationRepository.GetTeamDonationSum(teamID);
         return sum;
     }
 
-    [HttpGet("{eventID}")]
+    /*[HttpGet("{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         log.LogInformation("Getting the total donations for {eventID}", eventID);
         var sum = await donationRepository.GetEventDonationSum(eventID);
         return sum;
-    }
+    }*/
 }
