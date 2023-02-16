@@ -131,7 +131,7 @@ public class StripeController : ControllerBase
     }
 
     [HttpGet("success")]
-    public async Task<ActionResult> CheckoutSuccess(long eventId, long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string email, string? phoneNumber, string donationDateTime, string? linkGuid)
+    public async Task<ActionResult> CheckoutSuccess(long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string? linkGuid)
 
     {
         var dateTime = DateTime.UtcNow;
@@ -140,7 +140,6 @@ public class StripeController : ControllerBase
         var paymentIntentId = s.PaymentIntentId;
 
         var newDonation = new Donation {
-            EventID=eventId,
             TeamID=teamId,
             PersonID=personId,
             Amount=amount/100,
@@ -184,7 +183,7 @@ public class StripeController : ControllerBase
         {
             // Stripe calls the URLs below when certain checkout events happen such as success and failure.
             //SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-            SuccessUrl = $"{public_URL}/api/stripe/success?eventId={payment.eventId}&&personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&donationDateTime={payment.donationDateTime}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
+            SuccessUrl = $"{public_URL}/api/stripe/success?personId={payment.personId}&&personName={payment.personName}&&teamId={payment.teamId}&&amount={payment.amount}&&email={payment.donationEmail}&&phoneNumber={payment.donationPhoneNumber}&&linkGuid={payment.linkGuid}&&teamName={payment.teamName}&&sessionId=" + "{CHECKOUT_SESSION_ID}",
             CancelUrl = $"{public_URL}/Donate",  // Checkout cancelled.
             Customer = newCustomer.Id,
             PaymentMethodTypes = new List<string> // Only card available in test mode?
@@ -223,12 +222,10 @@ public class Payment {
     public string id { get; set; }
     public int? teamId { get; set; }
     public int? personId { get; set; }
-    public int eventId { get; set; }
     public string personName { get; set; }
     public string teamName { get; set; }
     public string donationName { get; set; }
     public string donationEmail { get; set; }
     public string donationPhoneNumber { get; set; }
-    public string donationDateTime { get; set; }
     public string? linkGuid { get; set; }
 }

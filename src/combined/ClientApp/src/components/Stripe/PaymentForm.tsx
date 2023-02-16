@@ -1,9 +1,8 @@
-import React, {  useContext, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
-import { EventContext } from '../../App';
 
 interface Props {
     personGUID?: string;
@@ -12,8 +11,6 @@ interface Props {
 const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
-
-    const { currentEvent, loading } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
     const [teamId, setTeamId] = useState(null)
@@ -79,7 +76,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         }
         serviceCalls()
 
-    }, [teamId, loading, BaseUrl, linkGuid, userId])
+    }, [teamId, BaseUrl, linkGuid, userId])
 
     useEffect(() => {
         console.log("here in second use effect")
@@ -114,12 +111,10 @@ const PaymentForm: React.FC<Props> = (props) => {
                 teamName: teamName,
                 teamId: teamId,
                 personId: userId,
-                eventId: currentEvent.id,
                 personName: userName,
                 donationName: donationSubmitName,
                 donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
-                donationDateTime: new Date(), 
                 linkGuid: linkGuid
             }).then((response) => {
                 const session = response.data

@@ -9,7 +9,7 @@ import SharingButton from "../../components/Share/SharingButton";
 
 const SuccessfulDonation = () => {
 
-    const { personName, teamName, transactionId, amount, donationDateTime, email, phoneNumber } = useParams()
+    const { personName, teamName, transactionId, amount, email, phoneNumber } = useParams()
     const { currentEvent } = useContext(EventContext);
     const navigate = useNavigate();
 
@@ -49,11 +49,6 @@ const SuccessfulDonation = () => {
                 </Typography>
             </Box>
             <Divider />
-            <Box>
-                <Typography>
-                    Date: {donationDateTime}
-                </Typography>
-            </Box>
             <Box>
                 <Typography>
                     Transaction ID: {transactionId}

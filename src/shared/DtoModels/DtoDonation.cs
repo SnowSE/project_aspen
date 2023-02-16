@@ -6,7 +6,6 @@ public record DtoDonation
 {
     [SwaggerSchema(ReadOnly = true)]
     public long ID { get; set; }
-    public long EventID { get; set; }
     public long? TeamID { get; set; }
     public long? PersonID { get; set; }
     public DateTime Date { get; set; }
