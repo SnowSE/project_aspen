@@ -16,7 +16,7 @@ public class TeamControllerTest
 
     public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
     {
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = ownerName })).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = ownerName, Nickname= "bob"})).Value;
         var newTeam = new DtoTeam { Name = teamName, Description = teamDescription, OwnerID = newPerson.ID, EventID = eventId, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
         return dtoTeam;
@@ -26,7 +26,7 @@ public class TeamControllerTest
     public async Task CanCreateTeam()
     {
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "New Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob" })).Value;
         var newTeam = new DtoTeam { Name = "New Team!", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
         dtoTeam.ID.Should().NotBe(0);
@@ -40,7 +40,7 @@ public class TeamControllerTest
     public async Task CanGetDifferentTeam()
     {
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob" })).Value;
         var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
 
@@ -52,7 +52,7 @@ public class TeamControllerTest
     public async Task CanDeleteTeam()
     {
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" })).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" , Nickname = "bob" })).Value;
         var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
         var returnedTeam = (await GetTeamController().GetByID(dtoTeam.ID)).Value;

@@ -58,12 +58,12 @@ public class PersonController : ControllerBase
 
         if (string.IsNullOrEmpty(dtoPerson.AuthID))
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.Nickname);
             return mapper.Map<DtoPerson>(person);
         }
         else
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID, dtoPerson.Nickname);
             return mapper.Map<DtoPerson>(person);
         }
     }

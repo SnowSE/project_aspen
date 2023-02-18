@@ -15,7 +15,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanCreatePerson()
     {
-        var newPerson = new DtoPerson { Name = "George" };
+        var newPerson = new DtoPerson { Name = "George", Nickname = "bob" };
         var dtoPerson = (await GetPersonController().Add(newPerson)).Value;
         dtoPerson.ID.Should().NotBe(0);
         dtoPerson.Name.Should().Be("George");
@@ -24,7 +24,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanGetCreatedPerson()
     {
-        var newPerson = new DtoPerson { Name = "George", Bio = "bio" };
+        var newPerson = new DtoPerson { Name = "George", Bio = "bio", Nickname = "bob" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
         returnedPerson.Name.Should().Be("George");
@@ -33,7 +33,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanGetDifferentPerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben", Bio = "bio" };
+        var newPerson = new DtoPerson { Name = "Ben", Bio = "bio", Nickname = "bob" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         var returnedPerson = (await GetPersonController().GetByID(createdPerson.ID)).Value;
         returnedPerson.Name.Should().Be("Ben");
@@ -42,7 +42,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanDeletePerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben", Bio = "This person" };
+        var newPerson = new DtoPerson { Name = "Ben", Bio = "This person", Nickname = "bob" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
         await GetPersonController().Delete(createdPerson.ID);
         var badPersonRequests = await GetPersonController().GetByID(createdPerson.ID);
@@ -64,7 +64,7 @@ public class PersonControllerTest
     [Test]
     public async Task CanEditPerson()
     {
-        var newPerson = new DtoPerson { Name = "Ben", Bio = "This person" };
+        var newPerson = new DtoPerson { Name = "Ben", Bio = "This person", Nickname = "bob" };
         var createdPerson = (await GetPersonController().Add(newPerson)).Value;
 
         var editedPerson = createdPerson with { Name = "Not Ben" };

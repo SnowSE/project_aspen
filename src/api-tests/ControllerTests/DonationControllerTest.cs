@@ -49,8 +49,8 @@ public class DonationControllerTest
         dtoDonation = (await donationController.Add(unassignedDonation)).Value;
 
         var personController = PersonControllerTest.GetPersonController();
-        team1Owner = (await personController.Add(new DtoPerson { Name = "Team 1 Owner" })).Value;
-        team2Owner = (await personController.Add(new DtoPerson { Name = "Team 2 Owner" })).Value;
+        team1Owner = (await personController.Add(new DtoPerson { Name = "Team 1 Owner", Nickname = "bob" })).Value;
+        team2Owner = (await personController.Add(new DtoPerson { Name = "Team 2 Owner" , Nickname = "bob" })).Value;
 
         var teamController = TeamControllerTest.GetTeamController();
         team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID, MainImage = testEvent.MainImage })).Value;
