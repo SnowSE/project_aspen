@@ -52,7 +52,7 @@ namespace Api.Tests.Controllers
 
             //Setup Person
             var personController = PersonControllerTest.GetPersonController();
-            personOne = (await personController.Add(new DtoPerson { Name = "Team 1 Owner" })).Value;
+            personOne = (await personController.Add(new DtoPerson { Name = "Team 1 Owner", Nickname = "bob" })).Value;
 
             //Setup Link
             linkController = GetLinkController();

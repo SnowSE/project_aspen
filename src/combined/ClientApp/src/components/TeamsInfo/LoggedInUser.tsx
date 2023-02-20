@@ -60,12 +60,12 @@ export function LoggedInUser() {
             nickname: nickName,
             ownerID: userId,
             teamID: tId,
-            personRegistrations:  [
-                {   
-                    personID: Number(currentUser.data.id),                    
-                    createDate: creationDate
-                }
-            ]
+            // personRegistrations:  [
+            //     {   
+            //         personID: Number(currentUser.data.id),                    
+            //         createDate: creationDate
+            //     }
+            // ]
         }
         console.log(newMember)
 
