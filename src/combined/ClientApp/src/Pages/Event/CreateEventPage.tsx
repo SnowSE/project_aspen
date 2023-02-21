@@ -15,12 +15,7 @@ const CreateEventPage = () => {
             user?.profile.roles.forEach((role: string) => {
                 console.log(role)
                 if (role.includes("admin")) {
-                    console.log("here")
                     setIsAdmin(true)
-
-                }
-                else {
-                    setIsAdmin(false)
                 }
             });
         }

@@ -54,7 +54,7 @@ export function TeamDetails() {
     const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
-    const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+    
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -65,8 +65,9 @@ export function TeamDetails() {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
+        //console.log("response is: ", response)
+        //ownerId = response.ownerID;
         setCurrentTeam(response)
-        setCurrentTeamRegistrations(response.registrations)       
         
       }
 
@@ -75,13 +76,16 @@ export function TeamDetails() {
         await axios.get(BaseUrl + '/api/user', config).then((response) => {
             setLoggedInUserId(response?.data?.id)
         }).catch((error)=> {
+          console.log("There was an error retrieving user", error)
         })
     }
 
       const fetchTeamOwner = async () => {
           try {
+              var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
               const person = await fetch(personApi)
               const teamOwner = await person.json()
+              console.log("Team owner object is: ", teamOwner)
               setTeamOwner(teamOwner)
 
           } catch (e) {
@@ -96,7 +100,7 @@ export function TeamDetails() {
     };
 
       callServise();
-  }, [api, personApi]);
+  }, [api]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -106,28 +110,24 @@ export function TeamDetails() {
     const loggedInUSer = localStorage.getItem("LoggedInUser");
    
     console.log("Logged in user id:", loggedInUserId);
+    console.log("Current team object is: ", currentTeam);
+    console.log("current team owner id is: ", currentTeam?.ownerID);
+    console.log("current loggedInUserIDis: ", loggedInUserId);
   return (
       <Box>
           <CardContent>
               <Typography paragraph>Members:</Typography>
               <Typography paragraph>
                   <h4>The Team owner is: {teamOwner?.name}</h4>
-                  <h4>The Team owner is: {currentTeam?.teamowner}</h4>                  
 
                   <h4>There are {currentTeamRegisrtations.length} members on this
                       team!</h4>
-                  <ul>
-                      {currentTeamRegisrtations.map((registration) =>                          
-                              registration.isPublic === true ?
-                                  <li key={registration.id}> {registration.nickname}</li>
-                                        : <li>Anonymous User</li>)}
-                  </ul>
+                  
               </Typography>
           </CardContent>
 
-          { (() => {
-                  if (currentTeam?.isPublic === true) {
-                      return (
+          {currentTeam?.isPublic === true ?
+                      
                           <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                               <Button
                                   onClick={() =>
@@ -146,14 +146,8 @@ export function TeamDetails() {
                                   Join Our Team
                               </Button>
                           </Grid>
-                      )
-                  } else {
-                      return (
-                          <p>This is Private Team</p>
-                      )
-                  }
-              })()
-          }  
+                                  : <p>This is Private Team</p> } 
+
           {(() => {
               if (loggedInUserId === teamOwner?.id) {
                   return (
@@ -204,10 +198,7 @@ export function TeamDetails() {
           })()
           }  
       
-      {currentTeam?.id}
-      {currentTeam?.ownerID}
-      {currentTeam?.owner}
-      {currentTeam?.eventID}
+      
       <Box sx={{display:'flex', justifyContent:'center'}}>
         <Card sx={{ maxWidth: 500 }}>
           <CardHeader
