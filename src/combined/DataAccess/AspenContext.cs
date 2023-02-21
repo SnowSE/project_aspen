@@ -23,8 +23,6 @@ public class AspenContext : DbContext
 
     public DbSet<DbEvent> Events { get; set; }
     public DbSet<DbTeam> Teams { get; set; }
-    public DbSet<DbRegistration> Registrations { get; set; }
-    public DbSet<DbPersonRegistration> PersonRegistrations { get; set; }
     public DbSet<DbPerson> Persons { get; set; }
     public DbSet<DbDonation> Donations { get; set; }
     public DbSet<DbLink> Links { get; set; }

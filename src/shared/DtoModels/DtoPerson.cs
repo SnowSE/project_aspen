@@ -12,6 +12,8 @@ public record DtoPerson
     public string Name { get; set; }
 
     public string? Bio { get; set; }
+
+    public string Nickname { get; set; }
 }
 public static class DtoPersonHelpers
 {
@@ -23,6 +25,7 @@ public static class DtoPersonHelpers
             ID = currentPerson.ID,
             Bio = currentPerson.Bio,
             AuthID = newAuthId,
+            Nickname = currentPerson.Nickname
         };
     }
 }

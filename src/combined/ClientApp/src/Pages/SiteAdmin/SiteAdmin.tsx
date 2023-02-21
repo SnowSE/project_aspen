@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
 import PaymentFailure from "../../JsModels/paymentFailure";
+import { authService } from "../../services/authService";
 
 
 
@@ -15,7 +16,7 @@ const SiteAdmin = () => {
     const [teamsList, setTeams] = useState<Team[]>();
     const [stripeFailureLogs, setStripeFailureLogs] = useState<PaymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
-
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     useEffect(() => {
         const fetchData = async () => {
             if (!currentEvent.id) {
@@ -30,11 +31,29 @@ const SiteAdmin = () => {
             setStripeFailureLogs(stripeFailures)
             setTeams(jsonTeams)
         }
+        async function currentUser() {
+            var user = await authService.getUser()
+            console.log("user roles:", user?.profile.roles)
+            user?.profile.roles.forEach((role: string) => {
+                console.log(role)
+                if (role.includes("admin")) {
+                    setIsAdmin(true)
+                }
+            });
+        }
+        currentUser()
         fetchData()
     }, [currentEvent])
-    return (
 
+    useEffect(() => {
+        
+        
+    }, [])
+    return (
         <Box>
+                
+        {isAdmin ? 
+            <div>
             <Paper square={true} elevation={6} className="AdminPaperDetails">
                 <Box className="AdminCurrentEventDetails">
                     {
@@ -119,9 +138,10 @@ const SiteAdmin = () => {
                     </TableContainer>
                 </AccordionDetails>
             </Accordion>
+            </div>
+                    : <h1>You not admin</h1> }
         </Box>
-
-    );
+     );
 };
 
 export default SiteAdmin;

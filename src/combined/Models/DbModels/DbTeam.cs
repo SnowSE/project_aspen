@@ -15,6 +15,5 @@ public record DbTeam
 
     public bool IsPublic { get; init; }
 
-    public virtual ICollection<DbRegistration> Registrations { get; init; }
     public List<DbDonation> Donations { get; init; }
 }

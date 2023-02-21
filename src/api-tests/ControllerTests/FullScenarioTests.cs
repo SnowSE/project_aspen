@@ -21,9 +21,6 @@ public class FullScenarioTests
     {
         var allTeamsInEvent = await getTeams(newEvent.ID);
         allTeamsInEvent.Count().Should().Be(1);
-
-        var registration = await createRegistration(person, team);
-        registration.Nickname.Should().Be("Reg1");
     }
 
     [Test]
@@ -38,7 +35,7 @@ public class FullScenarioTests
         (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "Full Scenario", Date = DateTime.Now.ToUniversalTime(), Location = "NUnit", Title = "Full", MainImage = "image.jpg" })).Value;
 
     private async Task<DtoPerson> createPerson() =>
-        (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Bio = "this person" })).Value;
+        (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Bio = "this person", Nickname = "bob" })).Value;
 
     private async Task<DtoTeam> createTeam(DtoPerson person, long eventId) =>
         (await TeamControllerTest.GetTeamController().Add(new DtoTeam { Name = "New Team Name", Description = "Team1", OwnerID = person.ID, EventID = eventId, MainImage = "image.jpg" })).Value;
@@ -46,6 +43,4 @@ public class FullScenarioTests
     private async Task<IEnumerable<DtoTeam>> getTeams(long eventId) =>
         (await TeamControllerTest.GetTeamController().GetByEventID(eventId)).Value;
 
-    private async Task<DtoRegistration> createRegistration(DtoPerson owner, DtoTeam team) =>
-        (await RegistrationControllerTest.GetRegistrationController().Add(new DtoRegistration { Nickname = "Reg1", OwnerID = owner.ID, TeamID = team.ID })).Value;
 }

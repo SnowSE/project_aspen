@@ -131,7 +131,7 @@ public class StripeController : ControllerBase
     }
 
     [HttpGet("success")]
-    public async Task<ActionResult> CheckoutSuccess(long? teamId, long? personId,string? personName, string teamName, decimal amount, string sessionId, string? linkGuid)
+    public async Task<ActionResult> CheckoutSuccess(long? teamId, long? personId,string? personName, string teamName,string? phoneNumber, string email, decimal amount, string sessionId, string? linkGuid)
 
     {
         var dateTime = DateTime.UtcNow;
@@ -150,20 +150,9 @@ public class StripeController : ControllerBase
 
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}");
+        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{phoneNumber}");
     }
 
-    [HttpGet("failure")]
-    public ActionResult CheckoutFailure(string sessionId)
-    {
-        var session = new SessionService();
-        var s = session.Get(sessionId);
-        var paymentIntentId = s.PaymentIntentId;
-        var p = new PaymentIntentService();
-        var paymentIntent = p.Get(paymentIntentId);
-
-        return Redirect($"{public_URL}/faileddonation");
-    }
 
     [NonAction]
         public async Task<string> CheckOut(Payment payment)
@@ -226,6 +215,6 @@ public class Payment {
     public string teamName { get; set; }
     public string donationName { get; set; }
     public string donationEmail { get; set; }
-    public string donationPhoneNumber { get; set; }
+    public string? donationPhoneNumber { get; set; }
     public string? linkGuid { get; set; }
 }

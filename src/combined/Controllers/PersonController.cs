@@ -6,7 +6,6 @@ namespace Api.Controllers;
 public class PersonController : ControllerBase
 {
     private readonly IPersonRepository personRepository;
-    private readonly IRegistrationRepository registrationRepository;
     private readonly IMapper mapper;
     private readonly ILogger<PersonController> log;
 
@@ -17,12 +16,11 @@ public class PersonController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public PersonController(IPersonRepository personRepository, IRegistrationRepository registrationRepository, IMapper mapper, ILogger<PersonController> log)
+    public PersonController(IPersonRepository personRepository, IMapper mapper, ILogger<PersonController> log)
     {
         this.mapper = mapper;
         this.log = log;
         this.personRepository = personRepository;
-        this.registrationRepository = registrationRepository;
     }
 
     [HttpGet("{id}")]
@@ -60,12 +58,12 @@ public class PersonController : ControllerBase
 
         if (string.IsNullOrEmpty(dtoPerson.AuthID))
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio);
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.Nickname);
             return mapper.Map<DtoPerson>(person);
         }
         else
         {
-            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID);
+            var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.AuthID, dtoPerson.Nickname);
             return mapper.Map<DtoPerson>(person);
         }
     }
@@ -93,18 +91,5 @@ public class PersonController : ControllerBase
 
         await personRepository.DeleteAsync(id);
         return Ok();
-    }
-
-    [HttpGet("{id}/registrations")]
-    public async Task<IEnumerable<DtoRegistration>> GetRegistrationsByID(long id)
-    {
-        log.LogInformation("Getting registered person {id}", id);
-        if (await personRepository.ExistsAsync(id) is false)
-            throw new NotFoundException<IEnumerable<DtoRegistration>>("Person id does not exist");
-
-        var registrations = await registrationRepository.GetRegistrationsByPersonAsync(id);
-        var dtoRegistrations = mapper.Map<IEnumerable<DtoRegistration>>(registrations);
-        await registrationRepository.EnrichWithEventIdsAsync(dtoRegistrations);
-        return dtoRegistrations;
     }
 }
