@@ -2,7 +2,6 @@ import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Ty
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
-import Registration from "../../JsModels/registration";
 import { authService } from "../../services/authService";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
@@ -51,7 +50,6 @@ export function TeamDetails() {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-    const [currentTeamRegisrtations, setCurrentTeamRegistrations] = useState <Registration[]>([]);
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     
@@ -100,7 +98,7 @@ export function TeamDetails() {
     };
 
       callServise();
-  }, [api]);
+  }, [api, ownerId]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -120,8 +118,6 @@ export function TeamDetails() {
               <Typography paragraph>
                   <h4>The Team owner is: {teamOwner?.name}</h4>
 
-                  <h4>There are {currentTeamRegisrtations.length} members on this
-                      team!</h4>
                   
               </Typography>
           </CardContent>

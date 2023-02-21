@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext} from "react";
 import {useNavigate, useParams } from "react-router-dom";
 import Confetti from 'react-confetti'
 import { Box, Button, Divider, Typography } from "@mui/material";
