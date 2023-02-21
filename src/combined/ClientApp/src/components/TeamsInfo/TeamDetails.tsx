@@ -1,4 +1,4 @@
-import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography, Grid,} from "@mui/material";
+import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography, Grid, Divider,} from "@mui/material";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
@@ -12,6 +12,7 @@ import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
+import { right } from "@popperjs/core";
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -108,126 +109,104 @@ export function TeamDetails() {
     console.log("Logged in user id:", loggedInUserId);
   return (
       <Box>
-          <CardContent>
-              <Typography paragraph>Members:</Typography>
-              <Typography paragraph>
-                  <h4>The Team owner is: {teamOwner?.name}</h4>
-                  <h4>The Team owner is: {currentTeam?.teamowner}</h4>                  
-
-                  <h4>There are {currentTeamRegisrtations.length} members on this
-                      team!</h4>
-                  <ul>
-                      {currentTeamRegisrtations.map((registration) =>                          
-                              registration.isPublic === true ?
-                                  <li key={registration.id}> {registration.nickname}</li>
-                                        : <li>Anonymous User</li>)}
-                  </ul>
-              </Typography>
-          </CardContent>
-
-          { (() => {
-                  if (currentTeam?.isPublic === true) {
-                      return (
-                          <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                              <Button
-                                  onClick={() =>
-                                      loggedInUSer
-                                          ? navigate({
-                                              pathname: "/LoggedInUser",
+          <Box>
+              <Typography variant="h1">{currentTeam.teamName}</Typography>
+              <Typography paragraph>By: {currentTeam?.teamowner}</Typography>
+              <Box sx={{display: 'flex', justifyContent: 'right'} }>
+                  {(() => {
+                      if (loggedInUserId === teamOwner?.id) {
+                          return (
+                              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                  <Button
+                                      onClick={() =>
+                                        navigate({
+                                                  pathname: "/EditTeam",
+                                                  search: `?${createSearchParams({
+                                                      teamId: `${tId}`,
+                                                      userId: `${loggedInUserId}`,
+                                                  })}`,
+                                              })
+                                    
+                                      }
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                                  >
+                                      Edit Team Details
+                                  </Button>
+                              </Grid>
+                          )
+                      } 
+                  })()
+                  }
+                  {(() => {
+                      if (loggedInUserId === teamOwner?.id) {
+                          return (
+                              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                  <Button
+                                      onClick={() =>
+                                          navigate({
+                                              pathname: "/DeleteTeam",
                                               search: `?${createSearchParams({
                                                   teamId: `${tId}`,
                                                   userId: `${loggedInUserId}`,
                                               })}`,
                                           })
-                                          : authService.signinRedirect()
-                                  }
-                                  sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
-                              >
-                                  Join Our Team
-                              </Button>
-                          </Grid>
-                      )
-                  } else {
-                      return (
-                          <p>This is Private Team</p>
-                      )
-                  }
-              })()
-          }  
-          {(() => {
-              if (loggedInUserId === teamOwner?.id) {
-                  return (
-                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                          <Button
-                              onClick={() =>
-                                navigate({
-                                          pathname: "/EditTeam",
-                                          search: `?${createSearchParams({
-                                              teamId: `${tId}`,
-                                              userId: `${loggedInUserId}`,
-                                          })}`,
-                                      })
-                                    
-                              }
-                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
-                          >
-                              Edit Team Details
-                          </Button>
-                      </Grid>
-                  )
-              } 
-          })()
-          }  
 
-          {(() => {
-              if (loggedInUserId === teamOwner?.id) {
-                  return (
-                      <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
-                          <Button
-                              onClick={() =>
-                                  navigate({
-                                      pathname: "/DeleteTeam",
-                                      search: `?${createSearchParams({
-                                          teamId: `${tId}`,
-                                          userId: `${loggedInUserId}`,
-                                      })}`,
-                                  })
+                                      }
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                                  >
+                                      Delete Team
+                                  </Button>
+                              </Grid>
+                          )
+                      }
+                  })()
+                  }  
 
-                              }
-                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
-                          >
-                              Delete Team
-                          </Button>
-                      </Grid>
-                  )
-              }
-          })()
-          }  
+              </Box>
+              <Divider />
+          </Box>
+          <ul>
+              {currentTeamRegisrtations.map((registration) =>
+                  registration.isPublic === true ?
+                      <li key={registration.id}> {registration.nickname}</li>
+                      : <li>Anonymous User</li>)}
+          </ul>
+                  <h4>There are {currentTeamRegisrtations.length} members on this
+                      team!</h4>
+
+            
+
+          
       
       {currentTeam?.id}
       {currentTeam?.ownerID}
       {currentTeam?.owner}
-      {currentTeam?.eventID}
-      <Box sx={{display:'flex', justifyContent:'center'}}>
-        <Card sx={{ maxWidth: 500 }}>
+          {currentTeam?.eventID}
           <CardHeader
-            className="PaperColor"
-            sx={{ color: "white" }}
-            title={currentTeam?.name}
-            subheader={
-              <Typography sx={{ color: "white" }}>
-                {" "}
-                Donation Target: ${currentTeam?.donationTarget} Meals{" "}
-              </Typography>
-            }
+              className="PaperColor"
+              sx={{ color: "white" }}
+              title={currentTeam?.name}
+              subheader={
+                  <Typography sx={{ color: "white" }}>
+                      {" "}
+                      Donation Target: ${currentTeam?.donationTarget} Meals{" "}
+                  </Typography>
+              }
           />
+          <Box sx={{ display: 'flex', justifyContent: 'left' }}>
+              <Box>
+                <Typography sx={{ maxWidth: 800, height: 200, overflow: "auto", scrollBehavior: "smooth" }}>
+                  {currentTeam?.description}
+                </Typography>
+              </Box>
+          
           <CardMedia
             component="img"
             height="250"
             image={baseImageUrl + currentTeam?.mainImage}
             alt="mainImage"
           />
-          <CardContent className="PaperColor">
+          <Box className="PaperColor">
             <Box className="ProgressBarPosition">
               <ProgressBar />
               <SharingIcon data-testid={"shareBtn"} />
@@ -235,41 +214,58 @@ export function TeamDetails() {
             <Box className= "DonateButtonPosition">
                 <DonateButton />
             </Box>
-          </CardContent>
-          <CardContent>
-            <Typography variant="body2">{currentTeam?.description}</Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent className="PaperColor">
-              <Typography paragraph sx={{ color: "white" }}>
-                There are {currentTeamRegisrtations.length} members on this
-                team!
-                <Typography paragraph sx={{ color: "white" }}>
-                  Members:
-                </Typography>
-                <ul>
-                  {currentTeamRegisrtations.map(
-                    (registration) =>
-                      registration.isPublic === true && (
-                        <li key={registration.id}> {registration.nickname}</li>
-                      )
-                  )}
-                </ul>
-              </Typography>
-            </CardContent>
-          </Collapse>
-        </Card>
-      </Box>
+          </Box>
+          </Box>
+                  {(() => {
+                      if (currentTeam?.isPublic === true) {
+                          return (
+                              <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
+                                  <Button
+                                      onClick={() =>
+                                          loggedInUSer
+                                              ? navigate({
+                                                  pathname: "/LoggedInUser",
+                                                  search: `?${createSearchParams({
+                                                      teamId: `${tId}`,
+                                                      userId: `${loggedInUserId}`,
+                                                  })}`,
+                                              })
+                                              : authService.signinRedirect()
+                                      }
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                                  >
+                                      Join Our Team!
+                                  </Button>
+                              </Grid>
+                          )
+                      } else {
+                          return (
+                              <p>This is Private Team</p>
+                          )
+                      }
+                  })()
+          }
+          <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+              <Card>
+                  <CardContent>
+                      <Typography paragraph sx={{ color: "white" }}>
+                          There are {currentTeamRegisrtations.length} members on this
+                          team!
+                          <Typography paragraph sx={{ color: "white" }}>
+                              Members:
+                          </Typography>
+                          <ul>
+                              {currentTeamRegisrtations.map(
+                                  (registration) =>
+                                      registration.isPublic === true && (
+                                          <li key={registration.id}> {registration.nickname}</li>
+                                      )
+                              )}
+                          </ul>
+                      </Typography>
+                  </CardContent>
+              </Card>
+          </Box>
     </Box>
   );
 }
