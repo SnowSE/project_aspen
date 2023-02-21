@@ -238,21 +238,7 @@ export function TeamDetails() {
           </CardActions>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent className="PaperColor">
-              <Typography paragraph sx={{ color: "white" }}>
-                There are {currentTeamRegisrtations.length} members on this
-                team!
-                <Typography paragraph sx={{ color: "white" }}>
-                  Members:
-                </Typography>
-                <ul>
-                  {currentTeamRegisrtations.map(
-                    (registration) =>
-                      registration.isPublic === true && (
-                        <li key={registration.id}> {registration.nickname}</li>
-                      )
-                  )}
-                </ul>
-              </Typography>
+              
             </CardContent>
           </Collapse>
         </Card>
