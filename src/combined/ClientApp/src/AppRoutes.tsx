@@ -74,7 +74,7 @@ const AppRoutes = [
         element: <SiteAdmin />
     },
     {
-        path: `/successfuldonation/:personName/:teamName/:transactionId`, 
+        path: `/successfuldonation/:personName/:teamName/:transactionId/:amount/:email/:phoneNumber?`, 
         element:<SuccessfulDonation/>
     },
     {
@@ -97,8 +97,6 @@ const AppRoutes = [
         path: `/DeleteTeam`,
         element: <DeleteTeam />
     }
-
-
 ];
 
 export default AppRoutes;

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext} from "react";
 import {useNavigate, useParams } from "react-router-dom";
 import Confetti from 'react-confetti'
 import { Box, Button, Divider, Typography } from "@mui/material";
@@ -7,13 +7,20 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SharingButton from "../../components/Share/SharingButton";
 
 
+
+
 const SuccessfulDonation = () => {
 
     const { personName, teamName, transactionId, amount, email, phoneNumber } = useParams()
     const { currentEvent } = useContext(EventContext);
     const navigate = useNavigate();
 
+    
+
+
+
     return (
+
         <Box>
             <Box sx={{ justifyContent: 'center' }}>
                 <CheckCircleOutlineIcon  />
@@ -67,7 +74,7 @@ const SuccessfulDonation = () => {
             </Box>
             <Box>
                 <Typography>
-                    Phone Number: {phoneNumber}
+                    Phone Number: {phoneNumber? phoneNumber: "None Provided"}
                 </Typography>
             </Box>
 
@@ -81,6 +88,7 @@ const SuccessfulDonation = () => {
             </Box>
 
         </Box>
+
     );
 }
 
