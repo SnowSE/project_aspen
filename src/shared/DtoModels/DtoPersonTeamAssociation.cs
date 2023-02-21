@@ -2,7 +2,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace shared.DtoModels;
 
-public record DtoPersonAndTeamAssociation
+public record DtoPersonTeamAssociation
 {
     [SwaggerSchema(ReadOnly = true)]
     public long ID { get; set; }

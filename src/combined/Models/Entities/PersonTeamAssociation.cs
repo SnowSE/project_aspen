@@ -1,6 +1,6 @@
 ﻿namespace Api.Models.Entities;
 
-public class PersonAndTeamAssociation
+public class PersonTeamAssociation
 {
     public int Id { get; init; }
     public long PersonId { get; init; }
