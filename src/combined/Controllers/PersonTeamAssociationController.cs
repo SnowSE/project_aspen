@@ -8,11 +8,11 @@ namespace Api.Controllers;
 public class PersonTeamAssociationController : ControllerBase
 {
     private readonly IPersonTeamAssoicationRepository personTeamAssociationRepository;
-    private readonly ITeamRepository teamRepository;
+
     private readonly IMapper mapper;
     private readonly ILogger<PersonTeamAssociationController> log;
 
-    public PersonTeamAssociationController(IPersonTeamAssoicationRepository personTeamAssociationRepository, ITeamRepository teamRepository, IMapper mapper, ILogger<PersonTeamAssociationController> log)
+    public PersonTeamAssociationController(IPersonTeamAssoicationRepository personTeamAssociationRepository, IMapper mapper, ILogger<PersonTeamAssociationController> log)
     {
         this.mapper = mapper;
         this.log = log;

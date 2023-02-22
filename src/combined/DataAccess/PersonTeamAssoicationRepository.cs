@@ -12,12 +12,12 @@ public interface IPersonTeamAssoicationRepository
 
 }
 
-public class PersonTeamAssoication : IPersonTeamAssoicationRepository
+public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
 {
     private readonly AspenContext context;
     private readonly IMapper mapper;
 
-    public PersonTeamAssoication(AspenContext context, IMapper mapper)
+    public PersonTeamAssoicationRepository(AspenContext context, IMapper mapper)
     {
         this.context = context;
         this.mapper = mapper;
