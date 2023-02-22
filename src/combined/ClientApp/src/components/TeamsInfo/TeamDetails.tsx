@@ -110,7 +110,7 @@ export function TeamDetails() {
   return (
       <Box>
           <Box>
-              <Typography variant="h1">{currentTeam.teamName}</Typography>
+              <Typography variant="h1">{currentTeam?.name}</Typography>
               <Typography paragraph>By: {currentTeam?.teamowner}</Typography>
               <Box sx={{display: 'flex', justifyContent: 'right'} }>
                   {(() => {
