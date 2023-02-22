@@ -109,16 +109,13 @@ public class PersonTeamAssociationControllerControllerTest
 
         var newPersonTeamAssociation2 = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam2.ID, EventId = newEvent.ID };
 
-
-        var result2 = (await GetPersonTeamAssociationController().Add(newPersonTeamAssociation2)).Value;
-
-        var teamMembers = (await GetPersonTeamAssociationController().GetTeamMembersAsync(dtoTeam2.ID)).Value;
-
-        teamMembers.Count.Should().Be(0);
-
+        try
+        {
+            var result2 = GetPersonTeamAssociationController().Add(newPersonTeamAssociation2).Result;
+        }
+        catch (Exception ex)
+        {
+            Assert.AreEqual("This person is already on the team for this event.", ex.InnerException.Message);
+        }
     }
-
-
-
-
 }

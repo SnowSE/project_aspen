@@ -1,3 +1,6 @@
+using Npgsql;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 namespace Api.DataAccess;
 
 public interface IPersonTeamAssoicationRepository
@@ -38,14 +41,15 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         {
             await context.PersonTeamAssociations.AddAsync(dbPersonTeamAssociation);
             await context.SaveChangesAsync();
-
         }
-        catch (Exception error)
+        catch (DbUpdateException ex)
         {
-
-            Console.WriteLine(error.Message);
+            if (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
+            {
+                throw new Exception("This person is already on the team for this event.");
+            }
         }
-        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
+            return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
     }
 
     public async Task<Team> GetTeamAsync(long personId, long eventId)
