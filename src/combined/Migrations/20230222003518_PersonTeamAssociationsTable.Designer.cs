@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20230221184533_personTeamAssociationTable")]
-    partial class personTeamAssociationTable
+    [Migration("20230222003518_PersonTeamAssociationsTable")]
+    partial class PersonTeamAssociationsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,6 +189,38 @@ namespace Api.Migrations
                     b.ToTable("Persons");
                 });
 
+            modelBuilder.Entity("Api.DbModels.DbPersonTeamAssociation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateJoined")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PersonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("PersonId", "EventId")
+                        .IsUnique();
+
+                    b.ToTable("PersonTeamAssociations");
+                });
+
             modelBuilder.Entity("Api.DbModels.DbTeam", b =>
                 {
                     b.Property<long>("ID")
@@ -268,38 +300,6 @@ namespace Api.Migrations
                     b.ToTable("PaymentFailures");
                 });
 
-            modelBuilder.Entity("combined.Models.DbModels.DbPersonAndTeamAssociation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateJoined")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PersonId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("TeamId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("PersonId", "EventId")
-                        .IsUnique();
-
-                    b.ToTable("PersonAndTeamAssociations");
-                });
-
             modelBuilder.Entity("Api.DbModels.DbDonation", b =>
                 {
                     b.HasOne("Api.DbModels.DbPerson", "Person")
@@ -345,6 +345,33 @@ namespace Api.Migrations
                     b.Navigation("Link");
                 });
 
+            modelBuilder.Entity("Api.DbModels.DbPersonTeamAssociation", b =>
+                {
+                    b.HasOne("Api.DbModels.DbEvent", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbPerson", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.DbModels.DbTeam", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Person");
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("Api.DbModels.DbTeam", b =>
                 {
                     b.HasOne("Api.DbModels.DbEvent", "Event")
@@ -379,33 +406,6 @@ namespace Api.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("combined.Models.DbModels.DbPersonAndTeamAssociation", b =>
-                {
-                    b.HasOne("Api.DbModels.DbEvent", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.DbModels.DbPerson", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.DbModels.DbTeam", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Person");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("Api.DbModels.DbEvent", b =>

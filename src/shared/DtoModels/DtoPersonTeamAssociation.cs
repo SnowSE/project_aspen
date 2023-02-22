@@ -13,5 +13,7 @@ public record DtoPersonTeamAssociation
 
     public long EventId { get; set; }
 
+    public DateTime DateJoined { get; set; }
+
 }
 

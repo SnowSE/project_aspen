@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class personTeamAssociationTable : Migration
+    public partial class PersonTeamAssociationsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PersonAndTeamAssociations",
+                name: "PersonTeamAssociations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -25,21 +25,21 @@ namespace Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonAndTeamAssociations", x => x.Id);
+                    table.PrimaryKey("PK_PersonTeamAssociations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonAndTeamAssociations_Events_EventId",
+                        name: "FK_PersonTeamAssociations_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonAndTeamAssociations_Persons_PersonId",
+                        name: "FK_PersonTeamAssociations_Persons_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Persons",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonAndTeamAssociations_Teams_TeamId",
+                        name: "FK_PersonTeamAssociations_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "ID",
@@ -47,19 +47,19 @@ namespace Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonAndTeamAssociations_EventId",
-                table: "PersonAndTeamAssociations",
+                name: "IX_PersonTeamAssociations_EventId",
+                table: "PersonTeamAssociations",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonAndTeamAssociations_PersonId_EventId",
-                table: "PersonAndTeamAssociations",
+                name: "IX_PersonTeamAssociations_PersonId_EventId",
+                table: "PersonTeamAssociations",
                 columns: new[] { "PersonId", "EventId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonAndTeamAssociations_TeamId",
-                table: "PersonAndTeamAssociations",
+                name: "IX_PersonTeamAssociations_TeamId",
+                table: "PersonTeamAssociations",
                 column: "TeamId");
         }
 
@@ -67,7 +67,7 @@ namespace Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PersonAndTeamAssociations");
+                name: "PersonTeamAssociations");
         }
     }
 }

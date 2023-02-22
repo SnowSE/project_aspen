@@ -3,8 +3,12 @@ namespace Api.DataAccess;
 public interface IPersonTeamAssoicationRepository
 {
 
-    Task<PersonTeamAssociation> AddAsync(long personId, long teamId, long eventId);
-    Task<PersonTeamAssociation> GetTeamAsync(long personId, long eventId);
+    Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation);
+    Task<Team> GetTeamAsync(long personId, long eventId);
+    Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId);
+    Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
+
+    Task<bool> ExistsAsync(long personId, long eventId);
 
 }
 
@@ -19,25 +23,53 @@ public class PersonTeamAssoication : IPersonTeamAssoicationRepository
         this.mapper = mapper;
     }
 
-    public async Task<PersonTeamAssociation> AddAsync(long personId, long teamId, long eventId)
-    {
-        var dbPersonTeamAssociation = new DbPersonTeamAssociation()
-        {
-            PersonId = personId,
-            TeamId = teamId,
-            EventId = eventId,
-            DateJoined = DateTime.Now
-        };
-        await context.PersonTeamAssociations.AddAsync(dbPersonTeamAssociation);
-        await context.SaveChangesAsync();
-        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
-    }
-
-    public async Task<PersonTeamAssociation> GetTeamAsync(long personId, long eventId)
+    public async Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
             .Where(e => e.PersonId == personId && e.EventId == eventId)
             .FirstOrDefaultAsync();
         return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
     }
+
+    public async Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation)
+    {
+        var dbPersonTeamAssociation = mapper.Map<DbPersonTeamAssociation>(personTeamAssociation);
+        try
+        {
+            await context.PersonTeamAssociations.AddAsync(dbPersonTeamAssociation);
+            await context.SaveChangesAsync();
+
+        }
+        catch (Exception error)
+        {
+
+            Console.WriteLine(error.Message);
+        }
+        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
+    }
+
+    public async Task<Team> GetTeamAsync(long personId, long eventId)
+    {
+        var dbPersonTeamAssociation = await context.PersonTeamAssociations
+            .Where(e => e.PersonId == personId && e.EventId == eventId)
+            .FirstOrDefaultAsync();
+        var dbTeam = await context.Teams.FindAsync(dbPersonTeamAssociation.TeamId);
+        return mapper.Map<Team>(dbTeam);
+    }
+
+    public async Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId)
+    {
+        var dbPersonTeamAssociation = await context.PersonTeamAssociations
+            .Where(e => e.TeamId == teamId)
+            .ToListAsync();
+        var personIds = dbPersonTeamAssociation.Select(e => e.PersonId);
+        var persons = await context.Persons.Where(e => personIds.Contains(e.ID)).ToListAsync();
+        return mapper.Map<IEnumerable<Person>>(persons);
+    }
+
+    public async Task<bool> ExistsAsync(long personId, long eventId)
+    {
+        return await context.PersonTeamAssociations.AnyAsync(e => e.PersonId == personId && e.EventId == eventId);
+    }
+
 }

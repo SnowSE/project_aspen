@@ -26,7 +26,6 @@ public class TeamRepository : ITeamRepository
     {
         return await context.Teams.AnyAsync(e => e.ID == id);
     }
-
     public async Task<IEnumerable<Team>> GetAllAsync()
     {
         var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
