@@ -64,5 +64,11 @@ public class AspenMapperProfile : Profile
 
         CreateMap<PaymentFailure, DtoPaymentFailure>()
             .ReverseMap();
+
+        CreateMap<PersonTeamAssociation, DtoPersonTeamAssociation>()
+            .ReverseMap();
+
+        CreateMap<DbPersonTeamAssociation, PersonTeamAssociation>()
+            .ReverseMap();
     }
 }

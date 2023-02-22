@@ -14,6 +14,11 @@ public class AspenContext : DbContext
         {
             entity.Property(nameof(DbDonation.IsPledge)).HasDefaultValue(false);
         });
+
+        builder.Entity<DbPersonTeamAssociation>()
+            .HasIndex(e => new { e.PersonId, e.EventId })
+            .IsUnique();
+
     }
 
     public DbSet<DbEvent> Events { get; set; }
@@ -23,4 +28,6 @@ public class AspenContext : DbContext
     public DbSet<DbLink> Links { get; set; }
     public DbSet<DbLinkRecord> LinkRecords { get; set; }
     public DbSet<DbPaymentFailure> PaymentFailures { get; set; }
+    public DbSet<DbPersonTeamAssociation> PersonTeamAssociations { get; set; }
+
 }

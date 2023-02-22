@@ -1,7 +1,10 @@
-﻿namespace Api.DbModels;
+﻿using combined.Models.DbModels;
+
+namespace Api.DbModels;
 
 public record DbEvent
 {
+
     public long ID { get; init; }
     public DateTime Date { get; init; }
     public string Title { get; set; }

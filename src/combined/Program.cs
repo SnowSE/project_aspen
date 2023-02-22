@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Stripe;
 using Serilog;
+using Api.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IAssetFileService, AssetFileService>();
 builder.Services.AddScoped<ILinkRepository, LinkRepository>();
 builder.Services.AddScoped<ILinkRecordRepository, LinkRecordRepository>();
 builder.Services.AddScoped<IPaymentFailureRepository, PaymentFailureRepository>();
+builder.Services.AddScoped<IPersonTeamAssoicationRepository, PersonTeamAssoicationRepository>();
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties;
