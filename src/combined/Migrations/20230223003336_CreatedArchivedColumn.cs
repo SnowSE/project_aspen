@@ -10,14 +10,20 @@ namespace Api.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            migrationBuilder.DropColumn(
                 name: "IsPublic",
-                table: "Teams",
-                newName: "IsArchived");
+                table: "Teams");
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsArchived",
                 table: "Events",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsArchived",
+                table: "Teams",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
@@ -30,10 +36,14 @@ namespace Api.Migrations
                 name: "IsArchived",
                 table: "Events");
 
-            migrationBuilder.RenameColumn(
-                name: "IsArchived",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsPublic",
                 table: "Teams",
-                newName: "IsPublic");
+                type: "boolean",
+                nullable: false,
+                defaultValue: true);
+
+
         }
     }
 }
