@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AspenContext))]
-    [Migration("20230222233819_isArchivedToEventAndTeamTables")]
-    partial class isArchivedToEventAndTeamTables
+    [Migration("20230223003336_CreatedArchivedColumn")]
+    partial class CreatedArchivedColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,9 @@ namespace Api.Migrations
 
                     b.Property<decimal>("DonationTarget")
                         .HasColumnType("numeric");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -239,6 +242,9 @@ namespace Api.Migrations
                     b.Property<long>("EventID")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("MainImage")
                         .IsRequired()
                         .HasColumnType("text");
@@ -250,9 +256,6 @@ namespace Api.Migrations
 
                     b.Property<long>("OwnerID")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("isArchived")
-                        .HasColumnType("boolean");
 
                     b.HasKey("ID");
 

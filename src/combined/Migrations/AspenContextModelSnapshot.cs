@@ -83,6 +83,9 @@ namespace Api.Migrations
                     b.Property<decimal>("DonationTarget")
                         .HasColumnType("numeric");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
@@ -236,6 +239,9 @@ namespace Api.Migrations
                     b.Property<long>("EventID")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("MainImage")
                         .IsRequired()
                         .HasColumnType("text");
@@ -247,9 +253,6 @@ namespace Api.Migrations
 
                     b.Property<long>("OwnerID")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("isArchived")
-                        .HasColumnType("boolean");
 
                     b.HasKey("ID");
 
