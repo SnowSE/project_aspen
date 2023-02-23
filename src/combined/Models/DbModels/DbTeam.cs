@@ -13,7 +13,7 @@ public record DbTeam
     public DbEvent Event { get; init; }
     public decimal DonationTarget { get; init; }
 
-    public bool IsPublic { get; init; }
+    public bool IsArchived { get; init; }
 
     public List<DbDonation> Donations { get; init; }
 }

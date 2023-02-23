@@ -122,7 +122,7 @@ export function TeamDetails() {
               </Typography>
           </CardContent>
 
-          {currentTeam?.isPublic === true ?
+          {currentTeam?.isArchived === false ?
                       
                           <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                               <Button

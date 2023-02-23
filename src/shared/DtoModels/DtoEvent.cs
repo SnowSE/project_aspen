@@ -15,4 +15,5 @@ public record DtoEvent
     public string Description { get; set; }
     public string MainImage { get; set; }
     public decimal DonationTarget { get; set; }
+    public bool IsArchived { get; set; } = false;
 }

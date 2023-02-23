@@ -45,6 +45,7 @@ const CreateEventForm = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
+                    false,
                     -1 // id
                 );
                 setCurrentEvent(defaultEvent);
@@ -61,7 +62,8 @@ const CreateEventForm = () => {
                 location: eventLocation,
                 description: eventDescription,
                 mainImage: eventMainImage,
-                donationTarget: eventDonationTarget
+                donationTarget: eventDonationTarget,
+                isArchived:false
             }
 
             try {

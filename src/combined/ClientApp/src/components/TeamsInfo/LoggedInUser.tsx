@@ -3,7 +3,6 @@ import axios from "axios";
 import {  useState } from "react";
 import {  useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
-import registration from "../../JsModels/registration";
 
 
 
@@ -44,7 +43,6 @@ export function LoggedInUser() {
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        const api = process.env.PUBLIC_URL + `/api/Registration`;
 
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -54,27 +52,7 @@ export function LoggedInUser() {
         
         const currentUser = await axios.get(currentUserUrl, config)
         console.log("I am the current user", Number(currentUser.data.id) );
-        let newMember: registration = {
-            creationDate: creationDate,
-            isPublic: isPublic,
-            nickname: nickName,
-            ownerID: userId,
-            teamID: tId,
-            // personRegistrations:  [
-            //     {   
-            //         personID: Number(currentUser.data.id),                    
-            //         createDate: creationDate
-            //     }
-            // ]
-        }
-        console.log(newMember)
-
-         await axios.post(api, newMember)
-                .then((response) => { })
-            .catch((error) => { console.log(error.response.data) })
         
-
-        setPersonRegistration(personRegistrations)
 
         navigate(-1);
     }

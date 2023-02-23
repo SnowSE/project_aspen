@@ -61,6 +61,7 @@ const TeamEditDelete = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
+                    false,
                     -1 // id
                 );
                 setCurrentEvent(defaultEvent);
