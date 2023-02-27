@@ -111,9 +111,10 @@ public class TeamControllerTest
         await addTeamtoEvent(newEvent.ID, "Adam1", "JayseTeam1", "Jayse1");
         await addTeamtoEvent(newEvent.ID, "Adam2", "JayseTeam2", "Jayse2");
 
-        var teams = await api.HttpClient.GetFromJsonAsync<IEnumerable<DtoTeam>>($"/api/teams/event/{newEvent.ID}");
+        var teams = await GetTeamController().GetByEventID(newEvent.ID);
 
-        teams.Count().Should().Be(3);
+        var count = teams.Value.Count();
+        count.Should().Be(3);
     }
 
 }
