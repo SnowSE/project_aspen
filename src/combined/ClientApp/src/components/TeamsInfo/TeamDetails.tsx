@@ -1,21 +1,13 @@
-import {Box,Button,Card,CardHeader,CardMedia,CardContent,CardActions,Collapse,Typography, Grid, Divider,} from "@mui/material";
+import {Box,Button,Card,CardHeader,CardMedia,CardContent,Typography, Divider,} from "@mui/material";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
 
 
 export function TeamDetails() {
