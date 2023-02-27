@@ -116,7 +116,7 @@ export function TeamDetails() {
                                       })
                                       : authService.signinRedirect()
                               }
-                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                           >
                               Join Our Team
                           </Button>
@@ -137,7 +137,7 @@ export function TeamDetails() {
                                           })
 
                                       }
-                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Edit Team Details
                                   </Button>
@@ -162,7 +162,7 @@ export function TeamDetails() {
                                           })
 
                                       }
-                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px" }}
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Delete Team
                                   </Button>
