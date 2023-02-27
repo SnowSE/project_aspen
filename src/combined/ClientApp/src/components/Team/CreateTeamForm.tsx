@@ -16,7 +16,7 @@ const CreateTeamForm = () => {
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
-    const [isPublic, setIsPublic] = useState<boolean>(true)
+    const [isArchived, setIsArchived] = useState<boolean>(false)
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
     const { currentEvent } = useContext(EventContext);
@@ -56,8 +56,8 @@ const CreateTeamForm = () => {
             mainImage: result.data,
             ownerID: Number(currentUser.data.id),
             eventID: currentEvent.id,
-            donationTarget: donationGoal,
-            isPublic: isPublic
+            isArchived: false,
+            donationTarget: donationGoal
         }
         var teamID: number = 0;
         var teamUrl = process.env.PUBLIC_URL + "/api/teams"
@@ -166,8 +166,8 @@ const CreateTeamForm = () => {
                                 Team is public.
                             </Label>
 
-                            <Checkbox checked={isPublic} onChange={() => {
-                                setIsPublic(!isPublic)
+                            <Checkbox checked={isArchived} onChange={() => {
+                                setIsArchived(!isArchived)
                             }} />
                         </Col>
                     </Row>

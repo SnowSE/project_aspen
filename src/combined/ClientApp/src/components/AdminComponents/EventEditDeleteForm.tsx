@@ -61,7 +61,8 @@ const EventEditDeleteForm = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
-                    -1 // id
+                    false, 
+                    -1,//id
                 );
                 setCurrentEvent(defaultEvent);
             }
