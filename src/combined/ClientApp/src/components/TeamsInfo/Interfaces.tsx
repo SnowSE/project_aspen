@@ -5,7 +5,7 @@ import Team from '../../JsModels/team';
 import { authService } from '../../services/authService';
 import axios from 'axios'
 
-export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, donationTarget, isPublic, registrations }: Team) => {
+export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, donationTarget,persons }: Team) => {
     const navigate = useNavigate();
     //const user = authService.isLoggedIn();
     //{ localStorage.getItem("LoggedInUser") == "" ?}
@@ -53,7 +53,6 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                 </Grid>
                                     {
                                         (() => {
-                                            if ( isPublic===true) {
                                                 return (
                                                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                                                         <Button onClick={() => loggedInUSer ?
@@ -69,11 +68,6 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                                             sx={{ backgroundColor: 'orange', m: 2, fontSize: '10px' }}  >Join Our Team</Button>
                                                     </Grid>
                                                 )
-                                            }  else {
-                                                return (
-                                                    <p>This is Private Team</p>
-                                                )
-                                            }
                                         })()
                                     }  
                                    

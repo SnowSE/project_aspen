@@ -32,7 +32,6 @@ public class TeamControllerTest
         dtoTeam.ID.Should().NotBe(0);
         dtoTeam.Description.Should().Be("George");
         dtoTeam.Name.Should().Be("New Team!");
-        dtoTeam.IsPublic.Should().BeTrue();
         dtoTeam.DonationTarget.Should().Be(500);
     }
 
@@ -94,14 +93,12 @@ public class TeamControllerTest
     {
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
         var dtoTeam = await addTeamtoEvent(newEvent.ID, "TeamJayse", "Jayse", "Jayse");
-        dtoTeam.IsPublic.Should().BeTrue();//default public is true
 
-        var editedTeam = dtoTeam with { IsPublic = false };
+        var editedTeam = dtoTeam with {  };
         await GetTeamController().Edit(editedTeam);
 
         var returnedTeam = (await GetTeamController().GetByID(editedTeam.ID)).Value;
         returnedTeam.Description.Should().Be(editedTeam.Description);
-        returnedTeam.IsPublic.Should().Be(false);
     }
 
     [Test]

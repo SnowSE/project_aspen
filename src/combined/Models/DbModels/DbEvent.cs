@@ -13,4 +13,6 @@ public record DbEvent
     public string MainImage { get; init; }
     public decimal DonationTarget { get; init; }
     public virtual ICollection<DbTeam> Teams { get; init; }
+    public bool IsArchived { get; init; }
+
 }
