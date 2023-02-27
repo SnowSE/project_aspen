@@ -7,6 +7,7 @@ using Serilog;
 public class TeamController : ControllerBase
 {
     private readonly ITeamRepository teamRepository;
+    private readonly IPersonTeamAssoicationRepository personTeamAssoicationRepository;
     private readonly IMapper mapper;
     private readonly ILogger<TeamController> log;
 
@@ -17,9 +18,10 @@ public class TeamController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> log)
+    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> log, IPersonTeamAssoicationRepository personTeamAssoicationRepository)
     {
         this.teamRepository = teamRepository;
+        this.personTeamAssoicationRepository = personTeamAssoicationRepository;
         this.mapper = mapper;
         this.log = log;
     }
@@ -64,8 +66,16 @@ public class TeamController : ControllerBase
 
         var team = mapper.Map<Team>(dtoTeam);
         var newTeam = await teamRepository.AddAsync(team);
-        return mapper.Map<DtoTeam>(newTeam);
+        var personTeamAssociation = new PersonTeamAssociation {
+            PersonId = dtoTeam.OwnerID,
+            TeamId = newTeam.ID,
+            EventId = dtoTeam.EventID,
+            DateJoined = DateTime.UtcNow
+        };
 
+        var results = await personTeamAssoicationRepository.AddAsync(personTeamAssociation);
+
+        return mapper.Map<DtoTeam>(newTeam);
     }
 
     [HttpPut("{teamId}")]

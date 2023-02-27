@@ -10,8 +10,9 @@ public class TeamControllerTest
     {
         var context = TestHelpers.CreateContext();
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
+        var personTeamAssociationRepository = new PersonTeamAssoicationRepository(context, TestHelpers.AspenMapper);
         var loggerMock = new Mock<ILogger<TeamController>>();
-        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object);
+        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object, personTeamAssociationRepository);
     }
 
     public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
