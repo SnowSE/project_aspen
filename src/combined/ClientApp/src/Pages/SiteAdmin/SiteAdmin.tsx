@@ -108,7 +108,7 @@ const SiteAdmin = () => {
                     className="AccordionDetails"
                     expandIcon={<ExpandMoreIcon />}
                 >
-                    <Typography> Stripe Logs </Typography>
+                    <Typography> Stripe Errors </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
