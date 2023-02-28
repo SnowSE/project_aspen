@@ -1,14 +1,19 @@
 import { Box, Button, Typography, Modal } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { EventContext } from "../../App";
 
 
 export function LoggedInUser() {
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [nickName, setNickName] = useState<string>('');
+    const [teamID, setTeamID] = useState<number>(-1);
+    const [personID, setPersonID] = useState<number>(-1);
+    const { currentEvent } = useContext(EventContext);
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         if (nickName === null || nickName === '' || !nickName?.trim()) {
@@ -16,20 +21,22 @@ export function LoggedInUser() {
         }
         setOpen(true);
     }
+
     const handleClose = () => setOpen(false);
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+    };
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
+        const now = new Date();
+        const utcDate = now.toISOString(); 
+        const personTeam = { personId: personID, teamId: teamID, eventId: currentEvent.id, DateJoined: utcDate }
+        const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
 
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        };
-        var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
-        const currentUser = await axios.get(currentUserUrl, config)
-        console.log("I am the current user", Number(currentUser.data.id));
         navigate(-1);
     }
-    
+
     const handleChange = (e: any) => {
         setNickName(e.target.value);
 
@@ -42,6 +49,16 @@ export function LoggedInUser() {
     else {
         userName = <Typography>{nickName}</Typography>
     }
+    useEffect(() => {
+        const list = [];
+        for (const entry of searchParams.entries()) {
+            list.push(entry[1]);
+        }
+        const [teamID, personID, eventID] = list.map(Number);
+        setTeamID(teamID);
+        setPersonID(personID);
+    }, []);
+
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>

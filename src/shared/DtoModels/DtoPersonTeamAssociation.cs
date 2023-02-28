@@ -5,7 +5,6 @@ namespace shared.DtoModels;
 public record DtoPersonTeamAssociation
 {
 
-
     [SwaggerSchema(ReadOnly = true)]
     public long ID { get; set; }
 

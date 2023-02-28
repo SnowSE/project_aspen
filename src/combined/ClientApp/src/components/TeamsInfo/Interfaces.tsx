@@ -45,7 +45,6 @@ export const TeamCard = ({ id, name, description, mainImage, ownerID, eventID, d
                                                 search: `?${createSearchParams({
                                                     teamId: `${id}`,
                                                     ownerID: `${ownerID}`
-
                                                 })}`
                                             })
                                         }}
