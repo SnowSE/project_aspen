@@ -60,8 +60,6 @@ const SiteAdmin = () => {
                 
         {isAdmin ? 
             <div>
-                <h1>Total donations: {totalDonations}</h1>
-                <h1>Total Failures: {stripeFailureLogs?.length}</h1>
             <Paper square={true} elevation={6} className="AdminPaperDetails">
                 <Box className="AdminCurrentEventDetails">
                     {
@@ -116,7 +114,7 @@ const SiteAdmin = () => {
                     className="AccordionDetails"
                     expandIcon={<ExpandMoreIcon />}
                 >
-                    <Typography> Stripe Error Logs | ## Failuers / ## Successes </Typography>
+                    <Typography> Stripe Error Logs | {stripeFailureLogs?.length} Failures / {totalDonations} Successes </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
