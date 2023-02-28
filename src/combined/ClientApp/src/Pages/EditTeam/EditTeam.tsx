@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState} from "react";
 import { useSearchParams } from "react-router-dom";
+import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 
 const EditTeam = () => {
     const [searchParams] = useSearchParams();
@@ -18,6 +19,11 @@ const EditTeam = () => {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
+    const [tempImage, setTempImage] = useState<string>("");
+    const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
+
+    const [imageUrl, setImageUrl] = useState<string>(baseImageUrl + currentTeam?.mainImage);
+
     useEffect(() => {
         const fetchTeam = async () => {
             const response = await fetch(api);
@@ -52,8 +58,11 @@ const EditTeam = () => {
         if (files && files[0]) {
             const reader = new FileReader();
             reader.onload = (e) => {
+                setTempImage(e.target?.result as string);
+                setImageUrl(e.target?.result as string);
                 setCurrentTeam({
                     ...currentTeam,
+                    mainImage: files[0],
                     image: e.target?.result as string,
                 });
             };
@@ -62,78 +71,61 @@ const EditTeam = () => {
     };
 
 
-
     return (
         <div>
             {currentTeam ? (
 
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Team Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            value={currentTeam.name}
-                            onChange={(event) =>
-                                setCurrentTeam({
-                                    ...currentTeam,
-                                    name: event.target.value,
-                                })
-                            }
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="image">Team Image:</label>
-                        <input
-                            type="file"
-                            id="image"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        />
-                        {currentTeam.image && (
-                            <img
-                                className="team-image-preview"
-                                src={currentTeam.image}
-                                alt="Team Preview"
-                            />
-                        )}
-                    </div>
+                <Form onSubmit={handleSubmit}>
+                    <FormGroup>
+                        <Row className="FormRowOne">
+                            <Col md={5} xs={6}>
+                                <Label>
+                                    Team Name
+                                </Label>
+                                <Input
+                                    type="text"
+                                    id="name"
+                                    value={currentTeam.name}
+                                    onChange={(event) =>
+                                        setCurrentTeam({
+                                            ...currentTeam,
+                                            name: event.target.value,
+                                        })
+                                    }
+                                />
+                            </Col>
+                        </Row>
+                    </FormGroup> 
+                    <FormGroup>
+                        <Row className="FormRowOne">
+                            <Col md={6} xs={8}>
 
-                    <div className="form-group">
-                        <label htmlFor="description">Team Description:</label>
-                        <textarea
-                            id="description"
-                            value={currentTeam.description}
-                            onChange={(event) =>
-                                setCurrentTeam({
-                                    ...currentTeam,
-                                    description: event.target.value,
-                                })
-                            }
-                        ></textarea>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="donation-goal">Donation Goal:</label>
-                        <input
-                            type="number"
-                            id="donation-goal"
-                            value={currentTeam.donationGoal}
-                            onChange={(event) =>
-                                setCurrentTeam({
-                                    ...currentTeam,
-                                    donationGoal: parseInt(event.target.value),
-                                })
-                            }
-                        />
-                    </div>
-
+                                <Label>
+                                </Label>
+                                <Input
+                                    type="file"
+                                    id="image"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                                {imageUrl ? (
+                                    <img
+                                        className="team-image-preview"
+                                        src={imageUrl}
+                                        alt="Team Preview"
+                                    />
+                                ) : null}
+                                
+                                <FormText>
+                                    Select an image that will be displayed as your team's logo
+                                </FormText>
+                            </Col>
+                        </Row>
+                    </FormGroup>
+                    
                     <button type="submit">Save</button>
 
-                </form>
-
-
-
+                </Form>
 
             ) : (
                 "Loading..."
