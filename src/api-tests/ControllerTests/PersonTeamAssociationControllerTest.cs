@@ -1,5 +1,6 @@
 ﻿using Api.DataAccess;
 using Microsoft.Extensions.Logging;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace Tests.ControllerTests;
 
@@ -12,7 +13,6 @@ public class PersonTeamAssociationControllerControllerTest
         var loggerMock = new Mock<ILogger<PersonTeamAssociationController>>();
         return new PersonTeamAssociationController(personTeamAssociationRepository, TestHelpers.AspenMapper, loggerMock.Object);
     }
-
     [Test]
     public async Task CanCreatePersonTeamRecord()
     {
@@ -24,13 +24,17 @@ public class PersonTeamAssociationControllerControllerTest
 
         var dtoTeam = (await TeamControllerTest.GetTeamController().Add(newTeam)).Value;
 
-        var newPersonTeamAssociation = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
+        var newPerson2 = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob2" })).Value;
+
+        var newPersonTeamAssociation = new DtoPersonTeamAssociation { PersonId = newPerson2.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
+
         var result = (await GetPersonTeamAssociationController().Add(newPersonTeamAssociation)).Value;
         result.ID.Should().NotBe(0);
-        result.PersonId.Should().Be(newPerson.ID);
+        result.PersonId.Should().Be(newPerson2.ID);
         result.TeamId.Should().Be(dtoTeam.ID);
         result.EventId.Should().Be(newEvent.ID);
     }
+
 
     [Test]
 
@@ -45,11 +49,6 @@ public class PersonTeamAssociationControllerControllerTest
         var newTeam = new DtoTeam { Name = "New Team!", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg" };
 
         var dtoTeam = (await TeamControllerTest.GetTeamController().Add(newTeam)).Value;
-
-        var newPersonTeamAssociation = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
-
-        var result = (await GetPersonTeamAssociationController().Add(newPersonTeamAssociation)).Value;
-        Assert.NotNull(result);
 
         var newPersonTeamAssociationTwo = new DtoPersonTeamAssociation { PersonId = newPersonTwo.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
 
@@ -75,10 +74,6 @@ public class PersonTeamAssociationControllerControllerTest
 
         var dtoTeam = (await TeamControllerTest.GetTeamController().Add(newTeam)).Value;
 
-        var newPersonTeamAssociation = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
-        var result = (await GetPersonTeamAssociationController().Add(newPersonTeamAssociation)).Value;
-        Assert.NotNull(result);
-
         var team = (await GetPersonTeamAssociationController().GetTeamAsync(newPerson.ID,newEvent.ID)).Value;
         team.Equals(dtoTeam);
     }
@@ -101,11 +96,6 @@ public class PersonTeamAssociationControllerControllerTest
 
         var dtoTeam2 = (await TeamControllerTest.GetTeamController().Add(newTeam2)).Value;
         Assert.NotNull(dtoTeam2);
-
-        var newPersonTeamAssociation = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam.ID, EventId = newEvent.ID };
-
-        var result = (await GetPersonTeamAssociationController().Add(newPersonTeamAssociation)).Value;
-        Assert.NotNull(result);
 
         var newPersonTeamAssociation2 = new DtoPersonTeamAssociation { PersonId = newPerson.ID, TeamId = dtoTeam2.ID, EventId = newEvent.ID };
 

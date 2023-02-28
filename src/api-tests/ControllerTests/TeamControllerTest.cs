@@ -10,8 +10,9 @@ public class TeamControllerTest
     {
         var context = TestHelpers.CreateContext();
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
+        var personTeamAssociationRepository = new PersonTeamAssoicationRepository(context, TestHelpers.AspenMapper);
         var loggerMock = new Mock<ILogger<TeamController>>();
-        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object);
+        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object, personTeamAssociationRepository);
     }
 
     public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
@@ -110,9 +111,10 @@ public class TeamControllerTest
         await addTeamtoEvent(newEvent.ID, "Adam1", "JayseTeam1", "Jayse1");
         await addTeamtoEvent(newEvent.ID, "Adam2", "JayseTeam2", "Jayse2");
 
-        var teams = await api.HttpClient.GetFromJsonAsync<IEnumerable<DtoTeam>>($"/api/teams/event/{newEvent.ID}");
+        var teams = await GetTeamController().GetByEventID(newEvent.ID);
 
-        teams.Count().Should().Be(3);
+        var count = teams.Value.Count();
+        count.Should().Be(3);
     }
 
 }
