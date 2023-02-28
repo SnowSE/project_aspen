@@ -17,17 +17,23 @@ const SiteAdmin = () => {
     const [stripeFailureLogs, setStripeFailureLogs] = useState<PaymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [totalDonations, setTotalDonations] = useState<number>(0);
     useEffect(() => {
         const fetchData = async () => {
             if (!currentEvent.id) {
                 console.log("No current event found!")
                 return;
             }
-            const endPoint = process.env.PUBLIC_URL +`/api/stripe/failures`;
-            var stripeDBLogs = await fetch(endPoint)
+            const paymentFailures = process.env.PUBLIC_URL +`/api/stripe/failures`;
+            const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
+            var donationCount= await fetch(allDonations)
+            var stripeDBLogs = await fetch(paymentFailures)
+            const donations = await donationCount.json();
             const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
             var teamsList = await getTeamsList(currentEvent.id)
             var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
+            
+            setTotalDonations(donations);
             setStripeFailureLogs(stripeFailures)
             setTeams(jsonTeams)
         }
@@ -54,6 +60,8 @@ const SiteAdmin = () => {
                 
         {isAdmin ? 
             <div>
+                <h1>Total donations: {totalDonations}</h1>
+                <h1>Total Failures: {stripeFailureLogs?.length}</h1>
             <Paper square={true} elevation={6} className="AdminPaperDetails">
                 <Box className="AdminCurrentEventDetails">
                     {
@@ -108,7 +116,7 @@ const SiteAdmin = () => {
                     className="AccordionDetails"
                     expandIcon={<ExpandMoreIcon />}
                 >
-                    <Typography> Stripe Logs </Typography>
+                    <Typography> Stripe Error Logs | ## Failuers / ## Successes </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
