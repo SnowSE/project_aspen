@@ -89,15 +89,16 @@ public class DonationControllerTest
     };
     }
 
-    [Test]
-    public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
-    {
-        var api = new AspenApi();
-        (await api.HttpClient.DeleteAsync($"api/teams/{team2.ID}"))
-            .StatusCode
-            .Should()
-            .Be(System.Net.HttpStatusCode.BadRequest);
-    }
+    //Todo deleting a team should just set the isArchived flag to true, not erase the team
+    //[Test]
+    //public async Task DeletingATeamWithAssociatedDonationsReturnsABadRequest()
+    //{
+    //    var api = new AspenApi();
+    //    (await api.HttpClient.DeleteAsync($"api/teams/{team2.ID}"))
+    //        .StatusCode
+    //        .Should()
+    //        .Be(System.Net.HttpStatusCode.BadRequest);
+    //}
 
     [Test]
     public async Task CanCreateDonation()

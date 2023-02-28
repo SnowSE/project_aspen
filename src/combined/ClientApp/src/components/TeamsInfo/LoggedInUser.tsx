@@ -10,17 +10,17 @@ export function LoggedInUser() {
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [nickName, setNickName] = useState<string>('');
+    const [nickName, setNickName] = useState<string>('Anonymous');
     const [teamID, setTeamID] = useState<number>(-1);
     const [personID, setPersonID] = useState<number>(-1);
     const { currentEvent } = useContext(EventContext);
     const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-        if (nickName === null || nickName === '' || !nickName?.trim()) {
-            setNickName("Anonymous")
-        }
-        setOpen(true);
-    }
+    //const handleOpen = () => {
+    //    if (nickName === null || nickName === '' || !nickName?.trim()) {
+    //        setNickName("Anonymous")
+    //    }
+    //    setOpen(true);
+    //}
 
     const handleClose = () => setOpen(false);
     const config = {
@@ -30,11 +30,25 @@ export function LoggedInUser() {
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         const now = new Date();
-        const utcDate = now.toISOString(); 
+        const utcDate = now.toISOString();
         const personTeam = { personId: personID, teamId: teamID, eventId: currentEvent.id, DateJoined: utcDate }
-        const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
 
-        navigate(-1);
+        try {
+            const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
+            if (result.status !== 200) {
+            }
+            else {
+                var personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                var person = personResult.data;
+                var updatePerson = { ...person, nickname: nickName };
+                await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
+                alert("You have successfully joined the team!");
+                navigate(`/TeamDetails?teamId=${teamID}`);
+            }
+
+        } catch (e) {
+            alert("Could not add you to the team, please try again later ");
+        }
     }
 
     const handleChange = (e: any) => {
@@ -54,10 +68,10 @@ export function LoggedInUser() {
         for (const entry of searchParams.entries()) {
             list.push(entry[1]);
         }
-        const [teamID, personID, eventID] = list.map(Number);
+        const [teamID, personID] = list.map(Number);
         setTeamID(teamID);
         setPersonID(personID);
-    }, []);
+    }, [searchParams]);
 
 
     return (
@@ -81,7 +95,7 @@ export function LoggedInUser() {
                     </Col>
                 </Row>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={handleOpen}>Submit</Button>
+                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
                 </Col>
                 <Modal
                     open={open}

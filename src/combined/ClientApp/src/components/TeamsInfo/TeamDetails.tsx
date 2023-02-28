@@ -108,7 +108,7 @@ export function TeamDetails() {
               <Typography variant="h1">{currentTeam?.name} </Typography>
               <Typography>Team owner: {teamOwner?.name}</Typography>
               <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                  {currentTeam?.isPublic === true ?
+                  {
                           <Button
                               onClick={() =>
                                   loggedInUSer
@@ -126,7 +126,7 @@ export function TeamDetails() {
                               Join Our Team
                           </Button>
 
-                      : <p>This is Private Team</p>} 
+                      } 
                   {(() => {
                       if (loggedInUserId === teamOwner?.id||isAdmin) {
                           return (
