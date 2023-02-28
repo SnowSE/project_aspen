@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { EventContext } from '../../App';
-import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import team from "../../JsModels/team";
 
@@ -16,7 +15,6 @@ const CreateTeamForm = () => {
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
-    const [isArchived, setIsArchived] = useState<boolean>(false)
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
 
     const { currentEvent } = useContext(EventContext);
@@ -157,22 +155,6 @@ const CreateTeamForm = () => {
                         </Col>
                     </Row>
                 </FormGroup>
-
-                <FormGroup>
-                    <Row className="FormRowFive">
-                        <Col md={6} xs={8} className="FormRowFiveColumnPosition">
-
-                            <Label>
-                                Team is public.
-                            </Label>
-
-                            <Checkbox checked={isArchived} onChange={() => {
-                                setIsArchived(!isArchived)
-                            }} />
-                        </Col>
-                    </Row>
-                </FormGroup>
-
                 <Col md={12} xs={8} className="FormButtonPosition">
                     <Button
                         variant='contained'
