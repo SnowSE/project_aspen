@@ -1,4 +1,5 @@
 using Npgsql;
+using Serilog;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Api.DataAccess;
@@ -12,7 +13,7 @@ public interface IPersonTeamAssoicationRepository
     Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
 
     Task<bool> ExistsAsync(long personId, long eventId);
-
+    Task DeleteAsync(long personId, long eventId);
 }
 
 public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
@@ -49,7 +50,7 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
                 throw new Exception("This person is already on the team for this event.");
             }
         }
-            return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
+        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
     }
 
     public async Task<Team> GetTeamAsync(long personId, long eventId)
@@ -76,4 +77,20 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         return await context.PersonTeamAssociations.AnyAsync(e => e.PersonId == personId && e.EventId == eventId);
     }
 
+    public async Task DeleteAsync(long personId, long eventId)
+    {
+        var dbPersonTeamAssociation = await context.PersonTeamAssociations
+            .Where(e => e.PersonId == personId && e.EventId == eventId)
+            .FirstOrDefaultAsync();
+        if (dbPersonTeamAssociation != null)
+        {
+            context.PersonTeamAssociations.Remove(dbPersonTeamAssociation);
+            await context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new NotFoundException<PersonTeamAssociation>("Person is not on a team in this Event");
+        }
+
+    }
 }
