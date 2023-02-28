@@ -52,7 +52,8 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
-    
+    const [isAdmin, setIsAdmin] = useState(false)
+
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -90,11 +91,25 @@ export function TeamDetails() {
               console.log(e);
           }
           
-      }
+        }
+
+        async function currentUser() {
+            var user = await authService.getUser()
+            console.log("user roles:", user?.profile.roles)
+            user?.profile.roles.forEach((role: string) => {
+                console.log(role)
+                if (role.includes("admin")) {
+                    setIsAdmin(true)
+                }
+            });        }
+
+
+
     const callServise = async () => {
         await getUser()
         await fetchTeam();
         await fetchTeamOwner();
+        await currentUser();
     };
 
       callServise();
@@ -145,7 +160,7 @@ export function TeamDetails() {
                                   : <p>This is Private Team</p> } 
 
           {(() => {
-              if (loggedInUserId === teamOwner?.id) {
+              if (loggedInUserId === teamOwner?.id || isAdmin) {
                   return (
                       <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                           <Button
@@ -170,7 +185,7 @@ export function TeamDetails() {
           }  
 
           {(() => {
-              if (loggedInUserId === teamOwner?.id) {
+              if (loggedInUserId === teamOwner?.id || isAdmin) {
                   return (
                       <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', float: "right" }}>
                           <Button
