@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState} from "react";
 import { useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
+import { Button } from "@mui/material";
 
 const EditTeam = () => {
     const [searchParams] = useSearchParams();
@@ -176,7 +177,7 @@ const EditTeam = () => {
                     </FormGroup>
 
                     
-                    <button type="submit">Save</button>
+                    <Button type="submit" sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }} >Save</Button>
 
                 </Form>
 
