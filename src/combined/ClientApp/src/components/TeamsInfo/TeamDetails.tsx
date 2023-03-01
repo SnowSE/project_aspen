@@ -7,6 +7,7 @@ import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
+import { DetailedMembersTeamsList } from "../DetailedMembersTeamsList";
 
 
 
@@ -214,9 +215,7 @@ export function TeamDetails() {
             title= "Members: "
           />
           
-          <CardContent>
-            <Typography> Team Members will go here</Typography>
-          </CardContent>
+          <DetailedMembersTeamsList />
         </Card>
       </Box>
     </Box>

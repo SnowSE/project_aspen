@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
     "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.25",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.8.6",
     "@stripe/react-stripe-js": "^1.16.0",
