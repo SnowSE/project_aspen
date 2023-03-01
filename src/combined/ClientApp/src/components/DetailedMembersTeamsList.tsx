@@ -125,14 +125,13 @@ export function DetailedMembersTeamsList() {
                                 <TableCell component="th" scope="row">
                                     {row.memberName}
                                 </TableCell>
-                                <TableCell align="right">{row.memberName}</TableCell>
-                                <TableCell align="right">{row.donationAmount}</TableCell>
-                                <TableCell align="right">{row.sharedLinksAmount}</TableCell>
+                                <TableCell align="center">{row.donationAmount}</TableCell>
+                                <TableCell align="center">{row.sharedLinksAmount}</TableCell>
                                 {(() => {
                                     if (loggedInUserId === teamOwner?.id || isAdmin) {
                                         return (
 
-                                            <TableCell align="right"><ClearRoundedIcon sx={{color: red } } /></TableCell>
+                                            <TableCell align="center"><ClearRoundedIcon sx={{color: red } } /></TableCell>
 
                                         )
                                     }
