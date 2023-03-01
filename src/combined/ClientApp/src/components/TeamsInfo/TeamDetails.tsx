@@ -207,7 +207,7 @@ export function TeamDetails() {
               </Box>
           </Box>
       
-      <Box sx={{display:'flex', justifyContent:'right'}}>
+      <Box sx={{display:'flex', justifyContent:'center'}}>
         <Card sx={{ maxWidth: 500 }}>
           <CardHeader
             className="PaperColor"

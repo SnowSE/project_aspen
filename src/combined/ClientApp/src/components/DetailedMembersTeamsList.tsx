@@ -95,9 +95,9 @@ export function DetailedMembersTeamsList() {
         setPage(0);
     };
     return (
-        <Paper>
+        <Paper >
             <TableContainer >
-                <Table sx={{ minWidth: 650 }}>
+                <Table sx={{maxWidth: 800 }}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Member Name</TableCell>
