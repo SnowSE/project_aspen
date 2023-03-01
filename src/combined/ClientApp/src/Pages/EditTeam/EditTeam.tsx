@@ -58,7 +58,7 @@ const EditTeam = () => {
             }
         })
 
-        const result = await imageResponse.json()
+       /* const result = await imageResponse.json()*/
         
 
             try {
