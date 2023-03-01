@@ -21,12 +21,10 @@ const EditTeam = () => {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [tempImage, setTempImage] = useState<string>("");
     const [teamImage, setTeamImage] = useState<File | undefined>(undefined);
-    const [donationGoal, setDonationGoal] = useState<number>(0);
-
 
     const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
-    const [imageUrl, setImageUrl] = useState<string>(baseImageUrl + currentTeam?.mainImage);
+    const [image, setImage] = useState<File>()
 
     useEffect(() => {
         const fetchTeam = async () => {
@@ -34,7 +32,6 @@ const EditTeam = () => {
             const data = await response.json();
             setCurrentTeam(data);
             setTeamImage(data.mainImage);
-            setDonationGoal(data.donationGoal);
         };
 
         const callServise = async () => {
@@ -47,7 +44,25 @@ const EditTeam = () => {
    
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();        
+        event.preventDefault(); 
+        var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
+        if (!image) {
+            return
+        }
+
+        const data = new FormData();
+        data.append('asset', image, image.name);
+        const imageResponse = await fetch(assetsUrl, {
+            method: 'POST',
+            body: data,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`
+            }
+        })
+
+        const result = await imageResponse.json()
+        console.log('upload result:', result)
+
             try {
                 const response = await axios.put(api, currentTeam);
                 console.log(response);
@@ -60,30 +75,14 @@ const EditTeam = () => {
     };
 
     const handleImageChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const files = event.target.files;
-        if (files && files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setTempImage(e.target?.result as string);
-                setImageUrl(e.target?.result as string);
-                setCurrentTeam({
-                    ...currentTeam,
-                    mainImage: files[0],
-                    image: e.target?.result as string,
-                });
-            };
-            reader.readAsDataURL(files[0]);
+        if (e.target.files) {
+            setImage(e.target.files[0]);
         }
     };
 
-    const handleDonationGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(event.target.value);
-        setDonationGoal(value);
-    };
-
- 
+   
 
     return (
         <div>
@@ -121,10 +120,11 @@ const EditTeam = () => {
                                     accept="image/*"
                                     onChange={handleImageChange}
                                 />
-                                {imageUrl ? (
+                                {image ? (
                                     <img
+                                       
                                         className="team-image-preview"
-                                        src={imageUrl}
+                                       /* src={image}*/
                                         alt="Team Preview"
                                     />
                                 ) : null}
