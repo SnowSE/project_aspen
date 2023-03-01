@@ -19,10 +19,8 @@ const EditTeam = () => {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-    const [tempImage, setTempImage] = useState<string>("");
-    const [teamImage, setTeamImage] = useState<File | undefined>(undefined);
+  
 
-    const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
     const [image, setImage] = useState<File>()
 
@@ -31,7 +29,7 @@ const EditTeam = () => {
             const response = await fetch(api);
             const data = await response.json();
             setCurrentTeam(data);
-            setTeamImage(data.mainImage);
+       
         };
 
         const callServise = async () => {
@@ -61,7 +59,7 @@ const EditTeam = () => {
         })
 
         const result = await imageResponse.json()
-        console.log('upload result:', result)
+        
 
             try {
                 const response = await axios.put(api, currentTeam);
