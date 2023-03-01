@@ -83,7 +83,7 @@ const EditTeam = () => {
         setDonationGoal(value);
     };
 
-
+ 
 
     return (
         <div>
@@ -163,11 +163,14 @@ const EditTeam = () => {
                                 <Input
                                     type="number"
                                     id="donation-goal"
-                                    value={currentTeam.donationGoal}
-                                    onChange={(event) => setDonationGoal(parseInt(event.target.value))}
-                                />
+                                    value={currentTeam.donationTarget}
+                                    onChange={(event) => setCurrentTeam({
+                                        ...currentTeam,
+                                        donationTarget: event.target.value,
+                                    })
+                                    } />
                                 <FormText>
-                                    Current donation goal: ${donationGoal}
+                                    Current donation goal
                                 </FormText>
                                 
                             </Col>
