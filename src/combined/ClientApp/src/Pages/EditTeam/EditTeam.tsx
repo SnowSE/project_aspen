@@ -20,6 +20,10 @@ const EditTeam = () => {
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [tempImage, setTempImage] = useState<string>("");
+    const [teamImage, setTeamImage] = useState<File | undefined>(undefined);
+    const [donationGoal, setDonationGoal] = useState<number>(0);
+
+
     const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
     const [imageUrl, setImageUrl] = useState<string>(baseImageUrl + currentTeam?.mainImage);
@@ -29,6 +33,8 @@ const EditTeam = () => {
             const response = await fetch(api);
             const data = await response.json();
             setCurrentTeam(data);
+            setTeamImage(data.mainImage);
+            setDonationGoal(data.donationGoal);
         };
 
         const callServise = async () => {
@@ -53,7 +59,9 @@ const EditTeam = () => {
 
     };
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const files = event.target.files;
         if (files && files[0]) {
             const reader = new FileReader();
@@ -69,6 +77,12 @@ const EditTeam = () => {
             reader.readAsDataURL(files[0]);
         }
     };
+
+    const handleDonationGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value);
+        setDonationGoal(value);
+    };
+
 
 
     return (
@@ -99,7 +113,6 @@ const EditTeam = () => {
                     <FormGroup>
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
-
                                 <Label>
                                 </Label>
                                 <Input
@@ -117,11 +130,50 @@ const EditTeam = () => {
                                 ) : null}
                                 
                                 <FormText>
-                                    Select an image that will be displayed as your team's logo
+                                    You can change the team image in here
                                 </FormText>
                             </Col>
                         </Row>
                     </FormGroup>
+                    <FormGroup>
+                        <Row className="FormRowOne">
+                            <Col md={6} xs={8}>
+                                <Label>
+                                </Label>
+                                <Input
+                                    id="description"
+                                    value={currentTeam.description}
+                                    onChange={(event) =>
+                                        setCurrentTeam({
+                                            ...currentTeam,
+                                            description: event.target.value,
+                                        })
+                                    }/>
+                                <FormText>
+                                    You can edit the team description
+                                </FormText>
+                            </Col>
+                        </Row>
+                    </FormGroup>
+                    <FormGroup>
+                        <Row className="FormRowOne">
+                            <Col md={6} xs={8}>
+                                <Label>
+                                </Label>
+                                <Input
+                                    type="number"
+                                    id="donation-goal"
+                                    value={currentTeam.donationGoal}
+                                    onChange={(event) => setDonationGoal(parseInt(event.target.value))}
+                                />
+                                <FormText>
+                                    Current donation goal: ${donationGoal}
+                                </FormText>
+                                
+                            </Col>
+                        </Row>
+                    </FormGroup>
+
                     
                     <button type="submit">Save</button>
 
