@@ -45,13 +45,13 @@ public class PersonTeamAssociationController : ControllerBase
         return mapper.Map<List<DtoPerson>>(teamMembers);
     }
 
-    [HttpDelete("{personId}/{eventId}")]
-    public async Task<ActionResult> Delete(long personId, long eventId)
+    [HttpDelete("{personId}/{teamId}")]
+    public async Task<ActionResult> Delete(long personId, long teamId)
     {
-        if (!await personTeamAssociationRepository.ExistsAsync(personId, eventId))
+        if (!await personTeamAssociationRepository.ExistsAsync(personId, teamId))
             return NotFound("Person does not belong to a team in this event");
 
-        await personTeamAssociationRepository.DeleteAsync(personId, eventId);
+        await personTeamAssociationRepository.DeleteAsync(personId, teamId);
         return NoContent();
     }
 

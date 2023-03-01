@@ -13,7 +13,7 @@ public interface IPersonTeamAssoicationRepository
     Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
 
     Task<bool> ExistsAsync(long personId, long eventId);
-    Task DeleteAsync(long personId, long eventId);
+    Task DeleteAsync(long personId, long teamId);
 }
 
 public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
@@ -77,10 +77,10 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         return await context.PersonTeamAssociations.AnyAsync(e => e.PersonId == personId && e.EventId == eventId);
     }
 
-    public async Task DeleteAsync(long personId, long eventId)
+    public async Task DeleteAsync(long personId, long teamId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
-            .Where(e => e.PersonId == personId && e.EventId == eventId)
+            .Where(e => e.PersonId == personId && e.TeamId == teamId)
             .FirstOrDefaultAsync();
         if (dbPersonTeamAssociation != null)
         {
