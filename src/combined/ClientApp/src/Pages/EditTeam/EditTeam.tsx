@@ -58,8 +58,8 @@ const EditTeam = () => {
             }
         })
 
-       /* const result = await imageResponse.json()*/
-        
+        const result = await imageResponse.json()
+        console.log('upload result:', result)
 
             try {
                 const response = await axios.put(api, currentTeam);
