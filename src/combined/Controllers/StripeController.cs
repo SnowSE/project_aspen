@@ -147,10 +147,13 @@ public class StripeController : ControllerBase
             TransactionNumber = Guid.NewGuid(),
             LinkGuid = linkGuid
         };
-
+        if(personName == null)
+        {
+            personName = "Anonymous";
+        }
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{phoneNumber}");
+        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{dateTime.ToLongDateString() + " " +  dateTime.ToLocalTime().ToLongTimeString()}/{phoneNumber}");
     }
 
 
