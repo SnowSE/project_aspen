@@ -1,8 +1,9 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { Box, TextField } from '@mui/material';
 import { Button } from 'reactstrap';
+import { EventContext } from '../../App';
 
 interface Props {
     personGUID?: string;
@@ -11,98 +12,81 @@ interface Props {
 const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
+    const { currentEvent } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
-    const [teamId, setTeamId] = useState(null)
+    const [teamId, setTeamId] = useState<number>()
     const [teamName, setTeamName] = useState<string>('')
-    const linkGuid= props.personGUID
+    const linkGuid = props.personGUID
     const [userId, setUserId] = useState<string | number | null | undefined>(null);
-    const [userName, setUserName] = useState<string>('')
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
-    const [donationSubmitName, setDonationSubmitName] = useState<string>('')
-    const [donationEmail, setDonationEmail] = useState<string>('')
+    const [donationSubmitName, setDonationSubmitName] = useState<string | null>('')
+    const [donationEmail, setDonationEmail] = useState<string | null>('')
     const [donationPhoneNumber, setDonationPhoneNumber] = useState<string>('')
 
     const BaseUrl = process.env.PUBLIC_URL
-
     useEffect(() => {
-
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
 
-        const getUser = async () => {
-            await axios.get(BaseUrl + '/api/user', config).then((response) => {
-                setUserId(response?.data?.id)
-                setUserName(response?.data?.name)
-            }).catch((error) => {
-                setUserName("Anonymous")
-            })
-        }
-        const getTeam = async () => {
-            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
-                response.data.forEach((registration: any) => {
-                    if (registration.ownerID === userId) {
+    const getUser = async () => {
+        await axios.get(BaseUrl + '/api/user', config).then((response) => {
+            setUserId(response?.data?.id)
+        }).catch((error) => {
+        })
+    }
+    const getTeam = async () => {
+        await axios.get(BaseUrl + '/api/PersonTeamAssociation/' + userId + '/' + currentEvent.id).then((response) => {
+            setTeamId(response.data.id)
+        }).catch((error) => {
+        })
+    }
 
-                        setTeamId(registration.teamID)
-                    }
-
-                })
-            }).catch((error) => {
-            })
-        }
-
-        const getTeamName = async () => {
-            await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
-                setTeamName(response.data.name)
-            }).catch((error) => {
-                setTeamName("Anonymous")
-            })
-        }
+    const getTeamName = async () => {
+        await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
+            setTeamName(response.data.name)
+        }).catch((error) => {
+            setTeamName("Default")
+        })
+    }
 
         const serviceCalls = async () => {
             await getUser()
             if (linkGuid !== "" && userId === null) {
                 console.log(linkGuid)
-                setTeamName("Anonymous")
+                setTeamName("Default")
 
             }
             else {
+
                 await getTeam()
                 await getTeamName()
-
             }
         }
-        serviceCalls()
 
-    }, [teamId, BaseUrl, linkGuid, userId])
-
-    useEffect(() => {
-        console.log("here in second use effect")
-        if (donationAmount === 0 || donationEmail.trim().length === 0) {
+        if (donationAmount === 0 || donationEmail!.trim().length === 0) {
             setCanSubmit(false)
         }
 
         else {
             setCanSubmit(true)
         }
+        serviceCalls()
 
-    }, [donationAmount, donationEmail])
+    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent.id])
+
+
+    useEffect(() => {
+        setDonationSubmitName(localStorage.getItem("LoggedInUser"))
+        setDonationEmail(localStorage.getItem("LoggedInEmail"))
+    }, [])
 
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // const paymentMethodResult = await stripe?.createPaymentMethod({
-        //     type: "card",
-        //     card: elements!.getElement(CardElement)!
-        // })
-
-        // console.log(paymentMethodResult)
-        // if (!paymentMethodResult?.error) {
-        // const id = paymentMethodResult?.paymentMethod.id
-
 
         await axios.post(`${BaseUrl}/api/stripe`,
             {
@@ -111,7 +95,7 @@ const PaymentForm: React.FC<Props> = (props) => {
                 teamName: teamName,
                 teamId: teamId,
                 personId: userId,
-                personName: userName,
+                personName: donationSubmitName,
                 donationName: donationSubmitName,
                 donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
@@ -129,7 +113,10 @@ const PaymentForm: React.FC<Props> = (props) => {
         setDonationAmount(value);
     }
 
-
+    console.log(localStorage.getItem("LoggedInUser"))
+    console.log(localStorage.getItem("LoggedInEmail"))
+    console.log("useState for logged in is; ", donationSubmitName)
+    console.log("useState for logged in email is; ", donationEmail)
     return (
         <>
             <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
@@ -239,5 +226,3 @@ const PaymentForm: React.FC<Props> = (props) => {
 }
 
 export default PaymentForm;
-
-
