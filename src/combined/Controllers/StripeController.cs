@@ -139,6 +139,7 @@ public class StripeController : ControllerBase
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
 
+
         var newDonation = new Donation {
             TeamID=teamId,
             PersonID=personId,
