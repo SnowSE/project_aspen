@@ -86,7 +86,10 @@ const SuccessfulDonation = () => {
                 </Grid>
             </Grid>
 
-
+            <br/>
+            <br/>
+            <br/>
+            
             <Box className="DonateButtonPosition">
                 <Button onClick={() => navigate("/")} variant='contained'
                     data-testid={'homePageBtn'}

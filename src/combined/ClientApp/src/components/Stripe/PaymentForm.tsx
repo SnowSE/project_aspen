@@ -226,5 +226,3 @@ const PaymentForm: React.FC<Props> = (props) => {
 }
 
 export default PaymentForm;
-
-
