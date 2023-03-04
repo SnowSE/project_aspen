@@ -139,6 +139,7 @@ public class StripeController : ControllerBase
         var s = session.Get(sessionId);
         var paymentIntentId = s.PaymentIntentId;
 
+
         var newDonation = new Donation {
             TeamID=teamId,
             PersonID=personId,
@@ -147,10 +148,13 @@ public class StripeController : ControllerBase
             TransactionNumber = Guid.NewGuid(),
             LinkGuid = linkGuid
         };
-
+        if(personName == null)
+        {
+            personName = "Anonymous";
+        }
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{phoneNumber}");
+        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{dateTime.ToLongDateString() + " " +  dateTime.ToLocalTime().ToLongTimeString()}/{phoneNumber}");
     }
 
 
