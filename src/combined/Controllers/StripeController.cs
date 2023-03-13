@@ -61,7 +61,7 @@ public class StripeController : ControllerBase
         return closestEvent;
     }
 
-    [HttpGet("failures")]
+    [HttpGet("failures"), Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<IEnumerable<DtoPaymentFailure>> GetAll()
     {
         return mapper.Map<IEnumerable<DtoPaymentFailure>>(await paymentFailureRepository.GetAllAsync());

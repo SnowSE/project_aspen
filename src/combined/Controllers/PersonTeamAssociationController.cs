@@ -3,6 +3,7 @@ using Api.DataAccess;
 
 namespace Api.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class PersonTeamAssociationController : ControllerBase

@@ -47,6 +47,7 @@ public class DonationController : ControllerBase
         var sum = await donationRepository.GetTeamDonationSum(teamID);
         return sum;
     }
+
     [HttpGet("totalDonations")]
     public async Task<ActionResult<int>> GetAllDonations()
     {
