@@ -23,7 +23,8 @@ public class PersonController : ControllerBase
         this.personRepository = personRepository;
     }
 
-    [HttpGet("{id}")]
+
+    [HttpGet("{id}"), Authorize]
     public async Task<ActionResult<DtoPerson>> GetByID(long id)
     {
         log.LogInformation("Getting person {id}", id);
@@ -33,7 +34,8 @@ public class PersonController : ControllerBase
         return mapper.Map<DtoPerson>(person);
     }
 
-    [HttpGet("authid/{authId}")]
+  
+    [HttpGet("authid/{authId}"), Authorize]
     public async Task<ActionResult<DtoPerson>> GetByAuthId(string authId)
     {
         log.LogInformation("Getting person AuthId {authId}", authId);
@@ -68,7 +70,8 @@ public class PersonController : ControllerBase
         }
     }
 
-    [HttpPut()]
+
+    [HttpPut(), Authorize]
     public async Task<ActionResult<DtoPerson>> Edit([FromBody] DtoPerson dtoPerson)
     {
         log.LogInformation("Editing person {dtoPerson}", dtoPerson);

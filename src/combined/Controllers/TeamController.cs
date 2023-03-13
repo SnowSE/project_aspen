@@ -1,5 +1,7 @@
 ﻿
 namespace Api.Controllers;
+
+using Api.DataAccess;
 using Serilog;
 
 [Route("api/teams")]
@@ -8,6 +10,7 @@ public class TeamController : ControllerBase
 {
     private readonly ITeamRepository teamRepository;
     private readonly IPersonTeamAssoicationRepository personTeamAssoicationRepository;
+    private readonly IPersonRepository personRepository;
     private readonly IMapper mapper;
     private readonly ILogger<TeamController> log;
 
@@ -18,10 +21,11 @@ public class TeamController : ControllerBase
                 .Select(e => e.ErrorMessage)
             );
 
-    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> log, IPersonTeamAssoicationRepository personTeamAssoicationRepository)
+    public TeamController(ITeamRepository teamRepository, IMapper mapper, ILogger<TeamController> log, IPersonTeamAssoicationRepository personTeamAssoicationRepository, IPersonRepository personRepository)
     {
         this.teamRepository = teamRepository;
         this.personTeamAssoicationRepository = personTeamAssoicationRepository;
+        this.personRepository = personRepository;
         this.mapper = mapper;
         this.log = log;
     }
@@ -46,6 +50,7 @@ public class TeamController : ControllerBase
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {
         Log.Information("Getting team by teamId {teamId}", teamId);
+
         if (!await teamRepository.ExistsAsync(teamId))
         {
             Log.Information("Does not Exist");
@@ -54,7 +59,7 @@ public class TeamController : ControllerBase
         return mapper.Map<DtoTeam>(await teamRepository.GetTeamByIdAsync(teamId));
     }
 
-    [HttpPost]
+    [HttpPost, Authorize]
     public async Task<ActionResult<DtoTeam>> Add([FromBody] DtoTeam dtoTeam)
     {
         log.LogInformation("Adding new dtoTeam {dtoTeam}", dtoTeam);
@@ -78,14 +83,21 @@ public class TeamController : ControllerBase
         return mapper.Map<DtoTeam>(newTeam);
     }
 
-    [HttpPut("{teamId}")]
+    [HttpPut("{teamId}"), Authorize]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
+
+        var team = mapper.Map<Team>(dtoTeam);
+        var teamOwner = team.OwnerID;
+        var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+        var person = await personRepository.GetByAuthIdAsync(emailAddress);
+
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
-        var team = mapper.Map<Team>(dtoTeam);
+        if (person.ID != teamOwner)
+            return Unauthorized("You are not the owner of this team");
 
         if (!await teamRepository.ExistsAsync(team.ID))
             return NotFound("Team id does not exist");
@@ -95,7 +107,7 @@ public class TeamController : ControllerBase
 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<IActionResult> Delete(long id)
     {
         log.LogInformation("Deleting team {id}", id);

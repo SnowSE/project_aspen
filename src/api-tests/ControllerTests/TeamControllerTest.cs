@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using Tests.Steps;
@@ -6,13 +7,15 @@ namespace Tests.ControllerTests;
 
 public class TeamControllerTest
 {
+
     public static TeamController GetTeamController()
     {
         var context = TestHelpers.CreateContext();
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
         var personTeamAssociationRepository = new PersonTeamAssoicationRepository(context, TestHelpers.AspenMapper);
+        var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
         var loggerMock = new Mock<ILogger<TeamController>>();
-        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object, personTeamAssociationRepository);
+        return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object, personTeamAssociationRepository, personRepository);
     }
 
     public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
@@ -78,29 +81,32 @@ public class TeamControllerTest
     [Test]
     public async Task CanEditTeam()
     {
+        var teamController = GetTeamController();
+        teamController.ControllerContext = new ControllerContext();
+        teamController.ControllerContext.HttpContext = new DefaultHttpContext();
+
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
         var dtoTeam = await addTeamtoEvent(newEvent.ID, "TeamJayse", "Jayse", "Jayse");
 
-        var editedTeam = dtoTeam with { Description = "Changed", DonationTarget = 1234 };
-        await GetTeamController().Edit(editedTeam);
+        var getPerson = (await PersonControllerTest.GetPersonController().GetByID(dtoTeam.OwnerID)).Value;
 
-        var returnedTeam = (await GetTeamController().GetByID(editedTeam.ID)).Value;
+        var userClaims = new Claim[] {
+                new Claim(ClaimTypes.NameIdentifier, "TeamJayse"),
+                new Claim(ClaimTypes.Email, getPerson.AuthID),
+            };
+         var user = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "TestEditTeam"));
+        teamController.ControllerContext.HttpContext.User = user;
+        
+
+        var editedTeam = dtoTeam with { Description = "Changed", DonationTarget = 1234 };
+
+        await teamController.Edit(editedTeam);
+
+        var returnedTeam = (await teamController.GetByID(editedTeam.ID)).Value;
         returnedTeam.Description.Should().Be(editedTeam.Description);
         returnedTeam.DonationTarget.Should().Be(1234);
     }
 
-    [Test]
-    public async Task CanEditTeamPublic()
-    {
-        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var dtoTeam = await addTeamtoEvent(newEvent.ID, "TeamJayse", "Jayse", "Jayse");
-
-        var editedTeam = dtoTeam with {  };
-        await GetTeamController().Edit(editedTeam);
-
-        var returnedTeam = (await GetTeamController().GetByID(editedTeam.ID)).Value;
-        returnedTeam.Description.Should().Be(editedTeam.Description);
-    }
 
     [Test]
     public async Task GetAllTeamsPerEvent()
