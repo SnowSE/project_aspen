@@ -2,12 +2,14 @@
 import { Button, Modal, Box, Typography } from "@mui/material";
 
 interface DynamicModalProps {
+    open: boolean;
+    close: () => void;
     action: string;
     object: string;
     onConfirm: () => void;
 }
 
-const DynamicModal = ({ action, object, onConfirm }: DynamicModalProps): JSX.Element => {
+const DynamicModal = ({ open, close, action, object, onConfirm }: DynamicModalProps): JSX.Element => {
 
     const useStyles = {
         btnYes: {
@@ -29,16 +31,13 @@ const DynamicModal = ({ action, object, onConfirm }: DynamicModalProps): JSX.Ele
             color: '#fff',
             backgroundColor: '#d9534f',
             borderColor: '#d43f3a',
-            //float: 'right',
             fontWeight: 'bold',
             fontSize: '20px'
         },
     }
 
-    const [openDynamicModal, setDynamicModal] = useState(false);
-
     const closeDynamicModal = () => {
-        setDynamicModal(false);
+        close();
     };
 
     const handleConfirm = () => {
@@ -49,10 +48,10 @@ const DynamicModal = ({ action, object, onConfirm }: DynamicModalProps): JSX.Ele
     return (
         <Box>
             <Modal
-                open={openDynamicModal}
-                onClose={closeDynamicModal}
-                aria-labelledby=""
-                aria-describedby=""
+                open={open}
+                onClose={close}
+                aria-labelledby="dynamicModal"
+                aria-describedby="dynamicModal"
             >
                 <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
                     <Typography
