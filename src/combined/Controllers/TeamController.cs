@@ -119,20 +119,55 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromBody] DtoTeam dtoTeam)
     {
-        log.LogInformation("Deleting team {id}", dtoTeam.ID);
+        var role = "";
+        dtoTeam.IsArchived = true;
+        var team = mapper.Map<Team>(dtoTeam);
+        var teamOwner = team.OwnerID;
+        var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+        try
+        {
+            role = User.Claims.Single(d => d.Type == "realm_access").Value;
+        }
+        catch (Exception e)
+        {
+            log.LogInformation("User is not logged in");
+        }
+
+        var person = await personRepository.GetByAuthIdAsync(emailAddress);
+
         if (!await teamRepository.ExistsAsync(dtoTeam.ID))
             return NotFound("Team id does not exist");
 
-        try
+        var peopleOnTeam = await personTeamAssoicationRepository.GetTeamMembersAsync(dtoTeam.ID);
+
+        if (person.ID == teamOwner && peopleOnTeam.Count() > 1)
+            return BadRequest("Cannot delete a team with members on it!");
+
+        if (person.ID == teamOwner && peopleOnTeam.Count() == 1)
+            try
+            {
+                await teamRepository.EditTeamAsync(team);
+                return Ok();
+            }
+            catch (UnableToDeleteException<Team> ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        if (role.Contains(AspenAdminRole))
         {
-            var team = mapper.Map<Team>(dtoTeam);
-            await teamRepository.EditTeamAsync(team);
-            return Ok();
-        }
-        catch (UnableToDeleteException<Team> ex)
-        {
-            return BadRequest(ex.Message);
+
+            try
+            {
+                await teamRepository.EditTeamAsync(team);
+                return Ok();
+            }
+            catch (UnableToDeleteException<Team> ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
+        return BadRequest("Can not delete team at this time.");
     }
 }
