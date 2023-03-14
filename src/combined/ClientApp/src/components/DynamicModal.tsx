@@ -41,10 +41,6 @@ const DynamicModal = ({ action, object, onConfirm }: DynamicModalProps): JSX.Ele
         setDynamicModal(false);
     };
 
-    const openModal = () => {
-        setDynamicModal(true);
-    }
-
     const handleConfirm = () => {
         onConfirm();
         closeDynamicModal();
