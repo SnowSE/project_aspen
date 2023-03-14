@@ -38,7 +38,7 @@ const SiteAdmin = () => {
             const paymentFailures = process.env.PUBLIC_URL +`/api/stripe/failures`;
             const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
             var donationCount= await fetch(allDonations)
-            var stripeDBLogs = await fetch(paymentFailures)
+            var stripeDBLogs = await fetch(paymentFailures, {headers: config.headers})
             const donations = await donationCount.json();
             const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
             var teamsList = await getTeamsList(currentEvent.id)

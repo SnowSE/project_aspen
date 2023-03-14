@@ -86,7 +86,7 @@ public class TeamController : ControllerBase
         return mapper.Map<DtoTeam>(newTeam);
     }
 
-    [HttpPut]
+    [HttpPut, Authorize]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
@@ -116,7 +116,7 @@ public class TeamController : ControllerBase
 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize]
     public async Task<IActionResult> Delete([FromBody] DtoTeam dtoTeam)
     {
         var role = "";
