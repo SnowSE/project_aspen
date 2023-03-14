@@ -5,6 +5,7 @@ import { EventContext } from "../../App";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import axios from "axios";
 
 
 const CssTextField = styled(TextField)({
@@ -32,6 +33,9 @@ const EventEditDeleteForm = () => {
     }, [currentEvent]);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
     const navigate = useNavigate();
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+    };
 
 
     const nextCurrentEvent = async () => {
@@ -82,6 +86,14 @@ const EventEditDeleteForm = () => {
             alert("Create New Event failed");
         }
     };
+
+    const archiveEvent = async (event: Event) => {
+        event.isArchived = true
+        const eventArchiveUrl = process.env.PUBLIC_URL + `/api/events`
+        const res = await axios.put(eventArchiveUrl, event, config)
+        console.log("res: ", res)
+    }
+
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
@@ -185,24 +197,37 @@ const EventEditDeleteForm = () => {
 
                     />
                 </Box>
-                <Box className="PaddingBetweenItems">
-                    <Button
-                        variant="contained"
-                        className="UpdateButtonDetails"
-                        type="submit"
-                    >
-                        Update
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="DeleteButtonDetails"
-                        type="button"
-                        onClick={deleteHandler}
-                    >
-                        Delete
+                {currentEvent?.filter((e: Event) => e.isArchived === false).map((e: Event) => { 
+                    return(
+                        <Box className="PaddingBetweenItems">
+                            <Button
+                                variant="contained"
+                                className="UpdateButtonDetails"
+                                type="submit"
+                            >
+                                Update
+                            </Button>
+                            <Button
+                                variant="contained"
+                                className="DeleteButtonDetails"
+                                type="button"
+                                onClick={() => archiveEvent(e)}
+                            >
+                                Archive
 
-                    </Button>
-                </Box>
+                            </Button>
+                            <Button
+                                variant="contained"
+                                className="DeleteButtonDetails"
+                                type="button"
+                                onClick={deleteHandler}
+                            >
+                                Delete
+
+                            </Button>
+                        </Box>
+                    )
+                })}
             </form>
         </Box>
 
