@@ -62,7 +62,7 @@ const SiteAdmin = () => {
         }
         currentUser()
         fetchData()
-    }, [currentEvent])
+    }, [currentEvent, config.headers])
 
 
     const archiveTeam = async (team: Team) => {

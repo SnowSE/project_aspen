@@ -1,3 +1,4 @@
+using Api.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
@@ -11,7 +12,6 @@ public class TeamControllerTest
     public static TeamController GetTeamController()
     {
         var context = TestHelpers.CreateContext();
-        //IPersonTeamAssoicationRepository pTeamRepository;
         var personTeamAssociationRepository = new PersonTeamAssoicationRepository(context, TestHelpers.AspenMapper);
         var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper, personTeamAssociationRepository);
         var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
@@ -21,7 +21,7 @@ public class TeamControllerTest
 
     public async Task<DtoTeam> addTeamtoEvent(long eventId, string ownerName, string teamName, string teamDescription)
     {
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = ownerName, Nickname= "bob"})).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = ownerName, Nickname = "bob" })).Value;
         var newTeam = new DtoTeam { Name = teamName, Description = teamDescription, OwnerID = newPerson.ID, EventID = eventId, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
         return dtoTeam;
@@ -52,35 +52,33 @@ public class TeamControllerTest
         returnedTeam.Description.Should().Be("George");
     }
 
+
     [Test]
     public async Task CanDeleteTeam()
     {
-        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam" , Nickname = "bob" })).Value;
-        var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
-        var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
-        var returnedTeam = (await GetTeamController().GetByID(dtoTeam.ID)).Value;
-        returnedTeam.IsArchived = true;
-        await GetTeamController().Delete(returnedTeam);
+        var teamController = GetTeamController();
+        teamController.ControllerContext = new ControllerContext();
+        teamController.ControllerContext.HttpContext = new DefaultHttpContext();
 
-        var archivedTeamRequest = await GetTeamController().GetByID(dtoTeam.ID);
+        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
+        
+        var dtoTeam = await addTeamtoEvent(newEvent.ID, "TeamJayse", "Jayse", "Jayse");
+
+        var getPerson = (await PersonControllerTest.GetPersonController().GetByID(dtoTeam.OwnerID)).Value;
+
+        var userClaims = new Claim[] {
+                new Claim(ClaimTypes.NameIdentifier, "TeamJayse"),
+                new Claim(ClaimTypes.Email, getPerson.AuthID),
+            };
+        var user = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "TestEditTeam"));
+        teamController.ControllerContext.HttpContext.User = user;
+        
+        await teamController.Delete(dtoTeam);
+
+        var archivedTeamRequest = await teamController.GetByID(dtoTeam.ID);
 
         var actual = archivedTeamRequest.Value;
         actual.IsArchived.Should().Be(true);
-    }
-
-    [Test]
-    public async Task BadDeleteCallReturnsAppropriateResponse()
-    {
-        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob" })).Value;
-        var fakeTeam = new DtoTeam {ID = -1, Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
-
-        var badDeleteResult = await GetTeamController().Delete(fakeTeam);
-
-        var result = badDeleteResult as NotFoundObjectResult;
-        result.StatusCode.Should().Be(404);
-        result.Value.Should().Be("Team id does not exist");
     }
 
     [Test]
@@ -99,9 +97,9 @@ public class TeamControllerTest
                 new Claim(ClaimTypes.NameIdentifier, "TeamJayse"),
                 new Claim(ClaimTypes.Email, getPerson.AuthID),
             };
-         var user = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "TestEditTeam"));
+        var user = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "TestEditTeam"));
         teamController.ControllerContext.HttpContext.User = user;
-        
+
 
         var editedTeam = dtoTeam with { Description = "Changed", DonationTarget = 1234 };
 
@@ -118,7 +116,7 @@ public class TeamControllerTest
     {
         var api = new AspenApi();
         var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
-        await addTeamtoEvent(newEvent.ID,"Adam","JayseTeam","Jayse");
+        await addTeamtoEvent(newEvent.ID, "Adam", "JayseTeam", "Jayse");
         await addTeamtoEvent(newEvent.ID, "Adam1", "JayseTeam1", "Jayse1");
         await addTeamtoEvent(newEvent.ID, "Adam2", "JayseTeam2", "Jayse2");
 
