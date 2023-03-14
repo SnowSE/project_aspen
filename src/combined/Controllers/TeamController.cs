@@ -2,12 +2,15 @@
 namespace Api.Controllers;
 
 using Api.DataAccess;
+using NuGet.Protocol;
 using Serilog;
 
 [Route("api/teams")]
 [ApiController]
 public class TeamController : ControllerBase
 {
+    public const string AspenAdminRole = "admin-aspen";
+
     private readonly ITeamRepository teamRepository;
     private readonly IPersonTeamAssoicationRepository personTeamAssoicationRepository;
     private readonly IPersonRepository personRepository;
@@ -83,20 +86,26 @@ public class TeamController : ControllerBase
         return mapper.Map<DtoTeam>(newTeam);
     }
 
-    [HttpPut("{teamId}"), Authorize]
+    [HttpPut]
     public async Task<IActionResult> Edit([FromBody] DtoTeam dtoTeam)
     {
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
-
+        var role = "";
         var team = mapper.Map<Team>(dtoTeam);
         var teamOwner = team.OwnerID;
         var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+        try
+        {
+            role = User.Claims.Single(d => d.Type == "realm_access").Value;
+        }
+            catch (Exception e) {
+        }
         var person = await personRepository.GetByAuthIdAsync(emailAddress);
 
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
-        if (person.ID != teamOwner)
+        if (person.ID != teamOwner && !role.Contains(AspenAdminRole))
             return Unauthorized("You are not the owner of this team");
 
         if (!await teamRepository.ExistsAsync(team.ID))
@@ -107,16 +116,17 @@ public class TeamController : ControllerBase
 
     }
 
-    [HttpDelete("{id}"), Authorize(Roles = AdminController.AspenAdminRole)]
-    public async Task<IActionResult> Delete(long id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromBody] DtoTeam dtoTeam)
     {
-        log.LogInformation("Deleting team {id}", id);
-        if (!await teamRepository.ExistsAsync(id))
+        log.LogInformation("Deleting team {id}", dtoTeam.ID);
+        if (!await teamRepository.ExistsAsync(dtoTeam.ID))
             return NotFound("Team id does not exist");
 
         try
         {
-            await teamRepository.DeleteTeamAsync(id);
+            var team = mapper.Map<Team>(dtoTeam);
+            await teamRepository.EditTeamAsync(team);
             return Ok();
         }
         catch (UnableToDeleteException<Team> ex)

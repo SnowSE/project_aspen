@@ -3,7 +3,7 @@ using Api.DataAccess;
 
 namespace Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class PersonTeamAssociationController : ControllerBase
@@ -30,7 +30,7 @@ public class PersonTeamAssociationController : ControllerBase
         return mapper.Map<DtoTeam>(team);
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<ActionResult<DtoPersonTeamAssociation>> Add([FromBody] DtoPersonTeamAssociation dtoPersonTeamAssociation){
 
         var tempPersonTeam = mapper.Map<PersonTeamAssociation>(dtoPersonTeamAssociation);

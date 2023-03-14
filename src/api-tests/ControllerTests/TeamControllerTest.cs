@@ -11,8 +11,9 @@ public class TeamControllerTest
     public static TeamController GetTeamController()
     {
         var context = TestHelpers.CreateContext();
-        var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper);
+        //IPersonTeamAssoicationRepository pTeamRepository;
         var personTeamAssociationRepository = new PersonTeamAssoicationRepository(context, TestHelpers.AspenMapper);
+        var TeamRepository = new TeamRepository(context, TestHelpers.AspenMapper, personTeamAssociationRepository);
         var personRepository = new PersonRepository(context, TestHelpers.AspenMapper);
         var loggerMock = new Mock<ILogger<TeamController>>();
         return new TeamController(TeamRepository, TestHelpers.AspenMapper, loggerMock.Object, personTeamAssociationRepository, personRepository);
@@ -59,19 +60,23 @@ public class TeamControllerTest
         var newTeam = new DtoTeam { Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
         var dtoTeam = (await GetTeamController().Add(newTeam)).Value;
         var returnedTeam = (await GetTeamController().GetByID(dtoTeam.ID)).Value;
+        returnedTeam.IsArchived = true;
+        await GetTeamController().Delete(returnedTeam);
 
-        await GetTeamController().Delete(returnedTeam.ID);
+        var archivedTeamRequest = await GetTeamController().GetByID(dtoTeam.ID);
 
-        var badTeamRequests = await GetTeamController().GetByID(dtoTeam.ID);
-
-        var actual = badTeamRequests.Result as NotFoundObjectResult;
-        actual.StatusCode.Should().Be(404);
+        var actual = archivedTeamRequest.Value;
+        actual.IsArchived.Should().Be(true);
     }
 
     [Test]
     public async Task BadDeleteCallReturnsAppropriateResponse()
     {
-        var badDeleteResult = await GetTeamController().Delete(-1);
+        var newEvent = (await EventControllerTest.GetEventController().Add(new DtoEvent { Description = "New Event", Location = "Location", MainImage = "image.jpg", Title = "Event" })).Value;
+        var newPerson = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob" })).Value;
+        var fakeTeam = new DtoTeam {ID = -1, Name = "TeamGeorge", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, MainImage = "image.jpg" };
+
+        var badDeleteResult = await GetTeamController().Delete(fakeTeam);
 
         var result = badDeleteResult as NotFoundObjectResult;
         result.StatusCode.Should().Be(404);

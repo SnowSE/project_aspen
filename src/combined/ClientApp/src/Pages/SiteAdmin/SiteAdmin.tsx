@@ -8,6 +8,7 @@ import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
 import PaymentFailure from "../../JsModels/paymentFailure";
 import { authService } from "../../services/authService";
+import axios from "axios";
 
 
 
@@ -18,12 +19,22 @@ const SiteAdmin = () => {
     const [showEditEvent, setShowEditEvent] = useState(true);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [totalDonations, setTotalDonations] = useState<number>(0);
+    console.log("Current event is: ", currentEvent)
+
+
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+      };
+
     useEffect(() => {
+
+
+
         const fetchData = async () => {
-            if (!currentEvent.id) {
-                console.log("No current event found!")
-                return;
-            }
+            // if (!currentEvent.id) {
+            //     console.log("No current event found!")
+            //     return;
+            // }
             const paymentFailures = process.env.PUBLIC_URL +`/api/stripe/failures`;
             const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
             var donationCount= await fetch(allDonations)
@@ -51,10 +62,17 @@ const SiteAdmin = () => {
         fetchData()
     }, [currentEvent])
 
-    useEffect(() => {
-        
-        
-    }, [])
+    
+    const archiveTeam = async (team:Team) => {
+        console.log("I am about to delete this team: ", team)
+        team.isArchived = true
+        const teamArchiveUrl = process.env.PUBLIC_URL +`/api/teams`;
+        const res = await axios.put(teamArchiveUrl, team, config);
+        console.log("res is: ", res)
+
+
+    }
+
     return (
         <Box>
                 
@@ -79,7 +97,7 @@ const SiteAdmin = () => {
                 >
                     <Typography> Teams </Typography>
                 </AccordionSummary>
-                {teamsList?.map((t: any, id) => {
+                {teamsList?.filter((t:Team) => t.isArchived === false).map((t: Team, id) => {
                     return (
                         <Accordion className="InnerAccordionSpacing">
                             <AccordionSummary
@@ -100,6 +118,7 @@ const SiteAdmin = () => {
                                         variant="contained"
                                         className="DeleteTeamButtonDetails"
                                         type="button"
+                                        onClick={() => archiveTeam(t)}
                                     > Delete
                                     </Button>
                                 </Box>
