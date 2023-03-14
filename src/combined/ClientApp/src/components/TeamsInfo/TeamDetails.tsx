@@ -46,10 +46,6 @@ export function TeamDetails() {
     const closeModal = () => {
         setOpenDeleteModal(false);
     }
-
-    const openModal = () => {
-        setOpenDeleteModal(true);
-    }
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
