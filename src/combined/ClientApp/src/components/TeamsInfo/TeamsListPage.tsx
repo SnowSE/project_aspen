@@ -2,10 +2,11 @@ import React, { useEffect, useState,useContext } from 'react';
 import { TeamCard } from './Interfaces';
 import { getTeamsList } from './TeamServices';
 import { EventContext } from '../../App';
+import Team from '../../JsModels/team';
 
 
 export function TeamsListPage() {
-    const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
+    const [teamsList, setTeams] = useState<typeof Team[]>([]);
     const { currentEvent }  = useContext(EventContext);
        
     useEffect(() => {

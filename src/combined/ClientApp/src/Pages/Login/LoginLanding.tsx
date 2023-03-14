@@ -13,12 +13,13 @@ const LoginLanding = () => {
                 var userName = user.profile.name
                 var userEmail = user.profile.email
                 var access_token = user.access_token;
+                console.log("User informations; ",user)
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
                 localStorage.setItem("LoggedInEmail", userEmail ? userEmail : "")
                 localStorage.setItem("access_token",  access_token ? access_token : "")
 
-                navigate('/')
-                navigate(0)
+               // navigate('/')
+                //navigate(0)
 
             }
         );

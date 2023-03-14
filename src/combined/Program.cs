@@ -55,7 +55,7 @@ builder.Services.AddAuthentication(options =>
 
     o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
-        ValidAudiences = new string[] { "aspen" },
+        ValidAudiences = new string[] { "aspen", "uma_authorization" },
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"]

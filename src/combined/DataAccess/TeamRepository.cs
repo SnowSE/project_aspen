@@ -1,9 +1,10 @@
 ﻿namespace Api.DataAccess;
 
+using Api.Models.Entities;
 public interface ITeamRepository
 {
     Task<Team> AddAsync(Team team);
-    Task DeleteTeamAsync(long id);
+    //Task DeleteTeamAsync(Team team);
     Task<Team> EditTeamAsync(Team team);
     Task<Team> GetTeamByIdAsync(long id);
     Task<IEnumerable<Team>> GetAllAsync();
@@ -15,12 +16,17 @@ public class TeamRepository : ITeamRepository
 {
     private readonly AspenContext context;
     private readonly IMapper mapper;
+    private readonly IPersonTeamAssoicationRepository personTeamAssociationRepository;
+    
 
-    public TeamRepository(AspenContext context, IMapper mapper)
+    public TeamRepository(AspenContext context, IMapper mapper, IPersonTeamAssoicationRepository personTeamAssociationRepository)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
         this.mapper = mapper;
+        this.personTeamAssociationRepository = personTeamAssociationRepository;
     }
+
+   
 
     public async Task<bool> ExistsAsync(long id)
     {
@@ -57,26 +63,36 @@ public class TeamRepository : ITeamRepository
     {
         var dbTeam = mapper.Map<DbTeam>(team);
         context.Update(dbTeam);
+        if(team.isArchived == true)
+        {
+            var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
+
+            foreach (var member in teamMembers)
+            {
+                await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
+            }
+        }
         await context.SaveChangesAsync();
         return team;
     }
 
-    public async Task DeleteTeamAsync(long id)
+  /*  public async Task DeleteTeamAsync(Team team)
     {
-        var team = await context.Teams.Include(t => t.Donations).FirstOrDefaultAsync(t => t.ID == id);
-        if (team == null)
-            throw new NotFoundException<Team>($"Team id does not exist");
+        var dbTeam = mapper.Map<DbTeam>(team);
+        context.Update(dbTeam);
 
-        if(team.Donations.Any())
+
+        var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
+
+        foreach (var member in teamMembers)
         {
-            var donationIds = string.Join(", ", team.Donations.Select(d => d.ID));
-            throw new UnableToDeleteException<Team>($"Unable to delete team {id}, donation(s) {donationIds} are linked to team.");
+            await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
         }
 
 
-        context.Teams.Remove(team);
         await context.SaveChangesAsync();
     }
+*/
 
     public async Task<IEnumerable<Team>> GetByEventIdAsync(long eventID)
     {
@@ -84,7 +100,9 @@ public class TeamRepository : ITeamRepository
         if (existingEvent == null)
             throw new NotFoundException<IEnumerable<Team>>($"Event {eventID} does not exist");
 
-        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(existingEvent.Teams);
+        var unArchivedTeams = existingEvent.Teams.Where(team => team.IsArchived == false).ToList();
+
+        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(unArchivedTeams);
     }
 
 }

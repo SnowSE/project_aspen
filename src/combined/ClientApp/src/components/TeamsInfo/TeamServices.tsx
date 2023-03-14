@@ -1,4 +1,4 @@
-import { TeamCard } from "./Interfaces";
+import Team from "../../JsModels/team";
 
 export const getTeamsList = async (id:number) => {
     
@@ -7,6 +7,6 @@ export const getTeamsList = async (id:number) => {
 
     const res = await fetch(apiUrL)
     const response = await res.json()
-    const otherArray: typeof TeamCard[] = response
+    const otherArray: typeof Team[] = response
     return otherArray
 }
