@@ -7,8 +7,6 @@ import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
-import DynamicModal from "../DynamicModal";
-
 
 
 export function TeamDetails() {
@@ -35,17 +33,6 @@ export function TeamDetails() {
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
-    const [memberName, setMemberName] = useState("");
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
-    const handleDeleteMember = () => {
-        // Handle delete member logic
-        setOpenDeleteModal(false);
-    };
-
-    const closeModal = () => {
-        setOpenDeleteModal(false);
-    }
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -230,19 +217,6 @@ export function TeamDetails() {
           </CardContent>
         </Card>
           </Box>
-          <ul>
-              <li>Member 1<Button onClick={() => { setMemberName("Member 1"); setOpenDeleteModal(true); }}>Delete</Button></li>
-              <li>Member 2<Button onClick={() => { setMemberName("Member 2"); setOpenDeleteModal(true); }}>Delete</Button></li>
-              <li>Member 3<Button onClick={() => { setMemberName("Member 3"); setOpenDeleteModal(true); }}>Delete</Button></li>
-          </ul>
-
-          <DynamicModal
-              open={openDeleteModal}
-              close={closeModal}
-              action={'delete'}
-              onConfirm={handleDeleteMember}
-              object={memberName}
-          />
     </Box>
   );
 }
