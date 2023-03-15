@@ -1,5 +1,5 @@
 import { Accordion, AccordionSummary, Box, Button, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, AccordionDetails } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
@@ -25,13 +25,22 @@ const SiteAdmin = () => {
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const navigate = useNavigate();
 
+   
+    const accessToken = localStorage.getItem("access_token");
 
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-    };
+    const config = useMemo(() => {
+      return {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      };
+    }, [accessToken]);
 
 
+    useEffect(() => {
     const fetchData = async () => {
+
+        
+
+
 
         const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
         const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
@@ -49,10 +58,9 @@ const SiteAdmin = () => {
 
 
 
-    useEffect(() => {
         fetchData()
 
-    },[currentEvent])
+    },[currentEvent, config])
 
     const archiveTeam = async (team: Team) => {
         team.isArchived = true
