@@ -5,7 +5,6 @@ import { EventContext } from "../../App";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import axios from "axios";
 
 
 const CssTextField = styled(TextField)({
@@ -33,9 +32,6 @@ const EventEditDeleteForm = () => {
     }, [currentEvent]);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
     const navigate = useNavigate();
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-    };
 
 
     const nextCurrentEvent = async () => {
@@ -87,13 +83,6 @@ const EventEditDeleteForm = () => {
         }
     };
 
-    const archiveEvent = async (event: Event) => {
-        event.isArchived = true
-        const eventArchiveUrl = process.env.PUBLIC_URL + `/api/events`
-        const res = await axios.put(eventArchiveUrl, event, config)
-        console.log("res: ", res)
-    }
-
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
@@ -109,25 +98,26 @@ const EventEditDeleteForm = () => {
         setCurrentEvent(updatedEvent);
     };
 
-    const deleteHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
+    const archiveHandler = async (event: Event) => {
+        //event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
             if (
                 window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
+                    "Are you sure you want to archive this event, it can't be undone?"
                 )
             ) {
                 try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
+                    event.isArchived = true;
+                    await EventsService.ArchiveEventViaAxios(currentEvent.id);
                     nextCurrentEvent();
                     alert(
-                        "The deletion was successful, you will be redirect to Home page."
+                        "The archive was successful, you will be redirected to Home page."
                     );
                     navigate("/");
                 } catch (e) {
-                    alert("Delete event failed");
+                    alert("Archive event failed");
                 }
             }
         }
@@ -197,37 +187,24 @@ const EventEditDeleteForm = () => {
 
                     />
                 </Box>
-                {currentEvent?.filter((e: Event) => e.isArchived === false).map((e: Event) => { 
-                    return(
-                        <Box className="PaddingBetweenItems">
-                            <Button
-                                variant="contained"
-                                className="UpdateButtonDetails"
-                                type="submit"
-                            >
-                                Update
-                            </Button>
-                            <Button
-                                variant="contained"
-                                className="DeleteButtonDetails"
-                                type="button"
-                                onClick={() => archiveEvent(e)}
-                            >
-                                Archive
+                <Box className="PaddingBetweenItems">
+                    <Button
+                        variant="contained"
+                        className="UpdateButtonDetails"
+                        type="submit"
+                    >
+                        Update
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className="DeleteButtonDetails"
+                        type="button"
+                        onClick={() => archiveHandler}
+                    >
+                         Archive
 
-                            </Button>
-                            <Button
-                                variant="contained"
-                                className="DeleteButtonDetails"
-                                type="button"
-                                onClick={deleteHandler}
-                            >
-                                Delete
-
-                            </Button>
-                        </Box>
-                    )
-                })}
+                    </Button>
+                 </Box>
             </form>
         </Box>
 

@@ -97,25 +97,26 @@ const TeamEditDelete = () => {
         setCurrentEvent(updatedEvent);
     };
 
-    const deleteHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
+    const archiveHandler = async (event: Event) => {
+        //event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
             if (
                 window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
+                    "Are you sure you want to archive this event, it can't be undone?"
                 )
             ) {
                 try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
+                    await EventsService.ArchiveEventViaAxios(currentEvent.id);
+                    event.isArchived;
                     nextCurrentEvent();
                     alert(
-                        "The deletion was successful, you will be redirect to Home page."
+                        "The archive was successful, you will be redirected to Home page."
                     );
                     navigate("/");
                 } catch (e) {
-                    alert("Delete event failed");
+                    alert("Archive event failed");
                 }
             }
         }
@@ -197,7 +198,7 @@ const TeamEditDelete = () => {
                         variant="contained"
                         className="DeleteButtonDetails"
                         type="button"
-                        onClick={deleteHandler}
+                        onClick={() => archiveHandler}
                     >
                         Delete
 
