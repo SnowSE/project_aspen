@@ -9,7 +9,6 @@ import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 
 
-
 export function TeamDetails() {
   const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
@@ -34,7 +33,6 @@ export function TeamDetails() {
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
-
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -218,7 +216,7 @@ export function TeamDetails() {
             <Typography> Team Members will go here</Typography>
           </CardContent>
         </Card>
-      </Box>
+          </Box>
     </Box>
   );
 }
