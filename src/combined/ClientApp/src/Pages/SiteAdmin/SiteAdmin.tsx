@@ -36,12 +36,18 @@ const SiteAdmin = () => {
 
 
     useEffect(() => {
-    const fetchData = async () => {
 
+        async function currentUser() {
+            var user = await authService.getUser()
+            user?.profile.roles.forEach((role: string) => {
+                console.log(role)
+                if (role.includes("admin")) {
+                    setIsAdmin(true)
+                }
+            });
+        }
         
-
-
-
+    const fetchData = async () => {
         const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
         const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
         var donationCount= await fetch(allDonations)
@@ -56,28 +62,20 @@ const SiteAdmin = () => {
         setTeams(jsonTeams)
     }
 
-
-
         fetchData()
+        currentUser()
 
-    },[currentEvent, config])
+    },[currentEvent])
 
     const archiveTeam = async (team: Team) => {
+        console.log("here")
         team.isArchived = true
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, team, config);
     }
 
-    async function currentUser() {
-        var user = await authService.getUser()
-        user?.profile.roles.forEach((role: string) => {
-            console.log(role)
-            if (role.includes("admin")) {
-                setIsAdmin(true)
-            }
-        });
-    }
-    currentUser()
+   
+
     const closeModal = () => {
         setopenArchiveModal(false)
     }
