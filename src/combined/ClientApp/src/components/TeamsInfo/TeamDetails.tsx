@@ -10,7 +10,6 @@ import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
 
 
-
 export function TeamDetails() {
   const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 

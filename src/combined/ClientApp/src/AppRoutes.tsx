@@ -1,5 +1,3 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Swagger } from "./components/Swagger";
 import CreateEventPage from "./Pages/Event/CreateEventPage";
 import CreateTeamPage from "./Pages/CreateTeam/CreateTeamPage";
@@ -24,16 +22,8 @@ const AppRoutes = [
         element: <Home />
     },
     {
-        path: `/counter`,
-        element: <Counter />
-    },
-    {
         path: `/swagger`,
         element: <Swagger />
-    },
-    {
-        path: `/fetch-data`,
-        element: <FetchData />
     },
     {
         path: `/donate`,
