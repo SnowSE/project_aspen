@@ -46,7 +46,6 @@ const SiteAdmin = () => {
                 }
             });
         }
-        
     const fetchData = async () => {
         const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
         const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
@@ -65,7 +64,7 @@ const SiteAdmin = () => {
         fetchData()
         currentUser()
 
-    },[currentEvent])
+    },[currentEvent, config])
 
     const archiveTeam = async (team: Team) => {
         console.log("here")
