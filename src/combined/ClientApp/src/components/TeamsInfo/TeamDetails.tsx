@@ -7,6 +7,7 @@ import ProgressBar from "../ProgressBar";
 import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
+import DynamicModal from "../DynamicModal";
 
 
 export function TeamDetails() {
@@ -33,6 +34,7 @@ export function TeamDetails() {
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
+    const [openArchiveModal, setopenArchiveModal] = useState(false);
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -43,17 +45,13 @@ export function TeamDetails() {
     const fetchTeam = async () => {
         const res = await fetch(api)
         const response = await res.json()
-        //console.log("response is: ", response)
-        //ownerId = response.ownerID;
         setCurrentTeam(response)
         
         }
 
         async function currentUser() {
             var user = await authService.getUser()
-            console.log("user roles:", user?.profile.roles)
             user?.profile.roles.forEach((role: string) => {
-                console.log(role)
                 if (role.includes("admin")) {
                     setIsAdmin(true)
                 }
@@ -74,7 +72,6 @@ export function TeamDetails() {
               var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
               const person = await fetch(personApi)
               const teamOwner = await person.json()
-              console.log("Team owner object is: ", teamOwner)
               setTeamOwner(teamOwner)
 
           } catch (e) {
@@ -92,14 +89,17 @@ export function TeamDetails() {
       callServise();
   }, [api, ownerId]);
 
+    const closeModal = () => {
+        setopenArchiveModal(false)
+    }
 
-  const navigate = useNavigate();
+    const handleArchive = () => {
+        // ARCHIVE METHOD GOES HERE
+        setopenArchiveModal(false)
+    }
+
+    const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-   
-    console.log("Logged in user id:", loggedInUserId);
-    console.log("Current team object is: ", currentTeam);
-    console.log("current team owner id is: ", currentTeam?.ownerID);
-    console.log("current loggedInUserIDis: ", loggedInUserId);
   return (
       <Box>
           <Box>
@@ -126,7 +126,7 @@ export function TeamDetails() {
 
                       } 
                   {(() => {
-                      if (loggedInUserId === teamOwner?.id||isAdmin) {
+                      if (loggedInUserId === currentTeam?.ownerID||isAdmin) {
                           return (
                               
                                   <Button
@@ -151,25 +151,15 @@ export function TeamDetails() {
                   }
 
                   {(() => {
-                      if (loggedInUserId === teamOwner?.id ||isAdmin) {
+                      if (loggedInUserId === currentTeam?.ownerID ||isAdmin) {
                           return (
                               
                                   <Button
-                                      onClick={() =>
-                                          navigate({
-                                              pathname: "/DeleteTeam",
-                                              search: `?${createSearchParams({
-                                                  teamId: `${tId}`,
-                                                  userId: `${loggedInUserId}`,
-                                              })}`,
-                                          })
-
-                                      }
+                                      onClick={() => {setopenArchiveModal(true); }}
                                       sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Delete Team
-                                  </Button>
-
+                              </Button>
                           )
                       }
                   })()
@@ -217,6 +207,13 @@ export function TeamDetails() {
           </CardContent>
         </Card>
           </Box>
+          <DynamicModal
+              open={openArchiveModal}
+              close={closeModal}
+              action={'archive'}
+              onConfirm={handleArchive}
+              object={currentTeam?.name}
+          />
     </Box>
   );
 }
