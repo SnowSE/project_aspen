@@ -10,6 +10,7 @@ import Team from "../../JsModels/team";
 import PaymentFailure from "../../JsModels/paymentFailure";
 import { authService } from "../../services/authService";
 import axios from "axios";
+import DynamicModal from "../../components/DynamicModal";
 
 
 
@@ -20,6 +21,8 @@ const SiteAdmin = () => {
     const [showEditEvent, setShowEditEvent] = useState(true);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [totalDonations, setTotalDonations] = useState<number>(0);
+    const [teamName, setTeamName] = useState("");
+    const [openArchiveModal, setopenArchiveModal] = useState(false);
     const navigate = useNavigate();
     console.log("Current event is: ", currentEvent)
 
@@ -75,6 +78,10 @@ const SiteAdmin = () => {
 
     }
 
+    const closeModal = () => {
+        setopenArchiveModal(false)
+    }
+
     return (
         <Box>
 
@@ -125,9 +132,16 @@ const SiteAdmin = () => {
                                                 variant="contained"
                                                 className="DeleteTeamButtonDetails"
                                                 type="button"
-                                                onClick={() => archiveTeam(t)}
+                                                onClick={() => { setTeamName(t.name); setopenArchiveModal(true); }}
                                             > Delete
                                             </Button>
+                                            <DynamicModal
+                                                open={openArchiveModal}
+                                                close={closeModal}
+                                                action={'archive'}
+                                                onConfirm={() => archiveTeam(t)}
+                                                object={teamName}
+                                            />
                                         </Box>
                                     </AccordionSummary>
                                     <TeamMembersListAccordian />
