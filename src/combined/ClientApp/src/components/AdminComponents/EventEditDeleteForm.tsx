@@ -91,15 +91,15 @@ const EventEditDeleteForm = () => {
 
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
-            alert("Update was successful");
+            alert("Update was successful 13");
         } catch (e) {
             console.log("Update event failed: " + e);
         }
         setCurrentEvent(updatedEvent);
     };
 
-    const archiveHandler = async (event: Event) => {
-        //event.preventDefault();
+    const archiveHandler = async (event: React.FormEvent) => {
+        event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
@@ -109,9 +109,11 @@ const EventEditDeleteForm = () => {
                 )
             ) {
                 try {
-                    event.isArchived = true;
-                    await EventsService.ArchiveEventViaAxios(currentEvent.id);
-                    nextCurrentEvent();
+                    updatedEvent.isArchived = true;
+                    setupdatedEvent(updatedEvent);
+                    //event.isArchived = true;
+                    await EventsService.UpdateEventViaAxios(updatedEvent);
+                    //nextCurrentEvent();
                     alert(
                         "The archive was successful, you will be redirected to Home page."
                     );
@@ -198,8 +200,8 @@ const EventEditDeleteForm = () => {
                     <Button
                         variant="contained"
                         className="DeleteButtonDetails"
-                        type="button"
-                        onClick={() => archiveHandler}
+                        type="submit"
+                        onClick={archiveHandler}
                     >
                          Archive
 
