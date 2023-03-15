@@ -90,7 +90,7 @@ const CreateEventForm = () => {
 
         return (
             <>
-                <h1 className="EventHeader">Create Event here</h1>
+                <h1 className="EventHeader">Create New Event </h1>
                 <div className="FormEventPageContentPosition">
                     <Form onSubmit={createEventHandler} className="FormEventBorder">
                         <FormGroup>
@@ -202,7 +202,7 @@ const CreateEventForm = () => {
                                         onChange={e => setEventMainImage(e.target.value)}
                                     />
                                     <FormText>
-                                        Select an image that will be displayed as your team's logo
+                                        Select an image that will be displayed on the event page.
                                     </FormText>
                                 </Col>
                             </Row>
