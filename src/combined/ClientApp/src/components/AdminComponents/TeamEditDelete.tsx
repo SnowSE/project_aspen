@@ -97,8 +97,8 @@ const TeamEditDelete = () => {
         setCurrentEvent(updatedEvent);
     };
 
-    const archiveHandler = async (event: Event) => {
-        //event.preventDefault();
+    const archiveHandler = async(event: React.FormEvent) => {
+        event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
@@ -108,13 +108,14 @@ const TeamEditDelete = () => {
                 )
             ) {
                 try {
-                    await EventsService.ArchiveEventViaAxios(currentEvent.id);
-                    event.isArchived;
+                    updatedEvent.isArchived = true;
+                    setupdatedEvent(updatedEvent);
+                    await EventsService.UpdateEventViaAxios(updatedEvent);
                     nextCurrentEvent();
                     alert(
                         "The archive was successful, you will be redirected to Home page."
                     );
-                    navigate("/");
+                    navigate(0);
                 } catch (e) {
                     alert("Archive event failed");
                 }
@@ -198,9 +199,9 @@ const TeamEditDelete = () => {
                         variant="contained"
                         className="DeleteButtonDetails"
                         type="button"
-                        onClick={() => archiveHandler}
+                        onClick={archiveHandler}
                     >
-                        Delete
+                        Archive
 
                     </Button>
                 </Box>

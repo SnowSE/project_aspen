@@ -111,13 +111,12 @@ const EventEditDeleteForm = () => {
                 try {
                     updatedEvent.isArchived = true;
                     setupdatedEvent(updatedEvent);
-                    //event.isArchived = true;
                     await EventsService.UpdateEventViaAxios(updatedEvent);
-                    //nextCurrentEvent();
+                    nextCurrentEvent();
                     alert(
                         "The archive was successful, you will be redirected to Home page."
                     );
-                    navigate("/");
+                    navigate(0);
                 } catch (e) {
                     alert("Archive event failed");
                 }
