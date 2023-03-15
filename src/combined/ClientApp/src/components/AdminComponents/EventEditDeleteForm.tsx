@@ -82,6 +82,7 @@ const EventEditDeleteForm = () => {
             alert("Create New Event failed");
         }
     };
+
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
@@ -90,32 +91,34 @@ const EventEditDeleteForm = () => {
 
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
-            alert("Update was successful");
+            alert("Update was successful 13");
         } catch (e) {
             console.log("Update event failed: " + e);
         }
         setCurrentEvent(updatedEvent);
     };
 
-    const deleteHandler = async (event: React.FormEvent) => {
+    const archiveHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
             if (
                 window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
+                    "Are you sure you want to archive this event, it can't be undone?"
                 )
             ) {
                 try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
+                    updatedEvent.isArchived = true;
+                    setupdatedEvent(updatedEvent);
+                    await EventsService.UpdateEventViaAxios(updatedEvent);
                     nextCurrentEvent();
                     alert(
-                        "The deletion was successful, you will be redirect to Home page."
+                        "The archive was successful, you will be redirected to Home page."
                     );
-                    navigate("/");
+                    navigate(0);
                 } catch (e) {
-                    alert("Delete event failed");
+                    alert("Archive event failed");
                 }
             }
         }
@@ -196,13 +199,13 @@ const EventEditDeleteForm = () => {
                     <Button
                         variant="contained"
                         className="DeleteButtonDetails"
-                        type="button"
-                        onClick={deleteHandler}
+                        type="submit"
+                        onClick={archiveHandler}
                     >
-                        Delete
+                         Archive
 
                     </Button>
-                </Box>
+                 </Box>
             </form>
         </Box>
 
