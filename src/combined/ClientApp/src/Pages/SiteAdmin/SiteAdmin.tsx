@@ -24,60 +24,52 @@ const SiteAdmin = () => {
     const [teamName, setTeamName] = useState("");
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const navigate = useNavigate();
-    console.log("Current event is: ", currentEvent)
 
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
 
-    useEffect(() => {
 
+    const fetchData = async () => {
 
+        const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
+        const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
+        var donationCount= await fetch(allDonations)
+        var stripeDBLogs = await fetch(paymentFailures, {headers: config.headers})
+        const donations = await donationCount.json();
+        const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
+        var teamsList = await getTeamsList(currentEvent.id)
+        var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
 
-        const fetchData = async () => {
-            // if (!currentEvent.id) {
-            //     console.log("No current event found!")
-            //     return;
-            // }
-            const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
-            const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
-            var donationCount= await fetch(allDonations)
-            var stripeDBLogs = await fetch(paymentFailures, {headers: config.headers})
-            const donations = await donationCount.json();
-            const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
-            var teamsList = await getTeamsList(currentEvent.id)
-            var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
-
-            setTotalDonations(donations);
-            setStripeFailureLogs(stripeFailures)
-            setTeams(jsonTeams)
-        }
-        async function currentUser() {
-            var user = await authService.getUser()
-            console.log("user roles:", user?.profile.roles)
-            user?.profile.roles.forEach((role: string) => {
-                console.log(role)
-                if (role.includes("admin")) {
-                    setIsAdmin(true)
-                }
-            });
-        }
-        currentUser()
-        fetchData()
-    }, [currentEvent, config.headers])
-
-
-    const archiveTeam = async (team: Team) => {
-        console.log("I am about to delete this team: ", team)
-        team.isArchived = true
-        const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
-        const res = await axios.put(teamArchiveUrl, team, config);
-        console.log("res is: ", res)
-
-
+        setTotalDonations(donations);
+        setStripeFailureLogs(stripeFailures)
+        setTeams(jsonTeams)
     }
 
+
+
+    useEffect(() => {
+        fetchData()
+
+    },[currentEvent])
+
+    const archiveTeam = async (team: Team) => {
+        team.isArchived = true
+        const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
+        await axios.put(teamArchiveUrl, team, config);
+    }
+
+    async function currentUser() {
+        var user = await authService.getUser()
+        user?.profile.roles.forEach((role: string) => {
+            console.log(role)
+            if (role.includes("admin")) {
+                setIsAdmin(true)
+            }
+        });
+    }
+    currentUser()
     const closeModal = () => {
         setopenArchiveModal(false)
     }
