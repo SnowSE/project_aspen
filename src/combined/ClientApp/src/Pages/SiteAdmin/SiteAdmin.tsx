@@ -40,7 +40,6 @@ const SiteAdmin = () => {
         async function currentUser() {
             var user = await authService.getUser()
             user?.profile.roles.forEach((role: string) => {
-                console.log(role)
                 if (role.includes("admin")) {
                     setIsAdmin(true)
                 }
@@ -48,21 +47,18 @@ const SiteAdmin = () => {
         }
         const fetchData = async () => {
             if(currentEvent?.id !== -1){
-                console.log("current Event is: ", currentEvent )
-
                 const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
                 const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
                 var donationCount = await fetch(allDonations)
                 var stripeDBLogs = await fetch(paymentFailures, { headers: config.headers })
                 const donations = await donationCount.json();
                 const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
-               // var teamsList = await getTeamsList(currentEvent.id)
-               // var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
+                var teamsList = await getTeamsList(currentEvent.id)
+                var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
                 
                 setTotalDonations(donations);
                 setStripeFailureLogs(stripeFailures)
-               // setTeams(jsonTeams)
-                
+                setTeams(jsonTeams)
             }
         }
         fetchData()
@@ -181,7 +177,7 @@ const SiteAdmin = () => {
                                     </TableHead>
                                     <TableBody>
                                         {stripeFailureLogs?.map((row: any) => {
-
+                                                
                                             return (
                                                 <TableRow
                                                     key={row.decline_code}
