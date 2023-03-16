@@ -33,7 +33,13 @@ const SiteAdmin = () => {
         headers: { Authorization: `Bearer ${accessToken}` }
       };
     }, [accessToken]);
-
+    const handleEditEventClick = () => {
+    if (currentEvent.isArchived) {
+      navigate('/createEvent');
+    } else {
+      setShowEditEvent((prevState) => !prevState);
+    }
+  };
 
     useEffect(() => {
 
@@ -86,14 +92,24 @@ const SiteAdmin = () => {
                 <div>
                     <Paper square={true} elevation={6} className="AdminPaperDetails">
                         <Box className="AdminCurrentEventDetails">
+                            
                             {
                                 showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.title}</Typography> : <EventEditDeleteForm />
                             }
-                            <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => setShowEditEvent((prevState) => !prevState)}>
-                                {
-                                    showEditEvent === true ? "Edit" : "Close"
-                                }
+                            <Button
+                                type="button"
+                                variant="contained"
+                                className="AdminButtonDetails"
+                                onClick={handleEditEventClick}
+                            >
+                                {showEditEvent ? "Edit": "Close" }
                             </Button>
+                           
+                            {showEditEvent && (
+                                <div>
+                                    {/* Edit form goes here */}
+                                </div>
+                            )}
                             <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => navigate('/createEvent')}>
                                 {
                                     "Add" 
