@@ -37,9 +37,10 @@ function App() {
                 return a.date > b.date ? 1 : -1;
             });
 
-            if (closesEventDate.length > 0) {
+            var unArchivedEvents = closesEventDate.filter((event: Event) => event.isArchived === false)
 
-                setCurrentEvent(closesEventDate[0]);
+            if (unArchivedEvents.length > 0) {
+                setCurrentEvent(unArchivedEvents[0]);
             }
             else {
                 const defaultEvent = new Event(
@@ -53,10 +54,21 @@ function App() {
                     -1,//id
                 );
                 setCurrentEvent(defaultEvent);
-
             };
         }
-
+            else {
+                const defaultEvent = new Event(
+                    new Date(),
+                    "", // location
+                    "", // mainImage
+                    "", // description!
+                    "There are currently no upcoming events.",
+                    0,  // donationTarget
+                    false,
+                    -1,//id
+                );
+                setCurrentEvent(defaultEvent);
+            };
         };
 
         useEffect(() => {
