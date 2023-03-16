@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState} from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { Button } from "@mui/material";
+import Team from "../../JsModels/team";
 
 const EditTeam = () => {
     const [searchParams] = useSearchParams();
@@ -17,17 +18,21 @@ const EditTeam = () => {
     }
    
 
+    const navigate = useNavigate();
 
-    const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
-    const [currentTeam, setCurrentTeam] = useState<any>();
+    const currentTeamUrl = process.env.PUBLIC_URL + `/api/teams/${tId}`;
+    const updateTeamUrl = process.env.PUBLIC_URL + `/api/teams/`;
+    const [currentTeam, setCurrentTeam] = useState<Team>();
   
-
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+      };
 
     const [image, setImage] = useState<File>()
 
     useEffect(() => {
         const fetchTeam = async () => {
-            const response = await fetch(api);
+            const response = await fetch(currentTeamUrl);
             const data = await response.json();
             setCurrentTeam(data);
        
@@ -38,7 +43,7 @@ const EditTeam = () => {
         };
         callServise();
 
-    }, [api]);
+    }, [currentTeamUrl]);
 
    
 
@@ -54,23 +59,23 @@ const EditTeam = () => {
         const imageResponse = await fetch(assetsUrl, {
             method: 'POST',
             body: data,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`
-            }
+            headers: config.headers
         })
 
         const result = await imageResponse.json()
         console.log('upload result:', result)
 
             try {
-                const response = await axios.put(api, currentTeam);
+                currentTeam!.mainImage = result.data
+                const response = await axios.put(updateTeamUrl, currentTeam, config);
                 console.log(response);
                 alert("Team information updated successfully!");
+                navigate("/TeamsListPage")
+
             } catch (error) {
                 console.error(error);
                 alert("An error occurred while updating the team information.");
             }      
-
     };
 
     const handleImageChange = (
@@ -165,7 +170,7 @@ const EditTeam = () => {
                                     value={currentTeam.donationTarget}
                                     onChange={(event) => setCurrentTeam({
                                         ...currentTeam,
-                                        donationTarget: event.target.value,
+                                        donationTarget: Number(event.target.value),
                                     })
                                     } />
                                 <FormText>
