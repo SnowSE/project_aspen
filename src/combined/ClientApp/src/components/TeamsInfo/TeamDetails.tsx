@@ -1,5 +1,5 @@
 import {Box,Button,Card,CardHeader,CardMedia,CardContent,Typography, Divider,} from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
@@ -27,6 +27,14 @@ export function TeamDetails() {
     if (list[1] !== null) {
         ownerId =parseInt(list[1]);   // parse the string back to a number.
     }
+
+    const accessToken = localStorage.getItem("access_token");
+
+    const config = useMemo(() => {
+      return {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      };
+    }, [accessToken]);
 
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
@@ -92,13 +100,17 @@ export function TeamDetails() {
     const closeModal = () => {
         setopenArchiveModal(false)
     }
+    
+    const navigate = useNavigate();
 
-    const handleArchive = () => {
-        // ARCHIVE METHOD GOES HERE
+    const handleArchive = async () => {
+        currentTeam.isArchived = true
+        const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
+        await axios.put(teamArchiveUrl, currentTeam, config);
+        navigate('/')
         setopenArchiveModal(false)
     }
 
-    const navigate = useNavigate();
     const loggedInUSer = localStorage.getItem("LoggedInUser");
   return (
       <Box>
@@ -140,7 +152,7 @@ export function TeamDetails() {
                                           })
 
                                       }
-                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Edit Team Details
                                   </Button>
