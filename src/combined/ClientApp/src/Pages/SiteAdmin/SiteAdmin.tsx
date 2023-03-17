@@ -26,13 +26,13 @@ const SiteAdmin = () => {
     const [isOkModal, setIsOkModal] = useState(false);
     const navigate = useNavigate();
 
-   
+
     const accessToken = localStorage.getItem("access_token");
 
     const config = useMemo(() => {
-      return {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      };
+        return {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        };
     }, [accessToken]);
 
 
@@ -41,40 +41,39 @@ const SiteAdmin = () => {
         async function currentUser() {
             var user = await authService.getUser()
             user?.profile.roles.forEach((role: string) => {
-                console.log(role)
                 if (role.includes("admin")) {
                     setIsAdmin(true)
                 }
             });
         }
-    const fetchData = async () => {
-        const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
-        const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
-        var donationCount= await fetch(allDonations)
-        var stripeDBLogs = await fetch(paymentFailures, {headers: config.headers})
-        const donations = await donationCount.json();
-        const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
-        var teamsList = await getTeamsList(currentEvent.id)
-        var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
-
-        setTotalDonations(donations);
-        setStripeFailureLogs(stripeFailures)
-        setTeams(jsonTeams)
-    }
-
+        const fetchData = async () => {
+            if(currentEvent?.id !== -1){
+                const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
+                const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
+                var donationCount = await fetch(allDonations)
+                var stripeDBLogs = await fetch(paymentFailures, { headers: config.headers })
+                const donations = await donationCount.json();
+                const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
+                var teamsList = await getTeamsList(currentEvent.id)
+                var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
+                
+                setTotalDonations(donations);
+                setStripeFailureLogs(stripeFailures)
+                setTeams(jsonTeams)
+            }
+        }
         fetchData()
         currentUser()
 
-    },[currentEvent, config])
+    }, [currentEvent, config])
 
     const archiveTeam = async (team: Team) => {
-        console.log("here")
         team.isArchived = true
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, team, config);
     }
 
-   
+
 
     const closeModal = () => {
         setopenArchiveModal(false)
@@ -89,18 +88,32 @@ const SiteAdmin = () => {
                     <Paper square={true} elevation={6} className="AdminPaperDetails">
                         <Box className="AdminCurrentEventDetails">
                             {
-                                showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.title}</Typography> : <EventEditDeleteForm />
+                                showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.isArchived ? "" : currentEvent?.title}</Typography> : <EventEditDeleteForm />
                             }
-                            <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => setShowEditEvent((prevState) => !prevState)}>
-                                {
-                                    showEditEvent === true ? "Edit" : "Close"
-                                }
-                            </Button>
-                            <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => navigate('/createEvent')}>
-                                {
-                                    "Add" 
-                                }
-                            </Button>
+
+                            {currentEvent?.isArchived || currentEvent?.id === -1 ?
+
+                                <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => navigate('/createEvent')}>
+                                    {
+                                        "Add"
+                                    }
+                                </Button>
+                                :
+                                <div>
+
+                                    <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => setShowEditEvent((prevState) => !prevState)}>
+                                        {
+                                            showEditEvent === true ? "Edit" : "Close"
+                                        }
+                                    </Button>
+
+                                    <Button type='button' variant='contained' className="AdminButtonDetails" onClick={() => navigate('/createEvent')}>
+                                        {
+                                            "Add"
+                                        }
+                                    </Button>
+                                </div>
+                            }
                         </Box>
                     </Paper>
                     <Accordion className="AccordionSpacing">
@@ -166,7 +179,7 @@ const SiteAdmin = () => {
                                     </TableHead>
                                     <TableBody>
                                         {stripeFailureLogs?.map((row: any) => {
-
+                                                
                                             return (
                                                 <TableRow
                                                     key={row.decline_code}
