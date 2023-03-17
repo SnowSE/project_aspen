@@ -12,6 +12,7 @@ const CreateTeamForm = () => {
     const navigate = useNavigate();
 
     const [teamName, setTeamName] = useState<string>('')
+    const [teamWelcomeMessage, setTeamWelcomeMessage] = useState<string>('')
     const [teamDescription, setTeamDescription] = useState<string>('');
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
@@ -25,7 +26,6 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()
-        console.log(process.env.PUBLIC_URL)
         var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
         var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
 
@@ -44,12 +44,11 @@ const CreateTeamForm = () => {
         })
 
         const result = await imageResponse.json()
-        console.log('upload result:', result)
-
         const currentUser = await axios.get(currentUserUrl, config)
-        console.log(currentEvent.id)
+
         let newTeam: team = {
             name: teamName,
+            //welcomeMessage: teamWelcomeMessage,
             description: teamDescription,
             mainImage: result.data,
             ownerID: Number(currentUser.data.id),
@@ -125,7 +124,22 @@ const CreateTeamForm = () => {
 
                 <FormGroup>
                     <Row className="FormRowThree">
+                        <Col md={6} xs={8}>
+                            <Label>
+                                Team Welcome Message
+                            </Label>
+                            <Input
+                                type="textarea"
+                                value={teamWelcomeMessage}
+                                data-testid="teamWelcomeMessage"
+                                onChange={event => setTeamWelcomeMessage(event.target.value)}
+                            />
+                        </Col>
+                    </Row>
+                </FormGroup>
 
+                <FormGroup>
+                    <Row className="FormRowThree">
                         <Col md={6} xs={8}>
                             <Label>
                                 Team Description
