@@ -37,7 +37,9 @@ const CreateEventForm = () => {
 
             if (closesEventDate.length > 0) {
                 setCurrentEvent(closesEventDate[0]);
-            } else {
+            }
+        }
+             else {
                 const defaultEvent = new Event(
                     new Date(),
                     "", // location
@@ -50,7 +52,6 @@ const CreateEventForm = () => {
                 );
                 setCurrentEvent(defaultEvent);
             }
-        }
         };
 
         const createEventHandler = async (event: React.FormEvent) => {
