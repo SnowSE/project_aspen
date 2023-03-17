@@ -43,6 +43,8 @@ export function TeamDetails() {
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
     
     useEffect(() => {
     const BaseUrl = process.env.PUBLIC_URL
@@ -99,6 +101,7 @@ export function TeamDetails() {
 
     const closeModal = () => {
         setopenArchiveModal(false)
+        setIsOkModal(false)
     }
     
     const navigate = useNavigate();
@@ -152,7 +155,7 @@ export function TeamDetails() {
                                           })
 
                                       }
-                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Edit Team Details
                                   </Button>
@@ -167,8 +170,8 @@ export function TeamDetails() {
                           return (
                               
                                   <Button
-                                      onClick={() => {setopenArchiveModal(true); }}
-                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                                      onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
+                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
                                   >
                                       Delete Team
                               </Button>
@@ -222,9 +225,9 @@ export function TeamDetails() {
           <DynamicModal
               open={openArchiveModal}
               close={closeModal}
-              action={'archive'}
+              message={message}
               onConfirm={handleArchive}
-              object={currentTeam?.name}
+              isOkConfirm={isOkModal}
           />
     </Box>
   );
