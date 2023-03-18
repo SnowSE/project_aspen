@@ -8,11 +8,14 @@ public interface IPersonTeamAssoicationRepository
 {
 
     Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation);
+    Task SwitchTeamAsync(PersonTeamAssociation personTeamAssociation);
+
     Task<Team> GetTeamAsync(long personId, long eventId);
     Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId);
     Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
 
     Task<bool> ExistsAsync(long personId, long eventId);
+
     Task DeleteAsync(long personId, long teamId);
 }
 
@@ -77,10 +80,10 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         return await context.PersonTeamAssociations.AnyAsync(e => e.PersonId == personId && e.EventId == eventId);
     }
 
-    public async Task DeleteAsync(long personId, long teamId)
+    public async Task DeleteAsync(long personId, long eventId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
-            .Where(e => e.PersonId == personId && e.TeamId == teamId)
+            .Where(e => e.PersonId == personId && e.EventId == eventId)
             .FirstOrDefaultAsync();
         if (dbPersonTeamAssociation != null)
         {
@@ -92,5 +95,12 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
             throw new NotFoundException<PersonTeamAssociation>("Person is not on a team in this Event");
         }
 
+    }
+
+    public async Task SwitchTeamAsync(PersonTeamAssociation personTeamAssociation)
+    {
+            var dbPersonTeamAssociation = mapper.Map<DbPersonTeamAssociation>(personTeamAssociation);
+            context.Update(dbPersonTeamAssociation);
+            await context.SaveChangesAsync();        
     }
 }
