@@ -49,9 +49,9 @@ export function LoggedInUser() {
                 const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
                 if (result.status === 200) {
                
-                    var personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
-                    var person = personResult.data;
-                    var updatePerson = { ...person, nickname: nickName };
+                    personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                    person = personResult.data;
+                    updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
                     alert("You have successfully joined the team!");
                     navigate(`/TeamDetails?teamId=${teamID}`);
