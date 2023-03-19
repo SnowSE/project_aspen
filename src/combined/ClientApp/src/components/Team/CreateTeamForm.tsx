@@ -48,7 +48,7 @@ const CreateTeamForm = () => {
 
         let newTeam: team = {
             name: teamName,
-            //welcomeMessage: teamWelcomeMessage,
+            WelcomeMessage: teamWelcomeMessage,
             description: teamDescription,
             mainImage: result.data,
             ownerID: Number(currentUser.data.id),
