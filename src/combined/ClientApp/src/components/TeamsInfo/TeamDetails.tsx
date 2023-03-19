@@ -162,7 +162,6 @@ export function TeamDetails() {
         setopenArchiveModal(false)
     }
 
-    /*console.log("Current team members", members?.name);*/
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
@@ -301,8 +300,7 @@ export function TeamDetails() {
                                             //startIcon={<Delete />}
                                             //onClick={() => handleDelete(j.id)}
                                             size="small"
-                                            style={{ backgroundColor: 'red', color: 'white', fontSize: '8px', width: '5px', height: '20px', padding: '0', margin: '5px' }}
-                                                     
+                                            style={{ backgroundColor: 'red', color: 'white', fontSize: '8px', width: '5px', height: '20px', padding: '0', margin: '5px' }}                                                     
                                         >
                                             X
                                         </Button>
