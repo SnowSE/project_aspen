@@ -48,6 +48,8 @@ export function TeamDetails() {
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
+    const [members, setMembers] = useState<any>('');
+
     useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -94,6 +96,24 @@ export function TeamDetails() {
         }
 
 
+        async function currentTeamMembers() {
+          
+                try {
+                    var memberApi = process.env.PUBLIC_URL + `api/PersonTeamAssociation/team/${tId}`;
+                    const member = await fetch(memberApi)
+                    console.log("Team members 1", await members.json());
+                    const teamMembers = await members.json()
+                    console.log("Team members", teamMembers);
+                    setMembers( teamMembers);
+
+                } catch (e) { }
+
+
+        }
+       
+
+
+
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
                 setLoggedInUserId(response?.data?.id)
@@ -110,9 +130,11 @@ export function TeamDetails() {
                 setTeamOwner(teamOwner)
 
             } catch (e) {
-            }
-
+            }   
         }
+
+      
+
         const callServise = async () => {
             await getUser();
             await fetchTeam();
@@ -120,10 +142,11 @@ export function TeamDetails() {
             await currentUser();
             await checkIfOnTeam();
             await checkAllTeams();
+            await currentTeamMembers();
         };
 
         callServise();
-    }, [api, ownerId, currentEvent, loggedInUserId, onATeam]);
+    }, [api, ownerId, currentEvent, loggedInUserId, onATeam, tId]);
 
     const closeModal = () => {
         setopenArchiveModal(false)
@@ -139,7 +162,7 @@ export function TeamDetails() {
         setopenArchiveModal(false)
     }
 
-    
+    console.log("Current team members", members);
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
@@ -267,6 +290,7 @@ export function TeamDetails() {
 
                     <CardContent>
                         <Typography> Team Members will go here</Typography>
+                        <Typography> {currentTeam?.persons}</Typography>
                     </CardContent>
                 </Card>
             </Box>
