@@ -1,5 +1,45 @@
 ﻿/* This .css file is holding all of the information for the styling in all files*/
 
+:root {
+    --SiteNavBarColor: #673ab7;
+    --SiteNavBarTextColor: white;
+    --SiteNavBarTextHoverColor: orange;
+
+    --SitePrimaryBgColor: #673ab7;
+    --SiteSecondaryBgColor: #eeeeee;
+
+    --SiteMainBtnBgColor: orange;
+    --SiteMainBtnTextColor: white;
+    --SiteMainBtnHoverColor: mediumpurple;
+
+    --SiteMainBorderColor: black;
+
+    --SiteMainProgressBarColor: green;
+
+    --SiteMainModalColor: white;
+
+    --DeleteBtnColor: #d9534f;
+    --DeleteBtnTextColor: #ffffff;
+    --DeleteBtnHoverColor: #d62f2a;
+
+    --YesBtnColor: #28a745;
+    --YesBtnTextColor: #ffffff;
+    --YesBtnHoverColor: #218838;
+
+    --NoBtnColor: #d9534f;
+    --NoBtnTextColor: #ffffff;
+    --NoBtnHoverColor: #d62f2a;
+
+    --OkayBtnColor: #dadada;
+    --OkayBtnTextColor: #000000;
+    --OkayBtnHoverColor: #c1c1c1;
+
+    --EditBtnColor: orange;
+    --EditBtnTextColor: white;
+    --EditBtnHoverColor: mediumpurple;
+}
+
+
 /* Styling in the Login Button component*/
 .BoxPadding {
     display: flex;
@@ -8,35 +48,35 @@
 }
 
 .LoginButton {
-    background-color: orange !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     padding: 5px 12px !important;
 }
 .LoginButton:hover {
-    background-color: mediumpurple !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 
 .LogoutButton {
-    background-color: orange !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     padding: 5px 12px !important;
 }
 .LogoutButton:hover {
-    background-color: mediumpurple !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 
 /*Drawer Component*/
 
 .DrawerColor {
-    background-color: #673ab7;
+    background-color: var(--SiteNavBarColor) !important;
     flex-direction: column;
     flex-grow: 1;
 }
@@ -47,33 +87,33 @@
     align-items: center;
 }
 .HamburgerMenuColor {
-    color: white !important;
+    color: var(--SiteNavBarTextColor) !important;
 }
 .HeaderInDrawer {
     margin-right: 2px !important;
     font-family: monospace !important;
     font-weight: 700 !important;
     letter-spacing: 5px !important;
-    color: white !important;
+    color: var(--SiteNavBarTextColor) !important;
     text-decoration: none !important;
     font-size: 20px !important;
     align-items: center !important;
     flex-wrap: nowrap !important;
 }
 .HeaderInDrawer:hover {
-    color: orange !important;
+    color: var(--SiteNavBarTextHoverColor) !important;
 }
 
 .LoginNameInDrawer {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--SiteNavBarTextColor) !important;
     padding-top: 2rem;
 }
 
 .DrawerLinks {
-    color: White !important;
+    color: var(--SiteNavBarTextColor) !important;
     text-decoration: none !important;
     margin: 1rem !important;
     position: relative !important;
@@ -86,12 +126,11 @@
     font-family: monospace !important;
     font-weight: 700 !important;
     letter-spacing: 5px !important;
-    color: white !important;
+    color: var(--SiteNavBarTextColor) !important;
     text-decoration: none !important;
     font-size: 20px !important;
     align-items: center !important;
     flex-wrap: nowrap !important;
-    
 }
 
 @media (min-width: 400px) {
@@ -105,12 +144,12 @@
     }
 }
 
-.HeaderInNavMenu:hover{
-    color: orange !important;
+.HeaderInNavMenu:hover {
+    color: var(--SiteNavBarTextHoverColor) !important;
 }
 
 .NavMenuLinks {
-    color: White !important;
+    color: var(--SiteNavBarTextColor) !important;
     text-decoration: none !important;
     margin: auto !important;
     position: center !important;
@@ -120,22 +159,12 @@
 }
 
 .NavMenuLinks:hover {
-    color: orange !important;
-}
-/*@media (min-width: 1000px) {
-    .NavMenuLinks {
-        display: none;
-    }
+    color: var(--SiteNavBarTextHoverColor) !important;
 }
 
-@media (min-width: 1200px) {
-    .NavMenuLinks {
-        display: flex;
-    }
-}*/
 
 .NavMenuColorAndPosition {
-    background-color: #673ab7 !important;
+    background-color: var(--SiteNavBarColor) !important;
     position: fixed !important;
 }
 
@@ -182,12 +211,12 @@
 }
 .ProgressBarPercentageTextDetails {
     font-size: 22px !important;
-    color: white !important;
+    color: var(--SiteMainBtnTextColor) !important;
     font-weight: bold !important;
 }
 .ProgressBarTextDetails {
     font-size: 14px !important;
-    color: #e0e0e0 !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 .ProgressBarBarDetails {
     width: 100%;
@@ -197,22 +226,22 @@
     width: 50%;
 }
 .ProgressBarDetails{
-    color: green !important;
+    color: var(--SiteMainProgressBarColor) !important;
     border-radius: 100px !important;
     height: 20px !important;
 }
 
 .ShareIcon {
-    color: white !important;
+    color: var(--SiteMainBtnTextColor) !important;
     background: none !important;
 }
 .ShareButton {
-    background-color: orange !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     margin: 3px !important;
 }
 .ShareButton:hover{
-    background-color: mediumpurple !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 /*Team Info Modal*/
 
@@ -233,7 +262,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 420px;
-    background-color: white;
+    background-color: var(--SiteMainModalColor) !important;
     border: 2px solid #000;
     box-shadow: 24px;
     padding: 1.5rem 1.5rem 1rem 1.5rem;
@@ -244,7 +273,7 @@
 /* Home Page */
 
 .PaperColor {
-    background-color: #673ab7 !important;
+    background-color: var(--SitePrimaryBgColor) !important;
 }
 .CurrentEventPosition {
     display: flex;
@@ -255,7 +284,7 @@
     font-size: 24px !important;
     font-weight: bold !important;
     letter-spacing: 1px !important;
-    color: white;
+    color: var(--SiteNavBarColor);
 }
 .ShareIconPosition {
     display: flex;
@@ -276,14 +305,14 @@
     align-items: center;
 }
 .DonateButtonDetails {
-    background-color: orange !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     margin: 1rem !important;
 }
 .DonateButtonDetails:hover {
-    background-color: mediumpurple !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
 }
 .SecondaryPaperColor {
-    background-color: #eeeeee !important;
+    background-color: var(--SiteSecondaryBgColor) !important;
 }
 .SubTextHeaderPosition {
     display: flex;
@@ -312,11 +341,11 @@
     justify-content: center !important;
 }
 .JoinTeamButtonDetails {
-    background-color: #00b0ff !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     margin: 1rem !important;
 }
 .CreateTeamButtonDetails {
-    background-color: #00b0ff !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     margin: 1rem !important;
 }
 
@@ -360,7 +389,7 @@
     justify-content: center !important;
 }
 .FormButtonSubmit {
-    background-color: orange !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
 }
 
 /* Create Event Page */
@@ -413,7 +442,7 @@
     justify-content: center !important;
 }
 .FormEventButtonSubmit {
-    background-color: orange !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
 }
 
 /* Team Details Page */
@@ -424,19 +453,19 @@
     float: right;
 }
 .JoinATeamButton {
-    background-color: orange !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     margin: 3px !important;
     font-size: 10px !important;
-    color: white !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 .JoinATeamButton:hover {
-    background-color: mediumpurple !important;
-    color: white !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 
 /* Admin Dashboard */
 .AdminPaperDetails {
-    background-color: #673ab7 !important;
+    background-color: var(--SitePrimaryBgColor) !important;
     padding-bottom: 1em !important;
     padding-top: 1em !important;
 }
@@ -446,7 +475,7 @@
     justify-content: center;
 }
 .AdminCurrentEventTextDetails {
-    color: white !important;
+    color: var(--SiteNavBarTextColor) !important;
     font-size: 24px !important;
     font-weight: bold !important;
     letter-spacing: 1px !important;
@@ -455,20 +484,20 @@
 .AdminButtonDetails {
     max-width: 40px !important;
     max-height: 40px !important;
-    background-color: #1e90ff !important;
+    background-color: var(--SiteMainBtnBgColor) !important;
     border: groove !important;
-    border-color: black !important;
+    border-color: var(--SiteMainBorderColor) !important;
     border-width: 2px !important;
     margin: 3px !important;
     font-size: 12px !important;
-    color: white !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 .AdminButtonDetails:hover {
     background-color: #446ccf !important;
 }
 
 .EventEditDeleteFormDetails input {
-    color: white !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 .EventFormPosition {
     display: fixed !important;
@@ -484,13 +513,13 @@
 }
 
 .UpdateButtonDetails {
-    background-color: orange !important;
-    color: white !important;
+    background-color: var(--EditBtnColor) !important;
+    color: var(--EditBtnTextColor) !important;
     margin: 1rem !important;
 }
 .DeleteButtonDetails {
-    background-color: red !important;
-    color: white !important;
+    background-color: var(--DeleteBtnColor) !important;
+    color: var(--DeleteBtnTextColor) !important;
     margin: 1rem !important;
 }
 
@@ -526,8 +555,8 @@
     max-width: 40px !important;
     max-height: 20px !important;
     font-size: 10px !important;
-    background-color: orange !important;
-    color: white !important;
+    background-color: var(--EditBtnColor) !important;
+    color: var(--EditBtnTextColor) !important;
     margin: .5rem !important;
 }
 
@@ -535,8 +564,8 @@
     max-width: 40px !important;
     max-height: 20px !important;
     font-size: 10px !important;
-    background-color: red !important;
-    color: white !important;
+    background-color: var(--DeleteBtnColor) !important;
+    color: var(--DeleteBtnTextColor) !important;
     margin: .5rem !important;
 }
 
@@ -554,7 +583,7 @@
     margin: 1rem !important;
 }
 .BackToDonateButtonDetails:hover {
-    background-color: mediumpurple !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
 }
 
 
@@ -572,14 +601,42 @@
 .JoinTeamModalYesButton {
     align-content: center !important;
     justify-content: center !important;
-    background-color: green !important;
+    background-color: var(--YesBtnColor) !important;
     margin-right: 6px !important;
 }
 JoinTeamModalNoButton {
-    background-color: #FF0000 !important;
+    background-color: var(--NoBtnHoverColor) !important;
     margin-left: 6px !important;
 }
 JoinTeamModalButtonPosition {
     align-content: center !important;
     justify-content: center !important;
+}
+
+/* Dynamic Modal */
+
+.YesButton {
+    width: 48% !important;
+    color: var(--YesBtnTextColor) !important;
+    background-color: var(--YesBtnColor) !important;
+    border-color: var(--YesBtnColor) !important;
+    margin-right: 5px !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+.YesButton:hover {
+    color: var(--YesBtnTextColor) !important;
+    background-color: var(--YesBtnHoverColor) !important;
+}
+.NoButton {
+    width: 48% !important;
+    color: var(--NoBtnTextColor) !important;
+    background-color: var(--NoBtnColor) !important;
+    border-color: var(--NoBtnColor) !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+.NoButton:hover {
+    color: var(--NoBtnTextColor) !important;
+    background-color: var(--NoBtnHoverColor) !important;
 }

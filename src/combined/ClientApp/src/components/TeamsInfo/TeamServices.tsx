@@ -8,5 +8,6 @@ export const getTeamsList = async (id:number) => {
     const res = await fetch(apiUrL)
     const response = await res.json()
     const otherArray: typeof Team[] = response
+    console.log("team array",otherArray)
     return otherArray
 }

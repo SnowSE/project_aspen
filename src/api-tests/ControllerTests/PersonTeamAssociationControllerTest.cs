@@ -36,9 +36,9 @@ public class PersonTeamAssociationControllerControllerTest
             newPersonTwo = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "John", Nickname = "bobby" })).Value;
             newPersonThree = (await PersonControllerTest.GetPersonController().Add(new DtoPerson { Name = "Adam", Nickname = "bob2" })).Value;
 
-            newTeam = new DtoTeam { Name = "New Team!", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg" };
+            newTeam = new DtoTeam { Name = "New Team!", Description = "George", OwnerID = newPerson.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg", WelcomeMessage = "Welcome to Team 1" };
 
-            newTeam2 = new DtoTeam { Name = "New Team2", Description = "George2", OwnerID = newPersonTwo.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg" };
+            newTeam2 = new DtoTeam { Name = "New Team2", Description = "George2", OwnerID = newPersonTwo.ID, EventID = newEvent.ID, DonationTarget = 500, MainImage = "image.jpg", WelcomeMessage = "Welcome to Team 2" };
 
             newTeam = (await TeamControllerTest.GetTeamController().Add(newTeam)).Value;
             newTeam2 = (await TeamControllerTest.GetTeamController().Add(newTeam2)).Value;

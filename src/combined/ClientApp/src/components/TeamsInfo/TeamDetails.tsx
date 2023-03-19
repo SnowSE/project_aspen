@@ -1,5 +1,5 @@
-import {Box,Button,Card,CardHeader,CardMedia,CardContent,Typography, Divider,} from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { Box, Button, Card, CardHeader, CardMedia, CardContent, Typography, Divider, } from "@mui/material";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
@@ -8,32 +8,34 @@ import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
+import { EventContext } from "../../App";
+import Team from "../../JsModels/team";
 
 
 export function TeamDetails() {
-  const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
+    const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
+    const { currentEvent } = useContext(EventContext);
 
-  const [searchParams] = useSearchParams();
-  const list=[]
+    const [searchParams] = useSearchParams();
+    const list = []
     for (var entry of searchParams.entries()) {
-        console.log(entry[1]);
         list.push(entry[1])
-    }        
+    }
     var tId = parseInt(list[0]);
     if (list[0] !== null) {
-       tId = parseInt(list[0]);   // parse the string back to a number.
-    }   
+        tId = parseInt(list[0]);   // parse the string back to a number.
+    }
     var ownerId = parseInt(list[1]);
     if (list[1] !== null) {
-        ownerId =parseInt(list[1]);   // parse the string back to a number.
+        ownerId = parseInt(list[1]);   // parse the string back to a number.
     }
 
     const accessToken = localStorage.getItem("access_token");
 
     const config = useMemo(() => {
-      return {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      };
+        return {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        };
     }, [accessToken]);
 
 
@@ -41,20 +43,47 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
+    const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
-    
+    const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
+    const [onATeam, setOnATeam] = useState<boolean>(false);
+    const [members, setMembers] = useState<Person[]>([]);
+  
     useEffect(() => {
-    const BaseUrl = process.env.PUBLIC_URL
-    const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-  };
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
 
-    const fetchTeam = async () => {
-        const res = await fetch(api)
-        const response = await res.json()
-        setCurrentTeam(response)
-        
+
+        const checkAllTeams = async () => {
+            var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
+            teams.data.forEach((team: Team) => {
+                if (team.ownerID === loggedInUserId) {
+                    console.log("This user is a team owner and cannot switch teams")
+                    setCanSwitchTeam(false)
+                }
+            });
+        }
+        const checkIfOnTeam = async () => {
+            try {
+                var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+                if (res.status === 200) {
+                    setCanSwitchTeam(true)
+                    setOnATeam(true);
+                    setLoggedInUserTeamId(res.data?.id)
+                }
+                else {
+                }
+            }
+            catch (e) {
+            }
+        }
+        const fetchTeam = async () => {
+            const res = await fetch(api)
+            const response = await res.json()
+            setCurrentTeam(response)
+
         }
 
         async function currentUser() {
@@ -67,40 +96,62 @@ export function TeamDetails() {
         }
 
 
-    const getUser = async () => {
-        await axios.get(BaseUrl + '/api/user', config).then((response) => {
-            setLoggedInUserId(response?.data?.id)
-        }).catch((error)=> {
-          console.log("There was an error retrieving user", error)
-        })
-    }
-
-      const fetchTeamOwner = async () => {
-          try {
-              var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
-              const person = await fetch(personApi)
-              const teamOwner = await person.json()
-              setTeamOwner(teamOwner)
-
-          } catch (e) {
-              console.log(e);
-          }
+        async function currentTeamMembers() {
           
-      }
-    const callServise = async () => {
-        await getUser();
-        await fetchTeam();
-        await fetchTeamOwner();
-        await currentUser();
-    };
+                try {
+                    var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
+                    const member = await fetch(memberApi)
+                   
+                    const teamMembers = await member.json()
+                    console.log("Team members", teamMembers);
+                    setMembers( teamMembers);
 
-      callServise();
-  }, [api, ownerId]);
+                } catch (e) { }
+
+
+        }
+       
+
+
+
+        const getUser = async () => {
+            await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
+                setLoggedInUserId(response?.data?.id)
+            }).catch((error) => {
+                console.log("There was an error retrieving user", error)
+            })
+        }
+
+        const fetchTeamOwner = async () => {
+            try {
+                var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
+                const person = await fetch(personApi)
+                const teamOwner = await person.json()
+                setTeamOwner(teamOwner)
+
+            } catch (e) {
+            }   
+        }
+
+      
+
+        const callServise = async () => {
+            await getUser();
+            await fetchTeam();
+            await fetchTeamOwner();
+            await currentUser();
+            await checkIfOnTeam();
+            await checkAllTeams();
+            await currentTeamMembers();
+        };
+
+        callServise();
+    }, [api, ownerId, currentEvent, loggedInUserId, onATeam, tId]);
 
     const closeModal = () => {
         setopenArchiveModal(false)
     }
-    
+
     const navigate = useNavigate();
 
     const handleArchive = async () => {
@@ -111,121 +162,166 @@ export function TeamDetails() {
         setopenArchiveModal(false)
     }
 
+    /*console.log("Current team members", members?.name);*/
     const loggedInUSer = localStorage.getItem("LoggedInUser");
-  return (
-      <Box>
-          <Box>
-              <Typography variant="h1">{currentTeam?.name} </Typography>
-              <Typography>Team owner: {teamOwner?.name}</Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                  {
-                          <Button
-                              onClick={() =>
-                                  loggedInUSer
-                                      ? navigate({
-                                          pathname: "/LoggedInUser",
-                                          search: `?${createSearchParams({
-                                              teamId: `${tId}`,
-                                              userId: `${loggedInUserId}`,
-                                          })}`,
-                                      })
-                                      : authService.signinRedirect()
-                              }
-                              sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
-                          >
-                              Join Our Team
-                          </Button>
+    return (
+        <Box>
+            <Box>
+                <Typography variant="h1">{currentTeam?.name} </Typography>
+                <Typography>Team owner: {teamOwner?.name}</Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+                    {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
 
-                      } 
-                  {(() => {
-                      if (loggedInUserId === currentTeam?.ownerID||isAdmin) {
-                          return (
-                              
-                                  <Button
-                                      onClick={() =>
-                                          navigate({
-                                              pathname: "/EditTeam",
-                                              search: `?${createSearchParams({
-                                                  teamId: `${tId}`,
-                                                  userId: `${loggedInUserId}`,
-                                              })}`,
-                                          })
 
-                                      }
-                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
-                                  >
-                                      Edit Team Details
-                                  </Button>
+                        (<Button
+                            onClick={() =>
+                                loggedInUSer
+                                    ? navigate({
+                                        pathname: "/LoggedInUser",
+                                        search: `?${createSearchParams({
+                                            teamId: `${tId}`,
+                                            userId: `${loggedInUserId}`,
+                                            canSwitchTeams: "true",
+                                        })}`,
+                                    })
+                                    : authService.signinRedirect()
+                            }
+                            sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                        >
+                            Switch Teams
+                        </Button>)
+                        : loggedInUserTeamId !== tId && canSwitchTeam ?
+                            (<Button
+                                onClick={() =>
+                                    loggedInUSer
+                                        ? navigate({
+                                            pathname: "/LoggedInUser",
+                                            search: `?${createSearchParams({
+                                                teamId: `${tId}`,
+                                                userId: `${loggedInUserId}`,
+                                                canSwitchTeams: "false"
+                                            })}`,
+                                        })
+                                        : authService.signinRedirect()
+                                }
+                                sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                            >
+                                Join Our Team
+                            </Button>)
+                            :
+                            !canSwitchTeam ? <></> : <></>}
 
-                          )
-                      }
-                  })()
-                  }
+                    {(() => {
+                        if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
+                            return (
 
-                  {(() => {
-                      if (loggedInUserId === currentTeam?.ownerID ||isAdmin) {
-                          return (
-                              
-                                  <Button
-                                      onClick={() => {setopenArchiveModal(true); }}
-                                      sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
-                                  >
-                                      Delete Team
-                              </Button>
-                          )
-                      }
-                  })()
-                  }
-              </Box>
-              <Divider color="black"  sx={{ borderBottomWidth: 5, color: "black"}} />
-          </Box>
+                                <Button
+                                    onClick={() =>
+                                        navigate({
+                                            pathname: "/EditTeam",
+                                            search: `?${createSearchParams({
+                                                teamId: `${tId}`,
+                                                userId: `${loggedInUserId}`,
+                                            })}`,
+                                        })
 
-          <Box sx={{mt: 5} }>
-              <Box>
-                  <CardMedia
-                      component="img"
-                      height="500"
-                      width = "500"
-                      image={baseImageUrl + currentTeam?.mainImage}
-                      alt="mainImage"
-                  />
-              </Box>
-              <Typography variant="h4"> About us: </Typography>
-              <Typography> {currentTeam?.description}</Typography>
-              <Divider color = "black" sx={{ borderBottomWidth: 5, color: "black", mt: 1, mb: 2 }} />
-              <Typography >
-                  {" "}
-                  Donation Target: {currentTeam?.donationTarget} Meals{" "}
-              </Typography>
-              <Box className="ProgressBarPosition">
-                  <ProgressBar />
-                  <SharingIcon data-testid={"shareBtn"} />
-              </Box>
-              <Box className="DonateButtonPosition">
-                  <DonateButton />
-              </Box>
-          </Box>
-      
-      <Box sx={{display:'flex', justifyContent:'right'}}>
-        <Card sx={{ maxWidth: 500 }}>
-          <CardHeader
-            className="PaperColor"
-            sx={{ color: "white" }}
-            title= "Members: "
-          />
-          
-          <CardContent>
-            <Typography> Team Members will go here</Typography>
-          </CardContent>
-        </Card>
-          </Box>
-          <DynamicModal
-              open={openArchiveModal}
-              close={closeModal}
-              action={'archive'}
-              onConfirm={handleArchive}
-              object={currentTeam?.name}
-          />
-    </Box>
-  );
+                                    }
+                                    sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                >
+                                    Edit Team Details
+                                </Button>
+
+                            )
+                        }
+                    })()
+                    }
+
+                    {(() => {
+                        if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
+                            return (
+
+                                <Button
+                                    onClick={() => { setopenArchiveModal(true); }}
+                                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                                >
+                                    Delete Team
+                                </Button>
+                            )
+                        }
+                    })()
+                    }
+                </Box>
+                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black" }} />
+            </Box>
+
+            <Box sx={{ mt: 5 }}>
+                <Box>
+                    <CardMedia
+                        component="img"
+                        height="500"
+                        width="500"
+                        image={baseImageUrl + currentTeam?.mainImage}
+                        alt="mainImage"
+                    />
+                </Box>
+                <Typography variant="h4"> About us: </Typography>
+                <Typography> {currentTeam?.description}</Typography>
+                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black", mt: 1, mb: 2 }} />
+                <Typography >
+                    {" "}
+                    Donation Target: {currentTeam?.donationTarget} Meals{" "}
+                </Typography>
+                <Box className="ProgressBarPosition">
+                    <ProgressBar />
+                    <SharingIcon data-testid={"shareBtn"} />
+                </Box>
+                <Box className="DonateButtonPosition">
+                    <DonateButton />
+                </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+                <Card sx={{ maxWidth: 500 }}>
+                    <CardHeader
+                        className="PaperColor"
+                        sx={{ color: "white" }}
+                        title="Members: "
+                    />
+
+                    <CardContent>
+                        <Typography> Team Members will go here</Typography>
+                        <Typography alignItems="center">
+                            <ul>
+                                {members.map((j) => (
+                                    <li key={j.id}>
+                                        {j.name}
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            //startIcon={<Delete />}
+                                            //onClick={() => handleDelete(j.id)}
+                                            size="small"
+                                            style={{ backgroundColor: 'red', color: 'white', fontSize: '8px', width: '5px', height: '20px', padding: '0', margin: '5px' }}
+                                                     
+                                        >
+                                            X
+                                        </Button>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+            <DynamicModal
+                open={openArchiveModal}
+                close={closeModal}
+                action={'archive'}
+                onConfirm={handleArchive}
+                object={currentTeam?.name}
+            />
+        </Box>
+    );
 }
