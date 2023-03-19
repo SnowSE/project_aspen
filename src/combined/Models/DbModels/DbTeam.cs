@@ -7,6 +7,7 @@ public record DbTeam
     public string Name { get; init; }
     public string Description { get; init; }
     public string MainImage { get; init; }
+    public string WelcomeMessage { get; init; }
     public long OwnerID { get; init; }
     public DbPerson Owner { get; init; }
     public long EventID { get; init; }
