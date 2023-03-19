@@ -78,6 +78,7 @@ const SiteAdmin = () => {
     const closeModal = () => {
         setopenArchiveModal(false)
         setIsOkModal(false)
+        setMessage("")
     }
 
     return (

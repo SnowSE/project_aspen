@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { EventContext } from "../../App";
+import DynamicModal from "../DynamicModal";
 
 
 export function LoggedInUser() {
@@ -15,12 +16,9 @@ export function LoggedInUser() {
     const [personID, setPersonID] = useState<number>(-1);
     const { currentEvent } = useContext(EventContext);
     const [open, setOpen] = useState(false);
-    //const handleOpen = () => {
-    //    if (nickName === null || nickName === '' || !nickName?.trim()) {
-    //        setNickName("Anonymous")
-    //    }
-    //    setOpen(true);
-    //}
+    const [openModal, setOpenModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
 
     const handleClose = () => setOpen(false);
     const config = {
@@ -28,6 +26,7 @@ export function LoggedInUser() {
     };
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
+        console.log("Got to the start here") //This isnt working on the yes of the moadl click need to figure out why
         event.preventDefault()
         const now = new Date();
         const utcDate = now.toISOString();
@@ -42,13 +41,18 @@ export function LoggedInUser() {
                 var person = personResult.data;
                 var updatePerson = { ...person, nickname: nickName };
                 await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                alert("You have successfully joined the team!");
                 navigate(`/TeamDetails?teamId=${teamID}`);
             }
 
         } catch (e) {
             alert("Could not add you to the team, please try again later ");
         }
+    }
+
+    const closeModal = () => {
+        setOpenModal(false)
+        setIsOkModal(false)
+        setMessage("")
     }
 
     const handleChange = (e: any) => {
@@ -95,8 +99,15 @@ export function LoggedInUser() {
                     </Col>
                 </Row>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
+                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={() => {setOpenModal(true); setMessage("Are you sure you want to join with the name " + nickName + "?")} }>Submit</Button>
                 </Col>
+                <DynamicModal
+                    open={openModal}
+                    close={closeModal}
+                    message={message}
+                    onConfirm={() => addTeamMemberHandler}
+                    isOkConfirm={isOkModal}
+                 />
                 <Modal
                     open={open}
                     onClose={handleClose}

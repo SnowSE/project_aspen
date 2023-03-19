@@ -101,7 +101,8 @@ export function TeamDetails() {
 
     const closeModal = () => {
         setopenArchiveModal(false)
-        setIsOkModal(false)
+        setIsOkModal(false) 
+        setMessage("")
     }
     
     const navigate = useNavigate();

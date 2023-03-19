@@ -74,7 +74,7 @@ const DynamicModal = ({ open, close, message, onConfirm, isOkConfirm }: DynamicM
                             variant='contained'
                             style={{ ...useStyles.btnOk }}
                             size='large'
-                            onClick={closeDynamicModal}
+                            onClick={handleConfirm}
                         >
                             Ok
                         </Button>
