@@ -53,8 +53,8 @@ public class DonationControllerTest
         team2Owner = (await personController.Add(new DtoPerson { Name = "Team 2 Owner" , Nickname = "bob" })).Value;
 
         var teamController = TeamControllerTest.GetTeamController();
-        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID, MainImage = testEvent.MainImage })).Value;
-        team2 = (await teamController.Add(new DtoTeam { Description = "Team2", EventID = testEvent.ID, Name = "Team2", OwnerID = team2Owner.ID, MainImage = testEvent.MainImage })).Value;
+        team1 = (await teamController.Add(new DtoTeam { Description = "Team1", EventID = testEvent.ID, Name = "Team1", OwnerID = team1Owner.ID, MainImage = testEvent.MainImage, WelcomeMessage = "Welcome to Team 1" })).Value;
+        team2 = (await teamController.Add(new DtoTeam { Description = "Team2", EventID = testEvent.ID, Name = "Team2", OwnerID = team2Owner.ID, MainImage = testEvent.MainImage, WelcomeMessage = "Welcome to Team 2" })).Value;
 
 
         team1Donations = new[]

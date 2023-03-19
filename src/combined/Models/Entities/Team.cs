@@ -6,6 +6,7 @@ public class Team
     public string Name { get; init; }
     public string Description { get; init; }
     public string MainImage { get; init; }
+    public string WelcomeMessage { get; init; }
     public long OwnerID { get; init; }
     public Person Owner { get; init; }
     public long EventID { get; init; }
@@ -31,7 +32,8 @@ public static class TeamExtensions
             EventID = newEventId,
             Event = currentTeam.Event,
             DonationTarget = currentTeam.DonationTarget,
-            isArchived = currentTeam.isArchived
+            isArchived = currentTeam.isArchived,
+            WelcomeMessage= currentTeam.WelcomeMessage
         };
     }
 
@@ -48,7 +50,8 @@ public static class TeamExtensions
             EventID = currentTeam.ID,
             Event = currentTeam.Event,
             DonationTarget = donationTarget,
-            isArchived = currentTeam.isArchived
+            isArchived = currentTeam.isArchived,
+            WelcomeMessage = currentTeam.WelcomeMessage
         };
     }
 }
