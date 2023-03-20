@@ -3,14 +3,15 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 import Team from "../../JsModels/team";
 
 export const TeamCard = ({
-  id,
-  name,
-  description,
-  mainImage,
-  ownerID,
-  eventID,
-  donationTarget,
-  persons,
+    id,
+    name,
+    description,
+    mainImage,
+    ownerID,
+    eventID,
+    donationTarget,
+    persons,
+    WelcomeMessage
 }: Team) => {
 
   const navigate = useNavigate();
