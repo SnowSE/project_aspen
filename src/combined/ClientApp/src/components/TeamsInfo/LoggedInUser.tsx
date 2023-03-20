@@ -18,15 +18,9 @@ export function LoggedInUser() {
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isTeamOwner, setIsTeamOwner] = useState<boolean>(false);
     
-    const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [isOkModal, setIsOkModal] = useState(false);
     const [message, setMessage] = useState("");
-
-    const handleClose = () => setOpen(false);
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-    };
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
