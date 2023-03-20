@@ -50,6 +50,8 @@ export function TeamDetails() {
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const config = {
@@ -151,6 +153,8 @@ export function TeamDetails() {
 
     const closeModal = () => {
         setopenArchiveModal(false)
+        setIsOkModal(false) 
+        setMessage("")
     }
 
     const navigate = useNavigate();
@@ -227,7 +231,7 @@ export function TeamDetails() {
                                         })
 
                                     }
-                                    sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                 >
                                     Edit Team Details
                                 </Button>
@@ -237,23 +241,23 @@ export function TeamDetails() {
                     })()
                     }
 
-                    {(() => {
-                        if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
-                            return (
-
-                                <Button
-                                    onClick={() => { setopenArchiveModal(true); }}
-                                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
-                                >
-                                    Delete Team
-                                </Button>
-                            )
-                        }
-                    })()
-                    }
-                </Box>
-                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black" }} />
-            </Box>
+                  {(() => {
+                      if (loggedInUserId === currentTeam?.ownerID ||isAdmin) {
+                          return (
+                              
+                                  <Button
+                                      onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
+                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                  >
+                                      Delete Team
+                              </Button>
+                          )
+                      }
+                  })()
+                  }
+              </Box>
+              <Divider color="black"  sx={{ borderBottomWidth: 5, color: "black"}} />
+          </Box>
 
             <Box sx={{ mt: 5 }}>
                 <Box>
@@ -329,9 +333,9 @@ export function TeamDetails() {
             <DynamicModal
                 open={openArchiveModal}
                 close={closeModal}
-                action={'archive'}
+                message={message}
                 onConfirm={handleArchive}
-                object={currentTeam?.name}
+                isOkConfirm={isOkModal}
             />
         </Box>
     );
