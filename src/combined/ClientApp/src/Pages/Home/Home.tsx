@@ -1,4 +1,4 @@
-import React, { useEffect, useContext} from 'react';
+import React, { useEffect, useContext, useState} from 'react';
 import {
     Box,
     Button,
@@ -20,11 +20,11 @@ export function Home() {
 
     const navigate = useNavigate();
     const { currentEvent } = useContext(EventContext);
-    const [donationsTotal, setdonationsTotal] = React.useState(1);
+    const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
 
 
     const getDonationTotal = async () => {
-        var api = 'api/donations/' + currentEvent.Id;
+        var api = 'api/donations/' + currentEvent.id;
         const response = await fetch(api);
         const data = await response.json();
         setdonationsTotal(data);
@@ -57,7 +57,7 @@ export function Home() {
                         allowFullScreen />
                 </Box>
                 <Box className="ProgressBarPosition">
-                    <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent.DonationTarget} />
+                    <ProgressBar currentTotal={donationsTotal} goalTotal={1000} />
                 </Box>
                 <Box className="DonateButtonPosition">
                     <SharingButtonCustomLink />
