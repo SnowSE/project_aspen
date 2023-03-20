@@ -47,6 +47,7 @@ export function TeamDetails() {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
@@ -152,6 +153,7 @@ export function TeamDetails() {
 
     const closeModal = () => {
         setopenArchiveModal(false)
+        setOpenSwitchTeamsModal(false)
     }
 
     const navigate = useNavigate();
@@ -170,7 +172,17 @@ export function TeamDetails() {
                 setCanSwitchTeam(true)
                 setOnATeam(true);
                 setLoggedInUserTeamId(res.data?.id)
-                setopenArchiveModal(false)
+                loggedInUSer
+                    ? navigate({
+                        pathname: "/LoggedInUser",
+                        search: `?${createSearchParams({
+                            teamId: `${tId}`,
+                            userId: `${loggedInUserId}`,
+                            canSwitchTeams: "true",
+                        })}`,
+                    })
+                    : authService.signinRedirect();
+                setOpenSwitchTeamsModal(false)
             }
             else {
             }
@@ -189,20 +201,11 @@ export function TeamDetails() {
                 <Typography>Team owner: {teamOwner?.name}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
-
-
                         (<Button
-                            onClick={() =>
-                                loggedInUSer
-                                    ? navigate({
-                                        pathname: "/LoggedInUser",
-                                        search: `?${createSearchParams({
-                                            teamId: `${tId}`,
-                                            userId: `${loggedInUserId}`,
-                                            canSwitchTeams: "true",
-                                        })}`,
-                                    })
-                                    : authService.signinRedirect()
+                            onClick={() => {
+                                setOpenSwitchTeamsModal(true);
+                                
+                            }
                             }
                             sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                         >
@@ -229,9 +232,9 @@ export function TeamDetails() {
                             :
                             !canSwitchTeam ? <></> : <></>}
                     <DynamicModal
-                        open={openArchiveModal}
+                        open={openSwitchTeamsModal}
                         close={closeModal}
-                        action={'switch teams'}
+                        action={'switch teams to'}
                         onConfirm={handleSwitchTeams}
                         object={currentTeam?.name}
                     />
