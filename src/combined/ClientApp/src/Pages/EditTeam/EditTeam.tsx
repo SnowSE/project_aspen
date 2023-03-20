@@ -45,15 +45,10 @@ const EditTeam = () => {
             const data = await response.json();
             console.log(data);
             setCurrentTeam(data);
-            console.log(currentTeam?.WelcomeMessage);
-            console.log(currentTeam?.description);
-
         };
 
         const callServise = async () => {
             await fetchTeam();
-            console.log(currentTeam?.WelcomeMessage);
-            console.log(currentTeam?.description);
         };
         callServise();
 
