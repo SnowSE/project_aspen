@@ -9,6 +9,7 @@ export default class Team {
   eventID: number;
   donationTarget: number;
   isArchived: boolean;
+  WelcomeMessage: string;
 
   persons?: Person[];
   constructor(
@@ -20,6 +21,7 @@ export default class Team {
     id: number,
     donationTarget: number,
     isArchived: boolean,
+    WelcomeMessage: string,
 
      persons: Person[],
 
@@ -33,6 +35,7 @@ export default class Team {
     this.donationTarget = donationTarget;
       this.persons = [];
       this.isArchived= false;
+      this.WelcomeMessage = WelcomeMessage;
 
   }
 }

@@ -38,6 +38,7 @@ export function TeamsListPage() {
                         donationTarget={t.donationTarget}
                         persons={t.persons}
                         isArchived={t.isArchived}
+                        WelcomeMessage={t.WelcomeMessage}
                         key={t.id}
 
                     /> 
