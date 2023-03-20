@@ -131,12 +131,12 @@ export function LoggedInUser() {
                     <Col md={6} xs={8}>
                         <FormGroup>
                             <Label for="exampleEmail">
-                                Please enter the name you want to have displayed when you join the team. If left blank or you would like to remain anonymous, leave your name blank.
+                                Please enter the name you want to have displayed when you join the team. Leave your name blank if you would like to remain anonymous.
                             </Label>
                             <Input
                                 id="nickName"
                                 name="nickName"
-                                placeholder="Enter your name"
+                                placeholder="Ex: Steven1234"
                                 value={nickName}
                                 onChange={handleChange}
                             />
