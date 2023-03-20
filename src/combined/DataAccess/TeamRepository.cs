@@ -1,6 +1,8 @@
 ﻿namespace Api.DataAccess;
 
 using Api.Models.Entities;
+using Microsoft.Extensions.Logging;
+
 public interface ITeamRepository
 {
     Task<Team> AddAsync(Team team);
@@ -46,10 +48,21 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Team> AddAsync(Team team)
     {
-        var existingEvent = await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(context.Events, c => c.ID == team.EventID);
+        var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == team.EventID);
         var newTeam = team.WithEventId(existingEvent.ID);
         var dbTeam = mapper.Map<DbTeam>(newTeam);
 
+        //check if person is on another team in this event
+        var teamsInEvent = await context.Teams.Where(t => t.EventID == team.EventID).ToListAsync();
+        foreach (var teamInEvent in teamsInEvent)
+        {
+            var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(teamInEvent.ID);
+            if (teamMembers.Any(member => member.ID == team.OwnerID))
+            {
+                throw new Exception("Person is already on another team in this event");
+            }
+        }
+        
         await context.Teams.AddAsync(dbTeam);
         existingEvent.Teams.Add(dbTeam);
 
