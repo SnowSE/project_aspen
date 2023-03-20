@@ -133,7 +133,7 @@ export function LoggedInUser() {
                     <Col md={6} xs={8}>
                         <FormGroup>
                             <Label for="exampleEmail">
-                                List the name you want displayed for the team you're joining. If you would like to remain anonymous, leave your name blank.
+                                Please enter the name you want to have displayed when you join the team. If left blank or you would like to remain anonymous, leave your name blank.
                             </Label>
                             <Input
                                 id="nickName"
