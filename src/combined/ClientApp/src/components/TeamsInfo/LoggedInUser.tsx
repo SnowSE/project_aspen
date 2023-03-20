@@ -34,21 +34,20 @@ export function LoggedInUser() {
         if (searchParams.get("canSwitchTeams") === "true" && isTeamOwner === false) {
             try {
                 await axios.delete(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent.id}`);
-
                 const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
                 if (result.status === 200) {
                     var personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
-                    var teamResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + teamID, config);
+                    var teamResult = await axios.get(process.env.PUBLIC_URL + "/api/teams/" + teamID, config);
                     var person = personResult.data;
                     var team = teamResult.data;
                     var updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                    setIsOkModal(true)
-                    setMessage(team.WelcomeMessage)
-                    setOpenModal(true)
+                        setIsOkModal(true)
+                        setMessage(team.welcomeMessage)
+                        setOpenModal(true)
                 }
             } catch (e) {
-                alert("Could not add you to the team, please try again later ");
+                alert(`Could not switch123 to the team, please try again later  ${e}`);
             }
         }
 
@@ -61,7 +60,6 @@ export function LoggedInUser() {
                     teamResult = await axios.get(process.env.PUBLIC_URL + "/api/teams/" + teamID, config);
                     person = personResult.data;
                     team = teamResult.data;
-                    console.log(team);
                     updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
                         setIsOkModal(true)
