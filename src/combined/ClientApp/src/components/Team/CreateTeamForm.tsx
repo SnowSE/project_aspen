@@ -113,7 +113,7 @@ const CreateTeamForm = () => {
                                 Team Name
                             </Label>
                             <Input
-                                placeholder="Team Name"
+                                placeholder="Ex: Power Rangers V World Hunger"
                                 value={teamName}
                                 data-testid="teamNameInput"
                                 onChange={event => setTeamName(event.target.value)}
@@ -126,10 +126,11 @@ const CreateTeamForm = () => {
                     <Row className="FormRowThree">
                         <Col md={6} xs={8}>
                             <Label>
-                                Team Welcome Message
+                                {`Team Welcome Message (Type in a message here that you want people who join your team to see.)`} 
                             </Label>
                             <Input
                                 type="textarea"
+                                placeholder="Ex: Thank you for joining Power Rangers. I, the red ranger, will lead us to victory against hunger and with your help we will supply $500 to end this war."
                                 value={teamWelcomeMessage}
                                 data-testid="teamWelcomeMessage"
                                 onChange={event => setTeamWelcomeMessage(event.target.value)}
@@ -146,6 +147,7 @@ const CreateTeamForm = () => {
                             </Label>
                             <Input
                                 type="textarea"
+                                placeholder="Ex: Join as your favorite power ranger color and together we will end world hunger."
                                 value={teamDescription}
                                 data-testid="teamDescriptionInput"
                                 onChange={event => setTeamDescription(event.target.value)}
@@ -158,7 +160,7 @@ const CreateTeamForm = () => {
                     <Row className="FormRowFour">
                         <Col md={6} xs={8}>
                             <Label>
-                                Donation Goal
+                                {`Donation Goal (US Dollars)`}
                             </Label>
                             <Input
                                 type="number"
