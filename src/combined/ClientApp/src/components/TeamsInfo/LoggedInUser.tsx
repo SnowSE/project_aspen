@@ -1,9 +1,10 @@
-import { Button, Typography} from "@mui/material";
+import { Button, Typography,} from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { EventContext } from "../../App";
+import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
 
 export function LoggedInUser() {
@@ -17,6 +18,10 @@ export function LoggedInUser() {
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isTeamOwner, setIsTeamOwner] = useState<boolean>(false);
     
+    const [openModal, setOpenModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
+
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         const now = new Date();
@@ -29,18 +34,20 @@ export function LoggedInUser() {
         if (searchParams.get("canSwitchTeams") === "true" && isTeamOwner === false) {
             try {
                 await axios.delete(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent.id}`);
-
                 const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
                 if (result.status === 200) {
                     var personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                    var teamResult = await axios.get(process.env.PUBLIC_URL + "/api/teams/" + teamID, config);
                     var person = personResult.data;
+                    var team = teamResult.data;
                     var updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                    alert("You have successfully switched teams!");
-                    navigate(`/TeamDetails?teamId=${teamID}`);
+                        setIsOkModal(true)
+                        setMessage(team.welcomeMessage)
+                        setOpenModal(true)
                 }
             } catch (e) {
-                alert("Could not add you to the team, please try again later ");
+                alert(`Could not switch123 to the team, please try again later  ${e}`);
             }
         }
 
@@ -50,16 +57,26 @@ export function LoggedInUser() {
                 if (result.status === 200) {
                
                     personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                    teamResult = await axios.get(process.env.PUBLIC_URL + "/api/teams/" + teamID, config);
                     person = personResult.data;
+                    team = teamResult.data;
                     updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                    alert("You have successfully joined the team!");
-                    navigate(`/TeamDetails?teamId=${teamID}`);
+                        setIsOkModal(true)
+                        setMessage(team.welcomeMessage)
+                        setOpenModal(true)
                 }
             } catch (e) {
                 alert("Could not add you to the team, please try again later ");
             }
         }
+    }
+
+    const closeModal = () => {
+        setOpenModal(false)
+        setIsOkModal(false)
+        setMessage("")
+        navigate(`/TeamDetails?teamId=${teamID}`);
     }
 
     const handleChange = (e: any) => {
@@ -108,7 +125,7 @@ export function LoggedInUser() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button sx={{ backgroundColor: '#673ab7', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
+            <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
             <Form onSubmit={addTeamMemberHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
@@ -129,8 +146,13 @@ export function LoggedInUser() {
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
                 </Col>
-
-
+                <DynamicModal
+                    open={openModal}
+                    close={closeModal}
+                    message={message}
+                    onConfirm={closeModal}
+                    isOkConfirm={isOkModal}
+                 />
             </Form>
         </div>);
 }
