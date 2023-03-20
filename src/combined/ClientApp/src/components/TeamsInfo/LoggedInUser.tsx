@@ -29,7 +29,6 @@ export function LoggedInUser() {
     };
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
-        console.log("Got to the start here") //This isnt working on the yes of the moadl click need to figure out why
         event.preventDefault()
         const now = new Date();
         const utcDate = now.toISOString();
@@ -45,11 +44,14 @@ export function LoggedInUser() {
                 const result = await axios.post(process.env.PUBLIC_URL + "/api/PersonTeamAssociation", personTeam);
                 if (result.status === 200) {
                     var personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                    var teamResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + teamID, config);
                     var person = personResult.data;
+                    var team = teamResult.data;
                     var updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                    alert("You have successfully switched teams!");
-                    navigate(`/TeamDetails?teamId=${teamID}`);
+                    setIsOkModal(true)
+                    setMessage(team.WelcomeMessage)
+                    setOpenModal(true)
                 }
             } catch (e) {
                 alert("Could not add you to the team, please try again later ");
@@ -62,10 +64,15 @@ export function LoggedInUser() {
                 if (result.status === 200) {
                
                     personResult = await axios.get(process.env.PUBLIC_URL + "/api/Person/" + personID, config);
+                    teamResult = await axios.get(process.env.PUBLIC_URL + "/api/teams/" + teamID, config);
                     person = personResult.data;
+                    team = teamResult.data;
+                    console.log(team);
                     updatePerson = { ...person, nickname: nickName };
                     await axios.put(process.env.PUBLIC_URL + "/api/Person/", updatePerson, config);
-                        navigate(`/TeamDetails?teamId=${teamID}`);
+                        setIsOkModal(true)
+                        setMessage(team.welcomeMessage)
+                        setOpenModal(true)
                 }
             } catch (e) {
                 alert("Could not add you to the team, please try again later ");
@@ -77,6 +84,7 @@ export function LoggedInUser() {
         setOpenModal(false)
         setIsOkModal(false)
         setMessage("")
+        navigate(`/TeamDetails?teamId=${teamID}`);
     }
 
     const handleChange = (e: any) => {
@@ -144,13 +152,13 @@ export function LoggedInUser() {
                     </Col>
                 </Row>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={() => {setOpenModal(true); setMessage("Are you sure you want to join with the name " + nickName + "?")} }>Submit</Button>
+                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
                 </Col>
                 <DynamicModal
                     open={openModal}
                     close={closeModal}
                     message={message}
-                    onConfirm={() => addTeamMemberHandler}
+                    onConfirm={closeModal}
                     isOkConfirm={isOkModal}
                  />
             </Form>
