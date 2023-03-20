@@ -30,6 +30,16 @@ public class PersonTeamAssociationController : ControllerBase
         return mapper.Map<DtoTeam>(team);
     }
 
+    [HttpPut("switchteam")]
+    public async Task<IActionResult> SwitchTeam([FromBody] DtoPersonTeamAssociation dtoPersonTeamAssociation)
+    {
+
+        var updatedPersonTeamAssociation = mapper.Map<PersonTeamAssociation>(dtoPersonTeamAssociation);
+        await personTeamAssociationRepository.SwitchTeamAsync(updatedPersonTeamAssociation);
+        return Ok("Team switch was successful");
+
+    }
+
     [HttpPost]
     public async Task<ActionResult<DtoPersonTeamAssociation>> Add([FromBody] DtoPersonTeamAssociation dtoPersonTeamAssociation){
 
@@ -46,13 +56,13 @@ public class PersonTeamAssociationController : ControllerBase
         return mapper.Map<List<DtoPerson>>(teamMembers);
     }
 
-    [HttpDelete("{personId}/{teamId}")]
-    public async Task<ActionResult> Delete(long personId, long teamId)
+    [HttpDelete("{personId}/{eventId}")]
+    public async Task<ActionResult> Delete(long personId, long eventId)
     {
-        if (!await personTeamAssociationRepository.ExistsAsync(personId, teamId))
+        if (!await personTeamAssociationRepository.ExistsAsync(personId, eventId))
             return NotFound("Person does not belong to a team in this event");
 
-        await personTeamAssociationRepository.DeleteAsync(personId, teamId);
+        await personTeamAssociationRepository.DeleteAsync(personId, eventId);
         return NoContent();
     }
 

@@ -69,7 +69,7 @@ public class TeamRepository : ITeamRepository
 
             foreach (var member in teamMembers)
             {
-                await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
+                await personTeamAssociationRepository.DeleteAsync(member.ID, team.EventID);
             }
         }
         await context.SaveChangesAsync();
