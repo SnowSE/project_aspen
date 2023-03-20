@@ -153,7 +153,7 @@ export function LoggedInUser() {
                     onConfirm={() => addTeamMemberHandler}
                     isOkConfirm={isOkModal}
                  />
-                <Modal
+                {/* <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
@@ -171,7 +171,7 @@ export function LoggedInUser() {
                             <Button variant='contained' onClick={handleClose} className="JoinTeamModalNoButton" > No </Button>
                         </Box>
                     </Box>
-                </Modal>
+                </Modal> */}
             </Form>
         </div>);
 }
