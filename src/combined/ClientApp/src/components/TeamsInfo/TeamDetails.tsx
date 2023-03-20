@@ -340,7 +340,7 @@ export function TeamDetails() {
                                                 variant="contained"
                                                 color="primary"
                                                 //startIcon={<Delete />}
-                                                onClick={() => handleDeleteUser(j.id)}
+                                                onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to delete memeber " + j.name + "?") } }
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'red',
@@ -350,13 +350,20 @@ export function TeamDetails() {
                                                     height: '20px',
                                                     padding: '0',
                                                     margin: '5px',
-                                                }}
+                                               }}
                                             >
                                                 X
                                                 </Button>
                                               
                                         ) : null}
-                                        {j.nickName}
+                                        {j.name}
+                                        <DynamicModal
+                                            open={openArchiveModal}
+                                            close={closeModal}
+                                            message={message}
+                                            onConfirm={() => handleDeleteUser(j.id)}
+                                            isOkConfirm={isOkModal}
+                                        />
                                     </li>
                                 ))}
                             </ul>
