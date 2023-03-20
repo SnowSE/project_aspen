@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Col, Form, FormGroup, FormText, Input, Label, Row } from "reactstrap";
 import { Button } from "@mui/material";
@@ -16,26 +16,35 @@ const EditTeam = () => {
     if (list[0] !== null) {
         tId = parseInt(list[0]);   // parse the string back to a number.
     }
-   
+
 
     const navigate = useNavigate();
 
     const currentTeamUrl = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const updateTeamUrl = process.env.PUBLIC_URL + `/api/teams/`;
     const [currentTeam, setCurrentTeam] = useState<Team>();
-  
+
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-      };
+    };
 
     const [image, setImage] = useState<File>()
+
+    const isFormInvalid = () => {
+        return (
+            !currentTeam?.name ||
+            !currentTeam?.description ||
+            !currentTeam?.WelcomeMessage ||
+            currentTeam?.donationTarget === undefined
+        );
+    };
 
     useEffect(() => {
         const fetchTeam = async () => {
             const response = await fetch(currentTeamUrl);
             const data = await response.json();
+            console.log(data);
             setCurrentTeam(data);
-       
         };
 
         const callServise = async () => {
@@ -45,10 +54,10 @@ const EditTeam = () => {
 
     }, [currentTeamUrl]);
 
-   
+
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); 
+        event.preventDefault();
         var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
         if (!image) {
             return
@@ -65,17 +74,17 @@ const EditTeam = () => {
         const result = await imageResponse.json()
         console.log('upload result:', result)
 
-            try {
-                currentTeam!.mainImage = result.data
-                const response = await axios.put(updateTeamUrl, currentTeam, config);
-                console.log(response);
-                alert("Team information updated successfully!");
-                navigate("/TeamsListPage")
+        try {
+            currentTeam!.mainImage = result.data
+            const response = await axios.put(updateTeamUrl, currentTeam, config);
+            console.log(response);
+            alert("Team information updated successfully!");
+            navigate("/TeamsListPage")
 
-            } catch (error) {
-                console.error(error);
-                alert("An error occurred while updating the team information.");
-            }      
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred while updating the team information.");
+        }
     };
 
     const handleImageChange = (
@@ -86,7 +95,7 @@ const EditTeam = () => {
         }
     };
 
-   
+
 
     return (
         <div>
@@ -109,10 +118,11 @@ const EditTeam = () => {
                                             name: event.target.value,
                                         })
                                     }
+                                    required
                                 />
                             </Col>
                         </Row>
-                    </FormGroup> 
+                    </FormGroup>
                     <FormGroup>
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
@@ -123,16 +133,17 @@ const EditTeam = () => {
                                     id="image"
                                     accept="image/*"
                                     onChange={handleImageChange}
+                                    required
                                 />
                                 {image ? (
                                     <img
-                                       
+
                                         className="team-image-preview"
-                                       /* src={image}*/
+                                        /* src={image}*/
                                         alt="Team Preview"
                                     />
                                 ) : null}
-                                
+
                                 <FormText>
                                     You can change the team image in here
                                 </FormText>
@@ -152,9 +163,31 @@ const EditTeam = () => {
                                             ...currentTeam,
                                             description: event.target.value,
                                         })
-                                    }/>
+                                    } required
+                                />
                                 <FormText>
                                     You can edit the team description
+                                </FormText>
+                            </Col>
+                        </Row>
+                    </FormGroup>
+                    <FormGroup>
+                        <Row className="FormRowOne">
+                            <Col md={6} xs={8}>
+                                <Label>
+                                </Label>
+                                <Input
+                                    id="WelcomeMessage"
+                                    value={currentTeam.WelcomeMessage}
+                                    onChange={(event) =>
+                                        setCurrentTeam({
+                                            ...currentTeam,
+                                            WelcomeMessage: event.target.value,
+                                        })
+                                    } required
+                                />
+                                <FormText>
+                                    You can edit the welcome message for when a user joins your team
                                 </FormText>
                             </Col>
                         </Row>
@@ -172,17 +205,25 @@ const EditTeam = () => {
                                         ...currentTeam,
                                         donationTarget: Number(event.target.value),
                                     })
-                                    } />
+                                    } required
+                                />
                                 <FormText>
-                                    Current donation goal
+                                    Current Donation Goal (US Dollars)
                                 </FormText>
-                                
+
                             </Col>
                         </Row>
                     </FormGroup>
 
-                    
-                    <Button type="submit" sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }} >Save</Button>
+
+                    <Button
+                        type="submit"
+                        disabled={isFormInvalid()}
+                        sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                    >
+                        Save
+                    </Button>
+
 
                 </Form>
 
