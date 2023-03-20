@@ -27,9 +27,6 @@ export default function DonationPage(props: Props) {
                     Donation Page (1 of 2)
                 </Typography>
             </Box>
-            <br />
-
-            <br />
 
             <StripeContainer personGUID={personGUID} />
             <SharingButtonCustomLink />

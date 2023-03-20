@@ -64,7 +64,7 @@ export function Home() {
                 </Box>
                 <Box className="SubTextBodyPosition">
                     <Typography className= "SubTextBodyDetails" paragraph={true} >
-                        Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most meals can win some aswesome prizes!
+                        Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most can win some awesome prizes!
                     </Typography>
                 </Box>
                 <Box className="TeamInfoModalPosition">
