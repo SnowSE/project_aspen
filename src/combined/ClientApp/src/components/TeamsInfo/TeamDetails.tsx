@@ -73,6 +73,7 @@ export function TeamDetails() {
                     setCanSwitchTeam(true)
                     setOnATeam(true);
                     setLoggedInUserTeamId(res.data?.id)
+                    setopenArchiveModal(false)
                 }
                 else {
                 }
@@ -162,6 +163,22 @@ export function TeamDetails() {
         navigate('/')
         setopenArchiveModal(false)
     }
+    const handleSwitchTeams = async () => {
+        try {
+            var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+            if (res.status === 200) {
+                setCanSwitchTeam(true)
+                setOnATeam(true);
+                setLoggedInUserTeamId(res.data?.id)
+                setopenArchiveModal(false)
+            }
+            else {
+            }
+        }
+        catch (e) {
+        }
+    }
+
 
     /*console.log("Current team members", members?.name);*/
     const loggedInUSer = localStorage.getItem("LoggedInUser");
@@ -211,6 +228,13 @@ export function TeamDetails() {
                             </Button>)
                             :
                             !canSwitchTeam ? <></> : <></>}
+                    <DynamicModal
+                        open={openArchiveModal}
+                        close={closeModal}
+                        action={'switch teams'}
+                        onConfirm={handleSwitchTeams}
+                        object={currentTeam?.name}
+                    />
 
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
