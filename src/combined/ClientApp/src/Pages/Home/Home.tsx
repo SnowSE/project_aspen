@@ -20,10 +20,19 @@ export function Home() {
 
     const navigate = useNavigate();
     const { currentEvent } = useContext(EventContext);
+    const [donationsTotal, setdonationsTotal] = React.useState(1);
+
+
+    const getDonationTotal = async () => {
+        var api = 'api/donations/' + currentEvent.Id;
+        const response = await fetch(api);
+        const data = await response.json();
+        setdonationsTotal(data);
+    }
 
     useEffect(() => {
- 
-    }, []);
+        getDonationTotal();
+    }, [donationsTotal]);
 
     return (
         <Box>
@@ -48,7 +57,7 @@ export function Home() {
                         allowFullScreen />
                 </Box>
                 <Box className="ProgressBarPosition">
-                    <ProgressBar />
+                    <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent.DonationTarget} />
                 </Box>
                 <Box className="DonateButtonPosition">
                     <SharingButtonCustomLink />

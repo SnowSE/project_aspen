@@ -7,11 +7,12 @@ public interface IDonationRepository
     Task EditAsync(Donation e);
     public Task<bool> ExistsAsync(long id);
     Task<Donation> GetByIdAsync(long id);
+
     Task<IEnumerable<Donation>> GetAllAsync();
-    //Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId);
+    Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId);
     Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId);
     Task<decimal> GetTeamDonationSum(long teamID);
-    //Task<decimal> GetEventDonationSum(long eventID);
+    Task<decimal> GetEventDonationSumAsync(long eventid);
 }
 
 public class DonationRepository : IDonationRepository
@@ -67,15 +68,21 @@ public class DonationRepository : IDonationRepository
         await context.SaveChangesAsync();
     }
 
-/*    public async Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId)
+    public async Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId)
     {
-        var donations = await context.Donations
-            .Include(d => d.Team)
-            .Include(d => d.Person)
-            .Where(d => d.EventID == eventId).ToListAsync();
+        var teams = await context.Teams.Where(t => t.EventID == eventId).ToListAsync();
+        var donations = new List<DbDonation>();
+        foreach (var team in teams)
+        {
+            var teamDonations = await context.Donations.Where(d => d.TeamID == team.ID).ToListAsync();
+
+            donations.AddRange(teamDonations);
+
+        }
+       
 
         return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
-    }*/
+    }
 
     public async Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId)
     {
@@ -93,9 +100,11 @@ public class DonationRepository : IDonationRepository
         return sum;
     }
 
-/*    public async Task<decimal> GetEventDonationSum(long eventID)
+    public async Task<decimal> GetEventDonationSumAsync(long eventid)
     {
-        var sum = await context.Donations.Where(d => d.EventID == eventID).SumAsync(d => d.Amount);
+        var alldonations = await GetByEventIdAsync(eventid);
+
+        var sum = alldonations.Sum(d => d.Amount);
         return sum;
-    }*/
+    }
 }

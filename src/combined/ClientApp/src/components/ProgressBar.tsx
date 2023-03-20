@@ -23,16 +23,17 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
     );
 }
 
-export default function ProgressBar() {
+interface Props {
+    goalTotal: number;
+    currentTotal: number
+}
+
+export default function ProgressBar(props: Props) {
     const [progress, setProgress] = React.useState(1);
 
     React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 1));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
+        setProgress((props.currentTotal / props.goalTotal) * 100);
+
     }, []);
 
     return (

@@ -55,11 +55,11 @@ public class DonationController : ControllerBase
         return totalDonations.Count();
     }
 
-    /*[HttpGet("{eventID}")]
+    [HttpGet("{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         log.LogInformation("Getting the total donations for {eventID}", eventID);
-        var sum = await donationRepository.GetEventDonationSum(eventID);
+        var sum = await donationRepository.GetEventDonationSumAsync(eventID);
         return sum;
-    }*/
+    }
 }

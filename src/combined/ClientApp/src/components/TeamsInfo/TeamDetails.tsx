@@ -273,7 +273,7 @@ export function TeamDetails() {
                     Donation Target: {currentTeam?.donationTarget} Meals{" "}
                 </Typography>
                 <Box className="ProgressBarPosition">
-                    <ProgressBar />
+                    {/*<ProgressBar />*/}
                     <SharingIcon data-testid={"shareBtn"} />
                 </Box>
                 <Box className="DonateButtonPosition">
