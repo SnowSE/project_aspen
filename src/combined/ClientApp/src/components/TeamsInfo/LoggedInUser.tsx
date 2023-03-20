@@ -1,4 +1,4 @@
-import { Button, Typography} from "@mui/material";
+import { Button, Typography,} from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -125,7 +125,7 @@ export function LoggedInUser() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button sx={{ backgroundColor: '#673ab7', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
+            <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
             <Form onSubmit={addTeamMemberHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
@@ -153,25 +153,6 @@ export function LoggedInUser() {
                     onConfirm={() => addTeamMemberHandler}
                     isOkConfirm={isOkModal}
                  />
-                {/* <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box className="JoinTeamModal">
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Are you sure you want your name to be:
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ alignContent: "center" }}>
-                            {userName}
-                        </Typography>
-                        <Box className="JoinTeamModalButtonPosition">
-                            <Button type='submit' variant='contained' onClick={addTeamMemberHandler} className="JoinTeamModalYesButton"> Yes </Button>
-                            <Button variant='contained' onClick={handleClose} className="JoinTeamModalNoButton" > No </Button>
-                        </Box>
-                    </Box>
-                </Modal> */}
             </Form>
         </div>);
 }
