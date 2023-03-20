@@ -169,6 +169,14 @@ export function TeamDetails() {
         navigate('/')
         setopenArchiveModal(false)
     }
+
+    const handleDeleteUser = async (id:number) => {
+        const deleteUser = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${id}/${currentEvent?.id}`;
+        await axios.delete(deleteUser, config);
+        navigate('/')
+        setopenArchiveModal(false)
+    }
+
     const handleSwitchTeams = async () => {
         try {
             var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
@@ -332,7 +340,7 @@ export function TeamDetails() {
                                                 variant="contained"
                                                 color="primary"
                                                 //startIcon={<Delete />}
-                                                //onClick={() => handleDelete(j.id)}
+                                                onClick={() => handleDeleteUser(j.id)}
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'red',
