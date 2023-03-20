@@ -47,6 +47,7 @@ export function TeamDetails() {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
@@ -75,6 +76,7 @@ export function TeamDetails() {
                     setCanSwitchTeam(true)
                     setOnATeam(true);
                     setLoggedInUserTeamId(res.data?.id)
+                    setopenArchiveModal(false)
                 }
                 else {
                 }
@@ -153,6 +155,7 @@ export function TeamDetails() {
 
     const closeModal = () => {
         setopenArchiveModal(false)
+        setOpenSwitchTeamsModal(false)
         setIsOkModal(false) 
         setMessage("")
     }
@@ -166,6 +169,32 @@ export function TeamDetails() {
         navigate('/')
         setopenArchiveModal(false)
     }
+    const handleSwitchTeams = async () => {
+        try {
+            var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+            if (res.status === 200) {
+                setCanSwitchTeam(true)
+                setOnATeam(true);
+                setLoggedInUserTeamId(res.data?.id)
+                loggedInUSer
+                    ? navigate({
+                        pathname: "/LoggedInUser",
+                        search: `?${createSearchParams({
+                            teamId: `${tId}`,
+                            userId: `${loggedInUserId}`,
+                            canSwitchTeams: "true",
+                        })}`,
+                    })
+                    : authService.signinRedirect();
+                setOpenSwitchTeamsModal(false)
+            }
+            else {
+            }
+        }
+        catch (e) {
+        }
+    }
+
 
     /*console.log("Current team members", members?.name);*/
     const loggedInUSer = localStorage.getItem("LoggedInUser");
@@ -176,20 +205,12 @@ export function TeamDetails() {
                 <Typography>Team owner: {teamOwner?.name}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
-
-
                         (<Button
-                            onClick={() =>
-                                loggedInUSer
-                                    ? navigate({
-                                        pathname: "/LoggedInUser",
-                                        search: `?${createSearchParams({
-                                            teamId: `${tId}`,
-                                            userId: `${loggedInUserId}`,
-                                            canSwitchTeams: "true",
-                                        })}`,
-                                    })
-                                    : authService.signinRedirect()
+                            onClick={() => {
+                                setOpenSwitchTeamsModal(true);
+                                setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")
+                                
+                            }
                             }
                             sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                         >
@@ -215,6 +236,13 @@ export function TeamDetails() {
                             </Button>)
                             :
                             !canSwitchTeam ? <></> : <></>}
+                    <DynamicModal
+                        open={openSwitchTeamsModal}
+                        close={closeModal}
+                        message={message}
+                        onConfirm={handleSwitchTeams}
+                        isOkConfirm={isOkModal}
+                    />
 
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
@@ -320,7 +348,7 @@ export function TeamDetails() {
                                                 </Button>
                                               
                                         ) : null}
-                                        {j.name}
+                                        {j.nickName}
                                     </li>
                                 ))}
                             </ul>
