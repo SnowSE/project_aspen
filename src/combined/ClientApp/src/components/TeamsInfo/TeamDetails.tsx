@@ -45,11 +45,12 @@ export function TeamDetails() {
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
+    const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
-  
+
     useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -97,22 +98,19 @@ export function TeamDetails() {
 
 
         async function currentTeamMembers() {
-          
-                try {
-                    var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
-                    const member = await fetch(memberApi)
-                   
-                    const teamMembers = await member.json()
-                    console.log("Team members", teamMembers);
-                    setMembers( teamMembers);
 
-                } catch (e) { }
+            try {
+                var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
+                const member = await fetch(memberApi)
+
+                const teamMembers = await member.json()
+                console.log("Team members", teamMembers);
+                setMembers(teamMembers);
+
+            } catch (e) { }
 
 
         }
-       
-
-
 
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
@@ -127,13 +125,16 @@ export function TeamDetails() {
                 var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
                 const person = await fetch(personApi)
                 const teamOwner = await person.json()
-                setTeamOwner(teamOwner)
+                if (currentTeam?.ownerID === loggedInUserId) {
+                    setTeamOwner(teamOwner)
+                    setIsTeamOwner(true)
+                }
 
             } catch (e) {
-            }   
+            }
         }
 
-      
+
 
         const callServise = async () => {
             await getUser();
@@ -146,7 +147,7 @@ export function TeamDetails() {
         };
 
         callServise();
-    }, [api, ownerId, currentEvent, loggedInUserId, onATeam, tId]);
+    }, [api, ownerId, currentEvent, loggedInUserId, onATeam, tId, currentTeam?.ownerID]);
 
     const closeModal = () => {
         setopenArchiveModal(false)
@@ -289,23 +290,33 @@ export function TeamDetails() {
                     />
 
                     <CardContent>
-                        <Typography> Team Members will go here</Typography>
+                        {/*<Typography> Team Members will go here</Typography>*/}
                         <Typography alignItems="center">
                             <ul>
                                 {members.map((j) => (
                                     <li key={j.id}>
+                                        {(isAdmin || isTeamOwner) ? (
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                //startIcon={<Delete />}
+                                                //onClick={() => handleDelete(j.id)}
+                                                size="small"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                    color: 'white',
+                                                    fontSize: '8px',
+                                                    width: '5px',
+                                                    height: '20px',
+                                                    padding: '0',
+                                                    margin: '5px',
+                                                }}
+                                            >
+                                                X
+                                                </Button>
+                                              
+                                        ) : null}
                                         {j.name}
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            //startIcon={<Delete />}
-                                            //onClick={() => handleDelete(j.id)}
-                                            size="small"
-                                            style={{ backgroundColor: 'red', color: 'white', fontSize: '8px', width: '5px', height: '20px', padding: '0', margin: '5px' }}
-                                                     
-                                        >
-                                            X
-                                        </Button>
                                     </li>
                                 ))}
                             </ul>
