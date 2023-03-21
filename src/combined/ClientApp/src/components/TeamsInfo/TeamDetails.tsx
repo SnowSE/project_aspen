@@ -47,6 +47,7 @@ export function TeamDetails() {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [openDeleteModal, setopenDeleteModal] = useState(false);
     const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
@@ -122,6 +123,7 @@ export function TeamDetails() {
             }).catch((error) => {
                 console.log("There was an error retrieving user", error)
             })
+
         }
 
         const fetchTeamOwner = async () => {
@@ -166,17 +168,22 @@ export function TeamDetails() {
         currentTeam.isArchived = true
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, currentTeam, config);
-        navigate('/')
         setopenArchiveModal(false)
+        reloadPage();
     }
 
     const handleDeleteUser = async (id:number) => {
         const deleteUser = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${id}/${currentEvent?.id}`;
         await axios.delete(deleteUser, config);
-        navigate('/')
         setopenArchiveModal(false)
+        reloadPage();
     }
 
+    const reloadPage = () => {
+        navigate(-1);
+        navigate(window.location.pathname);
+    };
+    
     const handleSwitchTeams = async () => {
         try {
             var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
@@ -340,7 +347,7 @@ export function TeamDetails() {
                                                 variant="contained"
                                                 color="primary"
                                                 //startIcon={<Delete />}
-                                                onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to delete memeber " + j.name + "?") } }
+                                                onClick={() => { setopenDeleteModal(true); setMessage("Are you sure you want to delete memeber " + j.name + "?") } }
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'red',
@@ -358,7 +365,7 @@ export function TeamDetails() {
                                         ) : null}
                                         {j.name}
                                         <DynamicModal
-                                            open={openArchiveModal}
+                                            open={openDeleteModal}
                                             close={closeModal}
                                             message={message}
                                             onConfirm={() => handleDeleteUser(j.id)}
