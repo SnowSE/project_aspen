@@ -91,7 +91,7 @@ const EventEditDeleteForm = () => {
 
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
-            alert("Update was successful 13");
+            
         } catch (e) {
             console.log("Update event failed: " + e);
         }
@@ -113,9 +113,6 @@ const EventEditDeleteForm = () => {
                     setupdatedEvent(updatedEvent);
                     await EventsService.UpdateEventViaAxios(updatedEvent);
                     nextCurrentEvent();
-                    alert(
-                        "The archive was successful, you will be redirected to Home page."
-                    );
                     navigate(0);
                 } catch (e) {
                     alert("Archive event failed");
