@@ -4,12 +4,12 @@ import { createSearchParams, useNavigate, useSearchParams } from "react-router-d
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
 import ProgressBar from "../ProgressBar";
-import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
 import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
+import SharingIconTeams from "../Share/ShareIconTeams";
 
 
 export function TeamDetails() {
@@ -306,7 +306,9 @@ export function TeamDetails() {
                 </Typography>
                 <Box className="ProgressBarPosition">
                     <ProgressBar />
-                    <SharingIcon data-testid={"shareBtn"} />
+                    <Box className="ShareIconTeams">
+                        <SharingIconTeams data-testid={"shareBtn"} />
+                    </Box>
                 </Box>
                 <Box className="DonateButtonPosition">
                     <DonateButton />
