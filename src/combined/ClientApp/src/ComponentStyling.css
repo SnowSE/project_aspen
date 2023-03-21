@@ -37,6 +37,8 @@
     --EditBtnColor: orange;
     --EditBtnTextColor: white;
     --EditBtnHoverColor: mediumpurple;
+
+    --ShareIconTeamsPageColor: black;
 }
 
 
@@ -233,6 +235,10 @@
 
 .ShareIcon {
     color: var(--SiteMainBtnTextColor) !important;
+    background: none !important;
+}
+.ShareIconTeams {
+    color: var(--ShareIconTeamsPageColor) !important;
     background: none !important;
 }
 .ShareButton {

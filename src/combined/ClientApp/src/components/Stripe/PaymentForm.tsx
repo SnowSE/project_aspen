@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import { Box, TextField } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { Button } from 'reactstrap';
 import { EventContext } from '../../App';
 
@@ -90,7 +90,7 @@ const PaymentForm: React.FC<Props> = (props) => {
 
         await axios.post(`${BaseUrl}/api/stripe`,
             {
-                amount: (donationAmount * 1000),
+                amount: (donationAmount * 100),
                 id: "paymentid",
                 teamName: teamName,
                 teamId: teamId,
@@ -109,30 +109,27 @@ const PaymentForm: React.FC<Props> = (props) => {
 
 
     }
-    function updateMealsTextField(value: any) {
+    function updateDollarAmmountTextField(value: any) {
         setDonationAmount(value);
     }
 
-    console.log(localStorage.getItem("LoggedInUser"))
-    console.log(localStorage.getItem("LoggedInEmail"))
-    console.log("useState for logged in is; ", donationSubmitName)
-    console.log("useState for logged in email is; ", donationEmail)
     return (
         <>
+            <Typography sx={{display:'flex', justifyContent:'center', mb:2}}>Every $5 donated is equivalent to 1 meal</Typography>
             <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
-                <Button onClick={() => updateMealsTextField(100)}>100 Meals</Button>
-                <Button onClick={() => updateMealsTextField(200)}>200 Meals</Button>
-                <Button onClick={() => updateMealsTextField(300)}>300 Meals</Button>
-                <Button onClick={() => updateMealsTextField(800)}>800 Meals</Button>
-                <Button onClick={() => updateMealsTextField(1000)}>1000 Meals</Button>
-                <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
+                <Button onClick={() => updateDollarAmmountTextField(1)}>$1</Button>
+                <Button onClick={() => updateDollarAmmountTextField(5)}>$5</Button>
+                <Button onClick={() => updateDollarAmmountTextField(10)}>$10</Button>
+                <Button onClick={() => updateDollarAmmountTextField(20)}>$20</Button>
+                <Button onClick={() => updateDollarAmmountTextField(50)}>$50</Button>
+                <Button onClick={() => updateDollarAmmountTextField(100)}>$100</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
                     <TextField
                         id="meals-textfield"
-                        label="Meals"
+                        label="$ to donate"
                         type="number"
                         required={true}
                         InputLabelProps={{
