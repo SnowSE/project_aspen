@@ -65,7 +65,7 @@ const SiteAdmin = () => {
         fetchData()
         currentUser()
 
-    }, [currentEvent, config])
+    }, [currentEvent, config]) 
 
     const archiveTeam = async (team: Team) => {
         team.isArchived = true
