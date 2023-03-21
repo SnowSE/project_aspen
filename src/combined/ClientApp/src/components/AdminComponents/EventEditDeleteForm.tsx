@@ -5,6 +5,7 @@ import { EventContext } from "../../App";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import DynamicModal from "../DynamicModal";
 
 
 const CssTextField = styled(TextField)({
@@ -31,8 +32,16 @@ const EventEditDeleteForm = () => {
     useEffect(() => {
     }, [currentEvent]);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
+    const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
+    const closeModal = () => {
+        setopenArchiveModal(false)
+        setIsOkModal(false)
+        setMessage("")
+    }
 
     const nextCurrentEvent = async () => {
         var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
@@ -88,7 +97,6 @@ const EventEditDeleteForm = () => {
         if (currentEvent.id === -1) {
             addNewEventHandler(event);
         }
-
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
             
@@ -98,25 +106,20 @@ const EventEditDeleteForm = () => {
         setCurrentEvent(updatedEvent);
     };
 
-    const archiveHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
+    const archiveHandler = async () => {
+        //event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
-        } else {
-            if (
-                window.confirm(
-                    "Are you sure you want to archive this event, it can't be undone?"
-                )
-            ) {
-                try {
-                    updatedEvent.isArchived = true;
-                    setupdatedEvent(updatedEvent);
-                    await EventsService.UpdateEventViaAxios(updatedEvent);
-                    nextCurrentEvent();
-                    navigate(0);
-                } catch (e) {
-                    alert("Archive event failed");
-                }
+        } 
+        else {
+            try {
+                updatedEvent.isArchived = true;
+                setupdatedEvent(updatedEvent);
+                await EventsService.UpdateEventViaAxios(updatedEvent);
+                nextCurrentEvent();
+                navigate(0);
+            } catch (e) {
+                alert("Archive event failed");
             }
         }
     };
@@ -197,11 +200,18 @@ const EventEditDeleteForm = () => {
                         variant="contained"
                         className="DeleteButtonDetails"
                         type="submit"
-                        onClick={archiveHandler}
+                        onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to archive " + updatedEvent.title + "?")}}
                     >
                          Archive
 
                     </Button>
+                    <DynamicModal
+                        open={openArchiveModal}
+                        close={closeModal}
+                        message={message}
+                        onConfirm={archiveHandler}
+                        isOkConfirm={isOkModal}
+                    />
                  </Box>
             </form>
         </Box>
