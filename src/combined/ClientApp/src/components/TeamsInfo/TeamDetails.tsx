@@ -302,7 +302,7 @@ export function TeamDetails() {
                 <Divider color="black" sx={{ borderBottomWidth: 5, color: "black", mt: 1, mb: 2 }} />
                 <Typography >
                     {" "}
-                    Donation Target: {currentTeam?.donationTarget} Meals{" "}
+                    Donation Target: {currentTeam?.donationTarget} Dollars{" "}
                 </Typography>
                 <Box className="ProgressBarPosition">
                     <ProgressBar />
