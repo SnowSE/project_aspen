@@ -258,6 +258,7 @@ export function TeamDetails() {
                             defaultSubject="Come Join My Team"/>
                         }
                 </Box>
+                <Typography>{`Team Owner: ${teamOwner}`}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
                         (<Button
