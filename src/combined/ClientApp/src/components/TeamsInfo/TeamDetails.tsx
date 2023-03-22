@@ -163,7 +163,7 @@ export function TeamDetails() {
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, currentTeam, config);
         setopenArchiveModal(false)
-        reloadPage();
+        navigate({pathname: "/"})
     }
 
     const handleDeleteUser = async () => {
