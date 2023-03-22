@@ -54,8 +54,6 @@ const EditTeam = () => {
 
     }, [currentTeamUrl]);
 
-
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
