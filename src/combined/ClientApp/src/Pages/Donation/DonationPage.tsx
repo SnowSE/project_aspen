@@ -30,7 +30,7 @@ export default function DonationPage(props: Props) {
 
             <StripeContainer personGUID={personGUID} />
             <SharingButtonCustomLink
-            defaultMessage="Come donate to hellp end world hunger"
+            defaultMessage="Come donate to help end world hunger"
             defaultSubject="Help those who dont have enough food" />
         </Box>
     );
