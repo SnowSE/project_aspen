@@ -126,9 +126,11 @@ export function TeamDetails() {
 
         const fetchTeamOwner = async () => {
             try {
+                console.log("########################################################")
                 var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
                 const person = await fetch(personApi)
                 const teamOwner = await person.json()
+                console.log("The Logged in userid is: " + person, "The ownerId is: " + teamOwner)
                 if (currentTeam?.ownerID === loggedInUserId) {
                     setTeamOwner(teamOwner)
                     setIsTeamOwner(true)
