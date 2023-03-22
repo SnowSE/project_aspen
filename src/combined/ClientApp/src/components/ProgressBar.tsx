@@ -12,7 +12,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
                 </Typography>
                 
                 <Typography className="ProgressBarTextDetails">
-                      of meals donated of 10,000 meal goal
+                       of dollars donated of our 10,000 dollar goal
                 </Typography>
             <br />
             </Box>

@@ -21,8 +21,9 @@ const SiteAdmin = () => {
     const [showEditEvent, setShowEditEvent] = useState(true);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [totalDonations, setTotalDonations] = useState<number>(0);
-    const [teamName, setTeamName] = useState("");
+    const [message, setMessage] = useState("");
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
     const navigate = useNavigate();
 
 
@@ -64,7 +65,7 @@ const SiteAdmin = () => {
         fetchData()
         currentUser()
 
-    }, [currentEvent, config])
+    }, [currentEvent, config]) 
 
     const archiveTeam = async (team: Team) => {
         team.isArchived = true
@@ -76,6 +77,8 @@ const SiteAdmin = () => {
 
     const closeModal = () => {
         setopenArchiveModal(false)
+        setIsOkModal(false)
+        setMessage("")
     }
 
     return (
@@ -142,15 +145,15 @@ const SiteAdmin = () => {
                                                 variant="contained"
                                                 className="DeleteTeamButtonDetails"
                                                 type="button"
-                                                onClick={() => { setTeamName(t.name); setopenArchiveModal(true); }}
+                                                onClick={() => { setMessage("Are you sure you want to delete " + t.name + "?"); setopenArchiveModal(true); }}
                                             > Delete
                                             </Button>
                                             <DynamicModal
                                                 open={openArchiveModal}
                                                 close={closeModal}
-                                                action={'archive'}
+                                                message={message}
                                                 onConfirm={() => archiveTeam(t)}
-                                                object={teamName}
+                                                isOkConfirm={isOkModal}
                                             />
                                         </Box>
                                     </AccordionSummary>
