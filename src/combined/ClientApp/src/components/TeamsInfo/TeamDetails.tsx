@@ -4,12 +4,12 @@ import { createSearchParams, useNavigate, useSearchParams } from "react-router-d
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
 import ProgressBar from "../ProgressBar";
-import SharingIcon from "../Share/SharingIcon";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
 import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
+import SharingIconTeams from "../Share/ShareIconTeams";
 
 
 export function TeamDetails() {
@@ -47,12 +47,17 @@ export function TeamDetails() {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [openDeleteModal, setopenDeleteModal] = useState(false);
     const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
+    const [openErrorModal, setOpenErrorModal] = useState(false);
+    const [openZeroPersonModal, setOpenZeroPersonModal] = useState(false);
+    const [openLoginModal, setOpenLoginModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
     const [isOkModal, setIsOkModal] = useState(false);
     const [message, setMessage] = useState("");
+    const [deleteUserId, setDeleteUserId] = useState(0);
 
     useEffect(() => {
         const config = {
@@ -122,6 +127,7 @@ export function TeamDetails() {
             }).catch((error) => {
                 console.log("There was an error retrieving user", error)
             })
+
         }
 
         const fetchTeamOwner = async () => {
@@ -153,12 +159,28 @@ export function TeamDetails() {
         };
 
         callServise();
-    }, [api, ownerId, currentEvent, loggedInUserId, onATeam, tId, currentTeam?.ownerID]);
+        if (deleteUserId === currentTeam?.ownerID && members.length > 1) {
+            setOpenErrorModal(true);
+            setOpenZeroPersonModal(false);
+        } else if (members.length === 1 && deleteUserId === currentTeam?.ownerID) {
+            setOpenErrorModal(false);
+            setOpenZeroPersonModal(true);
+        } else {
+            setOpenErrorModal(false);
+            setOpenZeroPersonModal(false);
+        }
+
+    }, [api, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length]);
 
     const closeModal = () => {
         setopenArchiveModal(false)
         setOpenSwitchTeamsModal(false)
+        setopenDeleteModal(false)
+        setOpenErrorModal(false)
+        setIsOkModal(false)
+        setDeleteUserId(0)
         setIsOkModal(false) 
+        setOpenLoginModal(false)
         setMessage("")
     }
 
@@ -168,8 +190,45 @@ export function TeamDetails() {
         currentTeam.isArchived = true
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, currentTeam, config);
-        navigate('/')
         setopenArchiveModal(false)
+        reloadPage();
+    }
+
+    const handleDeleteUser = async () => {
+        try {
+            if (members.length === 1) {
+                console.log("Shouldn't get here, trying to delete team owner and make a (zero)person team")
+                return;
+            }
+            else {
+                const deleteUser = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${deleteUserId}/${currentEvent?.id}`;
+                await axios.delete(deleteUser, config);
+                setopenDeleteModal(false)
+                reloadPage();
+            }
+
+        } catch (e) {
+
+        }
+    }
+
+    const reloadPage = () => {
+        navigate(-1);
+        navigate(window.location.pathname);
+    };
+
+
+    const handleJoinTeam = async () => {
+        loggedInUSer
+            ? navigate({
+                pathname: "/LoggedInUser",
+                search: `?${createSearchParams({
+                    teamId: `${tId}`,
+                    userId: `${loggedInUserId}`,
+                    canSwitchTeams: "false"
+                })}`,
+            })
+            : authService.signinRedirect()
     }
     const handleSwitchTeams = async () => {
         try {
@@ -211,7 +270,7 @@ export function TeamDetails() {
                             onClick={() => {
                                 setOpenSwitchTeamsModal(true);
                                 setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")
-                                
+
                             }
                             }
                             sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
@@ -220,17 +279,14 @@ export function TeamDetails() {
                         </Button>)
                         : loggedInUserTeamId !== tId && canSwitchTeam ?
                             (<Button
-                                onClick={() =>
-                                    loggedInUSer
-                                        ? navigate({
-                                            pathname: "/LoggedInUser",
-                                            search: `?${createSearchParams({
-                                                teamId: `${tId}`,
-                                                userId: `${loggedInUserId}`,
-                                                canSwitchTeams: "false"
-                                            })}`,
-                                        })
-                                        : authService.signinRedirect()
+                                onClick={() => {
+                                    loggedInUSer ?
+                                        handleJoinTeam()
+                                        : 
+                                        setOpenLoginModal(true); setMessage("You have to login in order to join a team, would you like to register for an account?");
+                                            
+                                    
+                                }   
                                 }
                                 sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                             >
@@ -243,6 +299,13 @@ export function TeamDetails() {
                         close={closeModal}
                         message={message}
                         onConfirm={handleSwitchTeams}
+                        isOkConfirm={isOkModal}
+                    />
+                    <DynamicModal
+                        open={openLoginModal}
+                        close={closeModal}
+                        message={message}
+                        onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
                     />
 
@@ -271,23 +334,23 @@ export function TeamDetails() {
                     })()
                     }
 
-                  {(() => {
-                      if (loggedInUserId === currentTeam?.ownerID ||isAdmin) {
-                          return (
-                              
-                                  <Button
-                                      onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
-                                      sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
-                                  >
-                                      Delete Team
-                              </Button>
-                          )
-                      }
-                  })()
-                  }
-              </Box>
-              <Divider color="black"  sx={{ borderBottomWidth: 5, color: "black"}} />
-          </Box>
+                    {(() => {
+                        if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
+                            return (
+
+                                <Button
+                                    onClick={() => { setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
+                                    sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                >
+                                    Delete Team
+                                </Button>
+                            )
+                        }
+                    })()
+                    }
+                </Box>
+                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black" }} />
+            </Box>
 
             <Box sx={{ mt: 5 }}>
                 <Box>
@@ -308,7 +371,9 @@ export function TeamDetails() {
                 </Typography>
                 <Box className="ProgressBarPosition">
                     <ProgressBar />
-                    <SharingIcon data-testid={"shareBtn"} />
+                    <Box className="ShareIconTeams">
+                        <SharingIconTeams data-testid={"shareBtn"} />
+                    </Box>
                 </Box>
                 <Box className="DonateButtonPosition">
                     <DonateButton />
@@ -334,7 +399,7 @@ export function TeamDetails() {
                                                 variant="contained"
                                                 color="primary"
                                                 //startIcon={<Delete />}
-                                                //onClick={() => handleDelete(j.id)}
+                                                onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to delete memeber " + j.name + "?") }}
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'red',
@@ -347,15 +412,44 @@ export function TeamDetails() {
                                                 }}
                                             >
                                                 X
-                                                </Button>
-                                              
+                                            </Button>
+
                                         ) : null}
-                                        {j.nickName}
+                                        {j.name}
+                                        {
+                                            <DynamicModal
+                                                open={openErrorModal}
+                                                close={closeModal}
+                                                message={"You cannot delete the team owner if there are other members on the team"}
+                                                onConfirm={closeModal}
+                                                isOkConfirm={true}
+                                            />
+                                        }
+                                        {
+                                            <DynamicModal
+                                                open={openZeroPersonModal}
+                                                close={closeModal}
+                                                message={"A (zero)person team is not allowed. If you want to delete the team, use DELETE TEAM button on this page."}
+                                                onConfirm={closeModal}
+                                                isOkConfirm={true}
+                                            />
+                                        }
+                                        {
+                                            !openErrorModal && !openZeroPersonModal && (
+                                                <DynamicModal
+                                                    open={openDeleteModal}
+                                                    close={closeModal}
+                                                    message={message}
+                                                    onConfirm={() => handleDeleteUser()}
+                                                    isOkConfirm={isOkModal}
+                                                />
+                                            )
+                                        }
                                     </li>
                                 ))}
                             </ul>
 
-                            
+
                         </Typography>
                     </CardContent>
                 </Card>
