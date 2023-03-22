@@ -31,6 +31,10 @@ const AppRoutes = [
     },
     {
         path: `/landing`,
+        element: <LoginLanding/>
+    },
+    {
+        path: `/landing/:cameFrom`,
         element: <LoginLanding />
     },
     {

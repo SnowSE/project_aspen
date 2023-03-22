@@ -5,7 +5,7 @@ import "../ComponentStyling.css"
 
 const LoginButton = () => {
     const loginHandler = () => {
-        authService.signinRedirect();
+        authService.signinRedirect("homePage");
     }
     const logoutHandler = () => {
         authService.logout()

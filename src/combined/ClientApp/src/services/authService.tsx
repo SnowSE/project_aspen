@@ -1,13 +1,13 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 
 const authUrl = process.env.REACT_APP_AUTH_URL
-
-const userManager = new UserManager({
+var redirectUrl = "/aspen/new/landing"
+var userManager = new UserManager({
     userStore: new WebStorageStateStore({ store: window.localStorage }),
     authority:
-        `${authUrl || "https://engineering.snow.edu/aspen/auth"}/realms/aspen/.well-known/openid-configuration`,
+    `${authUrl || "https://engineering.snow.edu/aspen/auth"}/realms/aspen/.well-known/openid-configuration`,
     client_id: "aspen-web",
-    redirect_uri: window.location.origin + "/aspen/new/landing",
+    redirect_uri: window.location.origin + redirectUrl,
     post_logout_redirect_uri: window.location.origin + "/aspen/new/",
     silent_redirect_uri: window.location.origin + "/aspen/new/",
     response_type: "code",
@@ -31,7 +31,10 @@ export const authService = {
         return loggedIn;
     },
 
-    signinRedirect: async () => {
+    signinRedirect: async (cameFrom: string) => {
+        if(cameFrom === "teamPage"){
+            redirectUrl = `/aspen/new/landing/${cameFrom}`
+        }
         console.log("window.location.origin is: ", window.location.origin)
         if (window.location.pathname === '/aspen/' || window.location.pathname === '/aspen') {
             localStorage.setItem("redirectUri", '/');

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import { authService } from "../../services/authService"; 
 
 const LoginLanding = () => {
     const navigate = useNavigate()
+    const {cameFrom} = useParams()
+    console.log("params is: ",cameFrom)
 
     useEffect(() => {
-        
-
         authService.signinRedirectCallback().then(
             ({ desiredDestination, user }) => {
                 var userName = user.profile.name
@@ -16,10 +16,9 @@ const LoginLanding = () => {
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
                 localStorage.setItem("LoggedInEmail", userEmail ? userEmail : "")
                 localStorage.setItem("access_token",  access_token ? access_token : "")
-
-                navigate('/')
-                navigate(0)
-
+                console.log("params is: ",cameFrom)
+                //navigate('/')
+                //navigate(0)
             }
         );
 
@@ -31,6 +30,3 @@ const LoginLanding = () => {
 }
 
 export default LoginLanding;
-
-
-
