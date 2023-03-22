@@ -51,6 +51,7 @@ export function TeamDetails() {
     const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
     const [openErrorModal, setOpenErrorModal] = useState(false);
     const [openZeroPersonModal, setOpenZeroPersonModal] = useState(false);
+    const [openLoginModal, setOpenLoginModal] = useState(false);
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [members, setMembers] = useState<Person[]>([]);
@@ -176,6 +177,8 @@ export function TeamDetails() {
         setOpenErrorModal(false)
         setIsOkModal(false)
         setDeleteUserId(0)
+        setIsOkModal(false) 
+        setOpenLoginModal(false)
         setMessage("")
     }
 
@@ -212,6 +215,19 @@ export function TeamDetails() {
         navigate(window.location.pathname);
     };
 
+
+    const handleJoinTeam = async () => {
+        loggedInUSer
+            ? navigate({
+                pathname: "/LoggedInUser",
+                search: `?${createSearchParams({
+                    teamId: `${tId}`,
+                    userId: `${loggedInUserId}`,
+                    canSwitchTeams: "false"
+                })}`,
+            })
+            : authService.signinRedirect()
+    }
     const handleSwitchTeams = async () => {
         try {
             var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
@@ -261,17 +277,14 @@ export function TeamDetails() {
                         </Button>)
                         : loggedInUserTeamId !== tId && canSwitchTeam ?
                             (<Button
-                                onClick={() =>
-                                    loggedInUSer
-                                        ? navigate({
-                                            pathname: "/LoggedInUser",
-                                            search: `?${createSearchParams({
-                                                teamId: `${tId}`,
-                                                userId: `${loggedInUserId}`,
-                                                canSwitchTeams: "false"
-                                            })}`,
-                                        })
-                                        : authService.signinRedirect()
+                                onClick={() => {
+                                    loggedInUSer ?
+                                        handleJoinTeam()
+                                        : 
+                                        setOpenLoginModal(true); setMessage("You have to login in order to join a team, would you like to register for an account?");
+                                            
+                                    
+                                }   
                                 }
                                 sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                             >
@@ -284,6 +297,13 @@ export function TeamDetails() {
                         close={closeModal}
                         message={message}
                         onConfirm={handleSwitchTeams}
+                        isOkConfirm={isOkModal}
+                    />
+                    <DynamicModal
+                        open={openLoginModal}
+                        close={closeModal}
+                        message={message}
+                        onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
                     />
 
