@@ -51,7 +51,9 @@ export function Home() {
                     <ProgressBar />
                 </Box>
                 <Box className="DonateButtonPosition">
-                    <SharingButtonCustomLink />
+                    <SharingButtonCustomLink
+                    defaultMessage='Come look at this awesome event happening.'
+                    defaultSubject='Awesome Charity Event' />
                     <DonateButton />
                 </Box>
 
