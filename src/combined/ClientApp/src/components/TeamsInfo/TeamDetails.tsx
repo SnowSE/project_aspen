@@ -278,12 +278,12 @@ export function TeamDetails() {
                         : loggedInUserTeamId !== tId && canSwitchTeam ?
                             (<Button
                                 onClick={() => {
-                                    {loggedInUSer ?
+                                    loggedInUSer ?
                                         handleJoinTeam()
                                         : 
                                         setOpenLoginModal(true); setMessage("You have to login in order to join a team, would you like to register for an account?");
                                             
-                                    }
+                                    
                                 }   
                                 }
                                 sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
