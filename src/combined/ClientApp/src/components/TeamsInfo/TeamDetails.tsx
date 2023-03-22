@@ -158,6 +158,7 @@ export function TeamDetails() {
         setopenArchiveModal(false)
         setOpenSwitchTeamsModal(false)
         setIsOkModal(false) 
+        setOpenLoginModal(false)
         setMessage("")
     }
 
@@ -171,7 +172,7 @@ export function TeamDetails() {
         setopenArchiveModal(false)
     }
 
-    const handleMustHaveAccount = async () => {
+    const handleJoinTeam = async () => {
         loggedInUSer
             ? navigate({
                 pathname: "/LoggedInUser",
@@ -233,8 +234,12 @@ export function TeamDetails() {
                         : loggedInUserTeamId !== tId && canSwitchTeam ?
                             (<Button
                                 onClick={() => {
-                                    setOpenLoginModal(true);
-                                    setMessage("You have to login in order to join a team, would you like to register for an account?")
+                                    {loggedInUSer ?
+                                        handleJoinTeam()
+                                        : 
+                                        setOpenLoginModal(true); setMessage("You have to login in order to join a team, would you like to register for an account?");
+                                            
+                                    }
                                 }   
                                 }
                                 sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
@@ -254,7 +259,7 @@ export function TeamDetails() {
                         open={openLoginModal}
                         close={closeModal}
                         message={message}
-                        onConfirm={handleMustHaveAccount}
+                        onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
                     />
 
