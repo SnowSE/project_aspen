@@ -10,6 +10,7 @@ import DynamicModal from "../DynamicModal";
 import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
 import SharingIconTeams from "../Share/ShareIconTeams";
+import SharingButtonCustomLink from "../Share/SharingButtonCustomLink";
 
 
 export function TeamDetails() {
@@ -249,8 +250,14 @@ export function TeamDetails() {
     return (
         <Box>
             <Box>
-                <Typography variant="h1">{currentTeam?.name} </Typography>
-                <Typography>Team owner: {teamOwner?.name}</Typography>
+                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Typography variant="h1">{currentTeam?.name} </Typography>
+                        {
+                            <SharingButtonCustomLink
+                            defaultMessage="Come join my team and help us reach our goal"
+                            defaultSubject="Come Join My Team"/>
+                        }
+                </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
                         (<Button
@@ -292,8 +299,7 @@ export function TeamDetails() {
                         message={message}
                         onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
-                    />
-
+                    />           
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
