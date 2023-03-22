@@ -24,9 +24,9 @@ export function Home() {
 
 
     const getDonationTotal = async () => {
-        var api = 'api/donations/' + currentEvent.id;
-        const response = await fetch(api);
-        const data = await response.json();
+        var api =  `api/donations/event / ${ currentEvent?.id }`;
+        const response = await axios.get( `api/donations/event/${currentEvent?.id}`);
+        const data = response.data;
         setdonationsTotal(data);
     }
 
