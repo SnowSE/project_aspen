@@ -367,7 +367,7 @@ export function TeamDetails() {
                                             <Button
                                                 variant="contained"
                                                 color="primary"
-                                                onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to delete memeber " + j.name + "?") }}
+                                                onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to remove memeber " + j.name + " from your team?") }}
                                                 size="small"
                                                 style={{
                                                     backgroundColor: 'red',
