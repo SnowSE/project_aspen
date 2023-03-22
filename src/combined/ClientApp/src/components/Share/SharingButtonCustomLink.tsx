@@ -4,9 +4,12 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { EventContext } from '../../App';
 import axios from "axios";
 
+interface DynamicShareNowProps {
+    defaultMessage: string;
+    defaultSubject: string;
+}
 
-
-const SharingButtonCustomLink: React.FC = () => {
+const SharingButtonCustomLink = ({defaultMessage, defaultSubject}: DynamicShareNowProps): JSX.Element => {
     const shareUrl = window.location.href;
     const { currentEvent } = useContext(EventContext);
     const [linkGUID, setlinkGUID] = useState<string>("");
@@ -100,9 +103,9 @@ const SharingButtonCustomLink: React.FC = () => {
             <RWebShare
                 data-testid="shareModal"
                 data={{
-                    text: "",
+                    text: defaultMessage,
                     url: linkShareUrl,
-                    title: "Name of Event Here"
+                    title: defaultSubject   
                 }}
                 onClick={handleClick}
             >

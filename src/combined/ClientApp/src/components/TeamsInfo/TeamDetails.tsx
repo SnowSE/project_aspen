@@ -64,7 +64,6 @@ export function TeamDetails() {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
 
-
         const checkAllTeams = async () => {
             var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
             teams.data.forEach((team: Team) => {
@@ -92,7 +91,6 @@ export function TeamDetails() {
             const res = await fetch(api)
             const response = await res.json()
             setCurrentTeam(response)
-
         }
 
         async function currentUser() {
@@ -104,7 +102,6 @@ export function TeamDetails() {
             });
         }
 
-
         async function currentTeamMembers() {
 
             try {
@@ -113,10 +110,7 @@ export function TeamDetails() {
 
                 const teamMembers = await member.json()
                 setMembers(teamMembers);
-
             } catch (e) { }
-
-
         }
 
         const getUser = async () => {
@@ -137,12 +131,9 @@ export function TeamDetails() {
                     setTeamOwner(teamOwner)
                     setIsTeamOwner(true)
                 }
-
             } catch (e) {
             }
         }
-
-
 
         const callServise = async () => {
             await getUser();
@@ -202,7 +193,6 @@ export function TeamDetails() {
                 setopenDeleteModal(false)
                 reloadPage();
             }
-
         } catch (e) {
 
         }
@@ -216,7 +206,6 @@ export function TeamDetails() {
               ownerID: `${currentTeam?.ownerID}`,
             })}`})
     };
-
 
     const handleJoinTeam = async () => {
         loggedInUSer
@@ -268,7 +257,6 @@ export function TeamDetails() {
                             onClick={() => {
                                 setOpenSwitchTeamsModal(true);
                                 setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")
-
                             }
                             }
                             sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
@@ -281,9 +269,8 @@ export function TeamDetails() {
                                     loggedInUSer ?
                                         handleJoinTeam()
                                         : 
-                                        setOpenLoginModal(true); setMessage("You have to login in order to join a team, would you like to register for an account?");
-                                            
-                                    
+                                        setOpenLoginModal(true); 
+                                        setMessage("You have to login in order to join a team, would you like to register for an account?");   
                                 }   
                                 }
                                 sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
@@ -310,7 +297,6 @@ export function TeamDetails() {
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
-
                                 <Button
                                     onClick={() =>
                                         navigate({
@@ -320,22 +306,18 @@ export function TeamDetails() {
                                                 userId: `${loggedInUserId}`,
                                             })}`,
                                         })
-
                                     }
                                     sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                                 >
                                     Edit Team Details
                                 </Button>
-
                             )
                         }
                     })()
                     }
-
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
-
                                 <Button
                                     onClick={() => { setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
                                     sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
@@ -387,7 +369,6 @@ export function TeamDetails() {
                     />
 
                     <CardContent>
-                        {/*<Typography> Team Members will go here</Typography>*/}
                         <Typography alignItems="center">
                             <ul>
                                 {members.map((j) => (
@@ -396,7 +377,6 @@ export function TeamDetails() {
                                             <Button
                                                 variant="contained"
                                                 color="primary"
-                                                //startIcon={<Delete />}
                                                 onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to delete memeber " + j.name + "?") }}
                                                 size="small"
                                                 style={{
@@ -411,7 +391,6 @@ export function TeamDetails() {
                                             >
                                                 X
                                             </Button>
-
                                         ) : null}
                                         {j.name}
                                         {
@@ -446,8 +425,6 @@ export function TeamDetails() {
                                     </li>
                                 ))}
                             </ul>
-
-
                         </Typography>
                     </CardContent>
                 </Card>
