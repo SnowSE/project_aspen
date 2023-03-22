@@ -126,9 +126,11 @@ export function TeamDetails() {
 
         const fetchTeamOwner = async () => {
             try {
+                console.log("Im getting here")
                 var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
                 const person = await fetch(personApi)
                 const teamOwner = await person.json()
+                console.log(loggedInUSer, currentTeam.ownerID)
                 if (currentTeam?.ownerID === loggedInUserId) {
                     setTeamOwner(teamOwner)
                     setIsTeamOwner(true)
@@ -202,15 +204,12 @@ export function TeamDetails() {
         <Box>
             <Box>
                 <Typography variant="h1">{currentTeam?.name} </Typography>
-                <Typography>Team owner: {teamOwner?.name}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
                         (<Button
                             onClick={() => {
                                 setOpenSwitchTeamsModal(true);
-                                setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")
-                                
-                            }
+                                setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")}
                             }
                             sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
                         >
@@ -243,7 +242,18 @@ export function TeamDetails() {
                         onConfirm={handleSwitchTeams}
                         isOkConfirm={isOkModal}
                     />
-
+                    {(() => {
+                        if (loggedInUserId === currentTeam?.ownerID) {
+                            return (
+                                <Button
+                                    onClick={() => { }}
+                                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}>
+                                    Message Team
+                                </Button>
+                            )
+                        }
+                    })()
+                    }
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
@@ -268,8 +278,7 @@ export function TeamDetails() {
                         }
                     })()
                     }
-
-                  {(() => {
+                    {(() => {
                       if (loggedInUserId === currentTeam?.ownerID ||isAdmin) {
                           return (
                               
@@ -281,8 +290,8 @@ export function TeamDetails() {
                               </Button>
                           )
                       }
-                  })()
-                  }
+                    })()
+                    }
               </Box>
               <Divider color="black"  sx={{ borderBottomWidth: 5, color: "black"}} />
           </Box>
