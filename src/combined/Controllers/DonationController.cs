@@ -37,7 +37,7 @@ public class DonationController : ControllerBase
         return mapper.Map<DtoDonation>(newDonation);
     }
 
-    [HttpGet("{teamID}")]
+    [HttpGet("team/{teamID}")]
     public async Task<ActionResult<decimal>> GetTeamDonationSum(long teamID)
     {
         log.LogInformation("Getting the total donations from team {teamID}", teamID);
@@ -55,7 +55,7 @@ public class DonationController : ControllerBase
         return totalDonations.Count();
     }
 
-    [HttpGet("{eventID}")]
+    [HttpGet("event/{eventID}")]
     public async Task<ActionResult<decimal>> GetEventDonationSum(long eventID)
     {
         log.LogInformation("Getting the total donations for {eventID}", eventID);

@@ -13,6 +13,7 @@ import TeamInfoModal from '../../components/Team/TeamInfoModal';
 import SharingIcon from '../../components/Share/SharingIcon';
 import { DonateButton } from '../../components/DonateButton';
 import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
+import axios from 'axios';
 
 
 
@@ -21,18 +22,19 @@ export function Home() {
     const navigate = useNavigate();
     const { currentEvent } = useContext(EventContext);
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
+    const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
 
     const getDonationTotal = async () => {
-        var api =  `api/donations/event / ${ currentEvent?.id }`;
         const response = await axios.get( `api/donations/event/${currentEvent?.id}`);
         const data = response.data;
         setdonationsTotal(data);
+        setprogressBarIsUptodate(true);
     }
 
     useEffect(() => {
         getDonationTotal();
-    }, [donationsTotal]);
+    }, [currentEvent?.donationTarget, progressBarIsUptodate]);
 
     return (
         <Box>
@@ -57,7 +59,9 @@ export function Home() {
                         allowFullScreen />
                 </Box>
                 <Box className="ProgressBarPosition">
-                    <ProgressBar currentTotal={donationsTotal} goalTotal={1000} />
+                    {progressBarIsUptodate && (
+                        <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent?.donationTarget} />
+                    )}
                 </Box>
                 <Box className="DonateButtonPosition">
                     <SharingButtonCustomLink />

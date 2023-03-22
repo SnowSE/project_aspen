@@ -3,18 +3,18 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number; goal: number }) {
     return (
         <Box>
             <Box className="ProgressBarTextLocation">
                 <Typography className="ProgressBarPercentageTextDetails">
                     {`${Math.round(props.value)}%`}
                 </Typography>
-                
+
                 <Typography className="ProgressBarTextDetails">
-                       of dollars donated of our 10,000 dollar goal
+                    of our ${props.goal} dollar goal.
                 </Typography>
-            <br />
+                <br />
             </Box>
             <Box className="ProgressBarBarDetails">
                 <LinearProgress variant="determinate" {...props} />
@@ -38,7 +38,7 @@ export default function ProgressBar(props: Props) {
 
     return (
         <Box className="ProgressBarTextStyling">
-            <LinearProgressWithLabel className="ProgressBarDetails" color="success" value={progress} />
+            <LinearProgressWithLabel className="ProgressBarDetails" color="success" value={progress} goal={props.goalTotal} />
         </Box>
     );
 }
