@@ -69,7 +69,6 @@ export function TeamDetails() {
             var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
             teams.data.forEach((team: Team) => {
                 if (team.ownerID === loggedInUserId) {
-                    console.log("This user is a team owner and cannot switch teams")
                     setCanSwitchTeam(false)
                 }
             });
@@ -113,7 +112,6 @@ export function TeamDetails() {
                 const member = await fetch(memberApi)
 
                 const teamMembers = await member.json()
-                console.log("Team members", teamMembers);
                 setMembers(teamMembers);
 
             } catch (e) { }
@@ -132,11 +130,9 @@ export function TeamDetails() {
 
         const fetchTeamOwner = async () => {
             try {
-                console.log("########################################################")
                 var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
-                const person = await fetch(personApi)
-                const teamOwner = await person.json()
-                console.log("The Logged in userid is: " + person, "The ownerId is: " + teamOwner)
+                const person = await axios.get(personApi, config)
+                const teamOwner =  person.data.id
                 if (currentTeam?.ownerID === loggedInUserId) {
                     setTeamOwner(teamOwner)
                     setIsTeamOwner(true)
@@ -213,8 +209,12 @@ export function TeamDetails() {
     }
 
     const reloadPage = () => {
-        navigate(-1);
-        navigate(window.location.pathname);
+        navigate({
+            pathname: "/TeamDetails",
+            search: `?${createSearchParams({
+              teamId: `${currentTeam?.id}`,
+              ownerID: `${currentTeam?.ownerID}`,
+            })}`})
     };
 
 
@@ -256,8 +256,6 @@ export function TeamDetails() {
         }
     }
 
-
-    /*console.log("Current team members", members?.name);*/
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
