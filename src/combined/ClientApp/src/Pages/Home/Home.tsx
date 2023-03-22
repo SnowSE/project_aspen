@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState} from 'react';
+import React, { useEffect, useContext, useState, useCallback} from 'react';
 import {
     Box,
     Button,
@@ -25,16 +25,16 @@ export function Home() {
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
 
-    const getDonationTotal = async () => {
-        const response = await axios.get( `api/donations/event/${currentEvent?.id}`);
+    const getDonationTotal = useCallback(async () => {
+        const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
         const data = response.data;
         setdonationsTotal(data);
         setprogressBarIsUptodate(true);
-    }
+    }, [currentEvent?.id]);
 
     useEffect(() => {
         getDonationTotal();
-    }, [currentEvent?.donationTarget, progressBarIsUptodate]);
+    }, [currentEvent?.donationTarget, donationsTotal, getDonationTotal]);
 
     return (
         <Box>

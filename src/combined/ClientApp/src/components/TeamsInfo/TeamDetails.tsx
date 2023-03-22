@@ -3,7 +3,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
-import ProgressBar from "../ProgressBar";
+//import ProgressBar from "../ProgressBar";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";

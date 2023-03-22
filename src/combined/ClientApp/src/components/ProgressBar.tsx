@@ -2,6 +2,7 @@ import * as React from 'react';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useEffect } from 'react';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number; goal: number }) {
     return (
@@ -31,10 +32,9 @@ interface Props {
 export default function ProgressBar(props: Props) {
     const [progress, setProgress] = React.useState(1);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setProgress((props.currentTotal / props.goalTotal) * 100);
-
-    }, []);
+    }, [props.goalTotal, props.currentTotal]);
 
     return (
         <Box className="ProgressBarTextStyling">
@@ -42,3 +42,4 @@ export default function ProgressBar(props: Props) {
         </Box>
     );
 }
+
