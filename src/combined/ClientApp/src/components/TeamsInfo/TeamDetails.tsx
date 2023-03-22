@@ -10,6 +10,7 @@ import DynamicModal from "../DynamicModal";
 import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
 import SharingIconTeams from "../Share/ShareIconTeams";
+import SharingButtonCustomLink from "../Share/SharingButtonCustomLink";
 
 
 export function TeamDetails() {
@@ -41,11 +42,9 @@ export function TeamDetails() {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-    const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
-    const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [openDeleteModal, setopenDeleteModal] = useState(false);
     const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
@@ -122,23 +121,9 @@ export function TeamDetails() {
 
         }
 
-        const fetchTeamOwner = async () => {
-            try {
-                var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
-                const person = await axios.get(personApi, config)
-                const teamOwner =  person.data.id
-                if (currentTeam?.ownerID === loggedInUserId) {
-                    setTeamOwner(teamOwner)
-                    setIsTeamOwner(true)
-                }
-            } catch (e) {
-            }
-        }
-
         const callServise = async () => {
             await getUser();
             await fetchTeam();
-            await fetchTeamOwner();
             await currentUser();
             await checkIfOnTeam();
             await checkAllTeams();
@@ -249,8 +234,14 @@ export function TeamDetails() {
     return (
         <Box>
             <Box>
-                <Typography variant="h1">{currentTeam?.name} </Typography>
-                <Typography>Team owner: {teamOwner?.name}</Typography>
+                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Typography variant="h1">{currentTeam?.name} </Typography>
+                        {
+                            <SharingButtonCustomLink
+                            defaultMessage="Come join my team and help us reach our goal"
+                            defaultSubject="Come Join My Team"/>
+                        }
+                </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
                         (<Button
@@ -292,8 +283,7 @@ export function TeamDetails() {
                         message={message}
                         onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
-                    />
-
+                    />           
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
@@ -373,7 +363,7 @@ export function TeamDetails() {
                             <ul>
                                 {members.map((j) => (
                                     <li key={j.id}>
-                                        {(isAdmin || isTeamOwner) ? (
+                                        {(isAdmin || loggedInUserId === currentTeam?.ownerID) ? (
                                             <Button
                                                 variant="contained"
                                                 color="primary"
