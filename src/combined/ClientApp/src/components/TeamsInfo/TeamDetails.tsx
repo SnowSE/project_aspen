@@ -45,7 +45,6 @@ export function TeamDetails() {
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
-    const [isTeamOwner, setIsTeamOwner] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [openDeleteModal, setopenDeleteModal] = useState(false);
     const [openSwitchTeamsModal, setOpenSwitchTeamsModal] = useState(false);
@@ -122,21 +121,9 @@ export function TeamDetails() {
 
         }
 
-        const fetchTeamOwner = async () => {
-            try {
-                var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
-                const person = await axios.get(personApi, config)
-                if (currentTeam?.ownerID === loggedInUserId) {
-                    setIsTeamOwner(true)
-                }
-            } catch (e) {
-            }
-        }
-
         const callServise = async () => {
             await getUser();
             await fetchTeam();
-            await fetchTeamOwner();
             await currentUser();
             await checkIfOnTeam();
             await checkAllTeams();
@@ -376,7 +363,7 @@ export function TeamDetails() {
                             <ul>
                                 {members.map((j) => (
                                     <li key={j.id}>
-                                        {(isAdmin || isTeamOwner) ? (
+                                        {(isAdmin || loggedInUserId === currentTeam?.ownerID) ? (
                                             <Button
                                                 variant="contained"
                                                 color="primary"
