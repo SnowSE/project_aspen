@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback} from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import {
     Box,
     Button,
@@ -26,10 +26,18 @@ export function Home() {
 
 
     const getDonationTotal = useCallback(async () => {
-        const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
-        const data = response.data;
-        setdonationsTotal(data);
-        setprogressBarIsUptodate(true);
+        try {
+            if (currentEvent?.id === undefined) {
+                return;
+            }
+            const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
+            const data = response.data;
+            setdonationsTotal(data);
+            setprogressBarIsUptodate(true);
+
+        } catch (e) {
+
+        }
     }, [currentEvent?.id]);
 
     useEffect(() => {
@@ -39,7 +47,7 @@ export function Home() {
     return (
         <Box>
             <Paper square={true} className="PaperColor">
-                <Box className = "CurrentEventPosition">
+                <Box className="CurrentEventPosition">
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
@@ -76,7 +84,7 @@ export function Home() {
                     </Typography>
                 </Box>
                 <Box className="SubTextBodyPosition">
-                    <Typography className= "SubTextBodyDetails" paragraph={true} >
+                    <Typography className="SubTextBodyDetails" paragraph={true} >
                         Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most can win some awesome prizes!
                     </Typography>
                 </Box>
