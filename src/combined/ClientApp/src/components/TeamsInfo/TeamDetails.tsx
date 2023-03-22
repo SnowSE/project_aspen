@@ -42,7 +42,6 @@ export function TeamDetails() {
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
-    const [teamOwner, setTeamOwner] = useState<Person>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false)
@@ -127,9 +126,7 @@ export function TeamDetails() {
             try {
                 var personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
                 const person = await axios.get(personApi, config)
-                const teamOwner =  person.data.id
                 if (currentTeam?.ownerID === loggedInUserId) {
-                    setTeamOwner(teamOwner)
                     setIsTeamOwner(true)
                 }
             } catch (e) {
@@ -258,7 +255,6 @@ export function TeamDetails() {
                             defaultSubject="Come Join My Team"/>
                         }
                 </Box>
-                <Typography>{`Team Owner: ${teamOwner}`}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
                         (<Button
