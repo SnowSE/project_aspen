@@ -108,6 +108,7 @@ export function TeamDetails() {
                 const member = await fetch(memberApi)
 
                 const teamMembers = await member.json()
+                console.log("Teammber Info", teamMembers);
                 setMembers(teamMembers);
             } catch (e) { }
         }
@@ -229,7 +230,7 @@ export function TeamDetails() {
         catch (e) {
         }
     }
-
+    
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
@@ -382,7 +383,11 @@ export function TeamDetails() {
                                                 X
                                             </Button>
                                         ) : null}
-                                        {j.name}
+                                        {j.id},
+                                        {j.nickName}
+                                        {j.name}, 
+                                        {j.authID}
+                                       
                                         {
                                             <DynamicModal
                                                 open={openErrorModal}
