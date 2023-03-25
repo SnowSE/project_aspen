@@ -51,9 +51,6 @@ export function Home() {
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
-                    <Box className="ShareIconPosition">
-                        <SharingIcon data-testid={"shareBtn"} />
-                    </Box>
                 </Box>
                 <Box className="YoutubePlayerPosition">
                     <iframe
