@@ -105,13 +105,17 @@ export function TeamDetails() {
 
             try {
                 var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
-                const member = await fetch(memberApi)
+                 await fetch(memberApi)
+                    .then(response => response.json())
+                    .then(teamMembers => {
+                        setMembers(teamMembers);
+                    })
 
-                const teamMembers = await member.json()
-                setMembers(teamMembers);
+
             } catch (e) { }
         }
 
+      
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
                 setLoggedInUserId(response?.data?.id)
@@ -229,7 +233,7 @@ export function TeamDetails() {
         catch (e) {
         }
     }
-
+    
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
@@ -361,7 +365,7 @@ export function TeamDetails() {
                     <CardContent>
                         <Typography alignItems="center">
                             <ul>
-                                {members.map((j) => (
+                                {members.map((j: any) => (
                                     <li key={j.id}>
                                         {(isAdmin || loggedInUserId === currentTeam?.ownerID) ? (
                                             <Button
@@ -381,8 +385,9 @@ export function TeamDetails() {
                                             >
                                                 X
                                             </Button>
-                                        ) : null}
-                                        {j.name}
+                                        ) : null}                                       
+                                        {j.nickname}                                      
+                                       
                                         {
                                             <DynamicModal
                                                 open={openErrorModal}
