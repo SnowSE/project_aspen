@@ -39,6 +39,7 @@
     --EditBtnHoverColor: mediumpurple;
 
     --ShareIconTeamsPageColor: black;
+
 }
 
 
@@ -491,20 +492,29 @@
     max-width: 40px !important;
     max-height: 40px !important;
     background-color: var(--SiteMainBtnBgColor) !important;
-    border: groove !important;
-    border-color: var(--SiteMainBorderColor) !important;
-    border-width: 2px !important;
     margin: 3px !important;
     font-size: 12px !important;
     color: var(--SiteMainBtnTextColor) !important;
 }
 .AdminButtonDetails:hover {
-    background-color: #446ccf !important;
+    background-color: var(--SiteMainBtnHoverColor) !important;
 }
 
 .EventEditDeleteFormDetails input {
     color: var(--SiteMainBtnTextColor) !important;
 }
+.EventEditDeleteFormDetailsLabel {
+    color: var(--SiteMainBtnTextColor) !important;
+}
+
+.EventEditDeleteFormDetails:focus {
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.EventEditDeleteFormDetails:after{
+    color: var(--SiteMainBtnTextColor) !important;
+    border-bottom-color: var(--SiteMainBtnTextColor) !important;
+}
+
 .EventFormPosition {
     display: fixed !important;
     justify-content: center !important;
@@ -523,10 +533,18 @@
     color: var(--EditBtnTextColor) !important;
     margin: 1rem !important;
 }
+.UpdateButtonDetails:hover{
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--EditBtnTextColor) !important;
+}
 .DeleteButtonDetails {
     background-color: var(--DeleteBtnColor) !important;
     color: var(--DeleteBtnTextColor) !important;
     margin: 1rem !important;
+}
+.DeleteButtonDetails:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--DeleteBtnTextColor) !important;
 }
 
 .AccordionSpacing {
@@ -566,6 +584,10 @@
     margin: .5rem !important;
 }
 
+.UpdateTeamButtonDetails:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important
+}
+
 .DeleteTeamButtonDetails {
     max-width: 40px !important;
     max-height: 20px !important;
@@ -573,6 +595,10 @@
     background-color: var(--DeleteBtnColor) !important;
     color: var(--DeleteBtnTextColor) !important;
     margin: .5rem !important;
+}
+
+.DeleteTeamButtonDetails:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important
 }
 
 /* Donation Page */

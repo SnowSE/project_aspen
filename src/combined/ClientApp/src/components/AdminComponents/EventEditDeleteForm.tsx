@@ -8,25 +8,6 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import DynamicModal from "../DynamicModal";
 
 
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'white !important',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'white !important',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'white !important',
-        },
-        '&:hover fieldset': {
-            borderColor: 'white !important',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'white !important',
-        },
-    },
-});
 const EventEditDeleteForm = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     useEffect(() => {
@@ -127,7 +108,7 @@ const EventEditDeleteForm = () => {
     return (
         <Box >
             <form className="EventFormPosition" onSubmit={updateEventHandler} >
-                <CssTextField
+                <TextField
                     id="standard-helperText"
                     label="Event Title"
                     defaultValue={updatedEvent.title}
@@ -138,11 +119,12 @@ const EventEditDeleteForm = () => {
                             title: event.target.value,
                         }));
                     }}
+                    InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel"}}
                     InputProps={{ className: "EventEditDeleteFormDetails" }}
                 />
 
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Description"
                         defaultValue={updatedEvent.description}
@@ -154,10 +136,11 @@ const EventEditDeleteForm = () => {
                             }));
                         }}
                         InputProps={{ className: "EventEditDeleteFormDetails" }}
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Location"
                         defaultValue={updatedEvent.location}
@@ -169,14 +152,16 @@ const EventEditDeleteForm = () => {
                             }));
                         }}
                         InputProps={{ className: "EventEditDeleteFormDetails" }}
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         variant="standard"
                         id="standard-adornment-amount"
                         type="number"
                         label="Amount"
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
                         InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon sx={{ color: 'white' }} />) }}
                         defaultValue={updatedEvent.donationTarget}
                         onChange={(event) => {
