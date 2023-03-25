@@ -6,7 +6,7 @@ import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { EventContext } from "../../App";
 import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
-import Person from "../../JsModels/person";
+
 
 export function LoggedInUser() {
 
@@ -18,7 +18,7 @@ export function LoggedInUser() {
     const { currentEvent } = useContext(EventContext);
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isTeamOwner, setIsTeamOwner] = useState<boolean>(false);
-    const [person, setpersonNickName] = useState<Person>();
+  
     
     const [openModal, setOpenModal] = useState(false);
     const [isOkModal, setIsOkModal] = useState(false);
@@ -115,18 +115,7 @@ export function LoggedInUser() {
                 console.log("There was an error retrieving user", error)
             })
         }
-        async function currentPerson() {
-
-            try {
-                var PersonApi = process.env.PUBLIC_URL + `/api/Person/${personID}`;
-                console.log("person api", PersonApi);
-                const currentuser = await fetch(PersonApi)
-                console.log("currebt user info", currentuser);
-                const person = await currentuser.json()
-                console.log("persn info", person);
-                setpersonNickName(person);
-            } catch (e) { }
-        }
+       
 
         const list = [];
         for (const entry of searchParams.entries()) {
@@ -137,7 +126,7 @@ export function LoggedInUser() {
         setTeamID(teamID);
         setPersonID(personID);
         getUser()
-        currentPerson();
+      
     }, [searchParams, currentEvent, loggedInUserId]);
 
 

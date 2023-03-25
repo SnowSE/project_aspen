@@ -105,10 +105,9 @@ export function TeamDetails() {
 
             try {
                 var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
-                const member = await fetch(memberApi)
+                 await fetch(memberApi)
                     .then(response => response.json())
                     .then(teamMembers => {
-                        teamMembers.forEach((j: { nickname: any; }) => console.log(" I am the nickname", j.nickname));
                         setMembers(teamMembers);
                     })
 
