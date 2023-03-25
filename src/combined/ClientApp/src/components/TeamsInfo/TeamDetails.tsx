@@ -106,13 +106,17 @@ export function TeamDetails() {
             try {
                 var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
                 const member = await fetch(memberApi)
+                    .then(response => response.json())
+                    .then(teamMembers => {
+                        teamMembers.forEach((j: { nickname: any; }) => console.log(" I am the nickname", j.nickname));
+                        setMembers(teamMembers);
+                    })
 
-                const teamMembers = await member.json()
-                console.log("Teammber Info", teamMembers);
-                setMembers(teamMembers);
+
             } catch (e) { }
         }
 
+      
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
                 setLoggedInUserId(response?.data?.id)
@@ -362,7 +366,7 @@ export function TeamDetails() {
                     <CardContent>
                         <Typography alignItems="center">
                             <ul>
-                                {members.map((j) => (
+                                {members.map((j: any) => (
                                     <li key={j.id}>
                                         {(isAdmin || loggedInUserId === currentTeam?.ownerID) ? (
                                             <Button
@@ -382,11 +386,8 @@ export function TeamDetails() {
                                             >
                                                 X
                                             </Button>
-                                        ) : null}
-                                        {j.id},
-                                        {j.nickName}
-                                        {j.name}, 
-                                        {j.authID}
+                                        ) : null}                                       
+                                        {j.nickname}                                      
                                        
                                         {
                                             <DynamicModal
