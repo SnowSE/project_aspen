@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../../App';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
-import SharingIcon from '../../components/Share/SharingIcon';
 import { DonateButton } from '../../components/DonateButton';
 import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
 import axios from 'axios';
