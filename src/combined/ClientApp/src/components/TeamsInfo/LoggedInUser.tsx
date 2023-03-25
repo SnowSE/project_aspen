@@ -7,6 +7,7 @@ import { EventContext } from "../../App";
 import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
 
+
 export function LoggedInUser() {
 
     const navigate = useNavigate();
@@ -17,10 +18,14 @@ export function LoggedInUser() {
     const { currentEvent } = useContext(EventContext);
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isTeamOwner, setIsTeamOwner] = useState<boolean>(false);
+  
     
     const [openModal, setOpenModal] = useState(false);
     const [isOkModal, setIsOkModal] = useState(false);
     const [message, setMessage] = useState("");
+
+    
+
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
@@ -110,6 +115,8 @@ export function LoggedInUser() {
                 console.log("There was an error retrieving user", error)
             })
         }
+       
+
         const list = [];
         for (const entry of searchParams.entries()) {
             list.push(entry[1]);
@@ -119,6 +126,7 @@ export function LoggedInUser() {
         setTeamID(teamID);
         setPersonID(personID);
         getUser()
+      
     }, [searchParams, currentEvent, loggedInUserId]);
 
 
