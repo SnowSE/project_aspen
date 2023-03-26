@@ -96,10 +96,33 @@ public class DonationRepository : IDonationRepository
 
     public async Task<decimal> GetTeamDonationSum(long teamID)
     {
-        var sum = await context.Donations.Where(d => d.TeamID == teamID).SumAsync(d => d.Amount);
-        return sum;
+        
+        var sumTeam = await context.Donations.Where(d => d.TeamID == teamID).SumAsync(d => d.Amount);
+        var wholeTeam = await context.PersonTeamAssociations.Where(p => p.TeamId == teamID).ToListAsync();
+        decimal sumReferal = 0;
+
+        foreach (var person in wholeTeam)
+        {
+            sumReferal += await GetDonationSumRefererAsync(teamID, person.PersonId);
+        }
+
+        return sumTeam + sumReferal;
     }
 
+    public async Task<decimal> GetDonationSumRefererAsync(long teamID, long personID)
+    {
+
+        var eventId = await context.Teams.Where(t => t.ID == teamID).Select(t => t.EventID).FirstOrDefaultAsync();
+        var listLinks = await context.Links.Where(l => l.EventID == eventId && l.PersonID == personID).ToListAsync();
+        var listDonations = new List<DbDonation>();
+        foreach (var link in listLinks)
+        {
+            var donations = await context.Donations.Where(d => d.LinkGuid == link.LinkGUID).ToListAsync();
+            listDonations.AddRange(donations);
+        }
+        var sumReferer = listDonations.Sum(d => d.Amount);
+        return (decimal)sumReferer;
+    }
     public async Task<decimal> GetEventDonationSumAsync(long eventid)
     {
         var alldonations = await GetByEventIdAsync(eventid);

@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardHeader, CardMedia, CardContent, Typography, Divider, } from "@mui/material";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
@@ -11,6 +11,7 @@ import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
 import SharingIconTeams from "../Share/ShareIconTeams";
 import SharingButtonCustomLink from "../Share/SharingButtonCustomLink";
+import ProgressBar from "../ProgressBar";
 
 
 export function TeamDetails() {
@@ -57,6 +58,24 @@ export function TeamDetails() {
     const [isOkModal, setIsOkModal] = useState(false);
     const [message, setMessage] = useState("");
     const [deleteUserId, setDeleteUserId] = useState(0);
+    const [donationTotal, setdonationTotal] = useState<number>(0.0);
+    const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
+
+    const getDonationTotal = useCallback(async () => {
+        try {
+            if (currentEvent?.id === undefined) {
+                return;
+            }
+            const response = await axios.get(`api/donations/team/${currentTeam?.id}`);
+            const data = response.data;
+            setdonationTotal(data);
+            setprogressBarIsUptodate(true);
+
+        } catch (e) {
+
+        }
+    }, [currentTeam?.id]);
+
 
     useEffect(() => {
         const config = {
@@ -105,7 +124,7 @@ export function TeamDetails() {
 
             try {
                 var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
-                 await fetch(memberApi)
+                await fetch(memberApi)
                     .then(response => response.json())
                     .then(teamMembers => {
                         setMembers(teamMembers);
@@ -115,7 +134,7 @@ export function TeamDetails() {
             } catch (e) { }
         }
 
-      
+
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
                 setLoggedInUserId(response?.data?.id)
@@ -132,9 +151,11 @@ export function TeamDetails() {
             await checkIfOnTeam();
             await checkAllTeams();
             await currentTeamMembers();
+            await getDonationTotal();
         };
 
         callServise();
+
         if (deleteUserId === currentTeam?.ownerID && members.length > 1) {
             setOpenErrorModal(true);
             setOpenZeroPersonModal(false);
@@ -155,7 +176,7 @@ export function TeamDetails() {
         setOpenErrorModal(false)
         setIsOkModal(false)
         setDeleteUserId(0)
-        setIsOkModal(false) 
+        setIsOkModal(false)
         setOpenLoginModal(false)
         setMessage("")
     }
@@ -167,7 +188,7 @@ export function TeamDetails() {
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, currentTeam, config);
         setopenArchiveModal(false)
-        navigate({pathname: "/"})
+        navigate({ pathname: "/" })
     }
 
     const handleDeleteUser = async () => {
@@ -191,9 +212,10 @@ export function TeamDetails() {
         navigate({
             pathname: "/TeamDetails",
             search: `?${createSearchParams({
-              teamId: `${currentTeam?.id}`,
-              ownerID: `${currentTeam?.ownerID}`,
-            })}`})
+                teamId: `${currentTeam?.id}`,
+                ownerID: `${currentTeam?.ownerID}`,
+            })}`
+        })
     };
 
     const handleJoinTeam = async () => {
@@ -233,18 +255,18 @@ export function TeamDetails() {
         catch (e) {
         }
     }
-    
+
     const loggedInUSer = localStorage.getItem("LoggedInUser");
     return (
         <Box>
             <Box>
-                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="h1">{currentTeam?.name} </Typography>
-                        {
-                            <SharingButtonCustomLink
+                    {
+                        <SharingButtonCustomLink
                             defaultMessage="Come join my team and help us reach our goal"
-                            defaultSubject="Come Join My Team"/>
-                        }
+                            defaultSubject="Come Join My Team" />
+                    }
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     {canSwitchTeam && loggedInUserTeamId !== tId && onATeam ?
@@ -263,10 +285,10 @@ export function TeamDetails() {
                                 onClick={() => {
                                     loggedInUSer ?
                                         handleJoinTeam()
-                                        : 
-                                        setOpenLoginModal(true); 
-                                        setMessage("You have to login in order to join a team, would you like to register for an account?");   
-                                }   
+                                        :
+                                        setOpenLoginModal(true);
+                                    setMessage("You have to login in order to join a team, would you like to register for an account?");
+                                }
                                 }
                                 className="JoinATeamButton"
                             >
@@ -287,7 +309,7 @@ export function TeamDetails() {
                         message={message}
                         onConfirm={handleJoinTeam}
                         isOkConfirm={isOkModal}
-                    />           
+                    />
                     {(() => {
                         if (loggedInUserId === currentTeam?.ownerID || isAdmin) {
                             return (
@@ -338,13 +360,17 @@ export function TeamDetails() {
                 </Box>
                 <Typography variant="h4"> About us: </Typography>
                 <Typography> {currentTeam?.description}</Typography>
-                <Divider className="TeamDivider"  />
-                <Typography >
-                    {" "}
-                    Donation Target: {currentTeam?.donationTarget} Dollars{" "}
-                </Typography>
+                <Divider className="TeamDivider" />
                 <Box className="ProgressBarPosition">
-                    ProgressBar currentTotal={1000} goalTotal={currentTeam?.donationTarget} 
+                    {progressBarIsUptodate && (
+                        <ProgressBar currentTotal={donationTotal} goalTotal={currentTeam?.donationTarget}/>
+                    )}
+                </Box>
+                {/*<Typography >*/}
+                {/*    {" "}*/}
+                {/*    Donation Target: {currentTeam?.donationTarget} Dollars{" "}*/}
+                {/*</Typography>*/}
+                <Box className="ShareIcon">
                     <Box className="ShareIconTeams">
                         <SharingIconTeams data-testid={"shareBtn"} />
                     </Box>
@@ -385,9 +411,9 @@ export function TeamDetails() {
                                             >
                                                 X
                                             </Button>
-                                        ) : null}                                       
-                                        {j.nickname}                                      
-                                       
+                                        ) : null}
+                                        {j.nickname}
+
                                         {
                                             <DynamicModal
                                                 open={openErrorModal}
