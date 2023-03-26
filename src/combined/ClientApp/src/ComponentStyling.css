@@ -291,7 +291,7 @@
     font-size: 24px !important;
     font-weight: bold !important;
     letter-spacing: 1px !important;
-    color: var(--SiteNavBarColor);
+    color: var(--SiteMainBtnTextColor);
 }
 .ShareIconPosition {
     display: flex;
@@ -351,9 +351,16 @@
     background-color: var(--SiteMainBtnBgColor) !important;
     margin: 1rem !important;
 }
+.JoinTeamButtonDetails:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+
+}
 .CreateTeamButtonDetails {
     background-color: var(--SiteMainBtnBgColor) !important;
     margin: 1rem !important;
+}
+.CreateTeamButtonDetails:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
 }
 
 /* Create Team Page */
