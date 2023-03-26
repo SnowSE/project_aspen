@@ -254,7 +254,7 @@ export function TeamDetails() {
                                 setMessage("Are you sure you want to switch teams to " + currentTeam?.name + "?")
                             }
                             }
-                            sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                            className="SwitchTeamsButton"
                         >
                             Switch Teams
                         </Button>)
@@ -268,7 +268,7 @@ export function TeamDetails() {
                                         setMessage("You have to login in order to join a team, would you like to register for an account?");   
                                 }   
                                 }
-                                sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                                className="JoinATeamButton"
                             >
                                 Join Our Team
                             </Button>)
@@ -301,7 +301,7 @@ export function TeamDetails() {
                                             })}`,
                                         })
                                     }
-                                    sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                                    className="EditATeamButton"
                                 >
                                     Edit Team Details
                                 </Button>
@@ -314,7 +314,7 @@ export function TeamDetails() {
                             return (
                                 <Button
                                     onClick={() => { setopenArchiveModal(true); setMessage("Are you sure you want to delete " + currentTeam?.name + "?") }}
-                                    sx={{ backgroundColor: "red", m: 2, fontSize: "10px", color: "white" }}
+                                    className="DeleteTeamButton"
                                 >
                                     Delete Team
                                 </Button>
@@ -323,7 +323,7 @@ export function TeamDetails() {
                     })()
                     }
                 </Box>
-                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black" }} />
+                <Divider className="TeamDivider" />
             </Box>
 
             <Box sx={{ mt: 5 }}>
@@ -338,7 +338,7 @@ export function TeamDetails() {
                 </Box>
                 <Typography variant="h4"> About us: </Typography>
                 <Typography> {currentTeam?.description}</Typography>
-                <Divider color="black" sx={{ borderBottomWidth: 5, color: "black", mt: 1, mb: 2 }} />
+                <Divider className="TeamDivider"  />
                 <Typography >
                     {" "}
                     Donation Target: {currentTeam?.donationTarget} Dollars{" "}

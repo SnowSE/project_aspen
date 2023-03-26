@@ -133,7 +133,7 @@ export function LoggedInUser() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
+            <Button variant='contained' className="NickNameBackButton" onClick={() => navigate(-1)}>Back</Button>
             <Form onSubmit={addTeamMemberHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
@@ -152,7 +152,7 @@ export function LoggedInUser() {
                     </Col>
                 </Row>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
+                    <Button variant='contained' className="NickNameSubmitButton" onClick={addTeamMemberHandler}>Submit</Button>
                 </Col>
                 <DynamicModal
                     open={openModal}

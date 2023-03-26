@@ -39,6 +39,7 @@
     --EditBtnHoverColor: mediumpurple;
 
     --ShareIconTeamsPageColor: black;
+    --TeamsDividerColor: black;
 
 }
 
@@ -461,11 +462,67 @@
 }
 .JoinATeamButton {
     background-color: var(--SiteMainBtnBgColor) !important;
-    margin: 3px !important;
+    margin: 2px !important;
     font-size: 10px !important;
     color: var(--SiteMainBtnTextColor) !important;
 }
 .JoinATeamButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.EditATeamButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    margin: 2px !important;
+    font-size: 10px !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.EditATeamButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.SwitchTeamsButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    margin: 2px !important;
+    font-size: 10px !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.SwitchTeamsButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.TeamDivider {
+    background-color: var(--TeamsDividerColor) !important;
+    border-bottom-width: 5px !important;
+    margin-top: 1px !important;
+    margin-bottom: 2px !important;
+}
+
+.DeleteTeamButton {
+    background-color: var(--DeleteBtnColor) !important;
+    margin: 2px !important;
+    font-size: 10px !important;
+    color: var(--DeleteBtnTextColor) !important;
+}
+.DeleteTeamButton:hover {
+    background-color: var(--DeleteBtnHoverColor) !important;
+    color: var(--DeleteBtnTextColor) !important;
+}
+
+/* NickName Page */
+.NickNameBackButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+    margin: 2px !important;
+}
+.NickNameBackButton:hover{
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.NickNameSubmitButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.NickNameSubmitButton:hover {
     background-color: var(--SiteMainBtnHoverColor) !important;
     color: var(--SiteMainBtnTextColor) !important;
 }
