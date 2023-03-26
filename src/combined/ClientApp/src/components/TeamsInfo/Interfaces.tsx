@@ -22,11 +22,9 @@ export const TeamCard = ({
         <div>
           <Card style={{ width: "30rem" }}>
             <div
-              className="card text-start"
-              style={{ backgroundColor: "#673ab7" }}>
+              className="TeamsListCard">
               <Button
-                className="card-header"
-                style={{ fontSize: "25px", color: "white" }}
+                className="TeamsListText"
                 onClick={() => {
                   navigate({
                     pathname: "/TeamDetails",

@@ -175,7 +175,7 @@ const CreateTeamForm = () => {
                     <Button
                         variant='contained'
                         disabled={disableSubmit}
-                        sx={{ backgroundColor: 'orange' }}
+                        className="FormButtonSubmit"
                         type="submit"
                         onClick={createTeamHandler}>
                         Submit

@@ -209,8 +209,14 @@ const CreateEventForm = () => {
                             </Row>
                         </FormGroup>
                         <Col md={12} xs={8} className="FormEventButtonPosition">
-
-                            <Button variant='contained' disabled={disableSubmit} className="FormEventButtonSubmit" type="submit" >Submit</Button>
+                            <Button
+                                variant='contained'
+                                disabled={disableSubmit}
+                                className="FormEventButtonSubmit"
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
                         </Col>
                     </Form>
 
