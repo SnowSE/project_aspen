@@ -1,9 +1,8 @@
 import { Box, Button, Card, CardHeader, CardMedia, CardContent, Typography, Divider, } from "@mui/material";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../../JsModels/person";
 import { authService } from "../../services/authService";
-//import ProgressBar from "../ProgressBar";
 import axios from 'axios'
 import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
@@ -61,22 +60,6 @@ export function TeamDetails() {
     const [donationTotal, setdonationTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
-    const getDonationTotal = useCallback(async () => {
-        try {
-            if (currentEvent?.id === undefined) {
-                return;
-            }
-            const response = await axios.get(`api/donations/team/${currentTeam?.id}`);
-            const data = response.data;
-            setdonationTotal(data);
-            setprogressBarIsUptodate(true);
-
-        } catch (e) {
-
-        }
-    }, [currentTeam?.id]);
-
-
     useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -90,6 +73,22 @@ export function TeamDetails() {
                 }
             });
         }
+
+        const getDonationTotal = (async () => {
+            try {
+                if (currentEvent?.id === undefined) {
+                    return;
+                }
+                const response = await axios.get(`api/donations/team/${currentTeam?.id}`);
+                const data = response.data;
+                setdonationTotal(data);
+                setprogressBarIsUptodate(true);
+
+            } catch (e) {
+
+            }
+        });
+        
         const checkIfOnTeam = async () => {
             try {
                 var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
@@ -167,8 +166,8 @@ export function TeamDetails() {
             setOpenZeroPersonModal(false);
         }
 
-    }, [api, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length]);
 
+    }, [api, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length, currentEvent?.id, currentTeam?.id]);
     const closeModal = () => {
         setopenArchiveModal(false)
         setOpenSwitchTeamsModal(false)

@@ -34,6 +34,13 @@ public class AdminController : ControllerBase
         var donations = await donationRepository.GetByTeamIdAsync(teamID);
         return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
     }
+
+    [HttpGet("donations/event/{eventID}")]
+    public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
+    {
+        var donations = await donationRepository.GetByEventIdAsync(eventID);
+        return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
+    }
 }
 
 public record UserClaim(string claim, string value);
