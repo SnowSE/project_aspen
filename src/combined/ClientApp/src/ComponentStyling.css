@@ -41,6 +41,14 @@
     --ShareIconTeamsPageColor: black;
     --TeamsDividerColor: black;
 
+    --ModalOkButtonBackgroundColor: #878a88;
+    --ModalOkButtonTextColor: #ffffff;
+    --ModalOkButtonBorderColor: #adadaa;
+    --ModalOkButtonHoverColor: #626563;
+
+    --DisabledButtonTextColor: black;
+
+    --SuccessfulDonationBorderColor: mediumpurple;
 }
 
 
@@ -399,6 +407,23 @@
     display: flex !important;
     justify-content: center !important;
 }
+.FormUpdateSaveButton{
+    background-color: var(--SiteMainBtnBgColor) !important;
+    margin: 3px !important;
+    font-size: 10px !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.FormUpdateSaveButton:disabled {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    margin: 3px !important;
+    font-size: 10px !important;
+    color: var(--DisabledButtonTextColor) !important;
+    color: rgba(0,0,0,.25) !important;
+}
+.FormUpdateSaveButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
 .FormButtonPosition {
     display: flex !important;
     justify-content: center !important;
@@ -522,6 +547,19 @@
     background-color: var(--DeleteBtnHoverColor) !important;
     color: var(--DeleteBtnTextColor) !important;
 }
+.MembersBox {
+    background-color: var(--SitePrimaryBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.DeleteMembersButton {
+    background-color: var(--DeleteBtnColor) !important;
+    color: var(--DeleteBtnTextColor) !important;
+    font-size: 8px !important;
+    width: 5px !important;
+    height: 20px !important;
+    padding: 0 !important;
+    margin: 5px !important;
+}
 
 /* NickName Page */
 .NickNameBackButton {
@@ -585,6 +623,10 @@
 .EventEditDeleteFormDetails:after{
     color: var(--SiteMainBtnTextColor) !important;
     border-bottom-color: var(--SiteMainBtnTextColor) !important;
+}
+.MoneyOutlineIcon {
+    background-color: var(--SiteMainBtnTextColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 
 .EventFormPosition {
@@ -758,4 +800,38 @@ JoinTeamModalButtonPosition {
 .NoButton:hover {
     color: var(--NoBtnTextColor) !important;
     background-color: var(--NoBtnHoverColor) !important;
+}
+.ModalOkButton {
+    width: 100% !important;
+    color: var(--ModalOkButtonTextColor) !important;
+    background-color: var(--ModalOkButtonBackgroundColor) !important;
+    border-color: var(--ModalOkButtonBorderColor) !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+.ModalOkButton:hover {
+    color: var(--ModalOkButtonTextColor) !important;
+    background-color: var(--ModalOkButtonHoverColor) !important;
+}
+
+/* Interfaces */
+
+.TeamsListCard {
+    background-color: var(--SitePrimaryBgColor) !important
+}
+.TeamsListCard:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+}
+.TeamsListText {
+    color: var(--SiteMainBtnTextColor) !important;
+    font-size: 25px !important;
+}
+
+/* Successful Donation Page */
+
+.SuccessfulDonationBorder{
+    border: solid !important;
+    border-color: var(--SuccessfulDonationBorderColor) !important;
+    border-radius: 40px !important;
+    padding: 1em !important;
 }

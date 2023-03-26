@@ -217,7 +217,7 @@ const EditTeam = () => {
                     <Button
                         type="submit"
                         disabled={isFormInvalid()}
-                        sx={{ backgroundColor: "orange", m: 2, fontSize: "10px", color: "white" }}
+                        className="FormUpdateSaveButton"
                     >
                         Save
                     </Button>

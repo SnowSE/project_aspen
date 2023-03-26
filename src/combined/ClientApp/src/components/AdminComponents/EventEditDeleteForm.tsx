@@ -162,7 +162,7 @@ const EventEditDeleteForm = () => {
                         type="number"
                         label="Amount"
                         InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
-                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon sx={{ color: 'white' }} />) }}
+                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon className="MoneyOutlineIcon" />) }}
                         defaultValue={updatedEvent.donationTarget}
                         onChange={(event) => {
                             setupdatedEvent((updateEvent) => ({

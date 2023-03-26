@@ -1,4 +1,4 @@
-import { Box, Button, styled, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
@@ -7,25 +7,6 @@ import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 
 
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'white !important',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'white !important',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'white !important',
-        },
-        '&:hover fieldset': {
-            borderColor: 'white !important',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'white !important',
-        },
-    },
-});
 const TeamEditDelete = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     useEffect(() => {
@@ -126,7 +107,7 @@ const TeamEditDelete = () => {
     return (
         <Box >
             <form className="EventFormPosition" onSubmit={updateEventHandler} >
-                <CssTextField
+                <TextField
                     id="standard-helperText"
                     label="Event Title"
                     defaultValue={updatedEvent.title}
@@ -141,7 +122,7 @@ const TeamEditDelete = () => {
                 />
 
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Description"
                         defaultValue={updatedEvent.description}
@@ -156,7 +137,7 @@ const TeamEditDelete = () => {
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Location"
                         defaultValue={updatedEvent.location}
@@ -171,12 +152,12 @@ const TeamEditDelete = () => {
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         variant="standard"
                         id="standard-adornment-amount"
                         type="number"
                         label="Amount"
-                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon sx={{ color: 'white' }} />) }}
+                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon className="MoneyOutlineIcon" />) }}
                         defaultValue={updatedEvent.donationTarget}
                         onChange={(event) => {
                             setupdatedEvent((updateEvent) => ({
