@@ -344,7 +344,7 @@ export function TeamDetails() {
                     Donation Target: {currentTeam?.donationTarget} Dollars{" "}
                 </Typography>
                 <Box className="ProgressBarPosition">
-                    {/*<ProgressBar />*/}
+                    ProgressBar currentTotal={1000} goalTotal={currentTeam?.donationTarget} 
                     <Box className="ShareIconTeams">
                         <SharingIconTeams data-testid={"shareBtn"} />
                     </Box>
