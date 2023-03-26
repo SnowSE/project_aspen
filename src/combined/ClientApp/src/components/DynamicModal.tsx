@@ -10,39 +10,6 @@ interface DynamicModalProps {
 
 const DynamicModal = ({ open, close, message, onConfirm, isOkConfirm }: DynamicModalProps): JSX.Element => {
 
-    const useStyles = {
-        btnYes: {
-            width: '48%',
-            color: '#fff',
-            backgroundColor: '#28a745',
-            borderColor: '#28a745',
-            '&:hover': {
-                color: '#fff',
-                backgroundColor: '#218838',
-                borderColor: '#1e7e34'
-            },
-            marginRight: '5px',
-            fontWeight: 'bold',
-            fontSize: '20px'
-        },
-        btnNo: {
-            width: '48%',
-            color: '#fff',
-            backgroundColor: '#d9534f',
-            borderColor: '#d43f3a',
-            fontWeight: 'bold',
-            fontSize: '20px'
-        },
-        btnOk: {
-            width: '100%',
-            color: '#fff',
-            backgroundColor: '#878a88',
-            borderColor: '#adadaa',
-            fontWeight: 'bold',
-            fontSize: '20px'
-        },
-    }
-
     const closeDynamicModal = () => {
         close();
     };
@@ -70,9 +37,8 @@ const DynamicModal = ({ open, close, message, onConfirm, isOkConfirm }: DynamicM
                     </Typography>
                     <Box>
                         <Button
-                            color='primary'
+                            className="ModalOkButton"
                             variant='contained'
-                            style={{ ...useStyles.btnOk }}
                             size='large'
                             onClick={handleConfirm}
                         >
@@ -89,18 +55,16 @@ const DynamicModal = ({ open, close, message, onConfirm, isOkConfirm }: DynamicM
                 </Typography>
                 <Box>
                     <Button
-                        color='primary'
+                        className="YesButton"
                         variant='contained'
-                        style={{ ...useStyles.btnYes }}
                         size='large'
                         onClick={handleConfirm}
                     >
                         Yes
                     </Button>
                     <Button
-                        color='primary'
+                        className="NoButton"
                         variant='contained'
-                        style={{ ...useStyles.btnNo }}
                         size='large'
                         onClick={closeDynamicModal}
                     >

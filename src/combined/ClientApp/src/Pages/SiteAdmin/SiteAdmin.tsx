@@ -9,14 +9,15 @@ import { getTeamsList } from "../../components/TeamsInfo/TeamServices";
 import Team from "../../JsModels/team";
 import PaymentFailure from "../../JsModels/paymentFailure";
 import { authService } from "../../services/authService";
-import axios from "axios";
 import DynamicModal from "../../components/DynamicModal";
+import axios from "axios";
 
 
 
 const SiteAdmin = () => {
     const { currentEvent } = useContext(EventContext);
     const [teamsList, setTeams] = useState<Team[]>();
+    const [teamDonations, setTeamDonations] = useState<Map<number, number>>(new Map());
     const [stripeFailureLogs, setStripeFailureLogs] = useState<PaymentFailure[]>();
     const [showEditEvent, setShowEditEvent] = useState(true);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const SiteAdmin = () => {
         };
     }, [accessToken]);
 
-
+   
     useEffect(() => {
 
         async function currentUser() {
@@ -47,7 +48,7 @@ const SiteAdmin = () => {
             });
         }
         const fetchData = async () => {
-            if(currentEvent?.id !== -1){
+            if (currentEvent?.id !== -1) {
                 const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
                 const allDonations = process.env.PUBLIC_URL + `/api/donations/totalDonations`;
                 var donationCount = await fetch(allDonations)
@@ -56,16 +57,44 @@ const SiteAdmin = () => {
                 const stripeFailures: PaymentFailure[] = await stripeDBLogs.json()
                 var teamsList = await getTeamsList(currentEvent.id)
                 var jsonTeams: Team[] = JSON.parse(JSON.stringify(teamsList));
-                
+
                 setTotalDonations(donations);
                 setStripeFailureLogs(stripeFailures)
                 setTeams(jsonTeams)
             }
+            donationTotalPerTeam()
         }
+        
+        const donationTotalPerTeam = async () => {
+            const teamDonationsMap = new Map<number, number>();
+            if (teamsList !== undefined) {
+                for (const team of teamsList) {
+                    if (team.id !== undefined) {
+                        const donationTotal = await getTeamDonationTotal(team.id);
+                        teamDonationsMap.set(team.id, donationTotal);
+                        setTeamDonations(teamDonationsMap);
+                    }
+                }
+            }
+        };
+
+        const getTeamDonationTotal = async (teamId: number) => {
+            try {
+                if (currentEvent?.id === undefined) {
+                    return;
+                }
+                const response = await axios.get(`api/donations/team/${teamId}`);
+                const data = response.data;
+                return data;
+
+            } catch (e) {
+                // Handle error if needed
+            }
+        };
+        
         fetchData()
         currentUser()
-
-    }, [currentEvent, config]) 
+    }, [currentEvent, config, teamsList])
 
     const archiveTeam = async (team: Team) => {
         team.isArchived = true
@@ -132,7 +161,7 @@ const SiteAdmin = () => {
                                         expandIcon={<ExpandMoreIcon />}
                                     >
                                         <Typography>
-                                            {t.name}
+                                            <b>{t.name}</b> Donation Total: ${teamDonations.get(t.id || -1) || 0}, Donation Target: ${t.donationTarget}
                                         </Typography>
                                         <Box className="TeamsSpacing">
                                             <Button
@@ -180,7 +209,7 @@ const SiteAdmin = () => {
                                     </TableHead>
                                     <TableBody>
                                         {stripeFailureLogs?.map((row: any) => {
-                                                
+
                                             return (
                                                 <TableRow
                                                     key={row.decline_code}
@@ -196,7 +225,7 @@ const SiteAdmin = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </AccordionDetails>
+                        </AccordionDetails >
                     </Accordion>
                 </div>
                 : <h1>You not admin</h1>}

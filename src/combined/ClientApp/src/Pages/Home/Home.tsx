@@ -1,4 +1,4 @@
-import React, { useEffect, useContext} from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import {
     Box,
     Button,
@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../../App';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
-import SharingIcon from '../../components/Share/SharingIcon';
 import { DonateButton } from '../../components/DonateButton';
 import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
+import axios from 'axios';
 
 
 
@@ -20,21 +20,36 @@ export function Home() {
 
     const navigate = useNavigate();
     const { currentEvent } = useContext(EventContext);
+    const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
+    const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
+
+
+    const getDonationTotal = useCallback(async () => {
+        try {
+            if (currentEvent?.id === undefined) {
+                return;
+            }
+            const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
+            const data = response.data;
+            setdonationsTotal(data);
+            setprogressBarIsUptodate(true);
+
+        } catch (e) {
+
+        }
+    }, [currentEvent?.id]);
 
     useEffect(() => {
- 
-    }, []);
+        getDonationTotal();
+    }, [currentEvent?.donationTarget, donationsTotal, getDonationTotal]);
 
     return (
         <Box>
             <Paper square={true} className="PaperColor">
-                <Box className = "CurrentEventPosition">
+                <Box className="CurrentEventPosition">
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
-                    <Box className="ShareIconPosition">
-                        <SharingIcon data-testid={"shareBtn"} />
-                    </Box>
                 </Box>
                 <Box className="YoutubePlayerPosition">
                     <iframe
@@ -48,10 +63,14 @@ export function Home() {
                         allowFullScreen />
                 </Box>
                 <Box className="ProgressBarPosition">
-                    <ProgressBar />
+                    {progressBarIsUptodate && (
+                        <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent?.donationTarget} />
+                    )}
                 </Box>
                 <Box className="DonateButtonPosition">
-                    <SharingButtonCustomLink />
+                    <SharingButtonCustomLink
+                    defaultMessage='Come look at this awesome event happening.'
+                    defaultSubject='Awesome Charity Event' />
                     <DonateButton />
                 </Box>
 
@@ -63,7 +82,7 @@ export function Home() {
                     </Typography>
                 </Box>
                 <Box className="SubTextBodyPosition">
-                    <Typography className= "SubTextBodyDetails" paragraph={true} >
+                    <Typography className="SubTextBodyDetails" paragraph={true} >
                         Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most can win some awesome prizes!
                     </Typography>
                 </Box>
