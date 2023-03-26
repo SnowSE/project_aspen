@@ -671,6 +671,21 @@
     font-size: 30px !important;
     font-weight: bold !important;
 }
+.DonationAmountButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.DonationAmountButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
+.DonationSubmitButton {
+    background-color: var(--SiteMainBtnBgColor) !important;
+}
+.DonationSubmitButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
 
 /* BackToDonationButton */
 
