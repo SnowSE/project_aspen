@@ -406,6 +406,10 @@
 .FormButtonSubmit {
     background-color: var(--SiteMainBtnBgColor) !important;
 }
+.FormButtonSubmit:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
+}
 
 /* Create Event Page */
 
@@ -458,6 +462,10 @@
 }
 .FormEventButtonSubmit {
     background-color: var(--SiteMainBtnBgColor) !important;
+}
+.FormEventButtonSubmit:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    color: var(--SiteMainBtnTextColor) !important;
 }
 
 /* Team Details Page */
