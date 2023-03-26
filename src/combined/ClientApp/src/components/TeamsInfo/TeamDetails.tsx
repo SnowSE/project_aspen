@@ -357,8 +357,7 @@ export function TeamDetails() {
             <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                 <Card sx={{ maxWidth: 500 }}>
                     <CardHeader
-                        className="PaperColor"
-                        sx={{ color: "white" }}
+                        className="MembersBox"
                         title="Members: "
                     />
 
@@ -373,15 +372,7 @@ export function TeamDetails() {
                                                 color="primary"
                                                 onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to remove memeber " + j.name + " from your team?") }}
                                                 size="small"
-                                                style={{
-                                                    backgroundColor: 'red',
-                                                    color: 'white',
-                                                    fontSize: '8px',
-                                                    width: '5px',
-                                                    height: '20px',
-                                                    padding: '0',
-                                                    margin: '5px',
-                                                }}
+                                                className="DeleteMembersButton"
                                             >
                                                 X
                                             </Button>
