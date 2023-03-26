@@ -62,4 +62,5 @@ public class DonationController : ControllerBase
         var sum = await donationRepository.GetEventDonationSumAsync(eventID);
         return sum;
     }
+
 }
