@@ -36,7 +36,7 @@ const SiteAdmin = () => {
         };
     }, [accessToken]);
 
-   
+
     useEffect(() => {
 
         async function currentUser() {
@@ -64,7 +64,7 @@ const SiteAdmin = () => {
             }
             donationTotalPerTeam()
         }
-        
+
         const donationTotalPerTeam = async () => {
             const teamDonationsMap = new Map<number, number>();
             if (teamsList !== undefined) {
@@ -91,7 +91,7 @@ const SiteAdmin = () => {
                 // Handle error if needed
             }
         };
-        
+
         fetchData()
         currentUser()
     }, [currentEvent, config, teamsList])
@@ -187,6 +187,10 @@ const SiteAdmin = () => {
                                         </Box>
                                     </AccordionSummary>
                                     <TeamMembersListAccordian />
+                                    <ul>
+                                        <li>H</li>
+                                        <li>J</li>
+                                    </ul>
                                 </Accordion>
                             )
                         })}
