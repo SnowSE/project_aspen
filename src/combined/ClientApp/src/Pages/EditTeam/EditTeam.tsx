@@ -89,8 +89,9 @@ const EditTeam = () => {
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         if (e.target.files) {
-            setImage(e.target.files[0]);
-            setTeamImage(baseImageUrl + currentTeam?.mainImage)
+            const imageFile = e.target.files[0];
+            setImage(imageFile);
+            setTeamImage(URL.createObjectURL(imageFile));
 
         }
 
