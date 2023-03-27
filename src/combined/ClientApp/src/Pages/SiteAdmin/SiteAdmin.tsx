@@ -11,6 +11,7 @@ import PaymentFailure from "../../JsModels/paymentFailure";
 import { authService } from "../../services/authService";
 import DynamicModal from "../../components/DynamicModal";
 import axios from "axios";
+import ProgressBar from "../../components/ProgressBar";
 
 
 
@@ -36,7 +37,7 @@ const SiteAdmin = () => {
         };
     }, [accessToken]);
 
-   
+
     useEffect(() => {
 
         async function currentUser() {
@@ -64,7 +65,7 @@ const SiteAdmin = () => {
             }
             donationTotalPerTeam()
         }
-        
+
         const donationTotalPerTeam = async () => {
             const teamDonationsMap = new Map<number, number>();
             if (teamsList !== undefined) {
@@ -91,7 +92,7 @@ const SiteAdmin = () => {
                 // Handle error if needed
             }
         };
-        
+
         fetchData()
         currentUser()
     }, [currentEvent, config, teamsList])
@@ -163,6 +164,10 @@ const SiteAdmin = () => {
                                         <Typography>
                                             <b>{t.name}</b> Donation Total: ${teamDonations.get(t.id || -1) || 0}, Donation Target: ${t.donationTarget}
                                         </Typography>
+                                        <Box className="ProgressBarPosition">
+                                            <ProgressBar currentTotal={teamDonations.get(t.id || -1) || 0} goalTotal={t.donationTarget} />
+
+                                        </Box>
                                         <Box className="TeamsSpacing">
                                             <Button
                                                 variant="contained"
