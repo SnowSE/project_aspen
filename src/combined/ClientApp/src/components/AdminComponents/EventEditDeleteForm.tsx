@@ -8,7 +8,7 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import DynamicModal from "../DynamicModal";
 
 
-const CssTextField = styled(TextField)({
+gitconst CssTextField = styled(TextField)({
     '& label.Mui-focused': {
         color: 'white !important',
     },
