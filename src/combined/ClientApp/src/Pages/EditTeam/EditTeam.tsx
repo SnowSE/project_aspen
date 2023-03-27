@@ -23,10 +23,11 @@ const EditTeam = () => {
     const currentTeamUrl = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const updateTeamUrl = process.env.PUBLIC_URL + `/api/teams/`;
     const [currentTeam, setCurrentTeam] = useState<Team>();
-
+    const [teamImage, setTeamImage] = useState<any>();
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
+    const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
 
     const [image, setImage] = useState<File>()
 
@@ -51,19 +52,18 @@ const EditTeam = () => {
             await fetchTeam();
         };
         callServise();
-
+        
     }, [currentTeamUrl]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
         if (!image) {
             return
         }
 
         const data = new FormData();
         data.append('asset', image, image.name);
-        const imageResponse = await fetch(assetsUrl, {
+        const imageResponse = await fetch(baseImageUrl, {
             method: 'POST',
             body: data,
             headers: config.headers
@@ -90,6 +90,7 @@ const EditTeam = () => {
     ) => {
         if (e.target.files) {
             setImage(e.target.files[0]);
+            setTeamImage(baseImageUrl+ currentTeam?.mainImage)
         }
     };
 
@@ -132,15 +133,16 @@ const EditTeam = () => {
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     required
+                                    
                                 />
-                                {image ? (
+                               {/* {image ? ( */}
                                     <img
 
                                         className="team-image-preview"
-                                        /* src={image}*/
+                                         src={teamImage}
                                         alt="Team Preview"
                                     />
-                                ) : null}
+                                {/* ) : null} */}
 
                                 <FormText>
                                     You can change the team image in here
