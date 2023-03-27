@@ -11,6 +11,7 @@ import PaymentFailure from "../../JsModels/paymentFailure";
 import { authService } from "../../services/authService";
 import DynamicModal from "../../components/DynamicModal";
 import axios from "axios";
+import BlackTextProgressBar from "../../components/BlackTextProgressBar";
 
 
 
@@ -160,9 +161,12 @@ const SiteAdmin = () => {
                                         className="InnerAccordionDetails"
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        <Typography>
-                                            <b>{t.name}</b> Donation Total: ${teamDonations.get(t.id || -1) || 0}, Donation Target: ${t.donationTarget}
+                                        
+                                            <BlackTextProgressBar currentTotal={teamDonations.get(t.id || -1) || 0} goalTotal={t.donationTarget} />
+                                        <Typography sx={{ marginLeft: '5rem', justifyContent: 'flex', fontSize: '20px'} }>
+                                            <b>{t.name}</b>
                                         </Typography>
+                                        
                                         <Box className="TeamsSpacing">
                                             <Button
                                                 variant="contained"
