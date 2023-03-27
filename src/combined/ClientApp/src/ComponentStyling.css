@@ -10,6 +10,7 @@
 
     --SiteMainBtnBgColor: orange;
     --SiteMainBtnTextColor: white;
+    --SiteSecondaryTextColor: black;
     --SiteMainBtnHoverColor: mediumpurple;
 
     --SiteMainBorderColor: black;
@@ -225,10 +226,21 @@
     font-size: 22px !important;
     color: var(--SiteMainBtnTextColor) !important;
     font-weight: bold !important;
+    margin-right: 4px !important;
+}
+.ProgressBarPercentageBlackTextDetails {
+    font-size: 22px !important;
+    color: var(--SiteSecondaryTextColor) !important;
+    font-weight: bold !important;
+    margin-right: 4px !important;
 }
 .ProgressBarTextDetails {
-    font-size: 14px !important;
+    font-size: 20px !important;
     color: var(--SiteMainBtnTextColor) !important;
+}
+.ProgressBarBlackTextDetails {
+    font-size: 20px !important;
+    color: var(--SiteSecondaryTextColor) !important;
 }
 .ProgressBarBarDetails {
     width: 100%;
@@ -625,7 +637,6 @@
     border-bottom-color: var(--SiteMainBtnTextColor) !important;
 }
 .MoneyOutlineIcon {
-    background-color: var(--SiteMainBtnTextColor) !important;
     color: var(--SiteMainBtnTextColor) !important;
 }
 

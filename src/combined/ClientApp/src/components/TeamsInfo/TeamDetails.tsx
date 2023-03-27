@@ -10,7 +10,7 @@ import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
 import SharingIconTeams from "../Share/ShareIconTeams";
 import SharingButtonCustomLink from "../Share/SharingButtonCustomLink";
-import ProgressBar from "../ProgressBar";
+import BlackTextProgressBar from "../BlackTextProgressBar";
 
 
 export function TeamDetails() {
@@ -362,7 +362,7 @@ export function TeamDetails() {
                 <Divider className="TeamDivider" />
                 <Box className="ProgressBarPosition">
                     {progressBarIsUptodate && (
-                        <ProgressBar currentTotal={donationTotal} goalTotal={currentTeam?.donationTarget}/>
+                        <BlackTextProgressBar currentTotal={donationTotal} goalTotal={currentTeam?.donationTarget}/>
                     )}
                 </Box>
                 {/*<Typography >*/}
