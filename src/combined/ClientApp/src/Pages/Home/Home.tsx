@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState, useCallback, useMemo } from 'react';
 import {
     Box,
     Button,
@@ -14,6 +14,7 @@ import SharingIcon from '../../components/Share/SharingIcon';
 import { DonateButton } from '../../components/DonateButton';
 import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
 import axios from 'axios';
+import Team from '../../JsModels/team';
 
 
 
@@ -23,7 +24,29 @@ export function Home() {
     const { currentEvent } = useContext(EventContext);
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
 
+    const accessToken = localStorage.getItem("access_token");
+
+    const config = useMemo(() => {
+        return {
+            headers: { Authorization: `Bearer ${accessToken}` }
+        };
+    }, [accessToken]);
+
+    useEffect(() => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
+
+    const checkAllTeams = async () => {
+        var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
+        teams.data.forEach((team: Team) => {
+            if (team.ownerID === loggedInUserId) {
+                setCanSwitchTeam(false)
+            }
+        });
+    }
 
     const getDonationTotal = useCallback(async () => {
         try {
