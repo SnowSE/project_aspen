@@ -74,7 +74,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         }
         serviceCalls()
 
-    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent.id])
+    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent])
 
 
     useEffect(() => {
@@ -86,7 +86,6 @@ const PaymentForm: React.FC<Props> = (props) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
         await axios.post(`${BaseUrl}/api/stripe`,
             {
                 amount: (donationAmount * 100),
@@ -155,7 +154,7 @@ const PaymentForm: React.FC<Props> = (props) => {
                             shrink: true,
                         }}
                         InputProps={{
-                            inputProps: { min: 0 },
+                            inputProps: { min: 0 }
                         }}
                         
                         variant="filled"
@@ -206,12 +205,15 @@ const PaymentForm: React.FC<Props> = (props) => {
                         <Button
                             variant='contained'
                             className="DonationSubmitButton"
+                            type='submit'
                         >
                             Donate Now
                         </Button>
                         : <Button
                             disabled={true}
                             className="DonationSubmitButton"
+                            type='submit'
+
                         >
                             Donate Now
                         </Button>}

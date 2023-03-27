@@ -227,7 +227,7 @@ export function TeamDetails() {
                     canSwitchTeams: "false"
                 })}`,
             })
-            : authService.signinRedirect("teamPage")
+            : authService.signinRedirect()
     }
     const handleSwitchTeams = async () => {
         try {
@@ -245,7 +245,7 @@ export function TeamDetails() {
                             canSwitchTeams: "true",
                         })}`,
                     })
-                    : authService.signinRedirect("teamPage");
+                    : authService.signinRedirect();
                 setOpenSwitchTeamsModal(false)
             }
             else {
