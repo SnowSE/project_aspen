@@ -27,7 +27,7 @@ const EditTeam = () => {
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
     };
-    const baseImageUrl = process.env.PUBLIC_URL + "/assets/";
+    const baseImageUrl = process.env.PUBLIC_URL + "/api/Asset/";
 
     const [image, setImage] = useState<File>()
 
@@ -90,8 +90,10 @@ const EditTeam = () => {
     ) => {
         if (e.target.files) {
             setImage(e.target.files[0]);
-            setTeamImage(baseImageUrl+ currentTeam?.mainImage)
+            setTeamImage(baseImageUrl + currentTeam?.mainImage)
+
         }
+
     };
 
 
