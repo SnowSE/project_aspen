@@ -7,6 +7,7 @@ import { EventContext } from "../../App";
 import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
 
+
 export function LoggedInUser() {
 
     const navigate = useNavigate();
@@ -17,10 +18,14 @@ export function LoggedInUser() {
     const { currentEvent } = useContext(EventContext);
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [isTeamOwner, setIsTeamOwner] = useState<boolean>(false);
+  
     
     const [openModal, setOpenModal] = useState(false);
     const [isOkModal, setIsOkModal] = useState(false);
     const [message, setMessage] = useState("");
+
+    
+
 
     const addTeamMemberHandler = async (event: React.FormEvent) => {
         event.preventDefault()
@@ -110,6 +115,8 @@ export function LoggedInUser() {
                 console.log("There was an error retrieving user", error)
             })
         }
+       
+
         const list = [];
         for (const entry of searchParams.entries()) {
             list.push(entry[1]);
@@ -119,13 +126,14 @@ export function LoggedInUser() {
         setTeamID(teamID);
         setPersonID(personID);
         getUser()
+      
     }, [searchParams, currentEvent, loggedInUserId]);
 
 
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant='contained' sx={{ backgroundColor: 'orange', m: 2 }} onClick={() => navigate(-1)}>Back</Button>
+            <Button variant='contained' className="NickNameBackButton" onClick={() => navigate(-1)}>Back</Button>
             <Form onSubmit={addTeamMemberHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>
@@ -144,7 +152,7 @@ export function LoggedInUser() {
                     </Col>
                 </Row>
                 <Col md={12} xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' sx={{ backgroundColor: 'orange' }} onClick={addTeamMemberHandler}>Submit</Button>
+                    <Button variant='contained' className="NickNameSubmitButton" onClick={addTeamMemberHandler}>Submit</Button>
                 </Col>
                 <DynamicModal
                     open={openModal}

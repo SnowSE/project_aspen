@@ -1,13 +1,13 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 
 const authUrl = process.env.REACT_APP_AUTH_URL
-
-const userManager = new UserManager({
+var redirectUrl = "/aspen/new/landing/"
+var userManager = new UserManager({
     userStore: new WebStorageStateStore({ store: window.localStorage }),
     authority:
-        `${authUrl || "https://engineering.snow.edu/aspen/auth"}/realms/aspen/.well-known/openid-configuration`,
+    `${authUrl || "https://engineering.snow.edu/aspen/auth"}/realms/aspen/.well-known/openid-configuration`,
     client_id: "aspen-web",
-    redirect_uri: window.location.origin + "/aspen/new/landing",
+    redirect_uri: window.location.origin + redirectUrl,
     post_logout_redirect_uri: window.location.origin + "/aspen/new/",
     silent_redirect_uri: window.location.origin + "/aspen/new/",
     response_type: "code",
@@ -32,12 +32,16 @@ export const authService = {
     },
 
     signinRedirect: async () => {
-        console.log("window.location.origin is: ", window.location.origin)
-        if (window.location.pathname === '/aspen/' || window.location.pathname === '/aspen') {
+        
+        const params = new URLSearchParams(window.location.search)
+        var redirectUri = window.location.pathname.replace("/aspen/new", "")
+
+        localStorage.setItem("redirectUri", redirectUri)
+        if (window.location.pathname === '/aspen/new/') {
             localStorage.setItem("redirectUri", '/');
         }
-        else {
-            localStorage.setItem("redirectUri", window.location.pathname);
+        else if(redirectUri === "/TeamDetails"){
+            localStorage.setItem("redirectUri", `${redirectUri}?teamId=${params.get("teamId")}&ownerID=${params.get("ownerID")} `);
         }
         await userManager.signinRedirect();
     },
@@ -46,7 +50,6 @@ export const authService = {
         const desiredDestination = localStorage.getItem("redirectUri");
         const tempDestination = desiredDestination?.replace('/login', '/');
         const user = await userManager.signinRedirectCallback();
-
         return { desiredDestination: tempDestination, user };
     },
 

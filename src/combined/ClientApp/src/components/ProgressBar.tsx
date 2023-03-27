@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number; goal: number }) {
     return (
         <Box>
-            <Box className="ProgressBarTextLocation">
-                <Typography className="ProgressBarPercentageTextDetails">
+            <Box className="ProgressBarTextLocation" >
+                <Typography className="ProgressBarPercentageTextDetails" >
                     {`${Math.round(props.value)}%`}
                 </Typography>
 
@@ -26,7 +26,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number; g
 
 interface Props {
     goalTotal: number;
-    currentTotal: number
+    currentTotal: number;
 }
 
 export default function ProgressBar(props: Props) {
@@ -37,9 +37,8 @@ export default function ProgressBar(props: Props) {
     }, [props.goalTotal, props.currentTotal]);
 
     return (
-        <Box className="ProgressBarTextStyling">
-            <LinearProgressWithLabel className="ProgressBarDetails" color="success" value={progress} goal={props.goalTotal} />
+        <Box className="ProgressBarTextStyling" >
+            <LinearProgressWithLabel className="ProgressBarDetails" color="success" value={progress} goal={props.goalTotal}/>
         </Box>
     );
 }
-

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import { Box, TextField, Typography } from '@mui/material';
-import { Button } from 'reactstrap';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { EventContext } from '../../App';
 
 interface Props {
@@ -75,7 +74,7 @@ const PaymentForm: React.FC<Props> = (props) => {
         }
         serviceCalls()
 
-    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent.id])
+    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent])
 
 
     useEffect(() => {
@@ -87,7 +86,6 @@ const PaymentForm: React.FC<Props> = (props) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
         await axios.post(`${BaseUrl}/api/stripe`,
             {
                 amount: (donationAmount * 100),
@@ -117,12 +115,12 @@ const PaymentForm: React.FC<Props> = (props) => {
         <>
             <Typography sx={{display:'flex', justifyContent:'center', mb:2}}>Every $5 donated is equivalent to 1 meal</Typography>
             <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
-                <Button onClick={() => updateDollarAmmountTextField(1)}>$1</Button>
-                <Button onClick={() => updateDollarAmmountTextField(5)}>$5</Button>
-                <Button onClick={() => updateDollarAmmountTextField(10)}>$10</Button>
-                <Button onClick={() => updateDollarAmmountTextField(20)}>$20</Button>
-                <Button onClick={() => updateDollarAmmountTextField(50)}>$50</Button>
-                <Button onClick={() => updateDollarAmmountTextField(100)}>$100</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(1)}>$1</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(5)}>$5</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(10)}>$10</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(20)}>$20</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(50)}>$50</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(100)}>$100</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
 
@@ -158,6 +156,7 @@ const PaymentForm: React.FC<Props> = (props) => {
                         InputProps={{
                             inputProps: { min: 0 }
                         }}
+                        
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInUser")}
                         onChange={(e) => setDonationSubmitName(e.target.value)}
@@ -205,13 +204,17 @@ const PaymentForm: React.FC<Props> = (props) => {
                     {canSubmit ?
                         <Button
                             variant='contained'
-
-                            sx={{ backgroundColor: "orange" }}>
+                            className="DonationSubmitButton"
+                            type='submit'
+                        >
                             Donate Now
                         </Button>
                         : <Button
                             disabled={true}
-                            sx={{ backgroundColor: "orange" }}>
+                            className="DonationSubmitButton"
+                            type='submit'
+
+                        >
                             Donate Now
                         </Button>}
                 </Box>

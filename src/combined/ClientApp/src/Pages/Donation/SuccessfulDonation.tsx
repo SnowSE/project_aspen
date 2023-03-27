@@ -21,7 +21,7 @@ const SuccessfulDonation = () => {
 
     return (
 
-        <Box sx={{ border: 'solid', borderColor: 'mediumpurple', borderRadius: '40px', padding: '1em' }}>
+        <Box className="SuccessfulDonationBorder">
             <Box sx={{ justifyContent: 'center' }}>
                 <CheckCircleOutlineIcon />
             </Box>
