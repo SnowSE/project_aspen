@@ -6,8 +6,6 @@ const LoginLanding = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        
-
         authService.signinRedirectCallback().then(
             ({ desiredDestination, user }) => {
                 var userName = user.profile.name
@@ -16,10 +14,8 @@ const LoginLanding = () => {
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
                 localStorage.setItem("LoggedInEmail", userEmail ? userEmail : "")
                 localStorage.setItem("access_token",  access_token ? access_token : "")
-
-                navigate('/')
+                navigate(localStorage.getItem("redirectUri")!.toString())
                 navigate(0)
-
             }
         );
 
@@ -31,6 +27,3 @@ const LoginLanding = () => {
 }
 
 export default LoginLanding;
-
-
-

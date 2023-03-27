@@ -31,7 +31,7 @@ const AppRoutes = [
     },
     {
         path: `/landing`,
-        element: <LoginLanding />
+        element: <LoginLanding/>
     },
     {
         path: `/createteam`,
