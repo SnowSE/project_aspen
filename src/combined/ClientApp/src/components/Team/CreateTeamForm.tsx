@@ -17,6 +17,8 @@ const CreateTeamForm = () => {
     const [donationGoal, setDonationGoal] = useState<number>(0);
     const [image, setImage] = useState<File>()
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true)
+    const [isOnActiveTeam, setIsOnActiveTeam] = useState<boolean>(false)
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
 
     const { currentEvent } = useContext(EventContext);
 
@@ -26,6 +28,10 @@ const CreateTeamForm = () => {
 
     const createTeamHandler = async (event: React.FormEvent) => {
         event.preventDefault()
+        if(isOnActiveTeam)
+        {
+            deleteLoggedInPersonRecord()
+        }
         var currentUserUrl = process.env.PUBLIC_URL + "/api/User"
         var assetsUrl = process.env.PUBLIC_URL + "/api/asset"
 
@@ -72,17 +78,46 @@ const CreateTeamForm = () => {
         }
     }
 
-
     useEffect(() => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
         if (teamName.trim().length !== 0 && teamDescription.trim().length !== 0 && donationGoal! > 0) {
             setDisableSubmit(false)
         }
         else {
             setDisableSubmit(true)
         }
-    }, [teamName, teamDescription, donationGoal])
+        const getUser = async () => {
+            await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
+                setLoggedInUserId(response?.data?.id)
+            }).catch((error) => {
+                console.log("There was an error retrieving user", error)
+            })
 
+        }
+        const checkIfOnTeam = async () => {
+            try {
+                var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+                if (res.status === 200) {
+                    setIsOnActiveTeam(true)
+                }
+            }
+            catch (e) {
+            }
+        }
+        const callServise = async () => {
+            await getUser();
+            await checkIfOnTeam();
+        };
 
+        callServise();
+    }, [teamName, teamDescription, donationGoal, currentEvent?.id, loggedInUserId])
+
+    const deleteLoggedInPersonRecord = async () => {
+        const deleteUser = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`;
+        await axios.delete(deleteUser, config);
+    }
 
     return (
         <div className="FormPageContentPosition">
