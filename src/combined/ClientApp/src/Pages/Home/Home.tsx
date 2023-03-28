@@ -161,12 +161,12 @@ export function Home() {
             <Paper square={true} className="SecondaryPaperColor">
                 <Box className="SubTextHeaderPosition">
                     <Typography className="SubTextHeaderDetails">
-                        2 Is Better Than 1
+                        Charity Teams
                     </Typography>
                 </Box>
                 <Box className="SubTextBodyPosition">
                     <Typography className="SubTextBodyDetails" paragraph={true} >
-                        Studies show that when you work as a team, you are more productive, so why not join a team? The team who dontates the most can win some awesome prizes!
+                    Joining a charity team is a fulfilling way to make a positive impact while connecting with like-minded individuals who share your passion for giving back.
                     </Typography>
                 </Box>
                 <Box className="TeamInfoModalPosition">
