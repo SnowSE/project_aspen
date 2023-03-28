@@ -2,7 +2,7 @@ import { Button, Typography,} from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Col, Form, FormGroup, Input, Label, Row, FormText } from "reactstrap";
 import { EventContext } from "../../App";
 import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
@@ -10,8 +10,19 @@ import Team from "../../JsModels/team";
 
 export function LoggedInUser() {
 
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const list = []
+    for (var entry of searchParams.entries()) {
+        list.push(entry[1])
+    }
+    var tId = parseInt(list[0]);
+    if (list[0] !== null) {
+        tId = parseInt(list[0]);   // parse the string back to a number.
+    }
+
+    const navigate = useNavigate();
+    const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
+    const [currentTeam, setCurrentTeam] = useState<any>();
     const [nickName, setNickName] = useState<string>('Anonymous');
     const [teamID, setTeamID] = useState<number>(-1);
     const [personID, setPersonID] = useState<number>(-1);
@@ -96,6 +107,9 @@ export function LoggedInUser() {
         <Typography>{nickName}</Typography>
     }
     useEffect(() => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        };
         const checkAllTeams = async () => {
             var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
             teams.data.forEach((team: Team) => {
@@ -105,9 +119,11 @@ export function LoggedInUser() {
                 }
             });
         }
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        };
+        const fetchTeam = async () => {
+            const res = await fetch(api)
+            const response = await res.json()
+            setCurrentTeam(response)
+        }
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
                 setLoggedInUserId(response?.data?.id)
@@ -115,6 +131,12 @@ export function LoggedInUser() {
                 console.log("There was an error retrieving user", error)
             })
         }
+
+        const callServise = async () => {
+            await fetchTeam();
+        };
+
+        callServise();
        
 
         const list = [];
@@ -127,7 +149,7 @@ export function LoggedInUser() {
         setPersonID(personID);
         getUser()
       
-    }, [searchParams, currentEvent, loggedInUserId]);
+    }, [searchParams, currentEvent, loggedInUserId, api]);
 
 
 
@@ -139,7 +161,8 @@ export function LoggedInUser() {
                     <Col md={6} xs={8}>
                         <FormGroup>
                             <Label for="exampleEmail">
-                                Please enter the name you want to have displayed when you join the team. Leave your name blank if you would like to remain anonymous.
+                            Before joining team: <b>{currentTeam?.name}</b>, kindly provide your desired name to be used within the team. In case you prefer to keep your identity anonymous, you can simply click submit without making any changes.
+
                             </Label>
                             <Input
                                 id="nickName"
@@ -147,7 +170,11 @@ export function LoggedInUser() {
                                 placeholder="Ex: Steven1234"
                                 value={nickName}
                                 onChange={handleChange}
+                                helperText="This is a test"
                             />
+                            <FormText>
+                                This name will be used on the member list on {currentTeam?.name}
+                            </FormText>
                         </FormGroup>
                     </Col>
                 </Row>
