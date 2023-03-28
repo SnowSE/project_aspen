@@ -365,10 +365,6 @@ export function TeamDetails() {
                         <BlackTextProgressBar currentTotal={donationTotal} goalTotal={currentTeam?.donationTarget}/>
                     )}
                 </Box>
-                {/*<Typography >*/}
-                {/*    {" "}*/}
-                {/*    Donation Target: {currentTeam?.donationTarget} Dollars{" "}*/}
-                {/*</Typography>*/}
                 <Box className="ShareIcon">
                     <Box className="ShareIconTeams">
                         <SharingIconTeams data-testid={"shareBtn"} />
