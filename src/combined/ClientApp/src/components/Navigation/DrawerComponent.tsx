@@ -8,7 +8,7 @@ import "../../ComponentStyling.css"
 
 const pages = [
     { text: 'Home', href: '/' },
-    { text: 'Team Details', href: '/TeamDetails' },
+    { text: 'Teams List', href: '/TeamsListPage' },
     { text: 'Admin Dashboard', href: '/AdminDashboard' },
     { text: 'Donate', href: '/Donate' },
 ]
