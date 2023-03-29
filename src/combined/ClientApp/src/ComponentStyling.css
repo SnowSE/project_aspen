@@ -572,6 +572,9 @@
     padding: 0 !important;
     margin: 5px !important;
 }
+.BackToTeamsListButton {
+    color: var(--SiteSecondaryTextColor) !important;
+}
 
 /* NickName Page */
 .NickNameBackButton {
@@ -828,12 +831,15 @@ JoinTeamModalButtonPosition {
 /* Interfaces */
 
 .TeamsListCard {
+    display: block !important;
     background-color: var(--SitePrimaryBgColor) !important
 }
 .TeamsListCard:hover {
     background-color: var(--SiteMainBtnHoverColor) !important;
 }
 .TeamsListText {
+    justify-content: center !important;
+    display: block !important;
     color: var(--SiteMainBtnTextColor) !important;
     font-size: 25px !important;
 }
