@@ -17,7 +17,7 @@ function LinearProgressWithLabel(
         </Typography>
 
         <Typography className="ProgressBarBlackTextDetails">
-          of our ${props.goal} dollar goal.
+                  of our ${props.goal.toLocaleString()} 
         </Typography>
         <br />
       </Box>
