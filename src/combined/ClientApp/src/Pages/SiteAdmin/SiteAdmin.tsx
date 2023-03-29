@@ -40,18 +40,24 @@ const SiteAdmin = () => {
         };
     }, [accessToken]);
 
-        const getDonationTotal = useCallback(async () => {
-            try {
-                if (currentEvent?.id === undefined) {
-                    return;
-                }
-                const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
-                const data = response.data;
-                setdonationsTotal(data);
-            } catch (e) {
-
+    const getDonationTotal = useCallback(async () => {
+        try {
+            if (currentEvent?.id === undefined) {
+                return;
             }
-        }, [currentEvent?.id]);
+            const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
+            const data = response.data;
+            setdonationsTotal(data);
+            setprogressBarIsUptodate(true);
+
+        } catch (e) {
+
+        }
+    }, [currentEvent?.id]);
+
+    useEffect(() => {
+        getDonationTotal();
+    }, [currentEvent?.donationTarget, donationsTotal, getDonationTotal]);
 
    
     useEffect(() => {
@@ -112,7 +118,6 @@ const SiteAdmin = () => {
 
         fetchData()
         currentUser()
-        getDonationTotal();
     }, [currentEvent, config, teamsList, currentEvent?.donationTarget, donationsTotal])
 
     const archiveTeam = async (team: Team) => {
@@ -134,11 +139,12 @@ const SiteAdmin = () => {
             {isAdmin ?
                 <div>
                     <Paper square={true} elevation={6} className="AdminPaperDetails">
-                        <Box className="ProgressBarPosition">
+                        <Box className="ProgressBarPosition" sx={{mb: 1} }>
                             {progressBarIsUptodate && (
                                 <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent?.donationTarget} />
                             )}
                         </Box>
+
                         <Box className="AdminCurrentEventDetails">
 
                             {
