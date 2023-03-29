@@ -279,7 +279,7 @@ export function TeamDetails() {
                         (<Button
                             onClick={() => {
                                 setOpenSwitchTeamsModal(true);
-                                setMessage("Are you sure you want to leave" + loggedInUserTeamId + "to switch teams to " + currentTeam?.name + "?")
+                                setMessage("Are you sure you want to leave " + loggedInUserTeamId + " to switch teams to " + currentTeam?.name + "?")
                             }
                             }
                             className="SwitchTeamsButton"
