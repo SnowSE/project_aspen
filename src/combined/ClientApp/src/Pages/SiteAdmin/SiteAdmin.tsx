@@ -1,5 +1,5 @@
 import { Accordion, AccordionSummary, Box, Button, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, AccordionDetails } from "@mui/material";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
@@ -12,6 +12,7 @@ import { authService } from "../../services/authService";
 import DynamicModal from "../../components/DynamicModal";
 import axios from "axios";
 import BlackTextProgressBar from "../../components/BlackTextProgressBar";
+import ProgressBar from "../../components/ProgressBar";
 
 
 
@@ -27,6 +28,8 @@ const SiteAdmin = () => {
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [isOkModal, setIsOkModal] = useState(false);
     const navigate = useNavigate();
+    const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
+    const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
 
     const accessToken = localStorage.getItem("access_token");
@@ -36,6 +39,19 @@ const SiteAdmin = () => {
             headers: { Authorization: `Bearer ${accessToken}` }
         };
     }, [accessToken]);
+
+        const getDonationTotal = useCallback(async () => {
+            try {
+                if (currentEvent?.id === undefined) {
+                    return;
+                }
+                const response = await axios.get(`api/donations/event/${currentEvent?.id}`);
+                const data = response.data;
+                setdonationsTotal(data);
+            } catch (e) {
+
+            }
+        }, [currentEvent?.id]);
 
    
     useEffect(() => {
@@ -93,16 +109,17 @@ const SiteAdmin = () => {
             }
         };
         
+
         fetchData()
         currentUser()
-    }, [currentEvent, config, teamsList])
+        getDonationTotal();
+    }, [currentEvent, config, teamsList, currentEvent?.donationTarget, donationsTotal])
 
     const archiveTeam = async (team: Team) => {
         team.isArchived = true
         const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
         await axios.put(teamArchiveUrl, team, config);
     }
-
 
 
     const closeModal = () => {
@@ -117,7 +134,13 @@ const SiteAdmin = () => {
             {isAdmin ?
                 <div>
                     <Paper square={true} elevation={6} className="AdminPaperDetails">
+                        <Box className="ProgressBarPosition">
+                            {progressBarIsUptodate && (
+                                <ProgressBar currentTotal={donationsTotal} goalTotal={currentEvent?.donationTarget} />
+                            )}
+                        </Box>
                         <Box className="AdminCurrentEventDetails">
+
                             {
                                 showEditEvent === true ? <Typography className="AdminCurrentEventTextDetails"> Current Event: {currentEvent?.isArchived ? "" : currentEvent?.title}</Typography> : <EventEditDeleteForm />
                             }
