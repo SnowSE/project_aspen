@@ -74,6 +74,7 @@
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\DeleteTeam.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\LoggedInUser.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\components\TeamsInfo\TeamDetails.tsx" />
+    <TypeScriptCompile Remove="ClientApp\src\Donation\DonationAdminTable.tsx" />
     <TypeScriptCompile Remove="ClientApp\src\JsModels\link.ts" />
     <TypeScriptCompile Remove="ClientApp\src\Pages\EditTeam\EditTeam.tsx" />
   </ItemGroup>
