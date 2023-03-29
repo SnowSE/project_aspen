@@ -109,6 +109,9 @@ const CreateEventForm = () => {
                                             data-testid="eventTitleInput"
                                             onChange={e => setEventTitle(e.currentTarget.value)}
                                         />
+                                        <FormText>
+                                            This will be used on the home page, and admin dashboard
+                                        </FormText>
                                     </FormGroup>
                                 </Col>
 
@@ -171,6 +174,9 @@ const CreateEventForm = () => {
                                         onChange={e => setEventDonationTarget(Number(e.currentTarget.value))}
 
                                     />
+                                    <FormText>
+                                        This will be used on the home page and admin dashboard
+                                    </FormText>
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -179,7 +185,7 @@ const CreateEventForm = () => {
                                 <Col md={6} xs={8}>
 
                                     <Label>
-                                        Event Start Date
+                                        Event End Date - When current event passes end date nearest upcoming event is then shown.
                                     </Label>
                                     <Input
                                         type="date"

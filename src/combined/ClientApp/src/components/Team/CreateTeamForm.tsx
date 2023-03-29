@@ -135,7 +135,7 @@ const CreateTeamForm = () => {
                                 onChange={imageOnChange}
                             />
                             <FormText>
-                                Select an image that will be displayed as your team's logo
+                                Select an image that will be displayed as your team's logo. This will be used as the main image on the team page.
                             </FormText>
                         </Col>
                     </Row>
@@ -153,6 +153,9 @@ const CreateTeamForm = () => {
                                 data-testid="teamNameInput"
                                 onChange={event => setTeamName(event.target.value)}
                             />
+                            <FormText>
+                                This will be used as the title of your team page, the active teams page, and used in the description when someone joins your team.
+                            </FormText>
                         </Col>
                     </Row>
                 </FormGroup>
@@ -170,6 +173,9 @@ const CreateTeamForm = () => {
                                 data-testid="teamWelcomeMessage"
                                 onChange={event => setTeamWelcomeMessage(event.target.value)}
                             />
+                            <FormText>
+                                This will be used when a member joins your team
+                            </FormText>
                         </Col>
                     </Row>
                 </FormGroup>
@@ -187,6 +193,9 @@ const CreateTeamForm = () => {
                                 data-testid="teamDescriptionInput"
                                 onChange={event => setTeamDescription(event.target.value)}
                             />
+                            <FormText>
+                                This will be used on your team page
+                            </FormText>
                         </Col>
                     </Row>
                 </FormGroup>
@@ -203,6 +212,9 @@ const CreateTeamForm = () => {
                                 data-testid="teamDonationGoalInput"
                                 onChange={event => setDonationGoal(Number(event.target.value))}
                             />
+                            <FormText>
+                                This will be used on your team page
+                            </FormText>
                         </Col>
                     </Row>
                 </FormGroup>
