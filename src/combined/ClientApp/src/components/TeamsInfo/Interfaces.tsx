@@ -1,4 +1,4 @@
-import { Button, Card } from "@mui/material";
+import { Box, Button, Card } from "@mui/material";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import Team from "../../JsModels/team";
 
@@ -17,29 +17,26 @@ export const TeamCard = ({
   const navigate = useNavigate();
   
   return (
-    <div style={{ paddingTop: "1rem", justifyContent: "flex-start" }}>
-      <div className="d-flex justify-content-start">
-        <div>
-          <Card style={{ width: "30rem" }}>
-            <div
-              className="TeamsListCard">
+    <Box style={{ paddingTop: "1rem", justifyContent: "flex-start"}}>
+          <Card style={{ width: "30rem", display: "block" }}>
+            <Box
+                  className="TeamsListCard"
+                  onClick={() => {
+                      navigate({
+                          pathname: "/TeamDetails",
+                          search: `?${createSearchParams({
+                              teamId: `${id}`,
+                              ownerID: `${ownerID}`,
+                          })}`,
+                      });
+                  }}              >
               <Button
                 className="TeamsListText"
-                onClick={() => {
-                  navigate({
-                    pathname: "/TeamDetails",
-                    search: `?${createSearchParams({
-                      teamId: `${id}`,
-                      ownerID: `${ownerID}`,
-                    })}`,
-                  });
-                }}>
+                >
                 {name}
               </Button>
-            </div>
+            </Box>
           </Card>
-        </div>
-      </div>
-    </div>
+    </Box>
   );
 };

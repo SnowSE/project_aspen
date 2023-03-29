@@ -62,7 +62,6 @@
     <None Remove="ClientApp\src\components\DonateButton.tsx" />
     <None Remove="ClientApp\src\components\DrawerComponent.tsx" />
     <None Remove="ClientApp\src\components\LoginButton.tsx" />
-    <None Remove="ClientApp\src\components\Share\ShareIconTeams.tsx" />
     <None Remove="ClientApp\src\Pages\Donation\FailedPaymentPage.tsx" />
     <None Remove="ClientApp\src\Pages\SiteAdmin\SiteAdmin.tsx" />
   </ItemGroup>

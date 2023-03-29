@@ -8,9 +8,9 @@ import { DonateButton } from "../DonateButton";
 import DynamicModal from "../DynamicModal";
 import { EventContext } from "../../App";
 import Team from "../../JsModels/team";
-import SharingIconTeams from "../Share/ShareIconTeams";
 import SharingButtonCustomLink from "../Share/SharingButtonCustomLink";
 import BlackTextProgressBar from "../BlackTextProgressBar";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 export function TeamDetails() {
@@ -259,6 +259,13 @@ export function TeamDetails() {
     return (
         <Box>
             <Box>
+                <Box>
+                    <Button
+                        onClick={() => navigate("/TeamsListPage")}
+                    >
+                        <KeyboardBackspaceIcon className="BackToTeamsListButton" />
+                    </Button>
+                </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="h1">{currentTeam?.name} </Typography>
                     {
@@ -365,14 +372,7 @@ export function TeamDetails() {
                         <BlackTextProgressBar currentTotal={donationTotal} goalTotal={currentTeam?.donationTarget}/>
                     )}
                 </Box>
-                {/*<Typography >*/}
-                {/*    {" "}*/}
-                {/*    Donation Target: {currentTeam?.donationTarget} Dollars{" "}*/}
-                {/*</Typography>*/}
                 <Box className="ShareIcon">
-                    <Box className="ShareIconTeams">
-                        <SharingIconTeams data-testid={"shareBtn"} />
-                    </Box>
                 </Box>
                 <Box className="DonateButtonPosition">
                     <DonateButton />
