@@ -154,7 +154,7 @@ public class StripeController : ControllerBase
         }
         await donationRepository.AddAsync(newDonation);
 
-        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount}/{email}/{dateTime.ToLongDateString() + " " +  dateTime.ToLocalTime().ToLongTimeString()}/{phoneNumber}");
+        return Redirect($"{public_URL}/successfuldonation/{personName}/{teamName}/{paymentIntentId}/{amount/100}/{email}/{dateTime.ToLongDateString() + " " +  dateTime.ToLocalTime().ToLongTimeString()}/{phoneNumber}");
     }
 
 
