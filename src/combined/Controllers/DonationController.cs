@@ -23,6 +23,7 @@ public class DonationController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = AdminController.AspenAdminRole)]
     public async Task<ActionResult<DtoDonation>> Add([FromBody] DtoDonation dtoDonation)
     {
         log.LogInformation("Adding {dtoDonation}", dtoDonation);
