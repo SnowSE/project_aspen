@@ -110,9 +110,6 @@ export function Home() {
         setOpenConfrimModal(true)
         setMessage("Are you sure you want to create a new team? This will remove you from the current team you are on.")
     }
-    const OpenEventDetailsOkModal = () => {
-        setOpenEventDetailsOkModal(true);
-    }
     
 
     const getDonationTotal = useCallback(async () => {
@@ -141,25 +138,7 @@ export function Home() {
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
-                    <Box>
-                        <Button variant='contained'
-                            onClick={() => {
-                                setMessage(currentEvent?.title +
-                                    <ul>
-                                        <li>currentEvent?.location</li>
-                                        <li>currentEvent?.description</li>
-                                    </ul>)
-                            }}>
-                            Event Details
-                        </Button>
-                        <DynamicModal
-                            open={openEventDetailsOkModal}
-                            close={closeModal}
-                            message={message}
-                            onConfirm={() => navigate('/createteam')}
-                            isOkConfirm={isOkModal}
-                        />
-                    </Box>
+                    
                 </Box>
                 <Box>
                 </Box>
@@ -180,9 +159,34 @@ export function Home() {
                     )}
                 </Box>
                 <Box className="DonateButtonPosition">
+                    
                     <SharingButtonCustomLink
                     defaultMessage='Come look at this awesome event happening.'
                     defaultSubject='Awesome Charity Event' />
+                    <Box sx={{ ml: "10px"}}>
+                        <Button variant='contained'
+                            className = "EventDetailsButton"
+                            onClick={() => {
+                                setMessage("Event: " + currentEvent?.title + "," +
+                                        " Location: " + 
+                                    currentEvent?.location + "," +
+                                    " Description: " + 
+                                    currentEvent?.description
+                                    )
+                                setIsOkModal(true)
+                                setOpenEventDetailsOkModal(true)
+                            }}>
+                            Event Details
+                        </Button>
+                        <DynamicModal
+                            open={openEventDetailsOkModal}
+                            close={closeModal}
+                            message={message}
+                            onConfirm={closeModal}
+                            isOkConfirm={isOkModal}
+                        />
+                    </Box>
+
                     <DonateButton />
                 </Box>
 
