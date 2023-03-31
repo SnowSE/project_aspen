@@ -41,6 +41,7 @@ export function Home() {
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [openConfrimModal, setOpenConfrimModal] = useState(false)
+    const [openEventDetailsOkModal, setOpenEventDetailsOkModal] = useState(false)
     const [isOkModal, setIsOkModal] = useState(false)
     const [message, setMessage] = useState("")
 
@@ -83,6 +84,7 @@ export function Home() {
             })
 
         }
+        
 
         const callServise = async () => {
             await getUser();
@@ -98,14 +100,20 @@ export function Home() {
     const closeModal = () => {
         setIsOkModal(false)
         setOpenConfrimModal(false)
+        setOpenEventDetailsOkModal(false)
         setMessage("")
     }
 
     const openModal = () => {
         setIsOkModal(false)
+        setOpenEventDetailsOkModal(false)
         setOpenConfrimModal(true)
         setMessage("Are you sure you want to create a new team? This will remove you from the current team you are on.")
     }
+    const OpenEventDetailsOkModal = () => {
+        setOpenEventDetailsOkModal(true);
+    }
+    
 
     const getDonationTotal = useCallback(async () => {
         try {
@@ -133,6 +141,27 @@ export function Home() {
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
+                    <Box>
+                        <Button variant='contained'
+                            onClick={() => {
+                                setMessage(currentEvent?.title +
+                                    <ul>
+                                        <li>currentEvent?.location</li>
+                                        <li>currentEvent?.description</li>
+                                    </ul>)
+                            }}>
+                            Event Details
+                        </Button>
+                        <DynamicModal
+                            open={openEventDetailsOkModal}
+                            close={closeModal}
+                            message={message}
+                            onConfirm={() => navigate('/createteam')}
+                            isOkConfirm={isOkModal}
+                        />
+                    </Box>
+                </Box>
+                <Box>
                 </Box>
                 <Box className="YoutubePlayerPosition">
                     <iframe
