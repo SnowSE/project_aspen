@@ -44,12 +44,25 @@ const EditTeam = () => {
         const fetchTeam = async () => {
             const response = await fetch(currentTeamUrl);
             const data = await response.json();
-            console.log(data);
+            console.log("I am the mainImage", data?.mainImage);
             setCurrentTeam(data);
+        };
+        const fetchTeamImage = async () => {
+            if (currentTeam?.mainImage) {
+                const response = await fetch(baseImageUrl + currentTeam?.mainImage, {
+                    headers: config.headers,
+                  
+                });
+                const blob = await response.blob();
+                console.log("I am the blob", blob);
+                console.log("I am the 2nd blob", URL.createObjectURL(blob));
+                setTeamImage(URL.createObjectURL(blob));
+            }
         };
 
         const callServise = async () => {
             await fetchTeam();
+            await fetchTeamImage();
         };
         callServise();
         
@@ -140,7 +153,6 @@ const EditTeam = () => {
                                 />
                                {/* {image ? ( */}
                                     <img
-
                                         className="team-image-preview"
                                          src={teamImage}
                                         alt="Team Preview"

@@ -44,6 +44,7 @@ export function TeamDetails() {
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
+
     const [isAdmin, setIsAdmin] = useState(false)
     const [openArchiveModal, setopenArchiveModal] = useState(false);
     const [openDeleteModal, setopenDeleteModal] = useState(false);
@@ -60,6 +61,9 @@ export function TeamDetails() {
     const [donationTotal, setdonationTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
+    const [previousTeam, setpreviousTeam] = useState<Team>();
+
+
     useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -72,6 +76,33 @@ export function TeamDetails() {
                     setCanSwitchTeam(false)
                 }
             });
+        }
+
+        async function PreviousTeamInfo() {
+
+            try {
+                var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+                if (res.status === 200) {
+                    console.log("previous team name", res.data?.name)
+                    setpreviousTeam(res.data)
+                }
+
+
+            } catch (e) { }
+        }
+
+        async function currentTeamMembers() {
+
+            try {
+                var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
+                await fetch(memberApi)
+                    .then(response => response.json())
+                    .then(teamMembers => {
+                        setMembers(teamMembers);
+                    })
+
+
+            } catch (e) { }
         }
 
         const getDonationTotal = (async () => {
@@ -117,21 +148,9 @@ export function TeamDetails() {
                     setIsAdmin(true)
                 }
             });
-        }
+        } 
+        
 
-        async function currentTeamMembers() {
-
-            try {
-                var memberApi = process.env.PUBLIC_URL + `/api/PersonTeamAssociation/team/${tId}`;
-                await fetch(memberApi)
-                    .then(response => response.json())
-                    .then(teamMembers => {
-                        setMembers(teamMembers);
-                    })
-
-
-            } catch (e) { }
-        }
 
 
         const getUser = async () => {
@@ -151,6 +170,7 @@ export function TeamDetails() {
             await checkAllTeams();
             await currentTeamMembers();
             await getDonationTotal();
+            await PreviousTeamInfo();
         };
 
         callServise();
@@ -232,10 +252,13 @@ export function TeamDetails() {
     const handleSwitchTeams = async () => {
         try {
             var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
+            console.log("Logged In user id: ", loggedInUserId, "current event id: ", currentEvent?.id);
             if (res.status === 200) {
                 setCanSwitchTeam(true)
                 setOnATeam(true);
                 setLoggedInUserTeamId(res.data?.id)
+                console.log("previous team name", res.data?.name )
+                setpreviousTeam(res.data?.name)
                 loggedInUSer
                     ? navigate({
                         pathname: "/LoggedInUser",
@@ -279,7 +302,7 @@ export function TeamDetails() {
                         (<Button
                             onClick={() => {
                                 setOpenSwitchTeamsModal(true);
-                                setMessage("Are you sure you want to leave " + loggedInUserTeamId + " to switch teams to " + currentTeam?.name + "?")
+                                setMessage("Are you sure you want to switch teams to " + currentTeam?.name + " from " +  previousTeam?.name +"?")
                             }
                             }
                             className="SwitchTeamsButton"
