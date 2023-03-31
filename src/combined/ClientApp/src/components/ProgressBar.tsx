@@ -13,7 +13,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number; g
                 </Typography>
 
                 <Typography className="ProgressBarTextDetails">
-                    of our ${props.goal} dollar goal.
+                    of our ${props.goal.toLocaleString()} dollar goal.
                 </Typography>
                 <br />
             </Box>
