@@ -110,6 +110,12 @@ export function Home() {
         setOpenConfrimModal(true)
         setMessage("Are you sure you want to create a new team? This will remove you from the current team you are on.")
     }
+    const messageArray: string[] = [
+        `Event: ${currentEvent?.title}. `,
+        ` Location: ${currentEvent?.location}. `,
+        ` Description: ${currentEvent?.description}`,
+    ]
+    const displayMessage: string = messageArray.join('\n')
     
 
     const getDonationTotal = useCallback(async () => {
@@ -167,12 +173,7 @@ export function Home() {
                         <Button variant='contained'
                             className = "EventDetailsButton"
                             onClick={() => {
-                                setMessage("Event: " + currentEvent?.title + "," +
-                                        " Location: " + 
-                                    currentEvent?.location + "," +
-                                    " Description: " + 
-                                    currentEvent?.description
-                                    )
+                                setMessage(displayMessage);
                                 setIsOkModal(true)
                                 setOpenEventDetailsOkModal(true)
                             }}>
