@@ -74,6 +74,7 @@ export function TeamDetails() {
             });
         }
 
+        
         const getDonationTotal = (async () => {
             try {
                 if (currentEvent?.id === undefined) {

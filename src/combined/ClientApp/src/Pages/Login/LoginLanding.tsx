@@ -14,8 +14,9 @@ const LoginLanding = () => {
                 localStorage.setItem("LoggedInUser", userName ? userName : "")
                 localStorage.setItem("LoggedInEmail", userEmail ? userEmail : "")
                 localStorage.setItem("access_token",  access_token ? access_token : "")
-                navigate(localStorage.getItem("redirectUri")!.toString())
-                navigate(0)
+                console.log("Redirect url: ", localStorage.getItem("redirectUri")?.toString())
+                //navigate(localStorage.getItem("redirectUri")!.toString())
+                //navigate(0)
             }
         );
 
