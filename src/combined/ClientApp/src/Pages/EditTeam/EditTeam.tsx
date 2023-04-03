@@ -66,7 +66,7 @@ const EditTeam = () => {
         };
         callServise();
         
-    }, [currentTeamUrl]);
+    }, [currentTeamUrl, baseImageUrl, config.headers, currentTeam?.mainImage]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
