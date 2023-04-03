@@ -30,6 +30,8 @@ const SiteAdmin = () => {
     const navigate = useNavigate();
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
+    const [archriveTeam, setarchriveTeam] = useState<Team>();
+
 
 
     const accessToken = localStorage.getItem("access_token");
@@ -120,10 +122,12 @@ const SiteAdmin = () => {
         currentUser()
     }, [currentEvent, config, teamsList, currentEvent?.donationTarget, donationsTotal])
 
-    const archiveTeam = async (team: Team) => {
-        team.isArchived = true
-        const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
-        await axios.put(teamArchiveUrl, team, config);
+    const archiveTeam = async (team?: Team) => {
+        if (team !== undefined) {
+            team.isArchived = true;
+            const teamArchiveUrl = process.env.PUBLIC_URL + `/api/teams`;
+            await axios.put(teamArchiveUrl, team, config);
+        }
     }
 
 
@@ -207,14 +211,14 @@ const SiteAdmin = () => {
                                                 variant="contained"
                                                 className="DeleteTeamButtonDetails"
                                                 type="button"
-                                                onClick={() => { setMessage("Are you sure you want to delete " + t.name + "?"); setopenArchiveModal(true); }}
+                                                onClick={() => { setarchriveTeam(t); setMessage("Are you sure you want to delete " + t.name + "?"); setopenArchiveModal(true); }}
                                             > Delete
                                             </Button>
                                             <DynamicModal
                                                 open={openArchiveModal}
                                                 close={closeModal}
                                                 message={message}
-                                                onConfirm={() => archiveTeam(t)}
+                                                onConfirm={() => archiveTeam(archriveTeam)}
                                                 isOkConfirm={isOkModal}
                                             />
                                         </Box>
