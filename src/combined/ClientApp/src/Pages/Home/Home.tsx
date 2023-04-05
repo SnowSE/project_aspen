@@ -6,7 +6,7 @@ import {
     Paper
 } from '@mui/material';
 
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { EventContext } from '../../App';
 import ProgressBar from '../../components/ProgressBar';
 import TeamInfoModal from '../../components/Team/TeamInfoModal';
