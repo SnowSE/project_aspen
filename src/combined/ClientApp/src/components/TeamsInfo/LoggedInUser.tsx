@@ -6,6 +6,7 @@ import { Col, Form, FormGroup, Input, Label, Row, FormText } from "reactstrap";
 import { EventContext } from "../../App";
 import DynamicModal from "../DynamicModal";
 import Team from "../../JsModels/team";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 export function LoggedInUser() {
@@ -155,7 +156,11 @@ export function LoggedInUser() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant='contained' className="NickNameBackButton" onClick={() => navigate(-1)}>Back</Button>
+            <Button
+                onClick={() => navigate(-1)}
+            >
+                <KeyboardBackspaceIcon className="BackToTeamsListButton" />
+            </Button>
             <Form onSubmit={addTeamMemberHandler} style={{ width: '90vw', border: 'solid #673ab7', borderRadius: '30px' }}>
                 <Row style={{ display: 'flex', justifyContent: 'center' }}>
                     <Col md={6} xs={8}>

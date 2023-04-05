@@ -41,6 +41,7 @@ export function Home() {
     const [onATeam, setOnATeam] = useState<boolean>(false);
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [openConfrimModal, setOpenConfrimModal] = useState(false)
+    const [openEventDetailsOkModal, setOpenEventDetailsOkModal] = useState(false)
     const [isOkModal, setIsOkModal] = useState(false)
     const [message, setMessage] = useState("")
 
@@ -83,6 +84,7 @@ export function Home() {
             })
 
         }
+        
 
         const callServise = async () => {
             await getUser();
@@ -98,14 +100,23 @@ export function Home() {
     const closeModal = () => {
         setIsOkModal(false)
         setOpenConfrimModal(false)
+        setOpenEventDetailsOkModal(false)
         setMessage("")
     }
 
     const openModal = () => {
         setIsOkModal(false)
+        setOpenEventDetailsOkModal(false)
         setOpenConfrimModal(true)
         setMessage("Are you sure you want to create a new team? This will remove you from the current team you are on.")
     }
+    const messageArray: string[] = [
+        `Event: ${currentEvent?.title}. `,
+        ` Location: ${currentEvent?.location}. `,
+        ` Description: ${currentEvent?.description}`,
+    ]
+    const displayMessage: string = messageArray.join('\n')
+    
 
     const getDonationTotal = useCallback(async () => {
         try {
@@ -133,6 +144,9 @@ export function Home() {
                     <Typography data-testid={"homePageHeader"} id={"homePageHeader"} className="CurrentEventTextDetails">
                         {currentEvent?.title}
                     </Typography>
+                    
+                </Box>
+                <Box>
                 </Box>
                 <Box className="YoutubePlayerPosition">
                     <iframe
@@ -151,9 +165,29 @@ export function Home() {
                     )}
                 </Box>
                 <Box className="DonateButtonPosition">
+                    
                     <SharingButtonCustomLink
                     defaultMessage='Come look at this awesome event happening.'
                     defaultSubject='Awesome Charity Event' />
+                    <Box sx={{ ml: "10px"}}>
+                        <Button variant='contained'
+                            className = "EventDetailsButton"
+                            onClick={() => {
+                                setMessage(displayMessage);
+                                setIsOkModal(true)
+                                setOpenEventDetailsOkModal(true)
+                            }}>
+                            Event Details
+                        </Button>
+                        <DynamicModal
+                            open={openEventDetailsOkModal}
+                            close={closeModal}
+                            message={message}
+                            onConfirm={closeModal}
+                            isOkConfirm={isOkModal}
+                        />
+                    </Box>
+
                     <DonateButton />
                 </Box>
 

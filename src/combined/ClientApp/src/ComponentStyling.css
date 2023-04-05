@@ -383,6 +383,14 @@
 .CreateTeamButtonDetails:hover {
     background-color: var(--SiteMainBtnHoverColor) !important;
 }
+.EventDetailsButton { 
+    background-color: var(--SiteMainBtnBgColor) !important;
+    white-space: pre-line !important;
+}
+.EventDetailsButton:hover {
+    background-color: var(--SiteMainBtnHoverColor) !important;
+    white-space: pre-line !important;
+}
 
 /* Create Team Page */
 
