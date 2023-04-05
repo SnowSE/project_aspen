@@ -9,7 +9,6 @@ const EditTeam = () => {
     const [searchParams] = useSearchParams();
     const list = []
     for (var entry of searchParams.entries()) {
-        console.log(entry[1]);
         list.push(entry[1])
     }
     var tId = parseInt(list[0]);
@@ -44,7 +43,6 @@ const EditTeam = () => {
         const fetchTeam = async () => {
             const response = await fetch(currentTeamUrl);
             const data = await response.json();
-            console.log("I am the mainImage", data?.mainImage);
             setCurrentTeam(data);
         };
         
@@ -62,16 +60,12 @@ const EditTeam = () => {
             var config = {
                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
             };
-            console.log("I am in fetchTeamImage function")
             if (currentTeam?.mainImage) {
                 await fetch(process.env.PUBLIC_URL + "/assets/" + currentTeam?.mainImage, {
                     headers: config.headers,
                   
                 }).then(async (res) => {
-                    console.log("I am in ")
                     const blob = await res.blob();
-                    console.log("I am the blob", blob);
-                    console.log("I am the 2nd blob", URL.createObjectURL(blob));
                     setTeamImage(URL.createObjectURL(blob));
                 });
             }
@@ -85,30 +79,33 @@ const EditTeam = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!image) {
-            console.log("no new image", image)
-            currentTeam!.mainImage = teamImage.toString()
-        }
-        
-        
-        try {
-            const data = new FormData();
-            data.append('asset', image!, image!.name);
-            const imageResponse = await fetch(baseImageUrl, {
-                method: 'POST',
-                body: data,
-                headers: config.headers
-            })
-            const result = await imageResponse.json()
-            console.log('upload result:', result)
-            currentTeam!.mainImage = result.data
-            const response = await axios.put(updateTeamUrl, currentTeam, config);
-            console.log(response);
+            console.log("no ne wimage selected", currentTeam?.mainImage)
+            //currentTeam!.mainImage = teamImage
+            await axios.put(updateTeamUrl, currentTeam, config);
             alert("Team information updated successfully!");
             navigate("/TeamsListPage")
+        }
+        else {
 
-        } catch (error) {
-            console.error(error);
-            alert("An error occurred while updating the team information.");
+            
+            try {
+                const data = new FormData();
+                data.append('asset', image!, image!.name);
+                const imageResponse = await fetch(baseImageUrl, {
+                    method: 'POST',
+                    body: data,
+                    headers: config.headers
+                })
+                const result = await imageResponse.json()
+                currentTeam!.mainImage = result.data
+                await axios.put(updateTeamUrl, currentTeam, config);
+                alert("Team information updated successfully!");
+                navigate("/TeamsListPage")
+                
+            } catch (error) {
+                console.log(error)
+                alert("An error occurred while updating the team information.");
+            }
         }
     };
 
@@ -160,7 +157,7 @@ const EditTeam = () => {
                                     id="image"
                                     accept="image/*"
                                     onChange={handleImageChange}
-                                    required
+                                    
                                     
                                 />
                                {/* {image ? ( */}
