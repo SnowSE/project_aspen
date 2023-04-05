@@ -47,45 +47,59 @@ const EditTeam = () => {
             console.log("I am the mainImage", data?.mainImage);
             setCurrentTeam(data);
         };
-        const fetchTeamImage = async () => {
-            if (currentTeam?.mainImage) {
-                const response = await fetch(baseImageUrl + currentTeam?.mainImage, {
-                    headers: config.headers,
-                  
-                });
-                const blob = await response.blob();
-                console.log("I am the blob", blob);
-                console.log("I am the 2nd blob", URL.createObjectURL(blob));
-                setTeamImage(URL.createObjectURL(blob));
-            }
-        };
+        
 
         const callServise = async () => {
             await fetchTeam();
-            await fetchTeamImage();
         };
         callServise();
         
-    }, [currentTeamUrl, baseImageUrl, config.headers, currentTeam?.mainImage]);
+    }, [currentTeamUrl]);
+
+
+    useEffect (() => {
+        const fetchTeamImage = async () => {
+            var config = {
+                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+            };
+            console.log("I am in fetchTeamImage function")
+            if (currentTeam?.mainImage) {
+                await fetch(process.env.PUBLIC_URL + "/assets/" + currentTeam?.mainImage, {
+                    headers: config.headers,
+                  
+                }).then(async (res) => {
+                    console.log("I am in ")
+                    const blob = await res.blob();
+                    console.log("I am the blob", blob);
+                    console.log("I am the 2nd blob", URL.createObjectURL(blob));
+                    setTeamImage(URL.createObjectURL(blob));
+                });
+            }
+        };
+        const callServise = async () => {
+            await fetchTeamImage();
+        };
+        callServise();
+    }, [currentTeam?.mainImage])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!image) {
-            return
+            console.log("no new image", image)
+            currentTeam!.mainImage = teamImage.toString()
         }
-
-        const data = new FormData();
-        data.append('asset', image, image.name);
-        const imageResponse = await fetch(baseImageUrl, {
-            method: 'POST',
-            body: data,
-            headers: config.headers
-        })
-
-        const result = await imageResponse.json()
-        console.log('upload result:', result)
-
+        
+        
         try {
+            const data = new FormData();
+            data.append('asset', image!, image!.name);
+            const imageResponse = await fetch(baseImageUrl, {
+                method: 'POST',
+                body: data,
+                headers: config.headers
+            })
+            const result = await imageResponse.json()
+            console.log('upload result:', result)
             currentTeam!.mainImage = result.data
             const response = await axios.put(updateTeamUrl, currentTeam, config);
             console.log(response);
@@ -109,8 +123,6 @@ const EditTeam = () => {
         }
 
     };
-
-
 
     return (
         <div>
