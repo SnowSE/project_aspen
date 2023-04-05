@@ -54,14 +54,17 @@ const EditTeam = () => {
         };
         callServise();
         
-    }, []);
+    }, [currentTeamUrl]);
 
 
     useEffect (() => {
         const fetchTeamImage = async () => {
+            var config = {
+                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+            };
             console.log("I am in fetchTeamImage function")
             if (currentTeam?.mainImage) {
-                const response = await fetch(process.env.PUBLIC_URL + "/assets/" + currentTeam?.mainImage, {
+                await fetch(process.env.PUBLIC_URL + "/assets/" + currentTeam?.mainImage, {
                     headers: config.headers,
                   
                 }).then(async (res) => {
