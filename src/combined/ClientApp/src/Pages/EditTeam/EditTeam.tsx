@@ -121,8 +121,6 @@ const EditTeam = () => {
 
     };
 
-
-
     return (
         <div>
             {currentTeam ? (
