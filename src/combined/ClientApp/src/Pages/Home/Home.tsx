@@ -20,26 +20,14 @@ import DynamicModal from '../../components/DynamicModal';
 
 export function Home() {
 
-    const [searchParams] = useSearchParams();
-    const list = []
-    for (var entry of searchParams.entries()) {
-        list.push(entry[1])
-    }
-    var tId = parseInt(list[0]);
-    if (list[0] !== null) {
-        tId = parseInt(list[0]);   // parse the string back to a number.
-    }
-
 
     const navigate = useNavigate();
-    const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
     const { currentEvent } = useContext(EventContext);
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [canSwitchTeam, setCanSwitchTeam] = useState<boolean>(true);
     const [onATeam, setOnATeam] = useState<boolean>(false);
-    const [currentTeam, setCurrentTeam] = useState<any>();
     const [openConfrimModal, setOpenConfrimModal] = useState(false)
     const [openEventDetailsOkModal, setOpenEventDetailsOkModal] = useState(false)
     const [isOkModal, setIsOkModal] = useState(false)
@@ -51,30 +39,30 @@ export function Home() {
         };
 
         const checkAllTeams = async () => {
-            var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
-            teams.data.forEach((team: Team) => {
-                if (team.ownerID === loggedInUserId) {
-                    setCanSwitchTeam(false)
-                }
-            });
+            if(currentEvent?.id !== undefined){
+
+                var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent?.id}`, config)
+                teams.data.forEach((team: Team) => {
+                    if (team.ownerID === loggedInUserId) {
+                        setCanSwitchTeam(false)
+                    }
+                });
+            }
         }
         
         const checkIfOnTeam = async () => {
-            try {
+            if(currentEvent?.id !== undefined && loggedInUserId !== undefined){
                 var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
                 if (res.status === 200) {
                     setCanSwitchTeam(true)
                     setOnATeam(true);
                 }
             }
-            catch (e) {
-            }
+            
+                
+            
         }
-        const fetchTeam = async () => {
-            const res = await fetch(api)
-            const response = await res.json()
-            setCurrentTeam(response)
-        }
+        
 
         const getUser = async () => {
             await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
@@ -88,14 +76,14 @@ export function Home() {
 
         const callServise = async () => {
             await getUser();
-            await fetchTeam();
             await checkIfOnTeam();
             await checkAllTeams();
         };
+        
+            callServise();
 
-        callServise();
 
-    }, [api, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, currentEvent?.id, currentTeam?.id]);
+    }, [currentEvent, loggedInUserId,  currentEvent?.id]);
 
     const closeModal = () => {
         setIsOkModal(false)

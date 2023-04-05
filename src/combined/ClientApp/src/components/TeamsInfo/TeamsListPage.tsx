@@ -11,11 +11,10 @@ export function TeamsListPage() {
        
     useEffect(() => {
         const fetchData = async () => {
-            if (!currentEvent.id) {
-                console.log("No current event found!")
+            if (!currentEvent?.id) {
                 return;
             }
-            const teams = await getTeamsList(currentEvent.id)
+            const teams = await getTeamsList(currentEvent?.id)
             setTeams(teams)
         }
         
