@@ -128,7 +128,7 @@ const EditTeam = () => {
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
                         <Row className="FormRowOne">
-                            <Col md={5} xs={6}>
+                            <Col md={6} xs={8}>
                                 <Label>
                                     Team Name
                                 </Label>
@@ -151,6 +151,7 @@ const EditTeam = () => {
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
                                 <Label>
+                                    Change Image
                                 </Label>
                                 <Input
                                     type="file"
@@ -169,7 +170,7 @@ const EditTeam = () => {
                                 {/* ) : null} */}
 
                                 <FormText>
-                                    You can change the team image in here
+                                   <br/> You can change the team image in here
                                 </FormText>
                             </Col>
                         </Row>
@@ -178,6 +179,7 @@ const EditTeam = () => {
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
                                 <Label>
+                                    Description
                                 </Label>
                                 <Input
                                     id="description"
@@ -199,6 +201,7 @@ const EditTeam = () => {
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
                                 <Label>
+                                    Welcome Message
                                 </Label>
                                 <Input
                                     id="WelcomeMessage"
@@ -220,6 +223,7 @@ const EditTeam = () => {
                         <Row className="FormRowOne">
                             <Col md={6} xs={8}>
                                 <Label>
+                                    Donation Goal
                                 </Label>
                                 <Input
                                     type="number"

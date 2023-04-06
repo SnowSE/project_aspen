@@ -29,13 +29,13 @@ export default class Team {
     this.id = id ?? -1;
     this.name = name;
     this.description = description;
+    this.WelcomeMessage = WelcomeMessage;
     this.mainImage = mainImage;
     this.ownerID = owenerId;
     this.eventID = eventId;
     this.donationTarget = donationTarget;
       this.persons = [];
       this.isArchived = isArchived;
-      this.WelcomeMessage = WelcomeMessage;
 
   }
 }
