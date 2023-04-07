@@ -41,6 +41,7 @@ export function TeamDetails() {
 
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
+    const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
@@ -61,8 +62,8 @@ export function TeamDetails() {
     const [donationTotal, setdonationTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
-    const [previousTeam, setpreviousTeam] = useState<Team>();
-
+    const [previousTeam, setpreviousTeam] = useState<Team>();    
+    const [teamOwner, setteamOwner] = useState<Person>();
 
     useEffect(() => {
         const config = {
@@ -191,6 +192,28 @@ if(currentEvent?.id != null){
 
 
     }, [api, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length, currentEvent?.id, currentTeam?.id]);
+
+    useEffect(() => {
+        async function fetchTeamOwner() {
+
+            var perRes = await axios.get(personApi, config);           
+            var personResponse = perRes.data;     
+            setteamOwner(personResponse);  
+           
+        }
+
+
+        const callServise = async () => {
+            await fetchTeamOwner();
+        };
+
+        callServise();
+    }, [personApi, config]);
+
+
+
+
+
     const closeModal = () => {
         setopenArchiveModal(false)
         setOpenSwitchTeamsModal(false)
@@ -427,7 +450,11 @@ if(currentEvent?.id != null){
                                                 X
                                             </Button>
                                         ) : null}
-                                        {j.nickname}
+                                        {j.id === teamOwner?.id ? (
+                                            <p>Team owner: <span style={{ color: 'red' }}>{teamOwner?.name}</span></p>
+                                        ) : (
+                                            <span>{j.nickname}</span>
+                                        )}
 
                                         {
                                             <DynamicModal
