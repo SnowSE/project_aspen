@@ -57,21 +57,10 @@ const SiteAdmin = () => {
         }
     }, [currentEvent?.id]);
 
+
+
     useEffect(() => {
         getDonationTotal();
-    }, [currentEvent?.donationTarget, donationsTotal, getDonationTotal]);
-
-   
-    useEffect(() => {
-
-        async function currentUser() {
-            var user = await authService.getUser()
-            user?.profile.roles.forEach((role: string) => {
-                if (role.includes("admin")) {
-                    setIsAdmin(true)
-                }
-            });
-        }
         const fetchData = async () => {
             if (currentEvent?.id !== -1) {
                 const paymentFailures = process.env.PUBLIC_URL + `/api/stripe/failures`;
@@ -87,8 +76,23 @@ const SiteAdmin = () => {
                 setStripeFailureLogs(stripeFailures)
                 setTeams(jsonTeams)
             }
-            donationTotalPerTeam()
         }
+        fetchData()
+    }, [currentEvent, donationsTotal, getDonationTotal, config.headers]);
+
+   
+    useEffect(() => {
+
+        async function currentUser() {
+            var user = await authService.getUser()
+            user?.profile.roles.forEach((role: string) => {
+                if (role.includes("admin")) {
+                    setIsAdmin(true)
+                }
+            });
+        }
+
+        
         
         const donationTotalPerTeam = async () => {
             const teamDonationsMap = new Map<number, number>();
@@ -97,9 +101,9 @@ const SiteAdmin = () => {
                     if (team.id !== undefined) {
                         const donationTotal = await getTeamDonationTotal(team.id);
                         teamDonationsMap.set(team.id, donationTotal);
-                        setTeamDonations(teamDonationsMap);
                     }
                 }
+                setTeamDonations(teamDonationsMap);
             }
         };
 
@@ -116,11 +120,11 @@ const SiteAdmin = () => {
                 // Handle error if needed
             }
         };
-        
 
-        fetchData()
         currentUser()
-    }, [currentEvent, config, teamsList, currentEvent?.donationTarget, donationsTotal])
+        donationTotalPerTeam()
+
+    }, [currentEvent, totalDonations, teamsList])
 
     const archiveTeam = async (team?: Team) => {
         if (team !== undefined) {
@@ -129,7 +133,6 @@ const SiteAdmin = () => {
             await axios.put(teamArchiveUrl, team, config);
         }
     }
-
 
     const closeModal = () => {
         setopenArchiveModal(false)
@@ -195,7 +198,7 @@ const SiteAdmin = () => {
                                         expandIcon={<ExpandMoreIcon />}
                                     >
                                         
-                                            <BlackTextProgressBar currentTotal={teamDonations.get(t.id || -1) || 0} goalTotal={t.donationTarget} />
+                                            <BlackTextProgressBar currentTotal={teamDonations.get(t.id || 0) || 0} goalTotal={t.donationTarget} />
                                         <Typography sx={{ marginLeft: '5rem', justifyContent: 'flex', fontSize: '20px'} }>
                                             <b>{t.name}</b>
                                         </Typography>

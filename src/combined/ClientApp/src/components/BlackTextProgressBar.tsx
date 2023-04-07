@@ -37,8 +37,14 @@ export default function BlackTextProgressBar(props: Props) {
   const [progress, setProgress] = React.useState(1);
 
   useEffect(() => {
-    setProgress((props.currentTotal / props.goalTotal) * 100);
-  }, [props.goalTotal, props.currentTotal]);
+    if(props.currentTotal === undefined){
+        props.currentTotal =0
+    }
+    else {
+
+      setProgress((props.currentTotal / props.goalTotal) * 100);
+    }
+    }, [props]);
 
   return (
     <Box className="ProgressBarTextStyling">
