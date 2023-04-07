@@ -71,7 +71,7 @@ export function TeamDetails() {
         };
 
         const checkAllTeams = async () => {
-            var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent.id}`, config)
+            var teams = await axios.get(process.env.PUBLIC_URL + `/api/teams/event/${currentEvent?.id}`, config)
             teams.data.forEach((team: Team) => {
                 if (team.ownerID === loggedInUserId) {
                     setCanSwitchTeam(false)
@@ -81,15 +81,16 @@ export function TeamDetails() {
 
         async function PreviousTeamInfo() {
 
-            try {
+            if(loggedInUserId!= null){
+
                 var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
                 if (res.status === 200) {
                     
                     setpreviousTeam(res.data)
                 }
+            }
 
 
-            } catch (e) { }
         }
 
         async function currentTeamMembers() {
@@ -107,7 +108,8 @@ export function TeamDetails() {
         }
 
         const getDonationTotal = (async () => {
-            try {
+            if(currentTeam?.id != null){
+
                 if (currentEvent?.id === undefined) {
                     return;
                 }
@@ -115,14 +117,14 @@ export function TeamDetails() {
                 const data = response.data;
                 setdonationTotal(data);
                 setprogressBarIsUptodate(true);
-
-            } catch (e) {
-
+                
             }
+            
         });
         
         const checkIfOnTeam = async () => {
-            try {
+            if(loggedInUserId!= null){
+
                 var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
                 if (res.status === 200) {
                     setCanSwitchTeam(true)
@@ -133,8 +135,7 @@ export function TeamDetails() {
                 else {
                 }
             }
-            catch (e) {
-            }
+            
         }
         const fetchTeam = async () => {
             const res = await fetch(api)
@@ -174,8 +175,10 @@ export function TeamDetails() {
             await PreviousTeamInfo();
             
         };
+if(currentEvent?.id != null){
 
-        callServise();
+    callServise();
+}
 
         if (deleteUserId === currentTeam?.ownerID && members.length > 1) {
             setOpenErrorModal(true);
@@ -404,7 +407,7 @@ export function TeamDetails() {
                         component="img"
                         height="500"
                         width="500"
-                        image={baseImageUrl + currentTeam?.mainImage}
+                        image={currentTeam?.mainImage ? baseImageUrl + currentTeam?.mainImage : ""}
                         alt="mainImage"
                     />
                 </Box>
@@ -431,7 +434,6 @@ export function TeamDetails() {
                     />
 
                     <CardContent>
-                        <Typography alignItems="center">
                             <ul>
                                 {members.map((j: any) => (
                                     <li key={j.id}>
