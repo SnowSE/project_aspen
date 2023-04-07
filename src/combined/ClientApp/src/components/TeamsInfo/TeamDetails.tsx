@@ -195,12 +195,10 @@ export function TeamDetails() {
     useEffect(() => {
         async function fetchTeamOwner() {
 
-            var perRes = await axios.get(personApi, config);
-            console.log("I am the perRes", perRes);
-            var personResponse = perRes.data;
-            console.log("I am the person Respone", personResponse);
-            setteamOwner(perRes.data);  
-            console.log("I am the persondata", perRes.data.name);
+            var perRes = await axios.get(personApi, config);           
+            var personResponse = perRes.data;     
+            setteamOwner(personResponse);  
+           
         }
 
 
@@ -209,7 +207,7 @@ export function TeamDetails() {
         };
 
         callServise();
-    }, [personApi]);
+    }, [personApi, config]);
 
     const closeModal = () => {
         setopenArchiveModal(false)
