@@ -30,7 +30,7 @@ export function TeamDetails() {
     if (list[1] !== null) {
         ownerId = parseInt(list[1]);   // parse the string back to a number.
     }
-
+    console.log("I am the owner Id", ownerId);
     const accessToken = localStorage.getItem("access_token");
 
     const config = useMemo(() => {
@@ -41,6 +41,7 @@ export function TeamDetails() {
 
 
     const api = process.env.PUBLIC_URL + `/api/teams/${tId}`;
+    const personApi = process.env.PUBLIC_URL + `/api/Person/${ownerId}`;
     const [currentTeam, setCurrentTeam] = useState<any>();
     const [loggedInUserId, setLoggedInUserId] = useState<number>();
     const [loggedInUserTeamId, setLoggedInUserTeamId] = useState<number>();
@@ -62,7 +63,7 @@ export function TeamDetails() {
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
 
     const [previousTeam, setpreviousTeam] = useState<Team>();
-
+    const [teamOwner, setteamOwner] = useState<Person>();
 
     useEffect(() => {
         const config = {
@@ -76,14 +77,14 @@ export function TeamDetails() {
                     setCanSwitchTeam(false)
                 }
             });
-        }
+        }      
 
         async function PreviousTeamInfo() {
 
             try {
                 var res = await axios.get(process.env.PUBLIC_URL + `/api/PersonTeamAssociation/${loggedInUserId}/${currentEvent?.id}`)
                 if (res.status === 200) {
-                    console.log("previous team name", res.data?.name)
+                    
                     setpreviousTeam(res.data)
                 }
 
@@ -171,6 +172,7 @@ export function TeamDetails() {
             await currentTeamMembers();
             await getDonationTotal();
             await PreviousTeamInfo();
+            
         };
 
         callServise();
@@ -187,7 +189,28 @@ export function TeamDetails() {
         }
 
 
-    }, [api, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length, currentEvent?.id, currentTeam?.id]);
+    }, [api, personApi, ownerId, currentEvent, loggedInUserId, tId, currentTeam?.ownerID, deleteUserId, members.length, currentEvent?.id, currentTeam?.id]);
+
+
+    useEffect(() => {
+        async function fetchTeamOwner() {
+
+            var perRes = await axios.get(personApi, config);
+            console.log("I am the perRes", perRes);
+            var personResponse = perRes.data;
+            console.log("I am the person Respone", personResponse);
+            setteamOwner(perRes.data);  
+            console.log("I am the persondata", perRes.data.name);
+        }
+
+
+        const callServise = async () => {
+            await fetchTeamOwner();
+        };
+
+        callServise();
+    }, [personApi]);
+
     const closeModal = () => {
         setopenArchiveModal(false)
         setOpenSwitchTeamsModal(false)
@@ -414,20 +437,29 @@ export function TeamDetails() {
                             <ul>
                                 {members.map((j: any) => (
                                     <li key={j.id}>
-                                        {(isAdmin || loggedInUserId === currentTeam?.ownerID) ? (
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => { setopenDeleteModal(true); setDeleteUserId(j.id); setMessage("Are you sure you want to remove memeber " + j.name + " from your team?") }}
-                                                size="small"
-                                                className="DeleteMembersButton"
-                                            >
-                                                X
-                                            </Button>
-                                        ) : null}
-                                        {j.nickname}
-
-                                        {
+                                        {!isAdmin && loggedInUserId !== currentTeam?.ownerID ? null : (
+                                            j.id !== teamOwner?.id && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() => {
+                                                        setopenDeleteModal(true);
+                                                        setDeleteUserId(j.id);
+                                                        setMessage(`Are you sure you want to remove member ${j.name} from your team?`);
+                                                    }}
+                                                    size="small"
+                                                    className="DeleteMembersButton"
+                                                >
+                                                    X
+                                                </Button>
+                                            )
+                                        )}
+                                        {j.id === teamOwner?.id ? (
+                                            <p>Team owner: <span style={{ color: 'red' }}>{teamOwner?.name}</span></p>
+                                        ) : (
+                                            <span>{j.nickname}</span>
+                                        )}
+                                        {openErrorModal && (
                                             <DynamicModal
                                                 open={openErrorModal}
                                                 close={closeModal}
@@ -435,8 +467,8 @@ export function TeamDetails() {
                                                 onConfirm={closeModal}
                                                 isOkConfirm={true}
                                             />
-                                        }
-                                        {
+                                        )}
+                                        {openZeroPersonModal && (
                                             <DynamicModal
                                                 open={openZeroPersonModal}
                                                 close={closeModal}
@@ -444,21 +476,20 @@ export function TeamDetails() {
                                                 onConfirm={closeModal}
                                                 isOkConfirm={true}
                                             />
-                                        }
-                                        {
-                                            !openErrorModal && !openZeroPersonModal && (
-                                                <DynamicModal
-                                                    open={openDeleteModal}
-                                                    close={closeModal}
-                                                    message={message}
-                                                    onConfirm={() => handleDeleteUser()}
-                                                    isOkConfirm={isOkModal}
-                                                />
-                                            )
-                                        }
+                                        )}
+                                        {!openErrorModal && !openZeroPersonModal && (
+                                            <DynamicModal
+                                                open={openDeleteModal}
+                                                close={closeModal}
+                                                message={message}
+                                                onConfirm={() => handleDeleteUser()}
+                                                isOkConfirm={isOkModal}
+                                            />
+                                        )}
                                     </li>
                                 ))}
                             </ul>
+
                         </Typography>
                     </CardContent>
                 </Card>
