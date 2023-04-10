@@ -1,6 +1,6 @@
 import { Accordion, AccordionSummary, Box, Button, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, AccordionDetails } from "@mui/material";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
 import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembersListAccordian";
@@ -31,8 +31,14 @@ const SiteAdmin = () => {
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
     const [archriveTeam, setarchriveTeam] = useState<Team>();
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
 
+    const list: string[] = [];
 
+    var tId = parseInt(list[0]);
+    if (list[0] !== null) {
+        tId = parseInt(list[0]);   // parse the string back to a number.
+    }
 
     const accessToken = localStorage.getItem("access_token");
 
@@ -120,6 +126,14 @@ const SiteAdmin = () => {
                 // Handle error if needed
             }
         };
+        const getUser = async () => {
+            await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
+                setLoggedInUserId(response?.data?.id)
+            }).catch((error) => {
+                console.log("There was an error retrieving user", error)
+            })
+
+        }
 
         currentUser()
         donationTotalPerTeam()
@@ -208,6 +222,15 @@ const SiteAdmin = () => {
                                                 variant="contained"
                                                 className="UpdateTeamButtonDetails"
                                                 type="submit"
+                                                onClick={() =>
+                                                    navigate({
+                                                        pathname: "/EditTeam",
+                                                        search: `?${createSearchParams({
+                                                            teamId: `${tId}`,
+                                                            userId: `${loggedInUserId}`,
+                                                        })}`,
+                                                    })
+                                                }
                                             >Update
                                             </Button>
                                             <Button
