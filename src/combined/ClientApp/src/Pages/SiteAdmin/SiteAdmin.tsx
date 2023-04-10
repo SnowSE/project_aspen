@@ -55,7 +55,7 @@ const SiteAdmin = () => {
         } catch (e) {
 
         }
-    }, [currentEvent?.id]);
+    }, [currentEvent?.id, setdonationsTotal]);
 
 
 
@@ -78,7 +78,7 @@ const SiteAdmin = () => {
             }
         }
         fetchData()
-    }, [currentEvent, donationsTotal, getDonationTotal, config.headers]);
+    }, [currentEvent, getDonationTotal, config.headers]);
 
    
     useEffect(() => {
