@@ -1,6 +1,6 @@
 import { Accordion, AccordionSummary, Box, Button, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, AccordionDetails } from "@mui/material";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import EventEditDeleteForm from "../../components/AdminComponents/EventEditDeleteForm";
 import TeamMembersListAccordian from "../../components/AdminComponents/TeamMembersListAccordian";
@@ -31,8 +31,7 @@ const SiteAdmin = () => {
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
     const [archriveTeam, setarchriveTeam] = useState<Team>();
-
-
+    const [loggedInUserId] = useState<number>();
 
     const accessToken = localStorage.getItem("access_token");
 
@@ -55,7 +54,7 @@ const SiteAdmin = () => {
         } catch (e) {
 
         }
-    }, [currentEvent?.id]);
+    }, [currentEvent?.id, setdonationsTotal]);
 
 
 
@@ -78,7 +77,7 @@ const SiteAdmin = () => {
             }
         }
         fetchData()
-    }, [currentEvent, donationsTotal, getDonationTotal, config.headers]);
+    }, [currentEvent, getDonationTotal, config.headers]);
 
    
     useEffect(() => {
@@ -208,6 +207,15 @@ const SiteAdmin = () => {
                                                 variant="contained"
                                                 className="UpdateTeamButtonDetails"
                                                 type="submit"
+                                                onClick={() =>
+                                                    navigate({
+                                                        pathname: "/EditTeam",
+                                                        search: `?${createSearchParams({
+                                                            teamId: `${t.id}`,
+                                                            userId: `${loggedInUserId}`,
+                                                        })}`,
+                                                    })
+                                                }
                                             >Update
                                             </Button>
                                             <Button

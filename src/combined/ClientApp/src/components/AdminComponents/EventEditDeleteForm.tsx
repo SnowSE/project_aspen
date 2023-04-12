@@ -185,7 +185,7 @@ const EventEditDeleteForm = () => {
                         variant="contained"
                         className="DeleteButtonDetails"
                         type="submit"
-                        onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to archive " + updatedEvent.title + "?")}}
+                        onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to archive this event: " + updatedEvent.title + "?")}}
                     >
                          Archive
 
