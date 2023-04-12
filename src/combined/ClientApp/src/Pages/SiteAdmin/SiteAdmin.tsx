@@ -31,14 +31,7 @@ const SiteAdmin = () => {
     const [donationsTotal, setdonationsTotal] = useState<number>(0.0);
     const [progressBarIsUptodate, setprogressBarIsUptodate] = useState<boolean>(false);
     const [archriveTeam, setarchriveTeam] = useState<Team>();
-    const [loggedInUserId, setLoggedInUserId] = useState<number>();
-
-    const list: string[] = [];
-
-    var tId = parseInt(list[0]);
-    if (list[0] !== null) {
-        tId = parseInt(list[0]);   // parse the string back to a number.
-    }
+    const [loggedInUserId] = useState<number>();
 
     const accessToken = localStorage.getItem("access_token");
 
@@ -126,14 +119,6 @@ const SiteAdmin = () => {
                 // Handle error if needed
             }
         };
-        const getUser = async () => {
-            await axios.get(process.env.PUBLIC_URL + '/api/user', config).then((response) => {
-                setLoggedInUserId(response?.data?.id)
-            }).catch((error) => {
-                console.log("There was an error retrieving user", error)
-            })
-
-        }
 
         currentUser()
         donationTotalPerTeam()
@@ -226,7 +211,7 @@ const SiteAdmin = () => {
                                                     navigate({
                                                         pathname: "/EditTeam",
                                                         search: `?${createSearchParams({
-                                                            teamId: `${tId}`,
+                                                            teamId: `${t.id}`,
                                                             userId: `${loggedInUserId}`,
                                                         })}`,
                                                     })
