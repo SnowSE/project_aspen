@@ -1,8 +1,6 @@
 name: Push to Docker Hub
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*.*'
   workflow_dispatch:
