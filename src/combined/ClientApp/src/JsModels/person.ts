@@ -3,10 +3,12 @@ export default class Person {
   authID: string;
   name: string;
   bio: string;
-  constructor(authID: string, name: string, bio: string, id?: number) {
+  nickName: string;
+  constructor(authID: string, name: string, bio: string, nickName:string, id?: number) {
     this.id = id ?? -1;
     this.authID = authID;
     this.name = name;
-    this.bio = bio;
+      this.bio = bio;
+      this.nickName = nickName;
   }
 }

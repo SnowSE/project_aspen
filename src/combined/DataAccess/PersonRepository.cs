@@ -3,8 +3,8 @@ namespace Api.DataAccess;
 public interface IPersonRepository
 {
     Task<bool> ExistsAsync(long id);
-    Task<Person> AddAsync(string name, string bio);
-    Task<Person> AddAsync(string name, string bio, string authID);
+    Task<Person> AddAsync(string name, string bio, string nickname);
+    Task<Person> AddAsync(string name, string bio, string authID, string nickname);
     Task DeleteAsync(long id);
     Task<Person> EditAsync(Person e);
     Task<Person> GetByIDAsync(long id);
@@ -27,24 +27,26 @@ public class PersonRepository : IPersonRepository
         return await context.Persons.AnyAsync(e => e.ID == id);
     }
 
-    public async Task<Person> AddAsync(string name, string bio)
+    public async Task<Person> AddAsync(string name, string bio, string nickname)
     {
         var dbPerson = new DbPerson()
         {
             Name = name,
             Bio = bio,
-            AuthID = Guid.NewGuid().ToString()
+            AuthID = Guid.NewGuid().ToString(),
+            Nickname = nickname
         };
         return await addDBPersonAsync(dbPerson);
     }
 
-    public async Task<Person> AddAsync(string name, string bio, string authID)
+    public async Task<Person> AddAsync(string name, string bio, string authID, string nickname)
     {
         var dbPerson = new DbPerson()
         {
             Name = name,
             Bio = bio,
             AuthID = authID,
+            Nickname = nickname
         };
         return await addDBPersonAsync(dbPerson);
     }

@@ -3,8 +3,6 @@
 public record DbDonation
 {
     public long ID { get; init; }
-    public long EventID { get; init; }
-    public DbEvent Event { get; init; }
     public long? TeamID { get; init; }
     public DbTeam Team { get; init; }
     public long? PersonID { get; init; }
@@ -14,4 +12,5 @@ public record DbDonation
     public bool IsPledge { get; init; } = false;
     public Guid TransactionNumber { get; init; }
     public string? AuthorizationNumber { get; init; }
+    public string? LinkGuid { get; init; }
 }

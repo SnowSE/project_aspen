@@ -1,5 +1,6 @@
 ﻿using System.Text;
 namespace Api.Controllers;
+using Serilog;
 
 [ApiController]
 [Authorize]
@@ -33,7 +34,7 @@ If the current user doesn't have a Person record then one will be created for th
         catch (NotFoundException<Person>)
         {
             var name = User.Claims.Single(c => c.Type == "name").Value;
-            var person = await personRepository.AddAsync(name, null, emailAddress);
+            var person = await personRepository.AddAsync(name, null, emailAddress, "Bob");
             return mapper.Map<DtoPerson>(person);
         }
     }

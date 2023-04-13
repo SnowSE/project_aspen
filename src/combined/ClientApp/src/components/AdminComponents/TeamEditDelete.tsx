@@ -1,4 +1,4 @@
-import { Box, Button, styled, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
@@ -7,25 +7,6 @@ import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 
 
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'white !important',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'white !important',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'white !important',
-        },
-        '&:hover fieldset': {
-            borderColor: 'white !important',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'white !important',
-        },
-    },
-});
 const TeamEditDelete = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     useEffect(() => {
@@ -61,6 +42,7 @@ const TeamEditDelete = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
+                    false,
                     -1 // id
                 );
                 setCurrentEvent(defaultEvent);
@@ -96,25 +78,27 @@ const TeamEditDelete = () => {
         setCurrentEvent(updatedEvent);
     };
 
-    const deleteHandler = async (event: React.FormEvent) => {
+    const archiveHandler = async(event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
         } else {
             if (
                 window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
+                    "Are you sure you want to archive this event, it can't be undone?"
                 )
             ) {
                 try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
+                    updatedEvent.isArchived = true;
+                    setupdatedEvent(updatedEvent);
+                    await EventsService.UpdateEventViaAxios(updatedEvent);
                     nextCurrentEvent();
                     alert(
-                        "The deletion was successful, you will be redirect to Home page."
+                        "The archive was successful, you will be redirected to Home page."
                     );
-                    navigate("/");
+                    navigate(0);
                 } catch (e) {
-                    alert("Delete event failed");
+                    alert("Archive event failed");
                 }
             }
         }
@@ -123,7 +107,7 @@ const TeamEditDelete = () => {
     return (
         <Box >
             <form className="EventFormPosition" onSubmit={updateEventHandler} >
-                <CssTextField
+                <TextField
                     id="standard-helperText"
                     label="Event Title"
                     defaultValue={updatedEvent.title}
@@ -138,7 +122,7 @@ const TeamEditDelete = () => {
                 />
 
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Description"
                         defaultValue={updatedEvent.description}
@@ -153,7 +137,7 @@ const TeamEditDelete = () => {
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Location"
                         defaultValue={updatedEvent.location}
@@ -168,12 +152,12 @@ const TeamEditDelete = () => {
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         variant="standard"
                         id="standard-adornment-amount"
                         type="number"
                         label="Amount"
-                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon sx={{ color: 'white' }} />) }}
+                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon className="MoneyOutlineIcon" />) }}
                         defaultValue={updatedEvent.donationTarget}
                         onChange={(event) => {
                             setupdatedEvent((updateEvent) => ({
@@ -196,9 +180,9 @@ const TeamEditDelete = () => {
                         variant="contained"
                         className="DeleteButtonDetails"
                         type="button"
-                        onClick={deleteHandler}
+                        onClick={archiveHandler}
                     >
-                        Delete
+                        Archive
 
                     </Button>
                 </Box>

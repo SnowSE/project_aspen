@@ -2,19 +2,19 @@ import React, { useEffect, useState,useContext } from 'react';
 import { TeamCard } from './Interfaces';
 import { getTeamsList } from './TeamServices';
 import { EventContext } from '../../App';
+import Team from '../../JsModels/team';
 
 
 export function TeamsListPage() {
-    const [teamsList, setTeams] = useState<typeof TeamCard[]>([]);
+    const [teamsList, setTeams] = useState<typeof Team[]>([]);
     const { currentEvent }  = useContext(EventContext);
        
     useEffect(() => {
         const fetchData = async () => {
-            if (!currentEvent.id) {
-                console.log("No current event found!")
+            if (!currentEvent?.id) {
                 return;
             }
-            const teams = await getTeamsList(currentEvent.id)
+            const teams = await getTeamsList(currentEvent?.id)
             setTeams(teams)
         }
         
@@ -35,8 +35,9 @@ export function TeamsListPage() {
                         ownerID={t.ownerID}
                         eventID={t.eventID}
                         donationTarget={t.donationTarget}
-                        isPublic={t.isPublic }
-                        registrations={t.registrations }
+                        persons={t.persons}
+                        isArchived={t.isArchived}
+                        WelcomeMessage={t.WelcomeMessage}
                         key={t.id}
 
                     /> 

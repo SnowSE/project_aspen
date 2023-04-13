@@ -11,9 +11,9 @@ public record DtoTeam
     public string Name { get; set; }
     public string Description { get; set; }
     public string MainImage { get; set; }
+    public string WelcomeMessage { get; set; }
     public long OwnerID { get; set; }
     public long EventID { get; set; }
     public decimal DonationTarget { get; set; }
-    public bool IsPublic { get; set; } = true;
-    public List<DtoRegistration>? Registrations { get; set; }
+    public bool IsArchived { get; set; } = false;
 }

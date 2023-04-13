@@ -7,11 +7,12 @@ public interface IDonationRepository
     Task EditAsync(Donation e);
     public Task<bool> ExistsAsync(long id);
     Task<Donation> GetByIdAsync(long id);
+
     Task<IEnumerable<Donation>> GetAllAsync();
     Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId);
-    Task<IEnumerable<Donation>> GetByTeamIdAsync(long eventId, long teamId);
-    Task<decimal> GetTeamDonationSum(long eventID, long teamID);
-    Task<decimal> GetEventDonationSum(long eventID);
+    Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId);
+    Task<decimal> GetTeamDonationSum(long teamID);
+    Task<decimal> GetEventDonationSumAsync(long eventid);
 }
 
 public class DonationRepository : IDonationRepository
@@ -69,33 +70,64 @@ public class DonationRepository : IDonationRepository
 
     public async Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId)
     {
-        var donations = await context.Donations
-            .Include(d => d.Team)
-            .Include(d => d.Person)
-            .Where(d => d.EventID == eventId).ToListAsync();
+        var teams = await context.Teams.Where(t => t.EventID == eventId).ToListAsync();
+        var donations = new List<DbDonation>();
+        foreach (var team in teams)
+        {
+            var teamDonations = await context.Donations.Where(d => d.TeamID == team.ID).ToListAsync();
+
+            donations.AddRange(teamDonations);
+
+        }
+       
 
         return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
     }
 
-    public async Task<IEnumerable<Donation>> GetByTeamIdAsync(long eventId, long teamId)
+    public async Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId)
     {
         var donations = await context.Donations
             .Include(d => d.Team)
             .Include(d => d.Person)
-            .Where(d => d.EventID == eventId && d.TeamID == teamId).ToListAsync();
+            .Where(d => d.TeamID == teamId).ToListAsync();
 
         return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
     }
 
-    public async Task<decimal> GetTeamDonationSum(long eventID, long teamID)
+    public async Task<decimal> GetTeamDonationSum(long teamID)
     {
-        var sum = await context.Donations.Where(d => d.EventID == eventID && d.TeamID == teamID).SumAsync(d => d.Amount);
-        return sum;
+        
+        var sumTeam = await context.Donations.Where(d => d.TeamID == teamID).SumAsync(d => d.Amount);
+        var wholeTeam = await context.PersonTeamAssociations.Where(p => p.TeamId == teamID).ToListAsync();
+        decimal sumReferal = 0;
+
+        foreach (var person in wholeTeam)
+        {
+            sumReferal += await GetDonationSumRefererAsync(teamID, person.PersonId);
+        }
+
+        return sumTeam + sumReferal;
     }
 
-    public async Task<decimal> GetEventDonationSum(long eventID)
+    public async Task<decimal> GetDonationSumRefererAsync(long teamID, long personID)
     {
-        var sum = await context.Donations.Where(d => d.EventID == eventID).SumAsync(d => d.Amount);
+
+        var eventId = await context.Teams.Where(t => t.ID == teamID).Select(t => t.EventID).FirstOrDefaultAsync();
+        var listLinks = await context.Links.Where(l => l.EventID == eventId && l.PersonID == personID).ToListAsync();
+        var listDonations = new List<DbDonation>();
+        foreach (var link in listLinks)
+        {
+            var donations = await context.Donations.Where(d => d.LinkGuid == link.LinkGUID).ToListAsync();
+            listDonations.AddRange(donations);
+        }
+        var sumReferer = listDonations.Sum(d => d.Amount);
+        return (decimal)sumReferer;
+    }
+    public async Task<decimal> GetEventDonationSumAsync(long eventid)
+    {
+        var alldonations = await GetByEventIdAsync(eventid);
+
+        var sum = alldonations.Sum(d => d.Amount);
         return sum;
     }
 }

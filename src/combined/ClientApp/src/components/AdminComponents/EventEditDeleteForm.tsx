@@ -1,38 +1,28 @@
-import { Box, Button, styled, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventContext } from "../../App";
 import Event from "../../JsModels/event";
 import { EventsService } from "../../services/Events/EventsService";
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import DynamicModal from "../DynamicModal";
 
 
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'white !important',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'white !important',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'white !important',
-        },
-        '&:hover fieldset': {
-            borderColor: 'white !important',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'white !important',
-        },
-    },
-});
 const EventEditDeleteForm = () => {
     const { currentEvent, setCurrentEvent } = useContext(EventContext);
     useEffect(() => {
     }, [currentEvent]);
     const [updatedEvent, setupdatedEvent] = useState<Event>(currentEvent);
+    const [openArchiveModal, setopenArchiveModal] = useState(false);
+    const [isOkModal, setIsOkModal] = useState(false);
+    const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
+    const closeModal = () => {
+        setopenArchiveModal(false)
+        setIsOkModal(false)
+        setMessage("")
+    }
 
     const nextCurrentEvent = async () => {
         var allEvents = await fetch(`${process.env.PUBLIC_URL}/api/events`);
@@ -61,7 +51,8 @@ const EventEditDeleteForm = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
-                    -1 // id
+                    false, 
+                    -1,//id
                 );
                 setCurrentEvent(defaultEvent);
             }
@@ -81,41 +72,35 @@ const EventEditDeleteForm = () => {
             alert("Create New Event failed");
         }
     };
+
     const updateEventHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         if (currentEvent.id === -1) {
             addNewEventHandler(event);
         }
-
         try {
             await EventsService.UpdateEventViaAxios(updatedEvent);
-            alert("Update was successful");
+            
         } catch (e) {
             console.log("Update event failed: " + e);
         }
         setCurrentEvent(updatedEvent);
     };
 
-    const deleteHandler = async (event: React.FormEvent) => {
-        event.preventDefault();
+    const archiveHandler = async () => {
+        //event.preventDefault();
         if (currentEvent.id === -1) {
             alert("There are no events to delete");
-        } else {
-            if (
-                window.confirm(
-                    "Are you sure you want to delete this event, it can't be undone?"
-                )
-            ) {
-                try {
-                    await EventsService.DeleteEventViaAxios(currentEvent.id);
-                    nextCurrentEvent();
-                    alert(
-                        "The deletion was successful, you will be redirect to Home page."
-                    );
-                    navigate("/");
-                } catch (e) {
-                    alert("Delete event failed");
-                }
+        } 
+        else {
+            try {
+                updatedEvent.isArchived = true;
+                setupdatedEvent(updatedEvent);
+                await EventsService.UpdateEventViaAxios(updatedEvent);
+                nextCurrentEvent();
+                navigate(0);
+            } catch (e) {
+                alert("Archive event failed");
             }
         }
     };
@@ -123,7 +108,7 @@ const EventEditDeleteForm = () => {
     return (
         <Box >
             <form className="EventFormPosition" onSubmit={updateEventHandler} >
-                <CssTextField
+                <TextField
                     id="standard-helperText"
                     label="Event Title"
                     defaultValue={updatedEvent.title}
@@ -134,11 +119,12 @@ const EventEditDeleteForm = () => {
                             title: event.target.value,
                         }));
                     }}
+                    InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel"}}
                     InputProps={{ className: "EventEditDeleteFormDetails" }}
                 />
 
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Description"
                         defaultValue={updatedEvent.description}
@@ -150,10 +136,11 @@ const EventEditDeleteForm = () => {
                             }));
                         }}
                         InputProps={{ className: "EventEditDeleteFormDetails" }}
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         id="standard-helperText"
                         label="Event Location"
                         defaultValue={updatedEvent.location}
@@ -165,15 +152,17 @@ const EventEditDeleteForm = () => {
                             }));
                         }}
                         InputProps={{ className: "EventEditDeleteFormDetails" }}
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
                     />
                 </Box>
                 <Box>
-                    <CssTextField
+                    <TextField
                         variant="standard"
                         id="standard-adornment-amount"
                         type="number"
                         label="Amount"
-                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon sx={{ color: 'white' }} />) }}
+                        InputLabelProps={{ className: "EventEditDeleteFormDetailsLabel" }}
+                        InputProps={{ inputProps: { min: 0 }, className: "EventEditDeleteFormDetails", startAdornment: (<AttachMoneyOutlinedIcon className="MoneyOutlineIcon" />) }}
                         defaultValue={updatedEvent.donationTarget}
                         onChange={(event) => {
                             setupdatedEvent((updateEvent) => ({
@@ -195,13 +184,20 @@ const EventEditDeleteForm = () => {
                     <Button
                         variant="contained"
                         className="DeleteButtonDetails"
-                        type="button"
-                        onClick={deleteHandler}
+                        type="submit"
+                        onClick={() => {setopenArchiveModal(true); setMessage("Are you sure you want to archive this event: " + updatedEvent.title + "?")}}
                     >
-                        Delete
+                         Archive
 
                     </Button>
-                </Box>
+                    <DynamicModal
+                        open={openArchiveModal}
+                        close={closeModal}
+                        message={message}
+                        onConfirm={archiveHandler}
+                        isOkConfirm={isOkModal}
+                    />
+                 </Box>
             </form>
         </Box>
 

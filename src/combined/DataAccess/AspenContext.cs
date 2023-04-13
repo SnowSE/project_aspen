@@ -1,3 +1,5 @@
+using combined.Models.DbModels;
+
 namespace Api.DataAccess;
 
 public class AspenContext : DbContext
@@ -8,22 +10,24 @@ public class AspenContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<DbPageData>(entity =>
-        {
-            entity.HasIndex(e => e.Key).IsUnique();
-        });
-
         builder.Entity<DbDonation>(entity =>
         {
             entity.Property(nameof(DbDonation.IsPledge)).HasDefaultValue(false);
         });
+
+        builder.Entity<DbPersonTeamAssociation>()
+            .HasIndex(e => new { e.PersonId, e.EventId })
+            .IsUnique();
+
     }
 
-    public DbSet<DbPageData> PageData { get; set; }
     public DbSet<DbEvent> Events { get; set; }
     public DbSet<DbTeam> Teams { get; set; }
-    public DbSet<DbRegistration> Registrations { get; set; }
-    public DbSet<DbPersonRegistration> PersonRegistrations { get; set; }
     public DbSet<DbPerson> Persons { get; set; }
     public DbSet<DbDonation> Donations { get; set; }
+    public DbSet<DbLink> Links { get; set; }
+    public DbSet<DbLinkRecord> LinkRecords { get; set; }
+    public DbSet<DbPaymentFailure> PaymentFailures { get; set; }
+    public DbSet<DbPersonTeamAssociation> PersonTeamAssociations { get; set; }
+
 }

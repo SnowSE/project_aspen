@@ -7,11 +7,12 @@ public class Person
         ID = id;
         Name = name;
     }
-    public Person(long id, string name, string bio)
+    public Person(long id, string name, string bio, string nickName)
     {
         ID = id;
         Name = name;
         Bio = bio;
+        Nickname = nickName;
     }
     public long ID { get; init; }
 
@@ -20,6 +21,7 @@ public class Person
     public string Name { get; init; }
 
     public string? Bio { get; init; }
+    public string Nickname { get; init; }
 }
 
 public static class PersonExtensions

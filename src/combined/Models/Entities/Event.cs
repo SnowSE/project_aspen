@@ -2,22 +2,24 @@ namespace Api.Models.Entities;
 #nullable enable
 public class Event
 {
-    public Event(long id, string title, string description, DateTime date)
+    public Event(long id, string title, string description, DateTime date, bool isArchived)
     {
         ID = id;
         Title = title;
         Description = description;
         Date = date;
+        IsArchived = isArchived;
     }
-    public Event(long id, string title, string description, DateTime date, string location)
+    public Event(long id, string title, string description, DateTime date, string location, bool isArchived)
     {
         ID = id;
         Title = title;
         Description = description;
         Date = date;
         Location = location;
+        IsArchived = isArchived;
     }
-    public Event(long id, string title, string description, DateTime date, string location, string mainImage)
+    public Event(long id, string title, string description, DateTime date, string location, string mainImage, bool isArchived)
     {
         ID = id;
         Title = title;
@@ -25,6 +27,7 @@ public class Event
         Date = date;
         Location = location;
         MainImage = mainImage;
+        IsArchived = isArchived;
     }
 
     public long ID { get; init; }
@@ -39,18 +42,20 @@ public class Event
 
     public string? MainImage { get; init; }
     public decimal DonationTarget { get; init; }
+    public bool IsArchived { get; init; }
+
 }
 
 public static class EventExtensions
 {
-    public static Event WithTitleDescriptionAndDate(this Event currentEvent, string newTitle, string newDescription, DateTime newDate)
+    public static Event WithTitleDescriptionAndDate(this Event currentEvent, string newTitle, string newDescription, DateTime newDate, bool archived)
     {
-        return new Event(currentEvent.ID, newTitle, newDescription, newDate);
+        return new Event(currentEvent.ID, newTitle, newDescription, newDate, archived);
     }
 
-    public static Event WithLocation(this Event currentEvent, string newLocation)
+    public static Event WithLocation(this Event currentEvent, string newLocation, bool archived)
     {
-        return new Event(currentEvent.ID, currentEvent.Title, currentEvent.Description, currentEvent.Date, newLocation);
+        return new Event(currentEvent.ID, currentEvent.Title, currentEvent.Description, currentEvent.Date, newLocation, archived);
     }
 
     public static Event WithPrimaryImageUrl(this Event currentEvent, string newPrimaryImageUrl)
@@ -61,7 +66,8 @@ public static class EventExtensions
             currentEvent.Title,
             currentEvent.Date,
             currentEvent.Location,
-            newPrimaryImageUrl);
+            newPrimaryImageUrl,
+            currentEvent.IsArchived);
     }
 
     public static Event WithDonationTarget(this Event currentEvent, decimal donationTarget)
@@ -72,7 +78,8 @@ public static class EventExtensions
             currentEvent.Title,
             currentEvent.Date,
             currentEvent.Location,
-            currentEvent.MainImage)
+            currentEvent.MainImage,
+            currentEvent.IsArchived)
         {
             DonationTarget = donationTarget
         };

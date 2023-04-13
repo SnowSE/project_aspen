@@ -37,7 +37,9 @@ const CreateEventForm = () => {
 
             if (closesEventDate.length > 0) {
                 setCurrentEvent(closesEventDate[0]);
-            } else {
+            }
+        }
+             else {
                 const defaultEvent = new Event(
                     new Date(),
                     "", // location
@@ -45,11 +47,11 @@ const CreateEventForm = () => {
                     "", // description!
                     "There are currently no upcoming events.",
                     0, // donationTarget
+                    false,
                     -1 // id
                 );
                 setCurrentEvent(defaultEvent);
             }
-        }
         };
 
         const createEventHandler = async (event: React.FormEvent) => {
@@ -61,7 +63,8 @@ const CreateEventForm = () => {
                 location: eventLocation,
                 description: eventDescription,
                 mainImage: eventMainImage,
-                donationTarget: eventDonationTarget
+                donationTarget: eventDonationTarget,
+                isArchived:false
             }
 
             try {
@@ -88,7 +91,7 @@ const CreateEventForm = () => {
 
         return (
             <>
-                <h1 className="EventHeader">Create Event here</h1>
+                <h1 className="EventHeader">Create New Event </h1>
                 <div className="FormEventPageContentPosition">
                     <Form onSubmit={createEventHandler} className="FormEventBorder">
                         <FormGroup>
@@ -106,6 +109,9 @@ const CreateEventForm = () => {
                                             data-testid="eventTitleInput"
                                             onChange={e => setEventTitle(e.currentTarget.value)}
                                         />
+                                        <FormText>
+                                            This will be used on the home page, and admin dashboard
+                                        </FormText>
                                     </FormGroup>
                                 </Col>
 
@@ -168,6 +174,9 @@ const CreateEventForm = () => {
                                         onChange={e => setEventDonationTarget(Number(e.currentTarget.value))}
 
                                     />
+                                    <FormText>
+                                        This will be used on the home page and admin dashboard
+                                    </FormText>
                                 </Col>
                             </Row>
                         </FormGroup>
@@ -176,7 +185,7 @@ const CreateEventForm = () => {
                                 <Col md={6} xs={8}>
 
                                     <Label>
-                                        Event Start Date
+                                        Event End Date - When current event passes end date nearest upcoming event is then shown.
                                     </Label>
                                     <Input
                                         type="date"
@@ -200,14 +209,20 @@ const CreateEventForm = () => {
                                         onChange={e => setEventMainImage(e.target.value)}
                                     />
                                     <FormText>
-                                        Select an image that will be displayed as your team's logo
+                                        Select an image that will be displayed on the event page.
                                     </FormText>
                                 </Col>
                             </Row>
                         </FormGroup>
                         <Col md={12} xs={8} className="FormEventButtonPosition">
-
-                            <Button variant='contained' disabled={disableSubmit} className="FormEventButtonSubmit" type="submit" >Submit</Button>
+                            <Button
+                                variant='contained'
+                                disabled={disableSubmit}
+                                className="FormEventButtonSubmit"
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
                         </Col>
                     </Form>
 

@@ -1,4 +1,4 @@
-import Registration from "./registration";
+import Person from "./person"
 
 export default class Team {
   id?: number;
@@ -8,8 +8,10 @@ export default class Team {
   ownerID: number;
   eventID: number;
   donationTarget: number;
-  isPublic: boolean;
-  registrations?: Registration[];
+  isArchived: boolean;
+  WelcomeMessage: string;
+  persons?: Person[];
+
   constructor(
     name: string,
     description: string,
@@ -18,18 +20,22 @@ export default class Team {
     eventId: number,
     id: number,
     donationTarget: number,
-     isPublic: boolean,
-     registrations: Registration[],
+    isArchived: boolean,
+    WelcomeMessage: string,
+
+     persons: Person[],
 
   ) {
     this.id = id ?? -1;
     this.name = name;
     this.description = description;
+    this.WelcomeMessage = WelcomeMessage;
     this.mainImage = mainImage;
     this.ownerID = owenerId;
     this.eventID = eventId;
     this.donationTarget = donationTarget;
-    this.isPublic = isPublic;
-    this.registrations= [];
+      this.persons = [];
+      this.isArchived = isArchived;
+
   }
 }

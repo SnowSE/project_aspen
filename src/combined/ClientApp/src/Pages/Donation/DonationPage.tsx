@@ -4,13 +4,18 @@ import {
     Typography,
 } from '@mui/material';
 import StripeContainer from '../../components/Stripe/StripeContainer';
+import SharingButtonCustomLink from '../../components/Share/SharingButtonCustomLink';
+import { useLocation } from 'react-router-dom';
 
+interface Props {
+    state?: {
+        GUID: string;
+    };
+}
 
-
-
-export function DonationPage() {
-
-
+export default function DonationPage(props: Props) {
+    const { state } = useLocation();
+    const personGUID = state?.GUID.personGUID || '';
     return (
         <Box >
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -22,11 +27,11 @@ export function DonationPage() {
                     Donation Page (1 of 2)
                 </Typography>
             </Box>
-            <br />
-            
-                <br/>
-            
-            <StripeContainer />
+
+            <StripeContainer personGUID={personGUID} />
+            <SharingButtonCustomLink
+            defaultMessage="Come donate to help end world hunger"
+            defaultSubject="Help those who dont have enough food" />
         </Box>
     );
 }

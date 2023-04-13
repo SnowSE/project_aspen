@@ -6,6 +6,6 @@ public record DbPerson
     public string AuthID { get; init; }
     public string Name { get; init; }
     public string? Bio { get; init; }
+    public string Nickname { get; init; }
 
-    public virtual ICollection<DbPersonRegistration> PersonRegistrations { get; init; }
 }

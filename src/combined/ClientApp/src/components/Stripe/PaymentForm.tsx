@@ -1,115 +1,103 @@
-import React, {  useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useStripe } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import { Box, TextField } from '@mui/material';
-import { Button } from 'reactstrap';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { EventContext } from '../../App';
 
+interface Props {
+    personGUID?: string;
+}
 
-export default function PaymentForm() {
+const PaymentForm: React.FC<Props> = (props) => {
 
     const stripe = useStripe()
-
-    const { currentEvent, loading } = useContext(EventContext);
+    const { currentEvent } = useContext(EventContext);
 
     const [donationAmount, setDonationAmount] = useState<number>(0)
-    const [teamId, setTeamId] = useState(null)
+    const [teamId, setTeamId] = useState<number>()
     const [teamName, setTeamName] = useState<string>('')
-    const [userId, setUserId] = useState(null)
-    const [userName, setUserName] = useState<string>('')
+    const linkGuid = props.personGUID
+    const [userId, setUserId] = useState<string | number | null | undefined>(null);
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
-    const [donationSubmitName, setDonationSubmitName] = useState<string>('')
-    const [donationEmail, setDonationEmail] = useState<string>('')
+    const [donationSubmitName, setDonationSubmitName] = useState<string | null>('')
+    const [donationEmail, setDonationEmail] = useState<string | null>('')
     const [donationPhoneNumber, setDonationPhoneNumber] = useState<string>('')
 
     const BaseUrl = process.env.PUBLIC_URL
     useEffect(() => {
-
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         };
 
+    const getUser = async () => {
+        await axios.get(BaseUrl + '/api/user', config).then((response) => {
+            setUserId(response?.data?.id)
+        }).catch((error) => {
+        })
+    }
+    const getTeam = async () => {
+        await axios.get(BaseUrl + '/api/PersonTeamAssociation/' + userId + '/' + currentEvent.id).then((response) => {
+            setTeamId(response.data.id)
+        }).catch((error) => {
+        })
+    }
 
-        const getUser = async () => {
-            await axios.get(BaseUrl + '/api/user', config).then((response) => {
-                setUserId(response?.data?.id)
-                setUserName(response?.data?.name)
-            }).catch((error)=> {
-                setUserName("Anonymous")
-            })
-        }
-
-
-        const getTeam = async () => {
-            await axios.get(BaseUrl + '/api/Person/' + userId + '/registrations').then((response) => {
-                response.data.forEach((registration: any) => {
-                    if (registration.ownerID === userId) {
-
-                        setTeamId(registration.teamID)
-                    }
-
-                })  
-            }).catch((error) => { 
-             })
-        }
-
-        const getTeamName = async () => {
-            await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
-                setTeamName(response.data.name)
-            }).catch((error)=> {
-                setTeamName("Anonymous")
-            })
-        }
+    const getTeamName = async () => {
+        await axios.get(BaseUrl + '/api/teams/' + teamId).then((response) => {
+            setTeamName(response.data.name)
+        }).catch((error) => {
+            setTeamName("Default")
+        })
+    }
 
         const serviceCalls = async () => {
             await getUser()
-            await getTeam()
-            await getTeamName()
+            if (linkGuid !== "" && userId === null) {
+                console.log(linkGuid)
+                setTeamName("Default")
+
+            }
+            else {
+
+                await getTeam()
+                await getTeamName()
+            }
         }
 
-        serviceCalls()
-
-    }, [teamId, userId, loading, BaseUrl])
-
-    useEffect(() => {
-        console.log("here in second use effect")
-        if(donationAmount === 0 || donationEmail.trim().length === 0){
+        if (donationAmount === 0 || donationEmail!.trim().length === 0) {
             setCanSubmit(false)
         }
-        
+
         else {
             setCanSubmit(true)
         }
+        serviceCalls()
 
-    }, [donationAmount, donationEmail])
+    }, [teamId, BaseUrl, linkGuid, userId, donationAmount, donationEmail, currentEvent])
 
-   
-    
+
+    useEffect(() => {
+        setDonationSubmitName(localStorage.getItem("LoggedInUser"))
+        setDonationEmail(localStorage.getItem("LoggedInEmail"))
+    }, [])
+
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // const paymentMethodResult = await stripe?.createPaymentMethod({
-        //     type: "card",
-        //     card: elements!.getElement(CardElement)!
-        // })
-
-        // console.log(paymentMethodResult)
-        // if (!paymentMethodResult?.error) {
-        // const id = paymentMethodResult?.paymentMethod.id
-
-        await axios.post("https://engineering.snow.edu/aspen/new/api/stripe",
+        await axios.post(`${BaseUrl}/api/stripe`,
             {
-                amount: (donationAmount * 1000),
+                amount: (donationAmount * 100),
                 id: "paymentid",
                 teamName: teamName,
                 teamId: teamId,
                 personId: userId,
-                eventId: currentEvent.id,
-                personName: userName, 
-                donationName: donationSubmitName, 
-                donationEmail: donationEmail, 
+                personName: donationSubmitName,
+                donationName: donationSubmitName,
+                donationEmail: donationEmail,
                 donationPhoneNumber: donationPhoneNumber,
-                donationDateTime: new Date()
+                linkGuid: linkGuid
             }).then((response) => {
                 const session = response.data
                 console.log(session)
@@ -119,32 +107,32 @@ export default function PaymentForm() {
 
 
     }
-    function updateMealsTextField(value:any) {
+    function updateDollarAmmountTextField(value: any) {
         setDonationAmount(value);
     }
 
-
     return (
         <>
+            <Typography sx={{display:'flex', justifyContent:'center', mb:2}}>Every $5 donated is equivalent to 1 meal</Typography>
             <Box sx={{ display: 'grid', margin: 'auto', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: '10px', width: '215px', }}>
-                <Button onClick={() => updateMealsTextField(100)}>100 Meals</Button>
-                <Button onClick={() => updateMealsTextField(200)}>200 Meals</Button>
-                <Button onClick={() => updateMealsTextField(300)}>300 Meals</Button>
-                <Button onClick={() => updateMealsTextField(800)}>800 Meals</Button>
-                <Button onClick={() => updateMealsTextField(1000)}>1000 Meals</Button>
-                <Button onClick={() => updateMealsTextField(2000)}>2000 Meals</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(1)}>$1</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(5)}>$5</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(10)}>$10</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(20)}>$20</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(50)}>$50</Button>
+                <Button className="DonationAmountButton" onClick={() => updateDollarAmmountTextField(100)}>$100</Button>
             </Box>
             <form onSubmit={handleSubmit} style={{ justifyContent: 'center' }}>
-                
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <TextField 
+
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+                    <TextField
                         id="meals-textfield"
-                        label="Meals"
+                        label="$ to donate"
                         type="number"
                         required={true}
                         InputLabelProps={{
                             shrink: true,
-                            
+
                         }}
                         InputProps={{
                             inputProps: { min: 0 }
@@ -152,10 +140,10 @@ export default function PaymentForm() {
                         variant="filled"
                         value={donationAmount}
 
-                            onChange={(e)=> {setDonationAmount(Number(e.target.value))}}
+                        onChange={(e) => { setDonationAmount(Number(e.target.value)) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -168,12 +156,13 @@ export default function PaymentForm() {
                         InputProps={{
                             inputProps: { min: 0 }
                         }}
+                        
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInUser")}
-                        onChange={(e)=> setDonationSubmitName(e.target.value)}
+                        onChange={(e) => setDonationSubmitName(e.target.value)}
                     />
                 </Box>
-<br></br>
+                <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
@@ -189,10 +178,10 @@ export default function PaymentForm() {
                         }}
                         variant="filled"
                         defaultValue={localStorage.getItem("LoggedInEmail")}
-                        onChange={(e) => {setDonationEmail(e.target.value)}}
+                        onChange={(e) => { setDonationEmail(e.target.value) }}
                     />
                 </Box>
-<br></br>
+                <br></br>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TextField
                         id="PhoneNumber"
@@ -212,21 +201,23 @@ export default function PaymentForm() {
                 <br></br>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {canSubmit  ? 
-                    <Button
-                    variant='contained'
-                    
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>
-                    :  <Button
-                    disabled = {true}
-                    sx={{ backgroundColor: "orange" }}>
-                        Donate Now
-                    </Button>   }
+                    {canSubmit ?
+                        <Button
+                            variant='contained'
+                            className="DonationSubmitButton"
+                            type='submit'
+                        >
+                            Donate Now
+                        </Button>
+                        : <Button
+                            disabled={true}
+                            className="DonationSubmitButton"
+                            type='submit'
+
+                        >
+                            Donate Now
+                        </Button>}
                 </Box>
-
-
 
             </form>
 
@@ -234,4 +225,4 @@ export default function PaymentForm() {
     );
 }
 
-
+export default PaymentForm;

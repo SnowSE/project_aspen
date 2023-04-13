@@ -1,27 +1,37 @@
 import { useContext } from "react";
-import {useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Confetti from 'react-confetti'
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { EventContext } from "../../App";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SharingButton from "../../components/Share/SharingButton";
 
 
+
+
 const SuccessfulDonation = () => {
 
-    const { personName, teamName, transactionId, amount, donationDateTime, email, phoneNumber } = useParams()
+    const { personName, teamName, transactionId, amount, email, dateTime } = useParams()
     const { currentEvent } = useContext(EventContext);
     const navigate = useNavigate();
 
+
+
+
+
     return (
-        <Box>
+
+        <Box className="SuccessfulDonationBorder">
             <Box sx={{ justifyContent: 'center' }}>
-                <CheckCircleOutlineIcon  />
+                <CheckCircleOutlineIcon />
             </Box>
-            {personName === "Anonymous" ?
+            {teamName === "Default" ?
                 <Box>
-                    <Confetti  />
-                    <h1 style={{ textAlign: 'center' }}>Thank you stranger for your donation</h1>
+                    <Confetti />
+                    <h1 style={{ textAlign: 'center' }}>Thank you {personName} for your donation</h1>
+                    <h6 style={{ textAlign: 'center', }}>Receipt # {transactionId}</h6>
+
+                    <br />
                 </Box>
                 :
                 <Box>
@@ -30,52 +40,56 @@ const SuccessfulDonation = () => {
                     <h1 style={{ textAlign: 'center' }}>
                         Thank you {personName} for your donation to the {teamName} team during {currentEvent?.title} event!
                     </h1>
+                    <h6 style={{ textAlign: 'center', }}>Transaction Id: {transactionId}</h6>
+                    <br />
                 </Box>
             }
-            <Divider />
-            <Box>
-                <Typography sx={{fontWeight: 'bold'} }>
-                    Summary:
-                </Typography>
-            </Box>
-            <Box>
-                <Typography>
-                    Contribution to: {currentEvent?.title}
-                </Typography>
-            </Box>
-            <Box>
-                <Typography>
-                    Amount: {amount}
-                </Typography>
-            </Box>
-            <Divider />
-            <Box>
-                <Typography>
-                    Date: {donationDateTime}
-                </Typography>
-            </Box>
-            <Box>
-                <Typography>
-                    Transaction ID: {transactionId}
-                </Typography>
-            </Box>
-            <Divider />
-            <Box>
-                <Typography>
-                    Name: {personName}
-                </Typography>
-            </Box>
-            <Box>
-                <Typography>
-                    Email: {email}
-                </Typography>
-            </Box>
-            <Box>
-                <Typography>
-                    Phone Number: {phoneNumber}
-                </Typography>
-            </Box>
 
+            <Grid container spacing={1}>
+                <Grid item xs={4} md = {4}>
+                    <Typography textAlign={"center"} fontWeight={"bold"}>
+                        Amount Paid
+                    </Typography>
+                </Grid>
+                <Grid item xs={4} md = {4}>
+                    <Typography textAlign={"center"} fontWeight={"bold"}>
+                        Date Paid
+                    </Typography>
+                </Grid>
+                <Grid item xs={4} md = {4}>
+                    <Typography textAlign={"center"} fontWeight={"bold"}>
+                        Email
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={4} md = {4}>
+                    <Box>
+                        <Typography textAlign={"center"}  fontSize={"25px"}>
+                            {'$ ' + amount + '.00'}
+                        </Typography>
+                    </Box>
+
+                </Grid>
+                <Grid item xs={4} md = {4}>
+                    <Box>
+                        <Typography textAlign={"center"} fontSize={"25px"}>
+                            {dateTime}
+                        </Typography>
+                    </Box>
+                </Grid>
+                <Grid item xs={4} md = {4}>
+                    <Box>
+                        <Typography textAlign={"center"}  fontSize={"25px"}>
+                            {email}
+                        </Typography>
+                    </Box>
+                </Grid>
+            </Grid>
+
+            <br/>
+            <br/>
+            <br/>
+            
             <Box className="DonateButtonPosition">
                 <Button onClick={() => navigate("/")} variant='contained'
                     data-testid={'homePageBtn'}
@@ -86,6 +100,7 @@ const SuccessfulDonation = () => {
             </Box>
 
         </Box>
+
     );
 }
 

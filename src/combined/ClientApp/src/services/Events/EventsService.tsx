@@ -26,10 +26,6 @@ export const EventsService = {
     UpdateEventViaAxios: async (updateEvent: AspenEvent): Promise<any> => {
         const res = await axios.put(`${BaseUrl}/api/events`, updateEvent, config);
         return res.data;
-    },
-    DeleteEventViaAxios: async (id: number): Promise<AspenEvent[]> => {
-        const res = await axios.delete(`${BaseUrl}/api/events/${id}`, config);
-        return res.data;
     }
 };
 

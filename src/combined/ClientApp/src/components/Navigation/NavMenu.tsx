@@ -18,6 +18,7 @@ const NavMenu = () => {
         { text: 'Add Event', href: '/createEvent' },
         { text: 'Admin Dashboard', href: '/AdminDashboard' },
         { text: 'Donate', href: '/Donate' },
+        { text: 'Teams', href: '/TeamsListPage' },
 
     ]
 

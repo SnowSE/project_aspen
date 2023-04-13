@@ -2,6 +2,8 @@ using Api.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Stripe;
+using Serilog;
+using Api.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +22,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AspenMapperProfile));
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<IPageDataRepository, PageDataRepository>();
-builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IAssetFileService, AssetFileService>();
+builder.Services.AddScoped<ILinkRepository, LinkRepository>();
+builder.Services.AddScoped<ILinkRecordRepository, LinkRecordRepository>();
+builder.Services.AddScoped<IPaymentFailureRepository, PaymentFailureRepository>();
+builder.Services.AddScoped<IPersonTeamAssoicationRepository, PersonTeamAssoicationRepository>();
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties;
@@ -51,7 +55,7 @@ builder.Services.AddAuthentication(options =>
 
     o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
-        ValidAudiences = new string[] { "aspen" },
+        ValidAudiences = new string[] { "aspen", "uma_authorization" },
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"]
@@ -109,6 +113,11 @@ builder.Services.AddDbContext<AspenContext>(options =>
 {
     var connectionString = builder.Configuration["ASPEN_CONNECTION_STRING"] ?? builder.Configuration.GetConnectionString("docker");
     options.UseNpgsql(connectionString);
+});
+
+builder.Host.UseSerilog((hostContext, services, configuration) => {
+    configuration.WriteTo.Console()
+    .WriteTo.File("logs/apsenLogs.txt", rollingInterval: RollingInterval.Day);
 });
 
 var app = builder.Build();
