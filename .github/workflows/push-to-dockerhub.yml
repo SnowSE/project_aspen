@@ -28,7 +28,7 @@ jobs:
     needs: [run-tests]
     env:
       IMAGE_NAME: snowcollege/aspen_api
-      DOCKERFILE: src/combined/Dockerfile
+      DOCKERFILE: combined/Dockerfile
       DOCKER_BUILDKIT: 1 
     steps:
       - name: checkout repo
