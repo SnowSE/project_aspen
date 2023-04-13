@@ -28,6 +28,7 @@ jobs:
     needs: [run-tests]
     env:
       IMAGE_NAME: snowcollege/aspen_api
+      DOCKERFILE: src/combined/Dockerfile
       DOCKER_BUILDKIT: 1 
     steps:
       - name: checkout repo
@@ -51,6 +52,7 @@ jobs:
     needs: [run-tests]
     env:
       IMAGE_NAME: snowcollege/aspen_keycloak
+      DOCKERFILE: dev-resources/keycloak/Dockerfile
       DOCKER_BUILDKIT: 1 
     steps:
       - name: checkout repo
