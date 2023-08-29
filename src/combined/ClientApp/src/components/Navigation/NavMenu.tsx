@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import {Toolbar,  useMediaQuery, useTheme } from '@mui/material';
@@ -63,7 +62,7 @@ const NavMenu = () => {
                         href="https://sanpetepantry.org/"
                         className="HeaderInNavMenu"
                     >
-                        SanPete Food Bank
+                        Sanpete Food Bank
                     </Typography>
                     {isMobile ? (
                         <DrawerComponent />
