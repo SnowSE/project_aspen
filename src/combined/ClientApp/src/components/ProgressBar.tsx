@@ -9,7 +9,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number; g
         <Box>
             <Box className="ProgressBarTextLocation" >
                 <Typography className="ProgressBarPercentageTextDetails" >
-                    {`${Math.round(props.value)}%`}
+                    {`${props.value ? Math.round(props.value) : 0}%`}
                 </Typography>
 
                 <Typography className="ProgressBarTextDetails">
