@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast"
 import { Route, Routes } from "react-router-dom"
-import { Home } from "./Home"
+import { Home } from "./pages/home/Home"
 
 export const AppRoutes = () => {
 
