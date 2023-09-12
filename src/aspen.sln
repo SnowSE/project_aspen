@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E6B73D4E-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shared", "shared\shared.csproj", "{2A8E367E-F1FA-4F7C-B269-E376119B36F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "combined", "combined\combined.csproj", "{07BCD18C-AE64-4223-807B-10BFC6141CD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2", "combined\v2.csproj", "{07BCD18C-AE64-4223-807B-10BFC6141CD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

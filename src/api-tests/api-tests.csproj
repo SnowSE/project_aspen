@@ -25,6 +25,6 @@
     <Folder Include="Features\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\combined\combined.csproj" />
+    <ProjectReference Include="..\combined\v2.csproj" />
   </ItemGroup>
 </Project>
