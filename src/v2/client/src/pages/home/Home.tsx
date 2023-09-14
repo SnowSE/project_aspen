@@ -1,3 +1,5 @@
+import { BenefitsModal } from "./BenefitsModal";
+import { UpcomingEventsModal } from "./UpcomingEventsModal";
 
 export const Home = () => {
   const width = 1;
@@ -26,7 +28,7 @@ export const Home = () => {
             <button className="btn btn-secondary text-white">SHARE NOW</button>
           </div>
           <div className="col-auto">
-            <button className="btn btn-secondary text-white">EVENT DETAILS</button>
+            <UpcomingEventsModal />
           </div>
           <div className="col-auto">
             <button className="btn btn-secondary text-white">DONATE</button>
@@ -37,7 +39,7 @@ export const Home = () => {
         <div className="fw-bold text-black fs-4">Charity Teams</div>
         <div className="text-start">Joining a charity team is a fulfilling way to make a positive impact while connecting with like-minded individuals who share your passion for giving back.</div>
         <div className="my-3">
-          <button className="btn text-info">BENEFITS OF CHARITY TEAMS</button>
+          <BenefitsModal />
         </div>
         <div className="row pb-3">
           <div className="col text-end">
