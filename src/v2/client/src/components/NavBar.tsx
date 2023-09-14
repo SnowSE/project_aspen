@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 export const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-primary">
+    <nav className="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
       <div className="container-fluid">
         <a className="navbar-brand text-white fw-bold" href="https://sanpetepantry.org/" target="_blank" rel="noreferrer">
           Sanpete Food Bank
@@ -25,7 +25,7 @@ export const NavBar = () => {
               <Link to={"/"} className="text-white text-decoration-none">Swagger</Link>
             </li>
           </ul>
-          <button className="btn btn-info shadow">LOGOUT</button>
+          <button className="btn btn-secondary shadow text-white">LOGOUT</button>
         </div>
       </div>
     </nav>
