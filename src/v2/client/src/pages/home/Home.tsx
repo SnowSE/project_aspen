@@ -1,12 +1,26 @@
+import { Spinner } from "../../components/Spinner";
 import { BenefitsModal } from "./BenefitsModal";
 import { UpcomingEventsModal } from "./UpcomingEventsModal";
+import { useGetEventsQuery } from "./homeHooks";
+import { Event } from "../../models/Event";
+import { DonationProgess } from "./DonationProgess";
 
 export const Home = () => {
-  const width = 1;
+  const getEventsQuery = useGetEventsQuery();
+  const events = getEventsQuery.data ?? [];
+  const futureEvents = events.filter(e => new Date(e.date) >= new Date() && e.isArchived === false)
+  const currentEvent = futureEvents.length > 0 ? futureEvents[0] : undefined
+
+  if (getEventsQuery.isLoading) return <Spinner />
+
   return (
     <div className="container mt-3 text-center">
       <div className="bg-primary shadow text-white ">
-        <h3>There are currently no upcoming events</h3>
+        {currentEvent ? (
+          <h3>Upcoming Event: {currentEvent.title}</h3>
+        ) : (
+          <h3>There are currently no upcoming events</h3>
+        )}
         <iframe
           data-testid={"homePageVideo"} id={"homePageVideo"}
           src="https://www.youtube.com/embed/wkFlIx9sV04"
@@ -15,20 +29,13 @@ export const Home = () => {
           height="450"
           style={{ width: "100%" }}
           allowFullScreen />
-        <div className="fs-5"><span className="fw-bold">0%</span> of our $0 goal</div>
-        <div className="row">
-          <div className="col-6 offset-3">
-            <div className="progress bg-success-subtle">
-              <div className="progress-bar bg-success" style={{ width: width + "%" }} role="progressbar" aria-valuenow={width} aria-valuemin={1} aria-valuemax={100} />
-            </div>
-          </div>
-        </div>
+        <DonationProgess event={currentEvent} />
         <div className="row py-3">
           <div className="col-5 text-end">
             <button className="btn btn-secondary text-white">SHARE NOW</button>
           </div>
           <div className="col-auto">
-            <UpcomingEventsModal />
+            {currentEvent && <UpcomingEventsModal event={currentEvent} />}
           </div>
           <div className="col-auto">
             <button className="btn btn-secondary text-white">DONATE</button>
@@ -50,6 +57,6 @@ export const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
