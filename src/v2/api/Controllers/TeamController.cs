@@ -49,6 +49,22 @@ public class TeamController : ControllerBase
         }
     }
 
+    [HttpGet("event/{eventId}/user/{userid}")]
+    public async Task<ActionResult<IEnumerable<DtoTeam>>> GetUsersTeamsForEvent(long eventId, int userId)
+    {
+        Log.Information("Getting User {userid} Teams by event {eventId}", userId, eventId);
+        try
+        {
+            var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetUsersTeamsByEventIdAsync(eventId, userId));
+            return new ActionResult<IEnumerable<DtoTeam>>(teams);
+        }
+        catch (NotFoundException<IEnumerable<Team>> ex)
+        {
+            Log.Information(ex.Message, "Event Not Found");
+            return NotFound(ex.Message);
+        }
+    }
+
     [HttpGet("{teamId}")]
     public async Task<ActionResult<DtoTeam>> GetByID(long teamId)
     {

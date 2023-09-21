@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { Event } from "../../models/Event"
-import { useGetEventDonationQuery } from "./homeHooks";
+import { useGetEventDonationQuery } from "./events/eventHooks";
 import { Spinner } from "../../components/Spinner";
 
 export const DonationProgess: FC<{
@@ -15,18 +15,14 @@ export const DonationProgess: FC<{
 
   return (
     <>
-      <div className="fs-5"><span className="fw-bold">{donated}%</span> of our ${event.donationTarget} goal</div>
-      <div className="row">
-        <div className="col-6 offset-3">
-          <div className="progress bg-success-subtle">
-            <div className="progress-bar bg-success"
-              style={{ width: (donated / event.donationTarget * 100) + "%" }}
-              role="progressbar"
-              aria-valuenow={donated}
-              aria-valuemin={1}
-              aria-valuemax={event.donationTarget} />
-          </div>
-        </div>
+      <div className="fs-5 text-center"><span className="fw-bold">{donated}%</span> of our ${event.donationTarget} goal</div>
+      <div className="progress bg-success-subtle">
+        <div className="progress-bar bg-success"
+          style={{ width: (donated / event.donationTarget * 100) + "%" }}
+          role="progressbar"
+          aria-valuenow={donated}
+          aria-valuemin={1}
+          aria-valuemax={event.donationTarget} />
       </div>
     </>
   )

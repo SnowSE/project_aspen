@@ -11,6 +11,7 @@ public interface ITeamRepository
     Task<Team> GetTeamByIdAsync(long id);
     Task<IEnumerable<Team>> GetAllAsync();
     Task<IEnumerable<Team>> GetByEventIdAsync(long eventID);
+    Task<IEnumerable<Team>> GetUsersTeamsByEventIdAsync(long eventID, int userId);
     Task<bool> ExistsAsync(long id);
 }
 
@@ -19,7 +20,7 @@ public class TeamRepository : ITeamRepository
     private readonly AspenContext context;
     private readonly IMapper mapper;
     private readonly IPersonTeamAssoicationRepository personTeamAssociationRepository;
-    
+
 
     public TeamRepository(AspenContext context, IMapper mapper, IPersonTeamAssoicationRepository personTeamAssociationRepository)
     {
@@ -28,7 +29,7 @@ public class TeamRepository : ITeamRepository
         this.personTeamAssociationRepository = personTeamAssociationRepository;
     }
 
-   
+
 
     public async Task<bool> ExistsAsync(long id)
     {
@@ -62,7 +63,7 @@ public class TeamRepository : ITeamRepository
                 throw new Exception("Person is already on another team in this event");
             }
         }
-        
+
         await context.Teams.AddAsync(dbTeam);
         existingEvent.Teams.Add(dbTeam);
 
@@ -76,7 +77,7 @@ public class TeamRepository : ITeamRepository
     {
         var dbTeam = mapper.Map<DbTeam>(team);
         context.Update(dbTeam);
-        if(team.isArchived == true)
+        if (team.isArchived == true)
         {
             var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
 
@@ -89,23 +90,23 @@ public class TeamRepository : ITeamRepository
         return team;
     }
 
-  /*  public async Task DeleteTeamAsync(Team team)
-    {
-        var dbTeam = mapper.Map<DbTeam>(team);
-        context.Update(dbTeam);
+    /*  public async Task DeleteTeamAsync(Team team)
+      {
+          var dbTeam = mapper.Map<DbTeam>(team);
+          context.Update(dbTeam);
 
 
-        var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
+          var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
 
-        foreach (var member in teamMembers)
-        {
-            await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
-        }
+          foreach (var member in teamMembers)
+          {
+              await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
+          }
 
 
-        await context.SaveChangesAsync();
-    }
-*/
+          await context.SaveChangesAsync();
+      }
+  */
 
     public async Task<IEnumerable<Team>> GetByEventIdAsync(long eventID)
     {
@@ -118,4 +119,14 @@ public class TeamRepository : ITeamRepository
         return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(unArchivedTeams);
     }
 
+    public async Task<IEnumerable<Team>> GetUsersTeamsByEventIdAsync(long eventID, int userId)
+    {
+        var teams = await context.PersonTeamAssociations
+        .Include(a => a.Team)
+        .Where(a => a.EventId == eventID && a.PersonId == userId)
+        .Select(a => a.Team) // Select the Team objects
+        .ToListAsync();
+
+        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(teams);
+    }
 }

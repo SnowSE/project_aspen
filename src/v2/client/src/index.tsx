@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { StrictMode } from 'react';
 import "bootstrap"
 import "./assets/custom.scss"
+import "bootstrap-icons/font/bootstrap-icons.css"
 import { createRoot } from 'react-dom/client'
 
 const queryClient = getQueryClient();

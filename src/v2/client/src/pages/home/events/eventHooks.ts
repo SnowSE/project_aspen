@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { homeService } from "./homeService"
+import { eventService } from "./eventService"
 
 export const eventsKey = {
   eventsKey: ["events"] as const,
@@ -9,7 +9,7 @@ export const eventsKey = {
 export const useGetEventsQuery = () => {
   return useQuery({
     queryKey: eventsKey.eventsKey,
-    queryFn: async () => await homeService.getEvents(),
+    queryFn: async () => await eventService.getEvents(),
   });
 }
 
@@ -18,7 +18,7 @@ export const useGetEventDonationQuery = (id?: number) => {
     queryKey: eventsKey.eventDonationKey(id),
     queryFn: async () => {
       if (!id) return;
-      return await homeService.getEventDonation(id)
+      return await eventService.getEventDonation(id)
     },
   });
 } 
