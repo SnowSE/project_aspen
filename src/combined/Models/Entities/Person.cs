@@ -1,4 +1,4 @@
-namespace Api.Models.Entities;
+namespace v2.Models.Entities;
 #nullable enable
 public class Person
 {

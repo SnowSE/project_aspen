@@ -1,5 +1,5 @@
 ﻿using System.Net;
-namespace Api.Controllers;
+namespace v2.Controllers;
 
 [Route("api/linkrecords")]
 [ApiController]

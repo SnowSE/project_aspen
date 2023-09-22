@@ -1,4 +1,4 @@
-﻿namespace Api.Controllers;
+﻿namespace v2.Controllers;
 
 [Route("api/donations")]
 [ApiController]

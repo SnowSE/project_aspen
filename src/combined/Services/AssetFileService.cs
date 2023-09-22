@@ -1,4 +1,4 @@
-namespace Api.Services;
+namespace v2.Services;
 
 public class AssetFileService : IAssetFileService
 {

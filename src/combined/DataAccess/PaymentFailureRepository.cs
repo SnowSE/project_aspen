@@ -1,7 +1,7 @@
 ﻿using combined.Models.DbModels;
 using combined.Models.Entities;
 
-namespace Api.DataAccess;
+namespace v2.DataAccess;
 
 public interface IPaymentFailureRepository
 {

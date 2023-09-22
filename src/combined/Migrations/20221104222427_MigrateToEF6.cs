@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Api.Migrations
+namespace v2.Migrations
 {
     public partial class MigrateToEF6 : Migration
     {

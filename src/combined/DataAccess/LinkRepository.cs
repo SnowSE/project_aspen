@@ -1,4 +1,4 @@
-﻿namespace Api.DataAccess;
+﻿namespace v2.DataAccess;
 
 public interface ILinkRepository
 {

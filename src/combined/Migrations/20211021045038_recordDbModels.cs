@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Api.Migrations
+namespace v2.Migrations
 {
     public partial class recordDbModels : Migration
     {

@@ -1,7 +1,7 @@
 ﻿
-namespace Api.Controllers;
+namespace v2.Controllers;
 
-using Api.DataAccess;
+using v2.DataAccess;
 using NuGet.Protocol;
 using Serilog;
 

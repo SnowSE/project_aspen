@@ -1,6 +1,6 @@
-﻿namespace Api.DataAccess;
+﻿namespace v2.DataAccess;
 
-using Api.Models.Entities;
+using v2.Models.Entities;
 using Microsoft.Extensions.Logging;
 
 public interface ITeamRepository

@@ -1,4 +1,4 @@
-namespace Api.Exceptions;
+namespace v2.Exceptions;
 
 public class NotFoundException<T> : Exception where T : class
 {

@@ -7,10 +7,10 @@ public class AdminControllerTest
 
     public static AdminController GetAdminController()
     {
-        var context = TestHelpers.CreateContext();
-        var donationRepository = new DonationRepository(context, TestHelpers.AspenMapper);
-        var eventRepository = new EventRepository(context, TestHelpers.AspenMapper);
-        return new AdminController(donationRepository, eventRepository, TestHelpers.AspenMapper);
+        AspenContext context = TestHelpers.CreateContext();
+        IDonationRepository donationRepository = new DonationRepository(context, TestHelpers.AspenMapper);
+        IAdminService adminService = new AdminService(donationRepository, TestHelpers.AspenMapper);
+        return new AdminController(adminService);
     }
 
     [SetUp]

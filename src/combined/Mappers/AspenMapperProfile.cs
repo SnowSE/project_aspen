@@ -1,7 +1,7 @@
 ﻿using combined.Models.DbModels;
 using combined.Models.Entities;
 
-namespace Api.Mappers;
+namespace v2.Mappers;
 
 public class AspenMapperProfile : Profile
 {

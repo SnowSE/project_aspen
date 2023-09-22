@@ -8,12 +8,12 @@ using System.Net.Http;
 using static System.Net.WebRequestMethods;
 using System.Net;
 using shared;
-using Person = Api.Models.Entities.Person;
-using Api.DataAccess;
+using Person = v2.Models.Entities.Person;
+using v2.DataAccess;
 using AutoMapper;
 using Serilog;
 
-namespace Api.Controllers;
+namespace v2.Controllers;
 [Route("api/stripe")]
 [ApiController]
 public class StripeController : ControllerBase

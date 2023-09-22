@@ -1,6 +1,6 @@
 using combined.Models.DbModels;
 
-namespace Api.DataAccess;
+namespace v2.DataAccess;
 
 public class AspenContext : DbContext
 {

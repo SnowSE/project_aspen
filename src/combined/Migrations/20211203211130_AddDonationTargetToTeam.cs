@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Api.Migrations
+namespace v2.Migrations
 {
     public partial class AddDonationTargetToTeam : Migration
     {

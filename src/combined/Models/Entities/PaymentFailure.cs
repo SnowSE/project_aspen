@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Api.Models.Entities
+namespace v2.Models.Entities
 {
     public class PaymentFailure
     {

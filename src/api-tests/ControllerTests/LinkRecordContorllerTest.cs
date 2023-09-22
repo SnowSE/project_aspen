@@ -1,12 +1,12 @@
-﻿using Api.Controllers;
-using Api.Extensions;
+﻿using v2.Controllers;
+using v2.Extensions;
 using Microsoft.Extensions.Logging;
 using shared.DtoModels;
 using Tests;
 using Tests.ControllerTests;
 using Tests.Steps;
 
-namespace Api.Tests.Controllers
+namespace v2.Tests.Controllers
 {
     [TestFixture]
     public class LinkRecordControllerTests

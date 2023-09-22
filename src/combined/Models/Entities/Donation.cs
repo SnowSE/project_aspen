@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Transactions;
 
-namespace Api.Models.Entities;
+namespace v2.Models.Entities;
 
 public record Donation
 {

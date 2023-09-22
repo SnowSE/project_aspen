@@ -1,4 +1,4 @@
-﻿namespace Api.Exceptions;
+﻿namespace v2.Exceptions;
 
 public class UnableToDeleteException<T> : Exception where T : class
 {

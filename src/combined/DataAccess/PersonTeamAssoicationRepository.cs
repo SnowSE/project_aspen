@@ -2,7 +2,7 @@ using Npgsql;
 using Serilog;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Api.DataAccess;
+namespace v2.DataAccess;
 
 public interface IPersonTeamAssoicationRepository
 {

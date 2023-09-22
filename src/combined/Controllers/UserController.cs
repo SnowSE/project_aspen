@@ -1,5 +1,5 @@
 ﻿using System.Text;
-namespace Api.Controllers;
+namespace v2.Controllers;
 using Serilog;
 
 [ApiController]

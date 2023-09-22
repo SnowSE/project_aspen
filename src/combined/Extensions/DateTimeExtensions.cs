@@ -1,4 +1,4 @@
-﻿namespace Api.Extensions
+﻿namespace v2.Extensions
 {
     public static class DateTimeExtensions
     {
