@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 export const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
+    <nav className="navbar navbar-expand-md navbar-light bg-primary shadow">
       <div className="container-fluid">
         <a className="navbar-brand text-white fw-bold" href="https://sanpetepantry.org/" target="_blank" rel="noreferrer">
           Sanpete Food Bank
