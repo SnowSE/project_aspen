@@ -67,11 +67,9 @@ public class PersonController : ControllerBase
             return BadRequest("Don't create users with authid using this endpoint. " +
                 "This endpoint is really only for creating people to be used in a PersonRegistration.");
         }
-        else
-        {
             var person = await personRepository.AddAsync(dtoPerson.Name, dtoPerson.Bio, dtoPerson.Nickname);
             return mapper.Map<DtoPerson>(person);
-        }
+        
 
     }
 
