@@ -31,7 +31,7 @@ If the current user doesn't have a Person record then one will be created for th
             var person = await personRepository.GetByAuthIdAsync(emailAddress);
             return mapper.Map<DtoPerson>(person);
         }
-        catch (NotFoundException<Person>)
+        catch (NotFoundException<DtoPerson>)
         {
             var name = User.Claims.Single(c => c.Type == "name").Value;
             var person = await personRepository.AddAsync(name, null, emailAddress, "Bob");

@@ -1,16 +1,15 @@
 ﻿namespace v2.DataAccess;
 
-using v2.Models.Entities;
 using Microsoft.Extensions.Logging;
 
 public interface ITeamRepository
 {
-    Task<Team> AddAsync(Team team);
+    Task<DtoTeam> AddAsync(DtoTeam team);
     //Task DeleteTeamAsync(Team team);
-    Task<Team> EditTeamAsync(Team team);
-    Task<Team> GetTeamByIdAsync(long id);
-    Task<IEnumerable<Team>> GetAllAsync();
-    Task<IEnumerable<Team>> GetByEventIdAsync(long eventID);
+    Task<DtoTeam> EditTeamAsync(DtoTeam team);
+    Task<DtoTeam> GetTeamByIdAsync(long id);
+    Task<IEnumerable<DtoTeam>> GetAllAsync();
+    Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID);
     Task<bool> ExistsAsync(long id);
 }
 
@@ -34,19 +33,19 @@ public class TeamRepository : ITeamRepository
     {
         return await context.Teams.AnyAsync(e => e.ID == id);
     }
-    public async Task<IEnumerable<Team>> GetAllAsync()
+    public async Task<IEnumerable<DtoTeam>> GetAllAsync()
     {
         var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
-        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(teams);
+        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
     }
 
-    public async Task<Team> GetTeamByIdAsync(long id)
+    public async Task<DtoTeam> GetTeamByIdAsync(long id)
     {
         var team = await context.Teams.FirstAsync(r => r.ID == id);
-        return mapper.Map<Team>(team);
+        return mapper.Map<DtoTeam>(team);
     }
 
-    public async Task<Team> AddAsync(Team team)
+    public async Task<DtoTeam> AddAsync(DtoTeam team)
     {
         var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == team.EventID);
         var newTeam = team.WithEventId(existingEvent.ID);
@@ -69,14 +68,14 @@ public class TeamRepository : ITeamRepository
         context.Update(existingEvent);
 
         await context.SaveChangesAsync();
-        return mapper.Map<Team>(dbTeam);
+        return mapper.Map<DtoTeam>(dbTeam);
     }
 
-    public async Task<Team> EditTeamAsync(Team team)
+    public async Task<DtoTeam> EditTeamAsync(DtoTeam team)
     {
         var dbTeam = mapper.Map<DbTeam>(team);
         context.Update(dbTeam);
-        if(team.isArchived == true)
+        if(team.IsArchived == true)
         {
             var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
 
@@ -89,7 +88,7 @@ public class TeamRepository : ITeamRepository
         return team;
     }
 
-  /*  public async Task DeleteTeamAsync(Team team)
+  /*  public async Task DeleteTeamAsync(DtoTeam team)
     {
         var dbTeam = mapper.Map<DbTeam>(team);
         context.Update(dbTeam);
@@ -107,15 +106,15 @@ public class TeamRepository : ITeamRepository
     }
 */
 
-    public async Task<IEnumerable<Team>> GetByEventIdAsync(long eventID)
+    public async Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID)
     {
         var existingEvent = await context.Events.Include(e => e.Teams).FirstOrDefaultAsync(e => e.ID == eventID);
         if (existingEvent == null)
-            throw new NotFoundException<IEnumerable<Team>>($"Event {eventID} does not exist");
+            throw new NotFoundException<IEnumerable<DtoTeam>>($"Event {eventID} does not exist");
 
         var unArchivedTeams = existingEvent.Teams.Where(team => team.IsArchived == false).ToList();
 
-        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<Team>>(unArchivedTeams);
+        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(unArchivedTeams);
     }
 
 }

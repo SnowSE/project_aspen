@@ -1,6 +1,5 @@
 ﻿global using v2.Controllers;
 global using v2.DataAccess;
-global using v2.Models.Entities;
 global using v2.Services;
 global using FluentAssertions;
 global using Microsoft.AspNetCore.Http;

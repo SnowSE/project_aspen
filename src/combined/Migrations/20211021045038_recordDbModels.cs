@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace v2.Migrations
 {
-    public partial class recordDbModels : Migration
+    public partial class RecordDbModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

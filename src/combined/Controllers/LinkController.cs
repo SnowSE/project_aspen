@@ -45,8 +45,8 @@ public class LinkController : ControllerBase
         if (dtoLink.ID != 0)
             return BadRequest("Cannot add with a valid id");
 
-        var link = mapper.Map<Link>(dtoLink);
-        var newLink = await linkRepository.Add(link);
+        
+        var newLink = await linkRepository.Add(dtoLink);
         return mapper.Map<DtoLink>(newLink);
 
     }
