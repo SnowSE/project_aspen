@@ -8,7 +8,6 @@ public interface ITeamRepository
     //Task DeleteTeamAsync(Team team);
     Task<DtoTeam> EditTeamAsync(DtoTeam team);
     Task<DtoTeam> GetTeamByIdAsync(long id);
-    Task<IEnumerable<DtoTeam>> GetAllAsync();
     Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID);
     Task<bool> ExistsAsync(long id);
 }
@@ -32,11 +31,6 @@ public class TeamRepository : ITeamRepository
     public async Task<bool> ExistsAsync(long id)
     {
         return await context.Teams.AnyAsync(e => e.ID == id);
-    }
-    public async Task<IEnumerable<DtoTeam>> GetAllAsync()
-    {
-        var teams = await EntityFrameworkQueryableExtensions.ToListAsync(context.Teams);
-        return mapper.Map<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>(teams);
     }
 
     public async Task<DtoTeam> GetTeamByIdAsync(long id)
@@ -87,24 +81,6 @@ public class TeamRepository : ITeamRepository
         await context.SaveChangesAsync();
         return team;
     }
-
-  /*  public async Task DeleteTeamAsync(DtoTeam team)
-    {
-        var dbTeam = mapper.Map<DbTeam>(team);
-        context.Update(dbTeam);
-
-
-        var teamMembers = await personTeamAssociationRepository.GetTeamMembersAsync(team.ID);
-
-        foreach (var member in teamMembers)
-        {
-            await personTeamAssociationRepository.DeleteAsync(member.ID, team.ID);
-        }
-
-
-        await context.SaveChangesAsync();
-    }
-*/
 
     public async Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID)
     {
