@@ -12,7 +12,7 @@ namespace v2.Migrations
 {
     [DbContext(typeof(AspenContext))]
     [Migration("20211021045038_recordDbModels")]
-    partial class recordDbModels
+    partial class RecordDbModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

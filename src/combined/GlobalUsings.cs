@@ -1,7 +1,6 @@
 ﻿global using v2.DataAccess;
 global using v2.DbModels;
 global using v2.Exceptions;
-global using v2.Models.Entities;
 global using v2.Services;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Authorization;
@@ -18,4 +17,3 @@ global using System.ComponentModel.DataAnnotations;
 global using System.IO;
 global using System.Linq;
 global using System.Threading.Tasks;
-global using v2.Extensions;
