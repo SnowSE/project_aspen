@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  editor:
+    container_name: aspen_editor
+    build:
+      context: .
+    user: developer
+    privileged: true
+    volumes:
+      - developer_home:/home/developer
+      - ../:/app/
+      - $HOME/.ssh:/home/developer/.ssh
+      - $HOME/.gnupg:/home/developer/.gnupg
+    environment:
+      - TZ=America/Denver
+    working_dir: /app
+    command: tail -f /dev/null
+
+  client:
+    container_name: aspen_client
+    build:
+      context: .
+    user: developer
+    volumes:
+      - ../:/app/:z
+    env_file:
+      - .env
+    command: >
+      sh -c "
+        cd client
+        npm i
+        npm start
+      "
+    ports:
+      - 3000:3000
+
+  api:
+    container_name: aspen_api
+    build:
+      context: ../api/
+    user: root
+    environment:
+      - ASPNETCORE_HTTPS_PORT=8001
+    volumes:
+      - ../api:/app/
+      - developer_home:/home/developer
+    working_dir: /app
+    ports:
+      - 8000:8000
+
+  db:
+    container_name: aspen_db
+    image: postgres:13
+    volumes:
+      - ../api/db/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    environment:
+      - POSTGRES_DB=aspen
+      - POSTGRES_USER=aspen
+      - POSTGRES_PASSWORD=securepasswordc
+
+volumes:
+  developer_home:
