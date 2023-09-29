@@ -41,13 +41,13 @@ services:
       context: ../api/
     user: root
     environment:
-      - ASPNETCORE_HTTPS_PORT=8001
+      - DOTNET_GENERATE_ASPNET_CERTIFICATE=true
     volumes:
       - ../api:/app/
       - developer_home:/home/developer
-    working_dir: /app
     ports:
-      - 8000:8000
+      - 7238:7238
+      - 5238:5238
 
   db:
     container_name: aspen_db

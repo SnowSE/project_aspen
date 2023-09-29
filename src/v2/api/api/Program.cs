@@ -108,6 +108,7 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
+Console.WriteLine($"ASPEN_CONNECTION_STRING: {builder.Configuration["ASPEN_CONNECTION_STRING"]}");
 
 builder.Services.AddDbContext<AspenContext>(options =>
 {

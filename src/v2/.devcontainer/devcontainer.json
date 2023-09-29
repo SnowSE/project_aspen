@@ -9,7 +9,9 @@
     },
     "customizations": {
         "vscode": {
-            "settings": {},
+            "settings": {
+                "editor.tabSize": 2
+            },
             "extensions": [
               "irongeek.vscode-env",
               "esbenp.prettier-vscode",
