@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     ["/swagger", "/api/"],
     createProxyMiddleware({
-      target: "http://localhost:5238",
+      target: "http://aspen_api:5238",
     })
   )
 }

@@ -4,8 +4,8 @@ export default class Event {
   location: string;
   description: string;
   mainImage: string;
-    donationTarget: number;
-    isArchived: boolean;
+  donationTarget: number;
+  isArchived: boolean;
 
   id?: number;
   constructor(
