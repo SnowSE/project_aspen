@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { LoginButton } from "./LoginButton"
 
 export const NavBar = () => {
   return (
@@ -25,7 +26,7 @@ export const NavBar = () => {
               <Link to={"/"} className="text-white text-decoration-none">Swagger</Link>
             </li>
           </ul>
-          <button className="btn btn-secondary shadow text-white">LOGOUT</button>
+          <LoginButton />
         </div>
       </div>
     </nav>
