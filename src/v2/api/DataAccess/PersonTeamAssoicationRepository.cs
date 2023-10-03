@@ -6,12 +6,10 @@ namespace Api.DataAccess;
 
 public interface IPersonTeamAssoicationRepository
 {
-
     Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation);
     Task SwitchTeamAsync(PersonTeamAssociation personTeamAssociation);
 
     Task<Team> GetTeamAsync(long personId, long eventId);
-    Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId);
     Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
 
     Task<bool> ExistsAsync(long personId, long eventId);
@@ -28,14 +26,6 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
     {
         this.context = context;
         this.mapper = mapper;
-    }
-
-    public async Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId)
-    {
-        var dbPersonTeamAssociation = await context.PersonTeamAssociations
-            .Where(e => e.PersonId == personId && e.EventId == eventId)
-            .FirstOrDefaultAsync();
-        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
     }
 
     public async Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation)

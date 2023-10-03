@@ -1,6 +1,4 @@
 using Npgsql;
-using Serilog;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace v2.DataAccess;
 
