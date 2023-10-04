@@ -152,4 +152,12 @@ public class DonationControllerTest
 
         actualDonationsList.Should().BeEquivalentTo(expectedDonationsList, options => options.Excluding(d => d.ID));
     }
+
+    [Test]
+    public async Task GetAllDonations()
+    {
+        var controller = GetDonationController();
+        int result = (await controller.GetAllDonations()).Value;
+        Assert.AreEqual(5, result);
+    }
 }
