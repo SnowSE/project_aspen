@@ -3,8 +3,8 @@ FROM almalinux:latest
 RUN dnf -y install \
     openssh-clients \
     nodejs \
-    openldap-devel \
-    rm -rf /var/cache/yum && \z
+    openldap-devel && \
+    rm -rf /var/cache/yum && \
     npm i -g n && \
     n 16
 
