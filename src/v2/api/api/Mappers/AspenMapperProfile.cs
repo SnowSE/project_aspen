@@ -11,64 +11,48 @@ public class AspenMapperProfile : Profile
     /// <seealso cref="https://codewithmukesh.com/blog/automapper-in-aspnet-core/"/>
     public AspenMapperProfile()
     {
-        CreateMap<DbEvent, Event>()
+        CreateMap<DbEvent, DtoEvent>()
             .ReverseMap();
 
-        CreateMap<Event, DtoEvent>()
+        CreateMap<DbPerson, DtoPerson>()
             .ReverseMap();
 
-        CreateMap<DbPerson, Person>()
-            .ReverseMap();
-
-        CreateMap<Person, DtoPerson>()
+        CreateMap<DtoPerson, DtoPerson>()
             .ReverseMap();
 
         CreateMap<DbTeam, DtoTeam>()
             .ReverseMap();
 
-        CreateMap<DtoTeam, Team>()
+        CreateMap<DbEvent, DtoEvent>()
             .ReverseMap();
 
-        CreateMap<DbTeam, Team>()
+        CreateMap<DbDonation, DtoDonation>()
             .ReverseMap();
 
-        CreateMap<DbEvent, Event>()
+        CreateMap<DtoDonation, DtoDonation>();
+
+        CreateMap<DbLink, DtoLink>()
             .ReverseMap();
 
-        CreateMap<DtoEvent, Event>()
+        CreateMap<DbLink, DtoLink>()
             .ReverseMap();
 
-        CreateMap<DbDonation, Donation>()
+        CreateMap<DbLinkRecord, DtoLinkRecord>()
             .ReverseMap();
 
-        CreateMap<DtoDonation, Donation>();
-
-        CreateMap<Donation, DtoDonation>()
-            .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.Team.Name))
-            .ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.Person.Name));
-
-        CreateMap<DbLink, Link>()
+        CreateMap<DbLinkRecord, DtoLinkRecord>()
             .ReverseMap();
 
-        CreateMap<Link, DtoLink>()
+        CreateMap<DbPaymentFailure, DtoPaymentFailure>()
             .ReverseMap();
 
-        CreateMap<DbLinkRecord, LinkRecord>()
+        CreateMap<DbPaymentFailure, DtoPaymentFailure>()
             .ReverseMap();
 
-        CreateMap<LinkRecord, DtoLinkRecord>()
+        CreateMap<DtoPersonTeamAssociation, DtoPersonTeamAssociation>()
             .ReverseMap();
 
-        CreateMap<DbPaymentFailure, PaymentFailure>()
-            .ReverseMap();
-
-        CreateMap<PaymentFailure, DtoPaymentFailure>()
-            .ReverseMap();
-
-        CreateMap<PersonTeamAssociation, DtoPersonTeamAssociation>()
-            .ReverseMap();
-
-        CreateMap<DbPersonTeamAssociation, PersonTeamAssociation>()
+        CreateMap<DbPersonTeamAssociation, DtoPersonTeamAssociation>()
             .ReverseMap();
     }
 }

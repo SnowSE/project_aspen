@@ -2,7 +2,7 @@
 
 public interface ILinkRecordRepository
 {
-    Task<LinkRecord> Add(LinkRecord linkRecord);
+    Task<DtoLinkRecord> Add(DtoLinkRecord linkRecord);
 
 }
 
@@ -17,12 +17,12 @@ public class LinkRecordRepository : ILinkRecordRepository
         this.mapper = mapper;
     }
 
-    public async Task<LinkRecord> Add(LinkRecord linkRecord)
+    public async Task<DtoLinkRecord> Add(DtoLinkRecord linkRecord)
     {
         var dbLinkRecord = mapper.Map<DbLinkRecord>(linkRecord);
         await context.LinkRecords.AddAsync(dbLinkRecord);
 
         await context.SaveChangesAsync();
-        return mapper.Map<LinkRecord>(dbLinkRecord);
+        return mapper.Map<DtoLinkRecord>(dbLinkRecord);
     }
 }

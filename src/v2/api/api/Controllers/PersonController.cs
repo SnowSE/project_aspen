@@ -80,7 +80,7 @@ public class PersonController : ControllerBase
         if (!await personRepository.ExistsAsync(dtoPerson.ID))
             return NotFound("Person id does not exist");
 
-        var person = mapper.Map<Person>(dtoPerson);
+        var person = mapper.Map<DtoPerson>(dtoPerson);
         var updatedPerson = await personRepository.EditAsync(person);
         return mapper.Map<DtoPerson>(updatedPerson);
     }

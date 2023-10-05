@@ -36,13 +36,13 @@ public class TeamController : ControllerBase
     [HttpGet("event/{eventId}")]
     public async Task<ActionResult<IEnumerable<DtoTeam>>> GetByEventID(long eventId)
     {
-        Log.Information("Getting Team by event {eventId}", eventId);
+        Log.Information("Getting DtoTeam by event {eventId}", eventId);
         try
         {
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetByEventIdAsync(eventId));
             return new ActionResult<IEnumerable<DtoTeam>>(teams);
         }
-        catch (NotFoundException<IEnumerable<Team>> ex)
+        catch (NotFoundException<IEnumerable<DtoTeam>> ex)
         {
             Log.Information(ex.Message, "Event Not Found");
             return NotFound(ex.Message);
@@ -58,7 +58,7 @@ public class TeamController : ControllerBase
             var teams = mapper.Map<IEnumerable<DtoTeam>>(await teamRepository.GetUsersTeamsByEventIdAsync(eventId, userId));
             return new ActionResult<IEnumerable<DtoTeam>>(teams);
         }
-        catch (NotFoundException<IEnumerable<Team>> ex)
+        catch (NotFoundException<IEnumerable<DtoTeam>> ex)
         {
             Log.Information(ex.Message, "Event Not Found");
             return NotFound(ex.Message);
@@ -90,9 +90,9 @@ public class TeamController : ControllerBase
 
         
 
-        var team = mapper.Map<Team>(dtoTeam);
+        var team = mapper.Map<DtoTeam>(dtoTeam);
         var newTeam = await teamRepository.AddAsync(team);
-        var personTeamAssociation = new PersonTeamAssociation {
+        var personTeamAssociation = new DtoPersonTeamAssociation {
             PersonId = dtoTeam.OwnerID,
             TeamId = newTeam.ID,
             EventId = dtoTeam.EventID,
@@ -109,7 +109,7 @@ public class TeamController : ControllerBase
     {
         log.LogInformation("Editing dtoTeam {dtoTeam}", dtoTeam);
         var role = "";
-        var team = mapper.Map<Team>(dtoTeam);
+        var team = mapper.Map<DtoTeam>(dtoTeam);
         var teamOwner = team.OwnerID;
         var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
         try
@@ -139,7 +139,7 @@ public class TeamController : ControllerBase
     {
         var role = "";
         dtoTeam.IsArchived = true;
-        var team = mapper.Map<Team>(dtoTeam);
+        var team = mapper.Map<DtoTeam>(dtoTeam);
         var teamOwner = team.OwnerID;
         var emailAddress = User.Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
         try
@@ -167,7 +167,7 @@ public class TeamController : ControllerBase
                 await teamRepository.EditTeamAsync(team);
                 return Ok();
             }
-            catch (UnableToDeleteException<Team> ex)
+            catch (UnableToDeleteException<DtoTeam> ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -180,7 +180,7 @@ public class TeamController : ControllerBase
                 await teamRepository.EditTeamAsync(team);
                 return Ok();
             }
-            catch (UnableToDeleteException<Team> ex)
+            catch (UnableToDeleteException<DtoTeam> ex)
             {
                 return BadRequest(ex.Message);
             }

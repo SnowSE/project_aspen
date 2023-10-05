@@ -2,12 +2,12 @@
 
 public interface IEventRepository
 {
-    Task<Event> AddAsync(Event newEvent);
+    Task<DtoEvent> AddAsync(DtoEvent newEvent);
     Task DeleteAsync(long id);
-    Task EditAsync(Event e);
+    Task EditAsync(DtoEvent e);
     public Task<bool> ExistsAsync(long id);
-    Task<Event> GetByIdAsync(long id);
-    Task<IEnumerable<Event>> GetAllAsync();
+    Task<DtoEvent> GetByIdAsync(long id);
+    Task<IEnumerable<DtoEvent>> GetAllAsync();
 }
 
 public class EventRepository : IEventRepository
@@ -26,28 +26,28 @@ public class EventRepository : IEventRepository
         return await context.Events.AnyAsync(e => e.ID == id);
     }
 
-    public async Task<IEnumerable<Event>> GetAllAsync()
+    public async Task<IEnumerable<DtoEvent>> GetAllAsync()
     {
         var eventList = await EntityFrameworkQueryableExtensions.ToListAsync(context.Events);
-        return mapper.Map<IEnumerable<DbEvent>, IEnumerable<Event>>(eventList);
+        return mapper.Map<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>(eventList);
     }
 
-    public async Task<Event> GetByIdAsync(long id)
+    public async Task<DtoEvent> GetByIdAsync(long id)
     {
         var e = await context.Events.FindAsync(id);
 
-        return mapper.Map<Event>(e);
+        return mapper.Map<DtoEvent>(e);
     }
-    public async Task<Event> AddAsync(Event @event)
+    public async Task<DtoEvent> AddAsync(DtoEvent @event)
     {
         var newEvent = mapper.Map<DbEvent>(@event);
         context.Events.Add(newEvent);
         await context.SaveChangesAsync();
 
-        return mapper.Map<Event>(newEvent);
+        return mapper.Map<DtoEvent>(newEvent);
     }
 
-    public async Task EditAsync(Event e)
+    public async Task EditAsync(DtoEvent e)
     {
         var dbEvent = mapper.Map<DbEvent>(e);
         context.Update(dbEvent);
@@ -58,7 +58,7 @@ public class EventRepository : IEventRepository
     {
         var e = await context.Events.FindAsync(id);
         if (e == null)
-            throw new NotFoundException<Event>("Event id does not exist");
+            throw new NotFoundException<DtoEvent>("Event id does not exist");
         context.Events.Remove(e);
         await context.SaveChangesAsync();
     }

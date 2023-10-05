@@ -33,7 +33,7 @@ public class LinkRecordController : ControllerBase
         if (dtoLinkRecord.ID != 0)
             return BadRequest("Cannot add with a valid id");
 
-        var linkRecord = mapper.Map<LinkRecord>(dtoLinkRecord);
+        var linkRecord = mapper.Map<DtoLinkRecord>(dtoLinkRecord);
         var newLinkRecord = await linkRecordRepository.Add(linkRecord);
         return mapper.Map<DtoLinkRecord>(newLinkRecord);
 

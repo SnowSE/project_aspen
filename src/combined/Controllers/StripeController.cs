@@ -8,7 +8,6 @@ using System.Net.Http;
 using static System.Net.WebRequestMethods;
 using System.Net;
 using shared;
-//using DtoPerson = v2.Models.Entities.DtoPerson;
 using v2.DataAccess;
 using AutoMapper;
 using Serilog;

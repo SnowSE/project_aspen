@@ -1,7 +1,6 @@
 ﻿global using Api.DataAccess;
 global using Api.DbModels;
 global using Api.Exceptions;
-global using Api.Models.Entities;
 global using Api.Services;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Authorization;

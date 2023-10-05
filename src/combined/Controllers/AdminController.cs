@@ -25,11 +25,4 @@ public class AdminController : ControllerBase
         return await service.GetTeamDonationsAsync(teamID);
     }
 
-    /*[HttpGet("donations/event/{eventID}")]
-    public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
-    {
-        return await service.GetEventDonationsAsync(eventID);
-    }*/
-}
-
 public record UserClaim(string claim, string value);

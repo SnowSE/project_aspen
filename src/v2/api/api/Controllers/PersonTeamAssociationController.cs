@@ -34,7 +34,7 @@ public class PersonTeamAssociationController : ControllerBase
     public async Task<IActionResult> SwitchTeam([FromBody] DtoPersonTeamAssociation dtoPersonTeamAssociation)
     {
 
-        var updatedPersonTeamAssociation = mapper.Map<PersonTeamAssociation>(dtoPersonTeamAssociation);
+        var updatedPersonTeamAssociation = mapper.Map<DtoPersonTeamAssociation>(dtoPersonTeamAssociation);
         await personTeamAssociationRepository.SwitchTeamAsync(updatedPersonTeamAssociation);
         return Ok("Team switch was successful");
 
@@ -43,7 +43,7 @@ public class PersonTeamAssociationController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DtoPersonTeamAssociation>> Add([FromBody] DtoPersonTeamAssociation dtoPersonTeamAssociation){
 
-        var tempPersonTeam = mapper.Map<PersonTeamAssociation>(dtoPersonTeamAssociation);
+        var tempPersonTeam = mapper.Map<DtoPersonTeamAssociation>(dtoPersonTeamAssociation);
         var newPersonTeamAssociation = await personTeamAssociationRepository.AddAsync(tempPersonTeam);
         return mapper.Map<DtoPersonTeamAssociation>(newPersonTeamAssociation);
     }

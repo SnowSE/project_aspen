@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 public interface ITeamRepository
 {
     Task<DtoTeam> AddAsync(DtoTeam team);
-    //Task DeleteTeamAsync(Team team);
     Task<DtoTeam> EditTeamAsync(DtoTeam team);
     Task<DtoTeam> GetTeamByIdAsync(long id);
     Task<IEnumerable<DtoTeam>> GetByEventIdAsync(long eventID);
