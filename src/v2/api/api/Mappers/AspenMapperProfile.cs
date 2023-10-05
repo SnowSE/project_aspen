@@ -52,7 +52,5 @@ public class AspenMapperProfile : Profile
         CreateMap<DtoPersonTeamAssociation, DtoPersonTeamAssociation>()
             .ReverseMap();
 
-        CreateMap<DbPersonTeamAssociation, DtoPersonTeamAssociation>()
-            .ReverseMap();
     }
 }
