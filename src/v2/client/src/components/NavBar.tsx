@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom"
 import { LoginButton } from "./LoginButton"
+import { useAuth } from "react-oidc-context"
 
 export const NavBar = () => {
+  const auth = useAuth()
+
+  console.log(auth.user?.profile.roles)
+
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-primary shadow">
       <div className="container-fluid">
@@ -26,6 +31,11 @@ export const NavBar = () => {
               <Link to={"/"} className="text-white text-decoration-none">Swagger</Link>
             </li>
           </ul>
+          {auth.isAuthenticated &&
+            <div className="text-white me-2">
+              Welcome {auth.user?.profile.preferred_username}!
+            </div>
+          }
           <LoginButton />
         </div>
       </div>

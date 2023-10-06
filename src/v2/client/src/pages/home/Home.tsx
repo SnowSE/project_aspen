@@ -15,6 +15,7 @@ export const Home = () => {
   if (!getEventsQuery.data) return <h3>Unable to get events</h3>
 
 
+
   return (
     <div className={`${classes.customContainer} mt-3 text-center`}>
       <div className="row">
