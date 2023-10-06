@@ -1,0 +1,133 @@
+﻿namespace Api.DataAccess;
+
+public interface IDonationRepository
+{
+    Task<DtoDonation> AddAsync(DtoDonation donation);
+    Task DeleteAsync(long id);
+    Task EditAsync(DtoDonation e);
+    public Task<bool> ExistsAsync(long id);
+    Task<DtoDonation> GetByIdAsync(long id);
+
+    Task<IEnumerable<DtoDonation>> GetAllAsync();
+    Task<IEnumerable<DtoDonation>> GetByEventIdAsync(long eventId);
+    Task<IEnumerable<DtoDonation>> GetByTeamIdAsync(long teamId);
+    Task<decimal> GetTeamDonationSum(long teamID);
+    Task<decimal> GetEventDonationSumAsync(long eventid);
+}
+
+public class DonationRepository : IDonationRepository
+{
+    private readonly AspenContext context;
+    private readonly IMapper mapper;
+
+    public DonationRepository(AspenContext context, IMapper mapper)
+    {
+        this.context = context ?? throw new ArgumentNullException(nameof(context));
+        this.mapper = mapper;
+    }
+
+    public async Task<bool> ExistsAsync(long id)
+    {
+        return await context.Donations.AnyAsync(e => e.ID == id);
+    }
+
+    public async Task<IEnumerable<DtoDonation>> GetAllAsync()
+    {
+        var DonationList = await EntityFrameworkQueryableExtensions.ToListAsync(context.Donations);
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(DonationList);
+    }
+
+    public async Task<DtoDonation> GetByIdAsync(long id)
+    {
+        var e = await context.Donations.FindAsync(id);
+
+        return mapper.Map<DtoDonation>(e);
+    }
+    public async Task<DtoDonation> AddAsync(DtoDonation donation)
+    {
+        var newDonation = mapper.Map<DbDonation>(donation);
+        context.Donations.Add(newDonation);
+        await context.SaveChangesAsync();
+
+        return mapper.Map<DtoDonation>(newDonation);
+    }
+
+    public async Task EditAsync(DtoDonation e)
+    {
+        var dbDonation = mapper.Map<DbDonation>(e);
+        context.Update(dbDonation);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        var e = await context.Donations.FindAsync(id);
+        if (e == null)
+            throw new NotFoundException<DtoDonation>("Donation id does not exist");
+        context.Donations.Remove(e);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<DtoDonation>> GetByEventIdAsync(long eventId)
+    {
+        var teams = await context.Teams.Where(t => t.EventID == eventId).ToListAsync();
+        var donations = new List<DbDonation>();
+        foreach (var team in teams)
+        {
+            var teamDonations = await context.Donations.Where(d => d.TeamID == team.ID).ToListAsync();
+
+            donations.AddRange(teamDonations);
+
+        }
+       
+
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(donations);
+    }
+
+    public async Task<IEnumerable<DtoDonation>> GetByTeamIdAsync(long teamId)
+    {
+        var donations = await context.Donations
+            .Include(d => d.Team)
+            .Include(d => d.Person)
+            .Where(d => d.TeamID == teamId).ToListAsync();
+
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(donations);
+    }
+
+    public async Task<decimal> GetTeamDonationSum(long teamID)
+    {
+        
+        var sumTeam = await context.Donations.Where(d => d.TeamID == teamID).SumAsync(d => d.Amount);
+        var wholeTeam = await context.PersonTeamAssociations.Where(p => p.TeamId == teamID).ToListAsync();
+        decimal sumReferal = 0;
+
+        foreach (var person in wholeTeam)
+        {
+            sumReferal += await GetDonationSumRefererAsync(teamID, person.PersonId);
+        }
+
+        return sumTeam + sumReferal;
+    }
+
+    public async Task<decimal> GetDonationSumRefererAsync(long teamID, long personID)
+    {
+
+        var eventId = await context.Teams.Where(t => t.ID == teamID).Select(t => t.EventID).FirstOrDefaultAsync();
+        var listLinks = await context.Links.Where(l => l.EventID == eventId && l.PersonID == personID).ToListAsync();
+        var listDonations = new List<DbDonation>();
+        foreach (var link in listLinks)
+        {
+            var donations = await context.Donations.Where(d => d.LinkGuid == link.LinkGUID).ToListAsync();
+            listDonations.AddRange(donations);
+        }
+        var sumReferer = listDonations.Sum(d => d.Amount);
+        return (decimal)sumReferer;
+    }
+    public async Task<decimal> GetEventDonationSumAsync(long eventid)
+    {
+        var alldonations = await GetByEventIdAsync(eventid);
+
+        var sum = alldonations.Sum(d => d.Amount);
+        return sum;
+    }
+}

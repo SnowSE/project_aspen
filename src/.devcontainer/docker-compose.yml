@@ -67,7 +67,7 @@ services:
       POSTGRES_USER: aspen
       POSTGRES_PASSWORD: password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U aspen"]
       interval: 5s
       timeout: 1s
       retries: 5
@@ -115,7 +115,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
       interval: 3s
       timeout: 1s
       retries: 15

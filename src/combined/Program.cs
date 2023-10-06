@@ -1,9 +1,9 @@
-using Api.Mappers;
+using v2.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Stripe;
 using Serilog;
-using Api.DataAccess;
+using v2.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 

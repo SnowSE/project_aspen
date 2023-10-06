@@ -1,13 +1,13 @@
 ﻿using combined.Models.DbModels;
 using combined.Models.Entities;
 
-namespace Api.DataAccess;
+namespace v2.DataAccess;
 
 public interface IPaymentFailureRepository
 {
-    Task<PaymentFailure> Add(PaymentFailure paymentFailure);
-    Task<PaymentFailure> GetByIdAsync(int paymentFailureId);
-    Task<IEnumerable<PaymentFailure>> GetAllAsync();
+    Task<DtoPaymentFailure> Add(DtoPaymentFailure paymentFailure);
+    Task<DtoPaymentFailure> GetByIdAsync(int paymentFailureId);
+    Task<IEnumerable<DtoPaymentFailure>> GetAllAsync();
 
 }
 
@@ -22,24 +22,24 @@ public class PaymentFailureRepository : IPaymentFailureRepository
         this.mapper = mapper;
     }
 
-    public async Task<PaymentFailure> Add(PaymentFailure paymentFailure)
+    public async Task<DtoPaymentFailure> Add(DtoPaymentFailure paymentFailure)
     {
         var dbPaymentFailure = mapper.Map<DbPaymentFailure>(paymentFailure);
         await context.PaymentFailures.AddAsync(dbPaymentFailure);
 
         await context.SaveChangesAsync();
-        return mapper.Map<PaymentFailure>(dbPaymentFailure);
+        return mapper.Map<DtoPaymentFailure>(dbPaymentFailure);
     }
 
-    public async Task<IEnumerable<PaymentFailure>> GetAllAsync()
+    public async Task<IEnumerable<DtoPaymentFailure>> GetAllAsync()
     {
         var paymentFailureList = await EntityFrameworkQueryableExtensions.ToListAsync(context.PaymentFailures);
-        return mapper.Map<IEnumerable<DbPaymentFailure>, IEnumerable<PaymentFailure>>(paymentFailureList);
+        return mapper.Map<IEnumerable<DbPaymentFailure>, IEnumerable<DtoPaymentFailure>>(paymentFailureList);
     }
 
-    public async Task<PaymentFailure> GetByIdAsync(int id)
+    public async Task<DtoPaymentFailure> GetByIdAsync(int id)
     {
         var e = await context.PaymentFailures.FindAsync(id);
-        return mapper.Map<PaymentFailure>(e);
+        return mapper.Map<DtoPaymentFailure>(e);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Api.Controllers;
+namespace v2.Controllers;
 
 [Route("api/events")]
 [ApiController]
@@ -55,7 +55,7 @@ public class EventController : ControllerBase
 
         try
         {
-            var @event = mapper.Map<Event>(dtoEvent);
+            var @event = mapper.Map<DtoEvent>(dtoEvent);
             log.LogInformation("Mapped {dtoEvent} to {event}", dtoEvent, @event);
             var newEvent = await eventRepository.AddAsync(@event);
             log.LogInformation("Got back {newEvent} from event repository", newEvent);
@@ -75,7 +75,7 @@ public class EventController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(getModelStateErrorMessage());
 
-        var e = mapper.Map<Event>(dtoEvent);
+        var e = mapper.Map<DtoEvent>(dtoEvent);
         await eventRepository.EditAsync(e);
         return Ok("Event edit was successful");
     }

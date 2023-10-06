@@ -17,3 +17,23 @@ public record DtoTeam
     public decimal DonationTarget { get; set; }
     public bool IsArchived { get; set; } = false;
 }
+
+public static class TeamExtensions
+{
+    public static DtoTeam WithEventId(this DtoTeam currentTeam, long newEventId)
+    {
+        return new DtoTeam
+        {
+            ID = currentTeam.ID,
+            Name = currentTeam.Name,
+            Description = currentTeam.Description,
+            MainImage = currentTeam.MainImage,
+            OwnerID = currentTeam.OwnerID,
+            EventID = newEventId,
+            DonationTarget = currentTeam.DonationTarget,
+            IsArchived = currentTeam.IsArchived,
+            WelcomeMessage = currentTeam.WelcomeMessage
+        };
+    }
+}
+

@@ -1,4 +1,4 @@
-﻿namespace Api.Controllers;
+﻿namespace v2.Controllers;
 
 [Route("api/donations")]
 [ApiController]
@@ -33,7 +33,7 @@ public class DonationController : ControllerBase
         if (dtoDonation.ID != 0)
             return BadRequest("Cannot add with a valid id");
 
-        var donation = mapper.Map<Donation>(dtoDonation);
+        var donation = mapper.Map<DtoDonation>(dtoDonation);
         var newDonation = await donationRepository.AddAsync(donation);
         return mapper.Map<DtoDonation>(newDonation);
     }

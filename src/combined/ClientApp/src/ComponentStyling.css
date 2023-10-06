@@ -146,11 +146,6 @@
     flex-wrap: nowrap !important;
 }
 
-@media (min-width: 400px) {
-    .HeaderInNavMenu {
-        display: none;
-    }
-}
 @media (min-width: 600px) {
     .HeaderInNavMenu {
         display: flex;
@@ -187,11 +182,6 @@
 
 .LoginFeaturesInNavMenu {
     align-items: center;
-}
-@media (min-width: 400px) {
-    .LoginFeaturesInNavMenu {
-        display: none;
-    }
 }
 
 @media (min-width: 600px) {

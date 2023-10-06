@@ -1,9 +1,9 @@
-﻿namespace Api.DataAccess;
+﻿namespace v2.DataAccess;
 
 public interface ILinkRepository
 {
-    Task<Link> Add(Link link);
-    Task<Link> LinkGUIDAsync(string linkGUID);
+    Task<DtoLink> Add(DtoLink link);
+    Task<DtoLink> LinkGUIDAsync(string linkGUID);
 
 }
 
@@ -18,18 +18,18 @@ public class LinkRepository : ILinkRepository
         this.mapper = mapper;
     }
 
-    public async Task<Link> Add(Link link)
+    public async Task<DtoLink> Add(DtoLink link)
     {
         var dbLink = mapper.Map<DbLink>(link);
         await context.Links.AddAsync(dbLink);
 
         await context.SaveChangesAsync();
-        return mapper.Map<Link>(dbLink);
+        return mapper.Map<DtoLink>(dbLink);
     }
-    public async Task<Link> LinkGUIDAsync(string linkGUID)
+    public async Task<DtoLink> LinkGUIDAsync(string linkGUID)
     {
         var link = await context.Links.FirstOrDefaultAsync(l => l.LinkGUID == linkGUID);
-        return mapper.Map<Link>(link);
+        return mapper.Map<DtoLink>(link);
     }
 
 

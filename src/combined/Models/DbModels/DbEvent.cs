@@ -1,6 +1,6 @@
 ﻿using combined.Models.DbModels;
 
-namespace Api.DbModels;
+namespace v2.DbModels;
 
 public record DbEvent
 {

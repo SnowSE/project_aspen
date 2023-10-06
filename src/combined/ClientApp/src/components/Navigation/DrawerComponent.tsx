@@ -54,15 +54,6 @@ function DrawerComponent() {
                 <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
                 <MenuIcon className="HamburgerMenuColor" />
                 </IconButton>
-                <Box>
-                    <Typography
-                        component="a"
-                        href="https://sanpetepantry.org/"
-                        className = "HeaderInDrawer"
-                    >
-                        SanPete Food Bank
-                    </Typography>
-                </Box>
             </Box>
     );
 }

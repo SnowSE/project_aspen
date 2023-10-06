@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Api.Migrations
+namespace v2.Migrations
 {
     public partial class AddedNewDataModeltotheTeam : Migration
     {

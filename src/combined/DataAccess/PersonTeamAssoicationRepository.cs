@@ -1,18 +1,16 @@
 using Npgsql;
-using Serilog;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Api.DataAccess;
+namespace v2.DataAccess;
 
 public interface IPersonTeamAssoicationRepository
 {
 
-    Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation);
-    Task SwitchTeamAsync(PersonTeamAssociation personTeamAssociation);
+    Task<DtoPersonTeamAssociation> AddAsync(DtoPersonTeamAssociation personTeamAssociation);
+    Task SwitchTeamAsync(DtoPersonTeamAssociation personTeamAssociation);
 
-    Task<Team> GetTeamAsync(long personId, long eventId);
-    Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId);
-    Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId);
+    Task<DtoTeam> GetTeamAsync(long personId, long eventId);
+    Task<DtoPersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId);
+    Task<IEnumerable<DtoPerson>> GetTeamMembersAsync(long teamId);
 
     Task<bool> ExistsAsync(long personId, long eventId);
 
@@ -30,15 +28,15 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         this.mapper = mapper;
     }
 
-    public async Task<PersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId)
+    public async Task<DtoPersonTeamAssociation> GetPersonTeamAssociationAsync(long personId, long eventId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
             .Where(e => e.PersonId == personId && e.EventId == eventId)
             .FirstOrDefaultAsync();
-        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
+        return mapper.Map<DtoPersonTeamAssociation>(dbPersonTeamAssociation);
     }
 
-    public async Task<PersonTeamAssociation> AddAsync(PersonTeamAssociation personTeamAssociation)
+    public async Task<DtoPersonTeamAssociation> AddAsync(DtoPersonTeamAssociation personTeamAssociation)
     {
         var dbPersonTeamAssociation = mapper.Map<DbPersonTeamAssociation>(personTeamAssociation);
         try
@@ -53,26 +51,26 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
                 throw new Exception("This person is already on the team for this event.");
             }
         }
-        return mapper.Map<PersonTeamAssociation>(dbPersonTeamAssociation);
+        return mapper.Map<DtoPersonTeamAssociation>(dbPersonTeamAssociation);
     }
 
-    public async Task<Team> GetTeamAsync(long personId, long eventId)
+    public async Task<DtoTeam> GetTeamAsync(long personId, long eventId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
             .Where(e => e.PersonId == personId && e.EventId == eventId)
             .FirstOrDefaultAsync();
         var dbTeam = await context.Teams.FindAsync(dbPersonTeamAssociation.TeamId);
-        return mapper.Map<Team>(dbTeam);
+        return mapper.Map<DtoTeam>(dbTeam);
     }
 
-    public async Task<IEnumerable<Person>> GetTeamMembersAsync(long teamId)
+    public async Task<IEnumerable<DtoPerson>> GetTeamMembersAsync(long teamId)
     {
         var dbPersonTeamAssociation = await context.PersonTeamAssociations
             .Where(e => e.TeamId == teamId)
             .ToListAsync();
         var personIds = dbPersonTeamAssociation.Select(e => e.PersonId);
         var persons = await context.Persons.Where(e => personIds.Contains(e.ID)).ToListAsync();
-        return mapper.Map<IEnumerable<Person>>(persons);
+        return mapper.Map<IEnumerable<DtoPerson>>(persons);
     }
 
     public async Task<bool> ExistsAsync(long personId, long eventId)
@@ -92,12 +90,12 @@ public class PersonTeamAssoicationRepository : IPersonTeamAssoicationRepository
         }
         else
         {
-            throw new NotFoundException<PersonTeamAssociation>("Person is not on a team in this Event");
+            throw new NotFoundException<DtoPersonTeamAssociation>("Person is not on a team in this Event");
         }
 
     }
 
-    public async Task SwitchTeamAsync(PersonTeamAssociation personTeamAssociation)
+    public async Task SwitchTeamAsync(DtoPersonTeamAssociation personTeamAssociation)
     {
             var dbPersonTeamAssociation = mapper.Map<DbPersonTeamAssociation>(personTeamAssociation);
             context.Update(dbPersonTeamAssociation);

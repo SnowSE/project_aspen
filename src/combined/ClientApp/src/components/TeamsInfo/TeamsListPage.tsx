@@ -8,6 +8,7 @@ import Team from '../../JsModels/team';
 export function TeamsListPage() {
     const [teamsList, setTeams] = useState<typeof Team[]>([]);
     const { currentEvent }  = useContext(EventContext);
+    console.log(currentEvent)
        
     useEffect(() => {
         const fetchData = async () => {

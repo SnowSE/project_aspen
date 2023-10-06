@@ -1,4 +1,4 @@
-﻿namespace Api.Controllers;
+﻿namespace v2.Controllers;
 
 [ApiController]
 [Authorize(Roles = AspenAdminRole)]
@@ -6,41 +6,23 @@
 public class AdminController : ControllerBase
 {
     public const string AspenAdminRole = "admin-aspen";
-    private readonly IDonationRepository donationRepository;
-    private readonly IEventRepository eventRepository;
-    private readonly IMapper mapper;
-
-    public AdminController(IDonationRepository donationRepository, IEventRepository eventRepository, IMapper mapper)
+   
+    private IAdminService service;
+    public AdminController(IAdminService service)
     {
-        this.donationRepository = donationRepository;
-        this.eventRepository = eventRepository;
-        this.mapper = mapper;
+        this.service = service;
     }
 
     [HttpGet]
-    public IEnumerable<UserClaim> Get() =>
-        User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
-
-    //[HttpGet("donation/{eventID}")]
-    //public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
-    //{
-    //    //var donations = await donationRepository.GetByEventIdAsync(eventID);
-    //    return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
-    //}
+    public IEnumerable<UserClaim> Get()
+    {
+        return User.Claims.Select(c => new UserClaim(c.Type.ToString(), c.Value.ToString()));
+    }
 
     [HttpGet("donation/{eventID}/{teamID}")]
     public async Task<IEnumerable<DtoDonation>> GetTeamDonations( long teamID)
     {
-        var donations = await donationRepository.GetByTeamIdAsync(teamID);
-        return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
+        return await service.GetTeamDonationsAsync(teamID);
     }
-
-    [HttpGet("donations/event/{eventID}")]
-    public async Task<IEnumerable<DtoDonation>> GetEventDonations(long eventID)
-    {
-        var donations = await donationRepository.GetByEventIdAsync(eventID);
-        return mapper.Map<IEnumerable<Donation>, IEnumerable<DtoDonation>>(donations);
-    }
-}
 
 public record UserClaim(string claim, string value);

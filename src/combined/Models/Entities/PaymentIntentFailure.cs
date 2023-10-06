@@ -1,6 +1,6 @@
 ﻿namespace combined.Models.Entities
 {
-    
+
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Address

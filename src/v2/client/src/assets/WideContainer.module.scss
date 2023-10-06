@@ -1,0 +1,14 @@
+@import "./custom.scss";
+
+@mixin make-container($padding-x: $container-padding-x) {
+  width: 100%;
+  padding-right: $padding-x;
+  padding-left: $padding-x;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 100em;
+}
+
+.customContainer {
+  @include make-container(-x)
+}

@@ -1,4 +1,4 @@
-﻿using Api.Mappers;
+﻿using v2.Mappers;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tests.Hooks;

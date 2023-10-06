@@ -1,5 +1,5 @@
 ﻿using System.Net;
-namespace Api.Controllers;
+namespace v2.Controllers;
 
 [Route("api/linkrecords")]
 [ApiController]
@@ -33,8 +33,7 @@ public class LinkRecordController : ControllerBase
         if (dtoLinkRecord.ID != 0)
             return BadRequest("Cannot add with a valid id");
 
-        var linkRecord = mapper.Map<LinkRecord>(dtoLinkRecord);
-        var newLinkRecord = await linkRecordRepository.Add(linkRecord);
+        var newLinkRecord = await linkRecordRepository.Add(dtoLinkRecord);
         return mapper.Map<DtoLinkRecord>(newLinkRecord);
 
     }

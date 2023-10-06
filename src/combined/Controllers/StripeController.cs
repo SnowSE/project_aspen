@@ -8,12 +8,11 @@ using System.Net.Http;
 using static System.Net.WebRequestMethods;
 using System.Net;
 using shared;
-using Person = Api.Models.Entities.Person;
-using Api.DataAccess;
+using v2.DataAccess;
 using AutoMapper;
 using Serilog;
 
-namespace Api.Controllers;
+namespace v2.Controllers;
 [Route("api/stripe")]
 [ApiController]
 public class StripeController : ControllerBase
@@ -92,7 +91,7 @@ public class StripeController : ControllerBase
                     personId = long.Parse(currentCustomer.Name);
                 }
 
-                var paymentFailed = new PaymentFailure
+                var paymentFailed = new DtoPaymentFailure
                 {
                     Amount = responseObject.data.@object.amount,
                     Decline_Code = responseObject.data.@object.last_payment_error.decline_code,
@@ -140,7 +139,7 @@ public class StripeController : ControllerBase
         var paymentIntentId = s.PaymentIntentId;
 
 
-        var newDonation = new Donation {
+        var newDonation = new DtoDonation {
             TeamID=teamId,
             PersonID=personId,
             Amount=amount/100,

@@ -1,16 +1,16 @@
-﻿namespace Api.DataAccess;
+﻿namespace v2.DataAccess;
 
 public interface IDonationRepository
 {
-    Task<Donation> AddAsync(Donation donation);
+    Task<DtoDonation> AddAsync(DtoDonation donation);
     Task DeleteAsync(long id);
-    Task EditAsync(Donation e);
+    Task EditAsync(DtoDonation e);
     public Task<bool> ExistsAsync(long id);
-    Task<Donation> GetByIdAsync(long id);
+    Task<DtoDonation> GetByIdAsync(long id);
 
-    Task<IEnumerable<Donation>> GetAllAsync();
-    Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId);
-    Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId);
+    Task<IEnumerable<DtoDonation>> GetAllAsync();
+    Task<IEnumerable<DtoDonation>> GetByEventIdAsync(long eventId);
+    Task<IEnumerable<DtoDonation>> GetByTeamIdAsync(long teamId);
     Task<decimal> GetTeamDonationSum(long teamID);
     Task<decimal> GetEventDonationSumAsync(long eventid);
 }
@@ -31,28 +31,28 @@ public class DonationRepository : IDonationRepository
         return await context.Donations.AnyAsync(e => e.ID == id);
     }
 
-    public async Task<IEnumerable<Donation>> GetAllAsync()
+    public async Task<IEnumerable<DtoDonation>> GetAllAsync()
     {
         var DonationList = await EntityFrameworkQueryableExtensions.ToListAsync(context.Donations);
-        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(DonationList);
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(DonationList);
     }
 
-    public async Task<Donation> GetByIdAsync(long id)
+    public async Task<DtoDonation> GetByIdAsync(long id)
     {
         var e = await context.Donations.FindAsync(id);
 
-        return mapper.Map<Donation>(e);
+        return mapper.Map<DtoDonation>(e);
     }
-    public async Task<Donation> AddAsync(Donation donation)
+    public async Task<DtoDonation> AddAsync(DtoDonation donation)
     {
         var newDonation = mapper.Map<DbDonation>(donation);
         context.Donations.Add(newDonation);
         await context.SaveChangesAsync();
 
-        return mapper.Map<Donation>(newDonation);
+        return mapper.Map<DtoDonation>(newDonation);
     }
 
-    public async Task EditAsync(Donation e)
+    public async Task EditAsync(DtoDonation e)
     {
         var dbDonation = mapper.Map<DbDonation>(e);
         context.Update(dbDonation);
@@ -63,12 +63,12 @@ public class DonationRepository : IDonationRepository
     {
         var e = await context.Donations.FindAsync(id);
         if (e == null)
-            throw new NotFoundException<Donation>("Donation id does not exist");
+            throw new NotFoundException<DtoDonation>("Donation id does not exist");
         context.Donations.Remove(e);
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Donation>> GetByEventIdAsync(long eventId)
+    public async Task<IEnumerable<DtoDonation>> GetByEventIdAsync(long eventId)
     {
         var teams = await context.Teams.Where(t => t.EventID == eventId).ToListAsync();
         var donations = new List<DbDonation>();
@@ -81,17 +81,17 @@ public class DonationRepository : IDonationRepository
         }
        
 
-        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(donations);
     }
 
-    public async Task<IEnumerable<Donation>> GetByTeamIdAsync(long teamId)
+    public async Task<IEnumerable<DtoDonation>> GetByTeamIdAsync(long teamId)
     {
         var donations = await context.Donations
             .Include(d => d.Team)
             .Include(d => d.Person)
             .Where(d => d.TeamID == teamId).ToListAsync();
 
-        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<Donation>>(donations);
+        return mapper.Map<IEnumerable<DbDonation>, IEnumerable<DtoDonation>>(donations);
     }
 
     public async Task<decimal> GetTeamDonationSum(long teamID)

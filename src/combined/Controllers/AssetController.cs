@@ -1,4 +1,4 @@
-namespace Api.Controllers;
+namespace v2.Controllers;
 
 public record Response<T> { public T Data { get; init; } }
 
@@ -17,7 +17,12 @@ public class AssetController : ControllerBase
         this.logger = logger;
     }
 
-    [SwaggerOperation(Summary = "Endpoint for users to upload file assets.", Description = "Recieves one file in FormData that has the key 'asset'. Returned data value can be accessed at that can be accessed at /assets/{data}")]
+    [SwaggerOperation(
+        Summary = "Endpoint for users to upload file assets.",
+        Description = "Recieves one file in FormData that has the key 'asset'. " +
+        "Returned data value can be accessed at that can be accessed at /assets/{data}")
+    ]
+
     [HttpPost]
     public async Task<ActionResult<Response<string>>> PostAsync([FromForm] IFormFile asset)
     {
